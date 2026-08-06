@@ -10,12 +10,27 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as BlogIndexRouteImport } from './routes/blog.index'
+import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as CatalogoIndexRouteImport } from './routes/catalogo.index'
 import { Route as CatalogoSplatRouteImport } from './routes/catalogo.$'
+import { Route as MarcasIndexRouteImport } from './routes/marcas.index'
+import { Route as MarcasSlugRouteImport } from './routes/marcas.$slug'
+import { Route as ProdutoSlugRouteImport } from './routes/produto.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlogIndexRoute = BlogIndexRouteImport.update({
+  id: '/blog/',
+  path: '/blog/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlogSlugRoute = BlogSlugRouteImport.update({
+  id: '/blog/$slug',
+  path: '/blog/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CatalogoIndexRoute = CatalogoIndexRouteImport.update({
@@ -28,35 +43,95 @@ const CatalogoSplatRoute = CatalogoSplatRouteImport.update({
   path: '/catalogo/$',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MarcasIndexRoute = MarcasIndexRouteImport.update({
+  id: '/marcas/',
+  path: '/marcas/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MarcasSlugRoute = MarcasSlugRouteImport.update({
+  id: '/marcas/$slug',
+  path: '/marcas/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProdutoSlugRoute = ProdutoSlugRouteImport.update({
+  id: '/produto/$slug',
+  path: '/produto/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/catalogo/$': typeof CatalogoSplatRoute
+  '/marcas/$slug': typeof MarcasSlugRoute
+  '/produto/$slug': typeof ProdutoSlugRoute
+  '/blog/': typeof BlogIndexRoute
   '/catalogo/': typeof CatalogoIndexRoute
+  '/marcas/': typeof MarcasIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/catalogo/$': typeof CatalogoSplatRoute
+  '/marcas/$slug': typeof MarcasSlugRoute
+  '/produto/$slug': typeof ProdutoSlugRoute
+  '/blog': typeof BlogIndexRoute
   '/catalogo': typeof CatalogoIndexRoute
+  '/marcas': typeof MarcasIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/catalogo/$': typeof CatalogoSplatRoute
+  '/marcas/$slug': typeof MarcasSlugRoute
+  '/produto/$slug': typeof ProdutoSlugRoute
+  '/blog/': typeof BlogIndexRoute
   '/catalogo/': typeof CatalogoIndexRoute
+  '/marcas/': typeof MarcasIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/catalogo/$' | '/catalogo/'
+  fullPaths:
+    | '/'
+    | '/blog/$slug'
+    | '/catalogo/$'
+    | '/marcas/$slug'
+    | '/produto/$slug'
+    | '/blog/'
+    | '/catalogo/'
+    | '/marcas/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/catalogo/$' | '/catalogo'
-  id: '__root__' | '/' | '/catalogo/$' | '/catalogo/'
+  to:
+    | '/'
+    | '/blog/$slug'
+    | '/catalogo/$'
+    | '/marcas/$slug'
+    | '/produto/$slug'
+    | '/blog'
+    | '/catalogo'
+    | '/marcas'
+  id:
+    | '__root__'
+    | '/'
+    | '/blog/$slug'
+    | '/catalogo/$'
+    | '/marcas/$slug'
+    | '/produto/$slug'
+    | '/blog/'
+    | '/catalogo/'
+    | '/marcas/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  BlogSlugRoute: typeof BlogSlugRoute
   CatalogoSplatRoute: typeof CatalogoSplatRoute
+  MarcasSlugRoute: typeof MarcasSlugRoute
+  ProdutoSlugRoute: typeof ProdutoSlugRoute
+  BlogIndexRoute: typeof BlogIndexRoute
   CatalogoIndexRoute: typeof CatalogoIndexRoute
+  MarcasIndexRoute: typeof MarcasIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -66,6 +141,20 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog/': {
+      id: '/blog/'
+      path: '/blog'
+      fullPath: '/blog/'
+      preLoaderRoute: typeof BlogIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog/$slug': {
+      id: '/blog/$slug'
+      path: '/blog/$slug'
+      fullPath: '/blog/$slug'
+      preLoaderRoute: typeof BlogSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/catalogo/': {
@@ -82,13 +171,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CatalogoSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/marcas/': {
+      id: '/marcas/'
+      path: '/marcas'
+      fullPath: '/marcas/'
+      preLoaderRoute: typeof MarcasIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/marcas/$slug': {
+      id: '/marcas/$slug'
+      path: '/marcas/$slug'
+      fullPath: '/marcas/$slug'
+      preLoaderRoute: typeof MarcasSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/produto/$slug': {
+      id: '/produto/$slug'
+      path: '/produto/$slug'
+      fullPath: '/produto/$slug'
+      preLoaderRoute: typeof ProdutoSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  BlogSlugRoute: BlogSlugRoute,
   CatalogoSplatRoute: CatalogoSplatRoute,
+  MarcasSlugRoute: MarcasSlugRoute,
+  ProdutoSlugRoute: ProdutoSlugRoute,
+  BlogIndexRoute: BlogIndexRoute,
   CatalogoIndexRoute: CatalogoIndexRoute,
+  MarcasIndexRoute: MarcasIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
