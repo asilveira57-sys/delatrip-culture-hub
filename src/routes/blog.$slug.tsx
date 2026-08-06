@@ -1,0 +1,63 @@
+import { createFileRoute, Link } from "@tanstack/react-router";
+
+import { Breadcrumb } from "@/components/Breadcrumb";
+import { EmptyState } from "@/components/EmptyState";
+import { Button } from "@/components/ui/button";
+import { formatDate, getPost, imageFor } from "@/lib/catalog";
+
+export const Route = createFileRoute("/blog/$slug")({
+  head: ({ params }) => {
+    const post = getPost(params.slug);
+    const titulo = post ? `${post.titulo} — Blog DeLaTrip` : "Post não encontrado — DeLaTrip";
+    const descricao = post?.resumo ?? "Este conteúdo não está disponível.";
+    return {
+      meta: [
+        { title: titulo },
+        { name: "description", content: descricao },
+        { property: "og:title", content: titulo },
+        { property: "og:description", content: descricao },
+        { property: "og:type", content: "article" },
+      ],
+    };
+  },
+  component: PostPage,
+});
+
+function PostPage() {
+  const { slug } = Route.useParams();
+  const post = getPost(slug);
+
+  if (!post) {
+    return (
+      <div className="mx-auto max-w-6xl px-4 py-16">
+        <EmptyState
+          titulo="Post não encontrado"
+          acao={
+            <Button asChild>
+              <Link to="/blog">Voltar ao blog</Link>
+            </Button>
+          }
+        />
+      </div>
+    );
+  }
+
+  return (
+    <article className="mx-auto max-w-3xl px-4 py-10">
+      <Breadcrumb items={[{ label: "Blog", to: "/blog" }, { label: post.titulo }]} />
+      <p className="eyebrow text-primary">{post.categoria}</p>
+      <h1 className="mt-2 text-3xl font-bold uppercase sm:text-4xl">{post.titulo}</h1>
+      <p className="mt-3 text-sm text-muted-foreground">{formatDate(post.data)}</p>
+      <img
+        src={imageFor(post.imagem)}
+        alt={post.titulo}
+        loading="lazy"
+        width={1024}
+        height={1024}
+        className="mt-8 aspect-[16/9] w-full rounded-lg border border-border bg-ink object-cover"
+      />
+      <p className="mt-8 text-lg leading-relaxed text-muted-foreground">{post.resumo}</p>
+      <p className="mt-6 leading-relaxed">{post.conteudo}</p>
+    </article>
+  );
+}
