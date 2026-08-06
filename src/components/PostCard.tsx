@@ -1,13 +1,13 @@
 import { Link } from "@tanstack/react-router";
 
-import { formatDate, imageFor, type Post } from "@/lib/catalog";
+import { formatDate, imageForKey, type Post } from "@/lib/catalog";
 
 export function PostCard({ post }: { post: Post }) {
   return (
     <article className="card-lift flex h-full flex-col overflow-hidden rounded-lg border border-border bg-card">
       <Link to="/blog/$slug" params={{ slug: post.slug }} className="bg-ink">
         <img
-          src={imageFor(post.imagem)}
+          src={imageForKey(post.imagem)}
           alt={post.titulo}
           loading="lazy"
           width={1024}
