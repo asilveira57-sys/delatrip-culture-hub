@@ -24,9 +24,9 @@ export function Breadcrumb({ items }: { items: Crumb[] }) {
           <li key={item.label} className="flex items-center gap-1">
             <ChevronRight className="size-3" aria-hidden="true" />
             {item.to ? (
-              <Link to={item.to} className="hover:text-primary">
+              <PlainLink to={item.to} className="hover:text-primary">
                 {item.label}
-              </Link>
+              </PlainLink>
             ) : (
               <span className="text-foreground">{item.label}</span>
             )}
