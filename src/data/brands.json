@@ -1,0 +1,50 @@
+[
+  {
+    "slug": "smoking",
+    "nome": "Smoking",
+    "pais": "Espanha",
+    "descricao": "Tradição espanhola em papéis de enrolar desde 1879, referência em queima lenta e uniforme."
+  },
+  {
+    "slug": "raw",
+    "nome": "RAW",
+    "pais": "Espanha",
+    "descricao": "Papéis sem branqueamento, com fibras naturais e goma arábica."
+  },
+  {
+    "slug": "ocb",
+    "nome": "OCB",
+    "pais": "França",
+    "descricao": "Um dos nomes mais clássicos do segmento, conhecido pela linha ultrafina."
+  },
+  {
+    "slug": "elements",
+    "nome": "Elements",
+    "pais": "Espanha",
+    "descricao": "Papel de arroz com queima praticamente sem cinzas."
+  },
+  {
+    "slug": "clipper",
+    "nome": "Clipper",
+    "pais": "Espanha",
+    "descricao": "Isqueiros recarregáveis e colecionáveis, ícone da cultura da tabacaria."
+  },
+  {
+    "slug": "bic",
+    "nome": "BIC",
+    "pais": "França",
+    "descricao": "Isqueiros descartáveis reconhecidos pela confiabilidade."
+  },
+  {
+    "slug": "brasil-glass",
+    "nome": "Brasil Glass",
+    "pais": "Brasil",
+    "descricao": "Peças em vidro borossilicato produzidas artesanalmente no Brasil."
+  },
+  {
+    "slug": "hi-grinders",
+    "nome": "Hi Grinders",
+    "pais": "Brasil",
+    "descricao": "Dichavadores de alumínio usinado com acabamento premium."
+  }
+]

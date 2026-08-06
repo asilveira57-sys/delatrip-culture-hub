@@ -1,0 +1,74 @@
+[
+  {
+    "slug": "sedas",
+    "nome": "Sedas",
+    "descricao": "Papéis de enrolar de todos os tamanhos e gramaturas.",
+    "icone": "ScrollText",
+    "subcategorias": [
+      { "slug": "king-size", "nome": "King Size" },
+      { "slug": "1-1-4", "nome": "1 1/4" },
+      { "slug": "rolls", "nome": "Rolls" }
+    ]
+  },
+  {
+    "slug": "piteiras-e-filtros",
+    "nome": "Piteiras & Filtros",
+    "descricao": "Piteiras de papel, vidro e filtros de carvão ativado.",
+    "icone": "Filter",
+    "subcategorias": [
+      { "slug": "papel", "nome": "Papel" },
+      { "slug": "vidro", "nome": "Vidro" }
+    ]
+  },
+  {
+    "slug": "dichavadores",
+    "nome": "Dichavadores",
+    "descricao": "Alumínio, acrílico e madeira, de 2 a 4 partes.",
+    "icone": "CircleDot",
+    "subcategorias": [
+      { "slug": "aluminio", "nome": "Alumínio" },
+      { "slug": "acrilico", "nome": "Acrílico" }
+    ]
+  },
+  {
+    "slug": "bongs-e-pipes",
+    "nome": "Bongs & Pipes",
+    "descricao": "Vidro borossilicato, silicone e peças artesanais.",
+    "icone": "FlaskConical",
+    "subcategorias": [
+      { "slug": "vidro", "nome": "Vidro" },
+      { "slug": "silicone", "nome": "Silicone" }
+    ]
+  },
+  {
+    "slug": "bandejas",
+    "nome": "Bandejas",
+    "descricao": "Bandejas de metal e madeira em vários tamanhos.",
+    "icone": "Square",
+    "subcategorias": []
+  },
+  {
+    "slug": "gas-isqueiro-macarico",
+    "nome": "Gás, Isqueiro & Maçarico",
+    "descricao": "Isqueiros, maçaricos e refis de gás butano.",
+    "icone": "Flame",
+    "subcategorias": [
+      { "slug": "isqueiros", "nome": "Isqueiros" },
+      { "slug": "macaricos", "nome": "Maçaricos" }
+    ]
+  },
+  {
+    "slug": "tabacos",
+    "nome": "Tabacos",
+    "descricao": "Tabacos para cachimbo, narguilé e enrolar.",
+    "icone": "Leaf",
+    "subcategorias": []
+  },
+  {
+    "slug": "acessorios",
+    "nome": "Acessórios",
+    "descricao": "Cinzeiros, potes herméticos, cases e limpeza.",
+    "icone": "Package",
+    "subcategorias": []
+  }
+]
