@@ -201,6 +201,18 @@ export function imageFor(produto: Product) {
   return fallbackPorCategoria[raiz] ?? imgSedas;
 }
 
+const imagensEditoriais: Record<string, string> = {
+  sedas: imgSedas,
+  dichavador: imgDichavador,
+  bong: imgBong,
+  bandeja: imgBandeja,
+};
+
+/** Imagem de posts do blog e blocos editoriais (chave simbólica no JSON). */
+export function imageForKey(key: string) {
+  return imagensEditoriais[key] ?? imgSedas;
+}
+
 /* ---------------- marcas ---------------- */
 
 export function getBrand(slug: string) {
