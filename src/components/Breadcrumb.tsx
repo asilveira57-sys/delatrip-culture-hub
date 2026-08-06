@@ -1,7 +1,15 @@
 import { Link } from "@tanstack/react-router";
 import { ChevronRight } from "lucide-react";
+import type { FC, ReactNode } from "react";
+
+const PlainLink = Link as unknown as FC<{
+  to: string;
+  className?: string;
+  children: ReactNode;
+}>;
 
 export type Crumb = { label: string; to?: string };
+
 
 export function Breadcrumb({ items }: { items: Crumb[] }) {
   return (

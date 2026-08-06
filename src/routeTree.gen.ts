@@ -10,33 +10,53 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as CatalogoIndexRouteImport } from './routes/catalogo.index'
+import { Route as CatalogoSplatRouteImport } from './routes/catalogo.$'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CatalogoIndexRoute = CatalogoIndexRouteImport.update({
+  id: '/catalogo/',
+  path: '/catalogo/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CatalogoSplatRoute = CatalogoSplatRouteImport.update({
+  id: '/catalogo/$',
+  path: '/catalogo/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/catalogo/$': typeof CatalogoSplatRoute
+  '/catalogo/': typeof CatalogoIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/catalogo/$': typeof CatalogoSplatRoute
+  '/catalogo': typeof CatalogoIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/catalogo/$': typeof CatalogoSplatRoute
+  '/catalogo/': typeof CatalogoIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/catalogo/$' | '/catalogo/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/catalogo/$' | '/catalogo'
+  id: '__root__' | '/' | '/catalogo/$' | '/catalogo/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CatalogoSplatRoute: typeof CatalogoSplatRoute
+  CatalogoIndexRoute: typeof CatalogoIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +68,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/catalogo/': {
+      id: '/catalogo/'
+      path: '/catalogo'
+      fullPath: '/catalogo/'
+      preLoaderRoute: typeof CatalogoIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/catalogo/$': {
+      id: '/catalogo/$'
+      path: '/catalogo/$'
+      fullPath: '/catalogo/$'
+      preLoaderRoute: typeof CatalogoSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CatalogoSplatRoute: CatalogoSplatRoute,
+  CatalogoIndexRoute: CatalogoIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
