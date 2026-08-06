@@ -4,18 +4,23 @@ import { EmptyState } from "@/components/EmptyState";
 import { PageHeader } from "@/components/PageHeader";
 import { ProductCard } from "@/components/ProductCard";
 import { Button } from "@/components/ui/button";
-import { getCategory, productsByCategory } from "@/lib/catalog";
+import {
+  categoryMeta,
+  categoryPath,
+  childrenOf,
+  getCategoryByPath,
+  productsByCategory,
+} from "@/lib/catalog";
 
 export const Route = createFileRoute("/catalogo/$")({
   head: ({ params }) => {
-    const [cat, sub] = (params._splat ?? "").split("/");
-    const categoria = getCategory(cat ?? "");
-    const subNome = categoria?.subcategorias.find((s) => s.slug === sub)?.nome;
+    const categoria = getCategoryByPath(params._splat ?? "");
     const titulo = categoria
-      ? `${categoria.nome}${subNome ? ` — ${subNome}` : ""} | DeLaTrip`
+      ? `${categoria.nome} — Catálogo | DeLaTrip`
       : "Categoria não encontrada — DeLaTrip";
-    const descricao =
-      categoria?.descricao ?? "Categoria indisponível no catálogo DeLaTrip.";
+    const descricao = categoria
+      ? categoryMeta(categoria).descricao
+      : "Categoria indisponível no catálogo DeLaTrip.";
     return {
       meta: [
         { title: titulo },
@@ -30,13 +35,15 @@ export const Route = createFileRoute("/catalogo/$")({
 
 function CategoriaPage() {
   const { _splat } = Route.useParams();
-  const [catSlug, subSlug] = (_splat ?? "").split("/");
-  const categoria = getCategory(catSlug ?? "");
+  const categoria = getCategoryByPath(_splat ?? "");
 
   if (!categoria) {
     return (
       <>
-        <PageHeader titulo="Categoria não encontrada" crumbs={[{ label: "Catálogo", to: "/catalogo" }]} />
+        <PageHeader
+          titulo="Categoria não encontrada"
+          crumbs={[{ label: "Catálogo", to: "/catalogo" }]}
+        />
         <div className="mx-auto max-w-6xl px-4 py-16">
           <EmptyState
             titulo="Categoria inexistente"
@@ -52,45 +59,40 @@ function CategoriaPage() {
     );
   }
 
-  const sub = categoria.subcategorias.find((s) => s.slug === subSlug);
-  const lista = productsByCategory(categoria.slug, sub?.slug);
+  const subcategorias = childrenOf(categoria.id);
+  const lista = productsByCategory(categoria);
+  const path = categoryPath(categoria);
+  const trilha = path.split("/");
+  const pai =
+    trilha.length > 1 ? getCategoryByPath(trilha.slice(0, -1).join("/")) : undefined;
 
   return (
     <>
       <PageHeader
         eyebrow="Categoria"
-        titulo={sub ? `${categoria.nome} — ${sub.nome}` : categoria.nome}
-        descricao={categoria.descricao}
+        titulo={categoria.nome}
+        descricao={categoryMeta(categoria).descricao}
         crumbs={[
           { label: "Catálogo", to: "/catalogo" },
-          ...(sub
-            ? [{ label: categoria.nome, to: `/catalogo/${categoria.slug}` }, { label: sub.nome }]
-            : [{ label: categoria.nome }]),
+          ...(pai
+            ? [{ label: pai.nome, to: `/catalogo/${categoryPath(pai)}` }]
+            : []),
+          { label: categoria.nome },
         ]}
       />
 
       <div className="mx-auto max-w-6xl px-4 py-12">
-        {categoria.subcategorias.length > 0 && (
+        {subcategorias.length > 0 && (
           <div className="mb-8 flex flex-wrap gap-2">
-            <Link
-              to="/catalogo/$"
-              params={{ _splat: categoria.slug }}
-              className={`rounded-md border border-border px-3 py-1.5 text-sm ${
-                sub ? "text-muted-foreground hover:bg-accent" : "bg-primary text-primary-foreground"
-              }`}
-            >
+            <span className="rounded-md border border-border bg-primary px-3 py-1.5 text-sm text-primary-foreground">
               Todos
-            </Link>
-            {categoria.subcategorias.map((s) => (
+            </span>
+            {subcategorias.map((s) => (
               <Link
-                key={s.slug}
+                key={s.id}
                 to="/catalogo/$"
-                params={{ _splat: `${categoria.slug}/${s.slug}` }}
-                className={`rounded-md border border-border px-3 py-1.5 text-sm ${
-                  sub?.slug === s.slug
-                    ? "bg-primary text-primary-foreground"
-                    : "text-muted-foreground hover:bg-accent"
-                }`}
+                params={{ _splat: `${path}/${s.slug}` }}
+                className="rounded-md border border-border px-3 py-1.5 text-sm text-muted-foreground hover:bg-accent"
               >
                 {s.nome}
               </Link>
