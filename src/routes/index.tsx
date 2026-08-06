@@ -8,7 +8,7 @@ import { ProductCard } from "@/components/ProductCard";
 import { SectionHeading } from "@/components/SectionHeading";
 import { Button } from "@/components/ui/button";
 import { SITE } from "@/config/site";
-import { brands, categories, destaques, posts } from "@/lib/catalog";
+import { brands, destaques, posts, rootCategories } from "@/lib/catalog";
 import heroImg from "@/assets/hero.jpg";
 import logo from "@/assets/delatrip-logo.png";
 
@@ -91,8 +91,8 @@ function Home() {
           descricao="Do papel ao vidro: tudo que compõe o balcão de uma tabacaria completa."
         />
         <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-          {categories.map((c) => (
-            <CategoryCard key={c.slug} categoria={c} />
+          {rootCategories.map((c) => (
+            <CategoryCard key={c.id} categoria={c} />
           ))}
         </div>
       </section>

@@ -5,7 +5,13 @@ import { EmptyState } from "@/components/EmptyState";
 import { PageHeader } from "@/components/PageHeader";
 import { ProductCard } from "@/components/ProductCard";
 import { Button } from "@/components/ui/button";
-import { brands, categories, products } from "@/lib/catalog";
+import {
+  brands,
+  getCategoryByPath,
+  productsByCategory,
+  products,
+  rootCategories,
+} from "@/lib/catalog";
 
 export const Route = createFileRoute("/catalogo/")({
   head: () => ({
@@ -32,11 +38,13 @@ function Catalogo() {
 
   const lista = useMemo(
     () =>
-      products.filter(
-        (p) =>
-          (!categoria || p.categoria === categoria) &&
-          (!marca || p.marca === marca),
-      ),
+      (categoria
+        ? (() => {
+            const cat = getCategoryByPath(categoria);
+            return cat ? productsByCategory(cat) : [];
+          })()
+        : products
+      ).filter((p) => !marca || p.marcaSlug === marca),
     [categoria, marca],
   );
 
@@ -59,8 +67,8 @@ function Catalogo() {
                   Todas
                 </FilterButton>
               </li>
-              {categories.map((c) => (
-                <li key={c.slug}>
+              {rootCategories.map((c) => (
+                <li key={c.id}>
                   <FilterButton
                     ativo={categoria === c.slug}
                     onClick={() => setCategoria(c.slug)}

@@ -3,7 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { CategoryCard } from "@/components/CategoryCard";
 import { PageHeader } from "@/components/PageHeader";
 import { SectionHeading } from "@/components/SectionHeading";
-import { categories } from "@/lib/catalog";
+import { rootCategories } from "@/lib/catalog";
 
 export const Route = createFileRoute("/acessorios")({
   head: () => ({
@@ -69,8 +69,8 @@ function AcessoriosPage() {
         <div className="mt-16">
           <SectionHeading eyebrow="No catálogo" titulo="Navegue por categoria" />
           <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-            {categories.map((c) => (
-              <CategoryCard key={c.slug} categoria={c} />
+            {rootCategories.map((c) => (
+              <CategoryCard key={c.id} categoria={c} />
             ))}
           </div>
         </div>
