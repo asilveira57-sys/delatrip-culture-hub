@@ -10,33 +10,219 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AcessoriosRouteImport } from './routes/acessorios'
+import { Route as ContatoRouteImport } from './routes/contato'
+import { Route as SobreRouteImport } from './routes/sobre'
+import { Route as TabacosRouteImport } from './routes/tabacos'
+import { Route as BlogIndexRouteImport } from './routes/blog.index'
+import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
+import { Route as CatalogoIndexRouteImport } from './routes/catalogo.index'
+import { Route as CatalogoSplatRouteImport } from './routes/catalogo.$'
+import { Route as LegalAvisoLegalRouteImport } from './routes/legal.aviso-legal'
+import { Route as LegalPrivacidadeRouteImport } from './routes/legal.privacidade'
+import { Route as LegalTermosRouteImport } from './routes/legal.termos'
+import { Route as MarcasIndexRouteImport } from './routes/marcas.index'
+import { Route as MarcasSlugRouteImport } from './routes/marcas.$slug'
+import { Route as ProdutoSlugRouteImport } from './routes/produto.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AcessoriosRoute = AcessoriosRouteImport.update({
+  id: '/acessorios',
+  path: '/acessorios',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContatoRoute = ContatoRouteImport.update({
+  id: '/contato',
+  path: '/contato',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SobreRoute = SobreRouteImport.update({
+  id: '/sobre',
+  path: '/sobre',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TabacosRoute = TabacosRouteImport.update({
+  id: '/tabacos',
+  path: '/tabacos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlogIndexRoute = BlogIndexRouteImport.update({
+  id: '/blog/',
+  path: '/blog/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlogSlugRoute = BlogSlugRouteImport.update({
+  id: '/blog/$slug',
+  path: '/blog/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CatalogoIndexRoute = CatalogoIndexRouteImport.update({
+  id: '/catalogo/',
+  path: '/catalogo/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CatalogoSplatRoute = CatalogoSplatRouteImport.update({
+  id: '/catalogo/$',
+  path: '/catalogo/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LegalAvisoLegalRoute = LegalAvisoLegalRouteImport.update({
+  id: '/legal/aviso-legal',
+  path: '/legal/aviso-legal',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LegalPrivacidadeRoute = LegalPrivacidadeRouteImport.update({
+  id: '/legal/privacidade',
+  path: '/legal/privacidade',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LegalTermosRoute = LegalTermosRouteImport.update({
+  id: '/legal/termos',
+  path: '/legal/termos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MarcasIndexRoute = MarcasIndexRouteImport.update({
+  id: '/marcas/',
+  path: '/marcas/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MarcasSlugRoute = MarcasSlugRouteImport.update({
+  id: '/marcas/$slug',
+  path: '/marcas/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProdutoSlugRoute = ProdutoSlugRouteImport.update({
+  id: '/produto/$slug',
+  path: '/produto/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/acessorios': typeof AcessoriosRoute
+  '/contato': typeof ContatoRoute
+  '/sobre': typeof SobreRoute
+  '/tabacos': typeof TabacosRoute
+  '/blog/$slug': typeof BlogSlugRoute
+  '/catalogo/$': typeof CatalogoSplatRoute
+  '/legal/aviso-legal': typeof LegalAvisoLegalRoute
+  '/legal/privacidade': typeof LegalPrivacidadeRoute
+  '/legal/termos': typeof LegalTermosRoute
+  '/marcas/$slug': typeof MarcasSlugRoute
+  '/produto/$slug': typeof ProdutoSlugRoute
+  '/blog/': typeof BlogIndexRoute
+  '/catalogo/': typeof CatalogoIndexRoute
+  '/marcas/': typeof MarcasIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/acessorios': typeof AcessoriosRoute
+  '/contato': typeof ContatoRoute
+  '/sobre': typeof SobreRoute
+  '/tabacos': typeof TabacosRoute
+  '/blog/$slug': typeof BlogSlugRoute
+  '/catalogo/$': typeof CatalogoSplatRoute
+  '/legal/aviso-legal': typeof LegalAvisoLegalRoute
+  '/legal/privacidade': typeof LegalPrivacidadeRoute
+  '/legal/termos': typeof LegalTermosRoute
+  '/marcas/$slug': typeof MarcasSlugRoute
+  '/produto/$slug': typeof ProdutoSlugRoute
+  '/blog': typeof BlogIndexRoute
+  '/catalogo': typeof CatalogoIndexRoute
+  '/marcas': typeof MarcasIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/acessorios': typeof AcessoriosRoute
+  '/contato': typeof ContatoRoute
+  '/sobre': typeof SobreRoute
+  '/tabacos': typeof TabacosRoute
+  '/blog/$slug': typeof BlogSlugRoute
+  '/catalogo/$': typeof CatalogoSplatRoute
+  '/legal/aviso-legal': typeof LegalAvisoLegalRoute
+  '/legal/privacidade': typeof LegalPrivacidadeRoute
+  '/legal/termos': typeof LegalTermosRoute
+  '/marcas/$slug': typeof MarcasSlugRoute
+  '/produto/$slug': typeof ProdutoSlugRoute
+  '/blog/': typeof BlogIndexRoute
+  '/catalogo/': typeof CatalogoIndexRoute
+  '/marcas/': typeof MarcasIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/acessorios'
+    | '/contato'
+    | '/sobre'
+    | '/tabacos'
+    | '/blog/$slug'
+    | '/catalogo/$'
+    | '/legal/aviso-legal'
+    | '/legal/privacidade'
+    | '/legal/termos'
+    | '/marcas/$slug'
+    | '/produto/$slug'
+    | '/blog/'
+    | '/catalogo/'
+    | '/marcas/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/acessorios'
+    | '/contato'
+    | '/sobre'
+    | '/tabacos'
+    | '/blog/$slug'
+    | '/catalogo/$'
+    | '/legal/aviso-legal'
+    | '/legal/privacidade'
+    | '/legal/termos'
+    | '/marcas/$slug'
+    | '/produto/$slug'
+    | '/blog'
+    | '/catalogo'
+    | '/marcas'
+  id:
+    | '__root__'
+    | '/'
+    | '/acessorios'
+    | '/contato'
+    | '/sobre'
+    | '/tabacos'
+    | '/blog/$slug'
+    | '/catalogo/$'
+    | '/legal/aviso-legal'
+    | '/legal/privacidade'
+    | '/legal/termos'
+    | '/marcas/$slug'
+    | '/produto/$slug'
+    | '/blog/'
+    | '/catalogo/'
+    | '/marcas/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AcessoriosRoute: typeof AcessoriosRoute
+  ContatoRoute: typeof ContatoRoute
+  SobreRoute: typeof SobreRoute
+  TabacosRoute: typeof TabacosRoute
+  BlogSlugRoute: typeof BlogSlugRoute
+  CatalogoSplatRoute: typeof CatalogoSplatRoute
+  LegalAvisoLegalRoute: typeof LegalAvisoLegalRoute
+  LegalPrivacidadeRoute: typeof LegalPrivacidadeRoute
+  LegalTermosRoute: typeof LegalTermosRoute
+  MarcasSlugRoute: typeof MarcasSlugRoute
+  ProdutoSlugRoute: typeof ProdutoSlugRoute
+  BlogIndexRoute: typeof BlogIndexRoute
+  CatalogoIndexRoute: typeof CatalogoIndexRoute
+  MarcasIndexRoute: typeof MarcasIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,22 +234,124 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/acessorios': {
+      id: '/acessorios'
+      path: '/acessorios'
+      fullPath: '/acessorios'
+      preLoaderRoute: typeof AcessoriosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contato': {
+      id: '/contato'
+      path: '/contato'
+      fullPath: '/contato'
+      preLoaderRoute: typeof ContatoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sobre': {
+      id: '/sobre'
+      path: '/sobre'
+      fullPath: '/sobre'
+      preLoaderRoute: typeof SobreRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tabacos': {
+      id: '/tabacos'
+      path: '/tabacos'
+      fullPath: '/tabacos'
+      preLoaderRoute: typeof TabacosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog/': {
+      id: '/blog/'
+      path: '/blog'
+      fullPath: '/blog/'
+      preLoaderRoute: typeof BlogIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog/$slug': {
+      id: '/blog/$slug'
+      path: '/blog/$slug'
+      fullPath: '/blog/$slug'
+      preLoaderRoute: typeof BlogSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/catalogo/': {
+      id: '/catalogo/'
+      path: '/catalogo'
+      fullPath: '/catalogo/'
+      preLoaderRoute: typeof CatalogoIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/catalogo/$': {
+      id: '/catalogo/$'
+      path: '/catalogo/$'
+      fullPath: '/catalogo/$'
+      preLoaderRoute: typeof CatalogoSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/legal/aviso-legal': {
+      id: '/legal/aviso-legal'
+      path: '/legal/aviso-legal'
+      fullPath: '/legal/aviso-legal'
+      preLoaderRoute: typeof LegalAvisoLegalRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/legal/privacidade': {
+      id: '/legal/privacidade'
+      path: '/legal/privacidade'
+      fullPath: '/legal/privacidade'
+      preLoaderRoute: typeof LegalPrivacidadeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/legal/termos': {
+      id: '/legal/termos'
+      path: '/legal/termos'
+      fullPath: '/legal/termos'
+      preLoaderRoute: typeof LegalTermosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/marcas/': {
+      id: '/marcas/'
+      path: '/marcas'
+      fullPath: '/marcas/'
+      preLoaderRoute: typeof MarcasIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/marcas/$slug': {
+      id: '/marcas/$slug'
+      path: '/marcas/$slug'
+      fullPath: '/marcas/$slug'
+      preLoaderRoute: typeof MarcasSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/produto/$slug': {
+      id: '/produto/$slug'
+      path: '/produto/$slug'
+      fullPath: '/produto/$slug'
+      preLoaderRoute: typeof ProdutoSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AcessoriosRoute: AcessoriosRoute,
+  ContatoRoute: ContatoRoute,
+  SobreRoute: SobreRoute,
+  TabacosRoute: TabacosRoute,
+  BlogSlugRoute: BlogSlugRoute,
+  CatalogoSplatRoute: CatalogoSplatRoute,
+  LegalAvisoLegalRoute: LegalAvisoLegalRoute,
+  LegalPrivacidadeRoute: LegalPrivacidadeRoute,
+  LegalTermosRoute: LegalTermosRoute,
+  MarcasSlugRoute: MarcasSlugRoute,
+  ProdutoSlugRoute: ProdutoSlugRoute,
+  BlogIndexRoute: BlogIndexRoute,
+  CatalogoIndexRoute: CatalogoIndexRoute,
+  MarcasIndexRoute: MarcasIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
