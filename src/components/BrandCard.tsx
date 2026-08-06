@@ -12,9 +12,11 @@ export function BrandCard({ marca }: { marca: Brand }) {
       <span className="font-display text-xl font-semibold uppercase tracking-wide">
         {marca.nome}
       </span>
-      <span className="eyebrow mt-1 text-gold">{marca.pais}</span>
+      <span className="eyebrow mt-1 text-gold">
+        {marca.pais ?? (marca.marcaPropria ? "Marca própria" : "Marca")}
+      </span>
       <span className="mt-3 text-xs leading-relaxed text-muted-foreground">
-        {marca.descricao}
+        {marca.descricao ?? `${marca.totalProdutos} produto(s) no catálogo.`}
       </span>
     </Link>
   );

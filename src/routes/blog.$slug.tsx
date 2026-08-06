@@ -3,7 +3,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { EmptyState } from "@/components/EmptyState";
 import { Button } from "@/components/ui/button";
-import { formatDate, getPost, imageFor } from "@/lib/catalog";
+import { formatDate, getPost, imageForKey } from "@/lib/catalog";
 
 export const Route = createFileRoute("/blog/$slug")({
   head: ({ params }) => {
@@ -49,7 +49,7 @@ function PostPage() {
       <h1 className="mt-2 text-3xl font-bold uppercase sm:text-4xl">{post.titulo}</h1>
       <p className="mt-3 text-sm text-muted-foreground">{formatDate(post.data)}</p>
       <img
-        src={imageFor(post.imagem)}
+        src={imageForKey(post.imagem)}
         alt={post.titulo}
         loading="lazy"
         width={1024}

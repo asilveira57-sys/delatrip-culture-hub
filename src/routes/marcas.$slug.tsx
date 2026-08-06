@@ -10,7 +10,11 @@ export const Route = createFileRoute("/marcas/$slug")({
   head: ({ params }) => {
     const marca = getBrand(params.slug);
     const titulo = marca ? `${marca.nome} — Marcas | DeLaTrip` : "Marca não encontrada — DeLaTrip";
-    const descricao = marca?.descricao ?? "Marca indisponível no catálogo DeLaTrip.";
+    const descricao =
+      marca?.descricao ??
+      (marca
+        ? `Conheça os produtos ${marca.nome} no catálogo DeLaTrip.`
+        : "Marca indisponível no catálogo DeLaTrip.");
     return {
       meta: [
         { title: titulo },
@@ -47,9 +51,12 @@ function MarcaPage() {
   return (
     <>
       <PageHeader
-        eyebrow={marca.pais}
+        eyebrow={marca.pais ?? (marca.marcaPropria ? "Marca própria" : "Marca")}
         titulo={marca.nome}
-        descricao={marca.descricao}
+        descricao={
+          marca.descricao ??
+          `Produtos ${marca.nome} disponíveis no catálogo DeLaTrip.`
+        }
         crumbs={[{ label: "Marcas", to: "/marcas" }, { label: marca.nome }]}
       />
       <div className="mx-auto max-w-6xl px-4 py-12">

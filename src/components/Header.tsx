@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { SITE } from "@/config/site";
-import { brandName, searchAll } from "@/lib/catalog";
+import { searchAll } from "@/lib/catalog";
 import logo from "@/assets/delatrip-logo.png";
 
 const nav = [
@@ -176,7 +176,7 @@ export function Header() {
                       >
                         <span className="block text-sm font-medium">{p.nome}</span>
                         <span className="block text-xs text-muted-foreground">
-                          {brandName(p.marca)}
+                          {p.marca}
                         </span>
                       </Link>
                     ))}

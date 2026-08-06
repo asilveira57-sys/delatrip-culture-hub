@@ -1,50 +1,82 @@
 [
   {
-    "slug": "smoking",
     "nome": "Smoking",
-    "pais": "Espanha",
-    "descricao": "Tradição espanhola em papéis de enrolar desde 1879, referência em queima lenta e uniforme."
+    "slug": "smoking",
+    "totalProdutos": 1,
+    "categoriaId": null,
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": "Tradição espanhola em papéis de enrolar desde 1879, referência em queima lenta e uniforme.",
+    "pais": "Espanha"
   },
   {
-    "slug": "raw",
     "nome": "RAW",
-    "pais": "Espanha",
-    "descricao": "Papéis sem branqueamento, com fibras naturais e goma arábica."
+    "slug": "raw",
+    "totalProdutos": 3,
+    "categoriaId": null,
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": "Papéis sem branqueamento, com fibras naturais e goma arábica.",
+    "pais": "Espanha"
   },
   {
-    "slug": "ocb",
     "nome": "OCB",
-    "pais": "França",
-    "descricao": "Um dos nomes mais clássicos do segmento, conhecido pela linha ultrafina."
+    "slug": "ocb",
+    "totalProdutos": 1,
+    "categoriaId": null,
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": "Um dos nomes mais clássicos do segmento, conhecido pela linha ultrafina.",
+    "pais": "França"
   },
   {
-    "slug": "elements",
     "nome": "Elements",
-    "pais": "Espanha",
-    "descricao": "Papel de arroz com queima praticamente sem cinzas."
+    "slug": "elements",
+    "totalProdutos": 1,
+    "categoriaId": null,
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": "Papel de arroz com queima praticamente sem cinzas.",
+    "pais": "Espanha"
   },
   {
-    "slug": "clipper",
     "nome": "Clipper",
-    "pais": "Espanha",
-    "descricao": "Isqueiros recarregáveis e colecionáveis, ícone da cultura da tabacaria."
+    "slug": "clipper",
+    "totalProdutos": 1,
+    "categoriaId": null,
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": "Isqueiros recarregáveis e colecionáveis, ícone da cultura da tabacaria.",
+    "pais": "Espanha"
   },
   {
-    "slug": "bic",
     "nome": "BIC",
-    "pais": "França",
-    "descricao": "Isqueiros descartáveis reconhecidos pela confiabilidade."
+    "slug": "bic",
+    "totalProdutos": 0,
+    "categoriaId": null,
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": "Isqueiros descartáveis reconhecidos pela confiabilidade.",
+    "pais": "França"
   },
   {
-    "slug": "brasil-glass",
     "nome": "Brasil Glass",
-    "pais": "Brasil",
-    "descricao": "Peças em vidro borossilicato produzidas artesanalmente no Brasil."
+    "slug": "brasil-glass",
+    "totalProdutos": 3,
+    "categoriaId": null,
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": "Peças em vidro borossilicato produzidas artesanalmente no Brasil.",
+    "pais": "Brasil"
   },
   {
-    "slug": "hi-grinders",
     "nome": "Hi Grinders",
-    "pais": "Brasil",
-    "descricao": "Dichavadores de alumínio usinado com acabamento premium."
+    "slug": "hi-grinders",
+    "totalProdutos": 2,
+    "categoriaId": null,
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": "Dichavadores de alumínio usinado com acabamento premium.",
+    "pais": "Brasil"
   }
 ]
