@@ -1,74 +1,173 @@
 [
   {
-    "slug": "sedas",
+    "id": "100",
+    "paiId": null,
     "nome": "Sedas",
-    "descricao": "Papéis de enrolar de todos os tamanhos e gramaturas.",
-    "icone": "ScrollText",
-    "subcategorias": [
-      { "slug": "king-size", "nome": "King Size" },
-      { "slug": "1-1-4", "nome": "1 1/4" },
-      { "slug": "rolls", "nome": "Rolls" }
-    ]
+    "nivel": 1,
+    "slug": "sedas",
+    "ativo": true,
+    "totalProdutos": 0
   },
   {
-    "slug": "piteiras-e-filtros",
+    "id": "101",
+    "paiId": "100",
+    "nome": "King Size",
+    "nivel": 2,
+    "slug": "king-size",
+    "ativo": true,
+    "totalProdutos": 2
+  },
+  {
+    "id": "102",
+    "paiId": "100",
+    "nome": "1 1/4",
+    "nivel": 2,
+    "slug": "1-1-4",
+    "ativo": true,
+    "totalProdutos": 1
+  },
+  {
+    "id": "103",
+    "paiId": "100",
+    "nome": "Rolls",
+    "nivel": 2,
+    "slug": "rolls",
+    "ativo": true,
+    "totalProdutos": 1
+  },
+  {
+    "id": "104",
+    "paiId": null,
     "nome": "Piteiras & Filtros",
-    "descricao": "Piteiras de papel, vidro e filtros de carvão ativado.",
-    "icone": "Filter",
-    "subcategorias": [
-      { "slug": "papel", "nome": "Papel" },
-      { "slug": "vidro", "nome": "Vidro" }
-    ]
+    "nivel": 1,
+    "slug": "piteiras-e-filtros",
+    "ativo": true,
+    "totalProdutos": 0
   },
   {
-    "slug": "dichavadores",
+    "id": "105",
+    "paiId": "104",
+    "nome": "Papel",
+    "nivel": 2,
+    "slug": "papel",
+    "ativo": true,
+    "totalProdutos": 1
+  },
+  {
+    "id": "106",
+    "paiId": "104",
+    "nome": "Vidro",
+    "nivel": 2,
+    "slug": "vidro",
+    "ativo": true,
+    "totalProdutos": 1
+  },
+  {
+    "id": "107",
+    "paiId": null,
     "nome": "Dichavadores",
-    "descricao": "Alumínio, acrílico e madeira, de 2 a 4 partes.",
-    "icone": "CircleDot",
-    "subcategorias": [
-      { "slug": "aluminio", "nome": "Alumínio" },
-      { "slug": "acrilico", "nome": "Acrílico" }
-    ]
+    "nivel": 1,
+    "slug": "dichavadores",
+    "ativo": true,
+    "totalProdutos": 0
   },
   {
-    "slug": "bongs-e-pipes",
+    "id": "108",
+    "paiId": "107",
+    "nome": "Alumínio",
+    "nivel": 2,
+    "slug": "aluminio",
+    "ativo": true,
+    "totalProdutos": 1
+  },
+  {
+    "id": "109",
+    "paiId": "107",
+    "nome": "Acrílico",
+    "nivel": 2,
+    "slug": "acrilico",
+    "ativo": true,
+    "totalProdutos": 1
+  },
+  {
+    "id": "110",
+    "paiId": null,
     "nome": "Bongs & Pipes",
-    "descricao": "Vidro borossilicato, silicone e peças artesanais.",
-    "icone": "FlaskConical",
-    "subcategorias": [
-      { "slug": "vidro", "nome": "Vidro" },
-      { "slug": "silicone", "nome": "Silicone" }
-    ]
+    "nivel": 1,
+    "slug": "bongs-e-pipes",
+    "ativo": true,
+    "totalProdutos": 0
   },
   {
-    "slug": "bandejas",
+    "id": "111",
+    "paiId": "110",
+    "nome": "Vidro",
+    "nivel": 2,
+    "slug": "vidro",
+    "ativo": true,
+    "totalProdutos": 1
+  },
+  {
+    "id": "112",
+    "paiId": "110",
+    "nome": "Silicone",
+    "nivel": 2,
+    "slug": "silicone",
+    "ativo": true,
+    "totalProdutos": 1
+  },
+  {
+    "id": "113",
+    "paiId": null,
     "nome": "Bandejas",
-    "descricao": "Bandejas de metal e madeira em vários tamanhos.",
-    "icone": "Square",
-    "subcategorias": []
+    "nivel": 1,
+    "slug": "bandejas",
+    "ativo": true,
+    "totalProdutos": 1
   },
   {
-    "slug": "gas-isqueiro-macarico",
+    "id": "114",
+    "paiId": null,
     "nome": "Gás, Isqueiro & Maçarico",
-    "descricao": "Isqueiros, maçaricos e refis de gás butano.",
-    "icone": "Flame",
-    "subcategorias": [
-      { "slug": "isqueiros", "nome": "Isqueiros" },
-      { "slug": "macaricos", "nome": "Maçaricos" }
-    ]
+    "nivel": 1,
+    "slug": "gas-isqueiro-macarico",
+    "ativo": true,
+    "totalProdutos": 0
   },
   {
-    "slug": "tabacos",
+    "id": "115",
+    "paiId": "114",
+    "nome": "Isqueiros",
+    "nivel": 2,
+    "slug": "isqueiros",
+    "ativo": true,
+    "totalProdutos": 1
+  },
+  {
+    "id": "116",
+    "paiId": "114",
+    "nome": "Maçaricos",
+    "nivel": 2,
+    "slug": "macaricos",
+    "ativo": true,
+    "totalProdutos": 0
+  },
+  {
+    "id": "117",
+    "paiId": null,
     "nome": "Tabacos",
-    "descricao": "Tabacos para cachimbo, narguilé e enrolar.",
-    "icone": "Leaf",
-    "subcategorias": []
+    "nivel": 1,
+    "slug": "tabacos",
+    "ativo": true,
+    "totalProdutos": 0
   },
   {
-    "slug": "acessorios",
+    "id": "118",
+    "paiId": null,
     "nome": "Acessórios",
-    "descricao": "Cinzeiros, potes herméticos, cases e limpeza.",
-    "icone": "Package",
-    "subcategorias": []
+    "nivel": 1,
+    "slug": "acessorios",
+    "ativo": true,
+    "totalProdutos": 0
   }
 ]
