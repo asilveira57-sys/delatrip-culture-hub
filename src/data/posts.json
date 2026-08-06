@@ -1,0 +1,38 @@
+[
+  {
+    "slug": "como-escolher-sua-seda",
+    "titulo": "Como escolher sua seda: tamanho, material e queima",
+    "resumo": "King size, 1 1/4, arroz ou cânhamo? Um guia direto para entender as diferenças e escolher o papel certo.",
+    "data": "2026-07-28",
+    "categoria": "Guias",
+    "imagem": "sedas",
+    "conteudo": "O papel muda completamente a experiência. Gramaturas menores queimam mais devagar e interferem menos no sabor; papéis de arroz deixam quase nenhuma cinza; o cânhamo tem estrutura mais firme e é mais fácil de manusear. O tamanho define a quantidade: 1 1/4 para uso individual, king size para compartilhar, rolls quando você quer liberdade total."
+  },
+  {
+    "slug": "dichavador-aluminio-ou-acrilico",
+    "titulo": "Dichavador de alumínio ou acrílico: qual vale mais a pena",
+    "resumo": "Durabilidade, corte e preço. Comparamos os dois materiais mais comuns do mercado brasileiro.",
+    "data": "2026-07-14",
+    "categoria": "Comparativos",
+    "imagem": "dichavador",
+    "conteudo": "O alumínio usinado oferece dentes mais precisos, vida útil longa e normalmente inclui peneira e coletor. O acrílico é leve e barato, ideal como segundo dichavador, mas os dentes desgastam com o tempo. Se você usa diariamente, o alumínio compensa."
+  },
+  {
+    "slug": "limpeza-e-cuidados-com-vidro",
+    "titulo": "Limpeza e cuidados com peças de vidro",
+    "resumo": "Rotina simples para manter bongs e piteiras de borossilicato transparentes e sem odor.",
+    "data": "2026-06-30",
+    "categoria": "Manutenção",
+    "imagem": "bong",
+    "conteudo": "Álcool isopropílico com sal grosso resolve a maior parte da sujeira: agite, deixe agir e enxágue bem com água morna. Evite choque térmico — nunca use água fervendo em uma peça gelada. Piteiras de vidro podem ir junto no mesmo processo."
+  },
+  {
+    "slug": "tipos-de-tabaco",
+    "titulo": "Tipos de tabaco: Virginia, Burley e Oriental",
+    "resumo": "Entenda as variedades mais usadas em blends e como cada uma influencia sabor e força.",
+    "data": "2026-06-12",
+    "categoria": "Educativo",
+    "imagem": "bandeja",
+    "conteudo": "Virginia é adocicado e leve, base da maioria dos blends. Burley é mais seco e absorve bem aromatizantes. Orientais trazem notas condimentadas e aromáticas em pequenas proporções. A combinação define o caráter final de cada mistura."
+  }
+]
