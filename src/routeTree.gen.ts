@@ -18,6 +18,9 @@ import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as CatalogoIndexRouteImport } from './routes/catalogo.index'
 import { Route as CatalogoSplatRouteImport } from './routes/catalogo.$'
+import { Route as LegalAvisoLegalRouteImport } from './routes/legal.aviso-legal'
+import { Route as LegalPrivacidadeRouteImport } from './routes/legal.privacidade'
+import { Route as LegalTermosRouteImport } from './routes/legal.termos'
 import { Route as MarcasIndexRouteImport } from './routes/marcas.index'
 import { Route as MarcasSlugRouteImport } from './routes/marcas.$slug'
 import { Route as ProdutoSlugRouteImport } from './routes/produto.$slug'
@@ -67,6 +70,21 @@ const CatalogoSplatRoute = CatalogoSplatRouteImport.update({
   path: '/catalogo/$',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LegalAvisoLegalRoute = LegalAvisoLegalRouteImport.update({
+  id: '/legal/aviso-legal',
+  path: '/legal/aviso-legal',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LegalPrivacidadeRoute = LegalPrivacidadeRouteImport.update({
+  id: '/legal/privacidade',
+  path: '/legal/privacidade',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LegalTermosRoute = LegalTermosRouteImport.update({
+  id: '/legal/termos',
+  path: '/legal/termos',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const MarcasIndexRoute = MarcasIndexRouteImport.update({
   id: '/marcas/',
   path: '/marcas/',
@@ -91,6 +109,9 @@ export interface FileRoutesByFullPath {
   '/tabacos': typeof TabacosRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/catalogo/$': typeof CatalogoSplatRoute
+  '/legal/aviso-legal': typeof LegalAvisoLegalRoute
+  '/legal/privacidade': typeof LegalPrivacidadeRoute
+  '/legal/termos': typeof LegalTermosRoute
   '/marcas/$slug': typeof MarcasSlugRoute
   '/produto/$slug': typeof ProdutoSlugRoute
   '/blog/': typeof BlogIndexRoute
@@ -105,6 +126,9 @@ export interface FileRoutesByTo {
   '/tabacos': typeof TabacosRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/catalogo/$': typeof CatalogoSplatRoute
+  '/legal/aviso-legal': typeof LegalAvisoLegalRoute
+  '/legal/privacidade': typeof LegalPrivacidadeRoute
+  '/legal/termos': typeof LegalTermosRoute
   '/marcas/$slug': typeof MarcasSlugRoute
   '/produto/$slug': typeof ProdutoSlugRoute
   '/blog': typeof BlogIndexRoute
@@ -120,6 +144,9 @@ export interface FileRoutesById {
   '/tabacos': typeof TabacosRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/catalogo/$': typeof CatalogoSplatRoute
+  '/legal/aviso-legal': typeof LegalAvisoLegalRoute
+  '/legal/privacidade': typeof LegalPrivacidadeRoute
+  '/legal/termos': typeof LegalTermosRoute
   '/marcas/$slug': typeof MarcasSlugRoute
   '/produto/$slug': typeof ProdutoSlugRoute
   '/blog/': typeof BlogIndexRoute
@@ -136,6 +163,9 @@ export interface FileRouteTypes {
     | '/tabacos'
     | '/blog/$slug'
     | '/catalogo/$'
+    | '/legal/aviso-legal'
+    | '/legal/privacidade'
+    | '/legal/termos'
     | '/marcas/$slug'
     | '/produto/$slug'
     | '/blog/'
@@ -150,6 +180,9 @@ export interface FileRouteTypes {
     | '/tabacos'
     | '/blog/$slug'
     | '/catalogo/$'
+    | '/legal/aviso-legal'
+    | '/legal/privacidade'
+    | '/legal/termos'
     | '/marcas/$slug'
     | '/produto/$slug'
     | '/blog'
@@ -164,6 +197,9 @@ export interface FileRouteTypes {
     | '/tabacos'
     | '/blog/$slug'
     | '/catalogo/$'
+    | '/legal/aviso-legal'
+    | '/legal/privacidade'
+    | '/legal/termos'
     | '/marcas/$slug'
     | '/produto/$slug'
     | '/blog/'
@@ -179,6 +215,9 @@ export interface RootRouteChildren {
   TabacosRoute: typeof TabacosRoute
   BlogSlugRoute: typeof BlogSlugRoute
   CatalogoSplatRoute: typeof CatalogoSplatRoute
+  LegalAvisoLegalRoute: typeof LegalAvisoLegalRoute
+  LegalPrivacidadeRoute: typeof LegalPrivacidadeRoute
+  LegalTermosRoute: typeof LegalTermosRoute
   MarcasSlugRoute: typeof MarcasSlugRoute
   ProdutoSlugRoute: typeof ProdutoSlugRoute
   BlogIndexRoute: typeof BlogIndexRoute
@@ -251,6 +290,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CatalogoSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/legal/aviso-legal': {
+      id: '/legal/aviso-legal'
+      path: '/legal/aviso-legal'
+      fullPath: '/legal/aviso-legal'
+      preLoaderRoute: typeof LegalAvisoLegalRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/legal/privacidade': {
+      id: '/legal/privacidade'
+      path: '/legal/privacidade'
+      fullPath: '/legal/privacidade'
+      preLoaderRoute: typeof LegalPrivacidadeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/legal/termos': {
+      id: '/legal/termos'
+      path: '/legal/termos'
+      fullPath: '/legal/termos'
+      preLoaderRoute: typeof LegalTermosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/marcas/': {
       id: '/marcas/'
       path: '/marcas'
@@ -283,6 +343,9 @@ const rootRouteChildren: RootRouteChildren = {
   TabacosRoute: TabacosRoute,
   BlogSlugRoute: BlogSlugRoute,
   CatalogoSplatRoute: CatalogoSplatRoute,
+  LegalAvisoLegalRoute: LegalAvisoLegalRoute,
+  LegalPrivacidadeRoute: LegalPrivacidadeRoute,
+  LegalTermosRoute: LegalTermosRoute,
   MarcasSlugRoute: MarcasSlugRoute,
   ProdutoSlugRoute: ProdutoSlugRoute,
   BlogIndexRoute: BlogIndexRoute,
