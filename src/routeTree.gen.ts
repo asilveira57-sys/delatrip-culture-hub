@@ -10,6 +10,10 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AcessoriosRouteImport } from './routes/acessorios'
+import { Route as ContatoRouteImport } from './routes/contato'
+import { Route as SobreRouteImport } from './routes/sobre'
+import { Route as TabacosRouteImport } from './routes/tabacos'
 import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as CatalogoIndexRouteImport } from './routes/catalogo.index'
@@ -21,6 +25,26 @@ import { Route as ProdutoSlugRouteImport } from './routes/produto.$slug'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AcessoriosRoute = AcessoriosRouteImport.update({
+  id: '/acessorios',
+  path: '/acessorios',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContatoRoute = ContatoRouteImport.update({
+  id: '/contato',
+  path: '/contato',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SobreRoute = SobreRouteImport.update({
+  id: '/sobre',
+  path: '/sobre',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TabacosRoute = TabacosRouteImport.update({
+  id: '/tabacos',
+  path: '/tabacos',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BlogIndexRoute = BlogIndexRouteImport.update({
@@ -61,6 +85,10 @@ const ProdutoSlugRoute = ProdutoSlugRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/acessorios': typeof AcessoriosRoute
+  '/contato': typeof ContatoRoute
+  '/sobre': typeof SobreRoute
+  '/tabacos': typeof TabacosRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/catalogo/$': typeof CatalogoSplatRoute
   '/marcas/$slug': typeof MarcasSlugRoute
@@ -71,6 +99,10 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/acessorios': typeof AcessoriosRoute
+  '/contato': typeof ContatoRoute
+  '/sobre': typeof SobreRoute
+  '/tabacos': typeof TabacosRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/catalogo/$': typeof CatalogoSplatRoute
   '/marcas/$slug': typeof MarcasSlugRoute
@@ -82,6 +114,10 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/acessorios': typeof AcessoriosRoute
+  '/contato': typeof ContatoRoute
+  '/sobre': typeof SobreRoute
+  '/tabacos': typeof TabacosRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/catalogo/$': typeof CatalogoSplatRoute
   '/marcas/$slug': typeof MarcasSlugRoute
@@ -94,6 +130,10 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/acessorios'
+    | '/contato'
+    | '/sobre'
+    | '/tabacos'
     | '/blog/$slug'
     | '/catalogo/$'
     | '/marcas/$slug'
@@ -104,6 +144,10 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/acessorios'
+    | '/contato'
+    | '/sobre'
+    | '/tabacos'
     | '/blog/$slug'
     | '/catalogo/$'
     | '/marcas/$slug'
@@ -114,6 +158,10 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/acessorios'
+    | '/contato'
+    | '/sobre'
+    | '/tabacos'
     | '/blog/$slug'
     | '/catalogo/$'
     | '/marcas/$slug'
@@ -125,6 +173,10 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AcessoriosRoute: typeof AcessoriosRoute
+  ContatoRoute: typeof ContatoRoute
+  SobreRoute: typeof SobreRoute
+  TabacosRoute: typeof TabacosRoute
   BlogSlugRoute: typeof BlogSlugRoute
   CatalogoSplatRoute: typeof CatalogoSplatRoute
   MarcasSlugRoute: typeof MarcasSlugRoute
@@ -141,6 +193,34 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/acessorios': {
+      id: '/acessorios'
+      path: '/acessorios'
+      fullPath: '/acessorios'
+      preLoaderRoute: typeof AcessoriosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contato': {
+      id: '/contato'
+      path: '/contato'
+      fullPath: '/contato'
+      preLoaderRoute: typeof ContatoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sobre': {
+      id: '/sobre'
+      path: '/sobre'
+      fullPath: '/sobre'
+      preLoaderRoute: typeof SobreRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tabacos': {
+      id: '/tabacos'
+      path: '/tabacos'
+      fullPath: '/tabacos'
+      preLoaderRoute: typeof TabacosRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/blog/': {
@@ -197,6 +277,10 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AcessoriosRoute: AcessoriosRoute,
+  ContatoRoute: ContatoRoute,
+  SobreRoute: SobreRoute,
+  TabacosRoute: TabacosRoute,
   BlogSlugRoute: BlogSlugRoute,
   CatalogoSplatRoute: CatalogoSplatRoute,
   MarcasSlugRoute: MarcasSlugRoute,
