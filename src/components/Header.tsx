@@ -1,4 +1,4 @@
-import { Link, useRouter } from "@tanstack/react-router";
+import { Link, useNavigate, useRouter } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { Menu, Search, X } from "lucide-react";
 
@@ -17,6 +17,7 @@ const nav = [
   { label: "Tabacos", to: "/tabacos" },
   { label: "Blog", to: "/blog" },
   { label: "Sobre", to: "/sobre" },
+  { label: "FAQ", to: "/faq" },
 ] as const;
 
 export function Header() {
@@ -24,8 +25,17 @@ export function Header() {
   const [menuAberto, setMenuAberto] = useState(false);
   const [termo, setTermo] = useState("");
   const router = useRouter();
+  const navigate = useNavigate();
 
   const resultados = useMemo(() => searchAll(termo), [termo]);
+
+  const irParaBusca = (e: React.FormEvent) => {
+    e.preventDefault();
+    const q = termo.trim().slice(0, 100);
+    if (!q) return;
+    setBuscaAberta(false);
+    navigate({ to: "/busca", search: { q, marca: "", ordem: "relevancia" } });
+  };
 
   useEffect(() => {
     const unsub = router.subscribe("onResolved", () => {
@@ -34,6 +44,7 @@ export function Header() {
     });
     return unsub;
   }, [router]);
+
 
   return (
     <header className="sticky top-0 z-50 border-b border-ink-border surface-ink">
