@@ -127,11 +127,15 @@ export function Header() {
       <Dialog open={buscaAberta} onOpenChange={setBuscaAberta}>
         <DialogContent className="top-24 max-w-2xl translate-y-0 p-0">
           <DialogTitle className="sr-only">Buscar no catálogo</DialogTitle>
-          <div className="flex items-center gap-2 border-b border-border px-4">
+          <form
+            onSubmit={irParaBusca}
+            className="flex items-center gap-2 border-b border-border px-4"
+          >
             <Search className="size-4 text-muted-foreground" aria-hidden="true" />
             <Input
               autoFocus
               value={termo}
+              maxLength={100}
               onChange={(e) => setTermo(e.target.value)}
               placeholder="Buscar produto ou marca..."
               aria-label="Buscar produto ou marca"
@@ -147,7 +151,11 @@ export function Header() {
                 <X className="size-4" aria-hidden="true" />
               </button>
             ) : null}
-          </div>
+            <button type="submit" className="sr-only">
+              Buscar
+            </button>
+          </form>
+
 
           <div className="max-h-[60vh] overflow-y-auto p-2">
             {!termo ? (
