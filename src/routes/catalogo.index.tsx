@@ -1,31 +1,54 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useMemo } from "react";
+import { Search } from "lucide-react";
 
+import { ActiveChips, FilterButton, SortSelect } from "@/components/CatalogFilters";
 import { EmptyState } from "@/components/EmptyState";
 import { PageHeader } from "@/components/PageHeader";
 import { ProductCard } from "@/components/ProductCard";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
+  brandName,
   brands,
+  filterProducts,
   getCategoryByPath,
-  productsByCategory,
-  products,
   rootCategories,
+  type SortKey,
 } from "@/lib/catalog";
 
+type CatalogoSearch = {
+  q: string;
+  categoria: string;
+  marca: string;
+  ordem: SortKey;
+};
+
+const ORDENS: SortKey[] = ["relevancia", "nome-az", "nome-za", "novidades"];
+
 export const Route = createFileRoute("/catalogo/")({
+  validateSearch: (search: Record<string, unknown>): CatalogoSearch => {
+    const ordem = String(search["ordem"] ?? "relevancia") as SortKey;
+    return {
+      q: String(search["q"] ?? "").slice(0, 100),
+      categoria: String(search["categoria"] ?? ""),
+      marca: String(search["marca"] ?? ""),
+      ordem: ORDENS.includes(ordem) ? ordem : "relevancia",
+    };
+  },
   head: () => ({
     meta: [
       { title: "Catálogo de produtos — DeLaTrip" },
       {
         name: "description",
         content:
-          "Explore o catálogo DeLaTrip: sedas, piteiras, dichavadores, bongs, bandejas, isqueiros e tabacos, com filtros por categoria e marca.",
+          "Explore o catálogo DeLaTrip: sedas, piteiras, dichavadores, bongs, bandejas, isqueiros e tabacos, com filtros por categoria, marca e ordenação.",
       },
       { property: "og:title", content: "Catálogo de produtos — DeLaTrip" },
       {
         property: "og:description",
-        content: "Sedas, dichavadores, vidros, bandejas e acessórios com filtros por categoria e marca.",
+        content:
+          "Sedas, dichavadores, vidros, bandejas e acessórios com filtros por categoria e marca.",
       },
     ],
   }),
@@ -33,20 +56,28 @@ export const Route = createFileRoute("/catalogo/")({
 });
 
 function Catalogo() {
-  const [categoria, setCategoria] = useState<string | null>(null);
-  const [marca, setMarca] = useState<string | null>(null);
+  const { q, categoria, marca, ordem } = Route.useSearch();
+  const navigate = useNavigate({ from: "/catalogo" });
+
+  const setSearch = (patch: Partial<CatalogoSearch>) =>
+    navigate({ search: (prev) => ({ ...prev, ...patch }) });
 
   const lista = useMemo(
-    () =>
-      (categoria
-        ? (() => {
-            const cat = getCategoryByPath(categoria);
-            return cat ? productsByCategory(cat) : [];
-          })()
-        : products
-      ).filter((p) => !marca || p.marcaSlug === marca),
-    [categoria, marca],
+    () => filterProducts({ q, categoria, marca, ordem }),
+    [q, categoria, marca, ordem],
   );
+
+  const nomeCategoria = categoria ? getCategoryByPath(categoria)?.nome : undefined;
+
+  const chips = [
+    ...(q ? [{ label: `Busca: ${q}`, onRemove: () => setSearch({ q: "" }) }] : []),
+    ...(nomeCategoria
+      ? [{ label: nomeCategoria, onRemove: () => setSearch({ categoria: "" }) }]
+      : []),
+    ...(marca
+      ? [{ label: brandName(marca), onRemove: () => setSearch({ marca: "" }) }]
+      : []),
+  ];
 
   return (
     <>
@@ -63,7 +94,7 @@ function Catalogo() {
             <h2 className="eyebrow text-primary">Categorias</h2>
             <ul className="mt-3 space-y-1">
               <li>
-                <FilterButton ativo={!categoria} onClick={() => setCategoria(null)}>
+                <FilterButton ativo={!categoria} onClick={() => setSearch({ categoria: "" })}>
                   Todas
                 </FilterButton>
               </li>
@@ -71,7 +102,7 @@ function Catalogo() {
                 <li key={c.id}>
                   <FilterButton
                     ativo={categoria === c.slug}
-                    onClick={() => setCategoria(c.slug)}
+                    onClick={() => setSearch({ categoria: c.slug })}
                   >
                     {c.nome}
                   </FilterButton>
@@ -82,13 +113,16 @@ function Catalogo() {
             <h2 className="eyebrow mt-8 text-primary">Marcas</h2>
             <ul className="mt-3 space-y-1">
               <li>
-                <FilterButton ativo={!marca} onClick={() => setMarca(null)}>
+                <FilterButton ativo={!marca} onClick={() => setSearch({ marca: "" })}>
                   Todas
                 </FilterButton>
               </li>
               {brands.map((b) => (
                 <li key={b.slug}>
-                  <FilterButton ativo={marca === b.slug} onClick={() => setMarca(b.slug)}>
+                  <FilterButton
+                    ativo={marca === b.slug}
+                    onClick={() => setSearch({ marca: b.slug })}
+                  >
                     {b.nome}
                   </FilterButton>
                 </li>
@@ -97,18 +131,39 @@ function Catalogo() {
           </aside>
 
           <div>
-            <p className="mb-5 text-sm text-muted-foreground">
-              {lista.length} {lista.length === 1 ? "produto" : "produtos"}
-            </p>
+            <div className="mb-5 flex flex-col gap-4">
+              <div className="relative">
+                <Search
+                  className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
+                  aria-hidden="true"
+                />
+                <Input
+                  value={q}
+                  onChange={(e) => setSearch({ q: e.target.value.slice(0, 100) })}
+                  placeholder="Filtrar por nome, marca ou referência"
+                  aria-label="Filtrar produtos do catálogo"
+                  className="pl-9"
+                />
+              </div>
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <p className="text-sm text-muted-foreground">
+                  {lista.length} {lista.length === 1 ? "produto" : "produtos"}
+                </p>
+                <SortSelect valor={ordem} onChange={(v) => setSearch({ ordem: v })} />
+              </div>
+              <ActiveChips chips={chips} />
+            </div>
+
             {lista.length === 0 ? (
               <EmptyState
+                titulo="Nenhum produto nesta seleção"
+                descricao="Ajuste os filtros ou limpe a busca para ver mais itens."
                 acao={
                   <Button
                     variant="outline"
-                    onClick={() => {
-                      setCategoria(null);
-                      setMarca(null);
-                    }}
+                    onClick={() =>
+                      setSearch({ q: "", categoria: "", marca: "", ordem: "relevancia" })
+                    }
                   >
                     Limpar filtros
                   </Button>
@@ -133,30 +188,5 @@ function Catalogo() {
         </p>
       </div>
     </>
-  );
-}
-
-function FilterButton({
-  ativo,
-  onClick,
-  children,
-}: {
-  ativo: boolean;
-  onClick: () => void;
-  children: React.ReactNode;
-}) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      aria-pressed={ativo}
-      className={`w-full rounded-md px-3 py-2 text-left text-sm transition-colors ${
-        ativo
-          ? "bg-primary text-primary-foreground"
-          : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
-      }`}
-    >
-      {children}
-    </button>
   );
 }
