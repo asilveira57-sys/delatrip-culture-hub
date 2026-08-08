@@ -204,6 +204,18 @@ export function Header() {
               </>
             )}
           </div>
+
+          {termo.trim() ? (
+            <div className="border-t border-border p-2">
+              <Link
+                to="/busca"
+                search={{ q: termo.trim().slice(0, 100), marca: "", ordem: "relevancia" }}
+                className="block rounded-md px-3 py-2 text-sm font-medium text-primary hover:bg-accent"
+              >
+                Ver todos os resultados para “{termo.trim()}”
+              </Link>
+            </div>
+          ) : null}
         </DialogContent>
       </Dialog>
     </header>
