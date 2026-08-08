@@ -62,7 +62,10 @@ function ContatoPage() {
 
   const set = (campo: keyof Campos, valor: string) => {
     setValores((v) => ({ ...v, [campo]: valor }));
-    setErros((e) => ({ ...e, [campo]: undefined }));
+    setErros((e) => {
+      const { [campo]: _removido, ...resto } = e;
+      return resto;
+    });
   };
 
   const onSubmit = (e: React.FormEvent) => {
@@ -239,11 +242,11 @@ function Campo({
   id: string;
   rotulo: string;
   valor: string;
-  erro?: string;
+  erro?: string | undefined;
   onChange: (v: string) => void;
   tipo?: string;
-  maxLength?: number;
-  autoComplete?: string;
+  maxLength?: number | undefined;
+  autoComplete?: string | undefined;
 }) {
   return (
     <div>

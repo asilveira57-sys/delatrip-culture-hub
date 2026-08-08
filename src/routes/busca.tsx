@@ -55,7 +55,7 @@ function BuscaPage() {
   const navigate = useNavigate({ from: "/busca" });
 
   const setSearch = (patch: Partial<BuscaSearch>) =>
-    navigate({ search: (prev) => ({ ...prev, ...patch }) });
+    navigate({ search: (prev: BuscaSearch) => ({ ...prev, ...patch }) });
 
   const produtos = useMemo(
     () => (q ? filterProducts({ q, marca, ordem }) : []),
