@@ -232,19 +232,94 @@ export function getPost(slug: string) {
 
 /* ---------------- busca e formatação ---------------- */
 
-export function searchAll(termo: string) {
+/** Casa o termo contra nome, marca, categoria e referência do produto. */
+export function matchesQuery(produto: Product, q: string) {
+  const termo = q.trim().toLowerCase();
+  if (!termo) return true;
+  return [
+    produto.nome,
+    produto.marca,
+    produto.categoriaNome ?? categoryName(produto.categoriaId),
+    produto.referencia,
+  ]
+    .filter(Boolean)
+    .some((campo) => (campo as string).toLowerCase().includes(termo));
+}
+
+export function searchProducts(termo: string) {
+  return products.filter((p) => matchesQuery(p, termo));
+}
+
+export function searchBrands(termo: string) {
   const q = termo.trim().toLowerCase();
+  if (!q) return [] as Brand[];
+  return brands.filter((b) => b.nome.toLowerCase().includes(q));
+}
+
+export function searchAll(termo: string) {
+  const q = termo.trim();
   if (!q) return { produtos: [] as Product[], marcas: [] as Brand[] };
   return {
-    produtos: products
-      .filter(
-        (p) =>
-          p.nome.toLowerCase().includes(q) ||
-          (p.marca ?? "").toLowerCase().includes(q),
-      )
-      .slice(0, 8),
-    marcas: brands.filter((b) => b.nome.toLowerCase().includes(q)).slice(0, 5),
+    produtos: searchProducts(q).slice(0, 8),
+    marcas: searchBrands(q).slice(0, 5),
   };
+}
+
+export const SORT_OPTIONS = [
+  { value: "relevancia", label: "Mais relevantes" },
+  { value: "nome-az", label: "Nome (A–Z)" },
+  { value: "nome-za", label: "Nome (Z–A)" },
+  { value: "novidades", label: "Lançamentos primeiro" },
+] as const;
+
+export type SortKey = (typeof SORT_OPTIONS)[number]["value"];
+
+export function sortProducts(lista: Product[], ordem: SortKey) {
+  const copia = [...lista];
+  switch (ordem) {
+    case "nome-az":
+      return copia.sort((a, b) => a.nome.localeCompare(b.nome, "pt-BR"));
+    case "nome-za":
+      return copia.sort((a, b) => b.nome.localeCompare(a.nome, "pt-BR"));
+    case "novidades":
+      return copia.sort(
+        (a, b) =>
+          Number(b.lancamento) - Number(a.lancamento) ||
+          Number(b.destaque) - Number(a.destaque),
+      );
+    default:
+      return copia.sort(
+        (a, b) =>
+          Number(b.destaque) - Number(a.destaque) ||
+          a.nome.localeCompare(b.nome, "pt-BR"),
+      );
+  }
+}
+
+/** Filtro unificado usado pelo catálogo e pela página de busca. */
+export function filterProducts({
+  q = "",
+  categoria = "",
+  marca = "",
+  ordem = "relevancia",
+}: {
+  q?: string;
+  categoria?: string;
+  marca?: string;
+  ordem?: SortKey;
+}) {
+  const cat = categoria ? getCategoryByPath(categoria) : undefined;
+  const base = categoria ? (cat ? productsByCategory(cat) : []) : products;
+  const filtrados = base.filter(
+    (p) => (!marca || p.marcaSlug === marca) && matchesQuery(p, q),
+  );
+  return sortProducts(filtrados, ordem);
+}
+
+/** Marcas presentes em um conjunto de produtos (para filtros contextuais). */
+export function brandsOf(lista: Product[]) {
+  const slugs = new Set(lista.map((p) => p.marcaSlug).filter(Boolean));
+  return brands.filter((b) => slugs.has(b.slug));
 }
 
 /** Texto puro a partir da descrição HTML — usado em meta tags e resumos. */

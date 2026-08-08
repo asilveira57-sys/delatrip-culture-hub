@@ -58,6 +58,7 @@ export function Footer() {
               <li><Link to="/sobre" className="text-sm text-ink-muted hover:text-gold">Sobre a DeLaTrip</Link></li>
               <li><Link to="/marcas" className="text-sm text-ink-muted hover:text-gold">Marcas</Link></li>
               <li><Link to="/blog" className="text-sm text-ink-muted hover:text-gold">Blog</Link></li>
+              <li><Link to="/faq" className="text-sm text-ink-muted hover:text-gold">Perguntas frequentes</Link></li>
               <li><Link to="/contato" className="text-sm text-ink-muted hover:text-gold">Contato</Link></li>
               <li><Link to="/legal/aviso-legal" className="text-sm text-ink-muted hover:text-gold">Avisos legais</Link></li>
               <li><Link to="/legal/privacidade" className="text-sm text-ink-muted hover:text-gold">Privacidade</Link></li>

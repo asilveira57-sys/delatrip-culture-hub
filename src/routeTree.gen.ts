@@ -11,7 +11,9 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AcessoriosRouteImport } from './routes/acessorios'
+import { Route as BuscaRouteImport } from './routes/busca'
 import { Route as ContatoRouteImport } from './routes/contato'
+import { Route as FaqRouteImport } from './routes/faq'
 import { Route as SobreRouteImport } from './routes/sobre'
 import { Route as TabacosRouteImport } from './routes/tabacos'
 import { Route as BlogIndexRouteImport } from './routes/blog.index'
@@ -35,9 +37,19 @@ const AcessoriosRoute = AcessoriosRouteImport.update({
   path: '/acessorios',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BuscaRoute = BuscaRouteImport.update({
+  id: '/busca',
+  path: '/busca',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ContatoRoute = ContatoRouteImport.update({
   id: '/contato',
   path: '/contato',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FaqRoute = FaqRouteImport.update({
+  id: '/faq',
+  path: '/faq',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SobreRoute = SobreRouteImport.update({
@@ -104,7 +116,9 @@ const ProdutoSlugRoute = ProdutoSlugRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/acessorios': typeof AcessoriosRoute
+  '/busca': typeof BuscaRoute
   '/contato': typeof ContatoRoute
+  '/faq': typeof FaqRoute
   '/sobre': typeof SobreRoute
   '/tabacos': typeof TabacosRoute
   '/blog/$slug': typeof BlogSlugRoute
@@ -121,7 +135,9 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/acessorios': typeof AcessoriosRoute
+  '/busca': typeof BuscaRoute
   '/contato': typeof ContatoRoute
+  '/faq': typeof FaqRoute
   '/sobre': typeof SobreRoute
   '/tabacos': typeof TabacosRoute
   '/blog/$slug': typeof BlogSlugRoute
@@ -139,7 +155,9 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/acessorios': typeof AcessoriosRoute
+  '/busca': typeof BuscaRoute
   '/contato': typeof ContatoRoute
+  '/faq': typeof FaqRoute
   '/sobre': typeof SobreRoute
   '/tabacos': typeof TabacosRoute
   '/blog/$slug': typeof BlogSlugRoute
@@ -158,7 +176,9 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/acessorios'
+    | '/busca'
     | '/contato'
+    | '/faq'
     | '/sobre'
     | '/tabacos'
     | '/blog/$slug'
@@ -175,7 +195,9 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/acessorios'
+    | '/busca'
     | '/contato'
+    | '/faq'
     | '/sobre'
     | '/tabacos'
     | '/blog/$slug'
@@ -192,7 +214,9 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/acessorios'
+    | '/busca'
     | '/contato'
+    | '/faq'
     | '/sobre'
     | '/tabacos'
     | '/blog/$slug'
@@ -210,7 +234,9 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AcessoriosRoute: typeof AcessoriosRoute
+  BuscaRoute: typeof BuscaRoute
   ContatoRoute: typeof ContatoRoute
+  FaqRoute: typeof FaqRoute
   SobreRoute: typeof SobreRoute
   TabacosRoute: typeof TabacosRoute
   BlogSlugRoute: typeof BlogSlugRoute
@@ -241,11 +267,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AcessoriosRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/busca': {
+      id: '/busca'
+      path: '/busca'
+      fullPath: '/busca'
+      preLoaderRoute: typeof BuscaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/contato': {
       id: '/contato'
       path: '/contato'
       fullPath: '/contato'
       preLoaderRoute: typeof ContatoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/faq': {
+      id: '/faq'
+      path: '/faq'
+      fullPath: '/faq'
+      preLoaderRoute: typeof FaqRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sobre': {
@@ -338,7 +378,9 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AcessoriosRoute: AcessoriosRoute,
+  BuscaRoute: BuscaRoute,
   ContatoRoute: ContatoRoute,
+  FaqRoute: FaqRoute,
   SobreRoute: SobreRoute,
   TabacosRoute: TabacosRoute,
   BlogSlugRoute: BlogSlugRoute,
@@ -355,13 +397,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

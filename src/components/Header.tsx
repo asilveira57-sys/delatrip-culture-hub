@@ -1,4 +1,4 @@
-import { Link, useRouter } from "@tanstack/react-router";
+import { Link, useNavigate, useRouter } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { Menu, Search, X } from "lucide-react";
 
@@ -17,6 +17,7 @@ const nav = [
   { label: "Tabacos", to: "/tabacos" },
   { label: "Blog", to: "/blog" },
   { label: "Sobre", to: "/sobre" },
+  { label: "FAQ", to: "/faq" },
 ] as const;
 
 export function Header() {
@@ -24,8 +25,17 @@ export function Header() {
   const [menuAberto, setMenuAberto] = useState(false);
   const [termo, setTermo] = useState("");
   const router = useRouter();
+  const navigate = useNavigate();
 
   const resultados = useMemo(() => searchAll(termo), [termo]);
+
+  const irParaBusca = (e: React.FormEvent) => {
+    e.preventDefault();
+    const q = termo.trim().slice(0, 100);
+    if (!q) return;
+    setBuscaAberta(false);
+    navigate({ to: "/busca", search: { q, marca: "", ordem: "relevancia" } });
+  };
 
   useEffect(() => {
     const unsub = router.subscribe("onResolved", () => {
@@ -34,6 +44,7 @@ export function Header() {
     });
     return unsub;
   }, [router]);
+
 
   return (
     <header className="sticky top-0 z-50 border-b border-ink-border surface-ink">
@@ -116,11 +127,15 @@ export function Header() {
       <Dialog open={buscaAberta} onOpenChange={setBuscaAberta}>
         <DialogContent className="top-24 max-w-2xl translate-y-0 p-0">
           <DialogTitle className="sr-only">Buscar no catálogo</DialogTitle>
-          <div className="flex items-center gap-2 border-b border-border px-4">
+          <form
+            onSubmit={irParaBusca}
+            className="flex items-center gap-2 border-b border-border px-4"
+          >
             <Search className="size-4 text-muted-foreground" aria-hidden="true" />
             <Input
               autoFocus
               value={termo}
+              maxLength={100}
               onChange={(e) => setTermo(e.target.value)}
               placeholder="Buscar produto ou marca..."
               aria-label="Buscar produto ou marca"
@@ -136,7 +151,11 @@ export function Header() {
                 <X className="size-4" aria-hidden="true" />
               </button>
             ) : null}
-          </div>
+            <button type="submit" className="sr-only">
+              Buscar
+            </button>
+          </form>
+
 
           <div className="max-h-[60vh] overflow-y-auto p-2">
             {!termo ? (
@@ -185,6 +204,18 @@ export function Header() {
               </>
             )}
           </div>
+
+          {termo.trim() ? (
+            <div className="border-t border-border p-2">
+              <Link
+                to="/busca"
+                search={{ q: termo.trim().slice(0, 100), marca: "", ordem: "relevancia" }}
+                className="block rounded-md px-3 py-2 text-sm font-medium text-primary hover:bg-accent"
+              >
+                Ver todos os resultados para “{termo.trim()}”
+              </Link>
+            </div>
+          ) : null}
         </DialogContent>
       </Dialog>
     </header>
