@@ -8,7 +8,7 @@ import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/s
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { SITE } from "@/config/site";
 import { searchAll } from "@/lib/catalog";
-import logo from "@/assets/delatrip-logo.png";
+import mark from "@/assets/delatrip-mark.png";
 
 const nav = [
   { label: "Catálogo", to: "/catalogo" },
