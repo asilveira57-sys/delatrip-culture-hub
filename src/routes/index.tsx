@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 
-import { absoluteUrl, canonical } from "@/lib/seo";
+import { absoluteUrl, canonical, jsonLd, SITE_URL } from "@/lib/seo";
 import { ArrowRight, BadgeCheck, Headphones, ShieldAlert, Truck } from "lucide-react";
 
 import { BrandChip } from "@/components/BrandCard";
@@ -32,6 +32,31 @@ export const Route = createFileRoute("/")({
       { property: "og:url", content: absoluteUrl("/") },
     ],
     links: [canonical("/")],
+    scripts: [
+      jsonLd({
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        name: SITE.nome,
+        description: SITE.descricao,
+        url: SITE_URL,
+        email: SITE.email,
+        telephone: SITE.telefone,
+        address: { "@type": "PostalAddress", addressLocality: "São Paulo", addressRegion: "SP", addressCountry: "BR" },
+        sameAs: [SITE.lojaOficial, SITE.redes.instagram, SITE.redes.facebook, SITE.redes.youtube],
+      }),
+      jsonLd({
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        name: SITE.nome,
+        url: SITE_URL,
+        inLanguage: "pt-BR",
+        potentialAction: {
+          "@type": "SearchAction",
+          target: `${absoluteUrl("/busca")}?q={search_term_string}`,
+          "query-input": "required name=search_term_string",
+        },
+      }),
+    ],
   }),
   component: Home,
 });

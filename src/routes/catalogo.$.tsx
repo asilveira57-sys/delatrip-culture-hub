@@ -1,12 +1,13 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 
-import { absoluteUrl, canonical } from "@/lib/seo";
+import { absoluteUrl, breadcrumbLd, canonical, jsonLd } from "@/lib/seo";
 
 import { EmptyState } from "@/components/EmptyState";
 import { PageHeader } from "@/components/PageHeader";
 import { ProductCard } from "@/components/ProductCard";
 import { Button } from "@/components/ui/button";
 import {
+  ancestorsOf,
   categoryMeta,
   categoryPath,
   childrenOf,
@@ -32,6 +33,20 @@ export const Route = createFileRoute("/catalogo/$")({
         { property: "og:url", content: absoluteUrl(`/catalogo/${params._splat ?? ""}`) },
       ],
       links: [canonical(`/catalogo/${params._splat ?? ""}`)],
+      scripts: categoria
+        ? [
+            jsonLd(
+              breadcrumbLd([
+                { name: "Início", path: "/" },
+                { name: "Catálogo", path: "/catalogo" },
+                ...ancestorsOf(categoria).map((c) => ({
+                  name: c.nome,
+                  path: `/catalogo/${categoryPath(c)}`,
+                })),
+              ]),
+            ),
+          ]
+        : [],
     };
   },
   component: CategoriaPage,

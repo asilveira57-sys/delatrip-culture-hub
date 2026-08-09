@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 
-import { absoluteUrl, canonical } from "@/lib/seo";
+import { absoluteUrl, breadcrumbLd, canonical, jsonLd } from "@/lib/seo";
 
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { EmptyState } from "@/components/EmptyState";
@@ -22,6 +22,28 @@ export const Route = createFileRoute("/blog/$slug")({
         { property: "og:url", content: absoluteUrl(`/blog/${params.slug}`) },
       ],
       links: [canonical(`/blog/${params.slug}`)],
+      scripts: post
+        ? [
+            jsonLd({
+              "@context": "https://schema.org",
+              "@type": "Article",
+              headline: post.titulo,
+              description: post.resumo,
+              datePublished: post.data,
+              articleSection: post.categoria,
+              author: { "@type": "Organization", name: "DeLaTrip" },
+              publisher: { "@type": "Organization", name: "DeLaTrip" },
+              mainEntityOfPage: absoluteUrl(`/blog/${post.slug}`),
+            }),
+            jsonLd(
+              breadcrumbLd([
+                { name: "Início", path: "/" },
+                { name: "Blog", path: "/blog" },
+                { name: post.titulo, path: `/blog/${post.slug}` },
+              ]),
+            ),
+          ]
+        : [],
     };
   },
   component: PostPage,
