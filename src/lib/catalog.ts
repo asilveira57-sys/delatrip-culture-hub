@@ -185,14 +185,18 @@ export function productSpecs(produto: Product): [string, string][] {
 
 const fallbackPorCategoria: Record<string, string> = {
   sedas: imgSedas,
-  "piteiras-e-filtros": imgBandeja,
+  piteirasfiltros: imgBandeja,
   dichavadores: imgDichavador,
-  "bongs-e-pipes": imgBong,
+  "bong-pipes": imgBong,
   bandejas: imgBandeja,
   "gas-isqueiro-macarico": imgDichavador,
-  tabacos: imgSedas,
+  tabaco: imgSedas,
+  charutos: imgSedas,
+  vestuario: imgBandeja,
+  promocao: imgSedas,
   acessorios: imgBandeja,
 };
+
 
 export function imageFor(produto: Product) {
   if (produto.imagens.length > 0) return produto.imagens[0];
