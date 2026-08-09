@@ -69,7 +69,7 @@ function Catalogo() {
   const navigate = useNavigate({ from: "/catalogo/" });
 
   const setSearch = (patch: Partial<CatalogoSearch>) =>
-    navigate({ search: (prev) => ({ ...prev, ...patch }) });
+    navigate({ search: (prev: CatalogoSearch) => ({ ...prev, ...patch }) });
 
   const lista = useMemo(
     () => filterProducts({ q, categoria, marca, ordem }),
