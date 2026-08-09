@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 
 import { absoluteUrl, canonical } from "@/lib/seo";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Search } from "lucide-react";
 
 import { ActiveChips, FilterButton, SortSelect } from "@/components/CatalogFilters";
@@ -20,10 +20,10 @@ import {
 } from "@/lib/catalog";
 
 type CatalogoSearch = {
-  q: string;
-  categoria: string;
-  marca: string;
-  ordem: SortKey;
+  q?: string;
+  categoria?: string;
+  marca?: string;
+  ordem?: SortKey;
 };
 
 const ORDENS: SortKey[] = ["relevancia", "nome-az", "nome-za", "novidades"];
@@ -60,8 +60,13 @@ export const Route = createFileRoute("/catalogo/")({
 });
 
 function Catalogo() {
-  const { q, categoria, marca, ordem } = Route.useSearch();
-  const navigate = useNavigate({ from: "/catalogo" });
+  const {
+    q = "",
+    categoria = "",
+    marca = "",
+    ordem = "relevancia",
+  } = Route.useSearch();
+  const navigate = useNavigate({ from: "/catalogo/" });
 
   const setSearch = (patch: Partial<CatalogoSearch>) =>
     navigate({ search: (prev: CatalogoSearch) => ({ ...prev, ...patch }) });
@@ -70,6 +75,10 @@ function Catalogo() {
     () => filterProducts({ q, categoria, marca, ordem }),
     [q, categoria, marca, ordem],
   );
+
+  const PAGINA = 48;
+  const [visiveis, setVisiveis] = useState(PAGINA);
+  useEffect(() => setVisiveis(PAGINA), [q, categoria, marca, ordem]);
 
   const nomeCategoria = categoria ? getCategoryByPath(categoria)?.nome : undefined;
 
@@ -174,11 +183,23 @@ function Catalogo() {
                 }
               />
             ) : (
-              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3">
-                {lista.map((p) => (
-                  <ProductCard key={p.slug} produto={p} />
-                ))}
-              </div>
+              <>
+                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3">
+                  {lista.slice(0, visiveis).map((p) => (
+                    <ProductCard key={p.slug} produto={p} />
+                  ))}
+                </div>
+                {visiveis < lista.length && (
+                  <div className="mt-8 flex justify-center">
+                    <Button
+                      variant="outline"
+                      onClick={() => setVisiveis((v) => v + PAGINA)}
+                    >
+                      Carregar mais ({lista.length - visiveis} restantes)
+                    </Button>
+                  </div>
+                )}
+              </>
             )}
           </div>
         </div>

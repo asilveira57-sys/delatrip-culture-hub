@@ -62,7 +62,7 @@ function TabacosPage() {
 
         <div className="mt-10">
           <Button asChild>
-            <Link to="/catalogo/$" params={{ _splat: "tabacos" }}>
+            <Link to="/catalogo/$" params={{ _splat: "tabaco" }}>
               Ver tabacos no catálogo
             </Link>
           </Button>
