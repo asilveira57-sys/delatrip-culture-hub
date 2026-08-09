@@ -1,82 +1,812 @@
 [
   {
-    "nome": "Smoking",
-    "slug": "smoking",
-    "totalProdutos": 1,
-    "categoriaId": null,
+    "nome": "A Piteira",
+    "slug": "a-piteira",
+    "totalProdutos": 29,
+    "categoriaId": "115",
     "marcaPropria": false,
     "logo": null,
-    "descricao": "Tradição espanhola em papéis de enrolar desde 1879, referência em queima lenta e uniforme.",
-    "pais": "Espanha"
+    "descricao": null
   },
   {
-    "nome": "RAW",
-    "slug": "raw",
-    "totalProdutos": 3,
-    "categoriaId": null,
-    "marcaPropria": false,
-    "logo": null,
-    "descricao": "Papéis sem branqueamento, com fibras naturais e goma arábica.",
-    "pais": "Espanha"
-  },
-  {
-    "nome": "OCB",
-    "slug": "ocb",
-    "totalProdutos": 1,
-    "categoriaId": null,
-    "marcaPropria": false,
-    "logo": null,
-    "descricao": "Um dos nomes mais clássicos do segmento, conhecido pela linha ultrafina.",
-    "pais": "França"
-  },
-  {
-    "nome": "Elements",
-    "slug": "elements",
-    "totalProdutos": 1,
-    "categoriaId": null,
-    "marcaPropria": false,
-    "logo": null,
-    "descricao": "Papel de arroz com queima praticamente sem cinzas.",
-    "pais": "Espanha"
-  },
-  {
-    "nome": "Clipper",
-    "slug": "clipper",
-    "totalProdutos": 1,
-    "categoriaId": null,
-    "marcaPropria": false,
-    "logo": null,
-    "descricao": "Isqueiros recarregáveis e colecionáveis, ícone da cultura da tabacaria.",
-    "pais": "Espanha"
-  },
-  {
-    "nome": "BIC",
-    "slug": "bic",
-    "totalProdutos": 0,
-    "categoriaId": null,
-    "marcaPropria": false,
-    "logo": null,
-    "descricao": "Isqueiros descartáveis reconhecidos pela confiabilidade.",
-    "pais": "França"
-  },
-  {
-    "nome": "Brasil Glass",
-    "slug": "brasil-glass",
-    "totalProdutos": 3,
-    "categoriaId": null,
-    "marcaPropria": false,
-    "logo": null,
-    "descricao": "Peças em vidro borossilicato produzidas artesanalmente no Brasil.",
-    "pais": "Brasil"
-  },
-  {
-    "nome": "Hi Grinders",
-    "slug": "hi-grinders",
+    "nome": "A Piteira x Delatrip",
+    "slug": "a-piteira-x-delatrip",
     "totalProdutos": 2,
     "categoriaId": null,
     "marcaPropria": false,
     "logo": null,
-    "descricao": "Dichavadores de alumínio usinado com acabamento premium.",
-    "pais": "Brasil"
+    "descricao": null
+  },
+  {
+    "nome": "Abduzido",
+    "slug": "abduzido",
+    "totalProdutos": 52,
+    "categoriaId": null,
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "Actitube",
+    "slug": "actitube",
+    "totalProdutos": 7,
+    "categoriaId": null,
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "Aleda",
+    "slug": "aleda",
+    "totalProdutos": 10,
+    "categoriaId": "261",
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "Aliar",
+    "slug": "aliar",
+    "totalProdutos": 1,
+    "categoriaId": null,
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "Amsterdam",
+    "slug": "amsterdam",
+    "totalProdutos": 8,
+    "categoriaId": null,
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "Backwoods",
+    "slug": "backwoods",
+    "totalProdutos": 1,
+    "categoriaId": null,
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "Bem Bolado",
+    "slug": "bem-bolado",
+    "totalProdutos": 87,
+    "categoriaId": "117",
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "Bic",
+    "slug": "bic",
+    "totalProdutos": 4,
+    "categoriaId": null,
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "Boveda",
+    "slug": "boveda",
+    "totalProdutos": 1,
+    "categoriaId": null,
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "Camaradas420",
+    "slug": "camaradas420",
+    "totalProdutos": 3,
+    "categoriaId": "245",
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "Cannabistro",
+    "slug": "cannabistro",
+    "totalProdutos": 2,
+    "categoriaId": "241",
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "Caveira Mexicana",
+    "slug": "caveira-mexicana",
+    "totalProdutos": 3,
+    "categoriaId": null,
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "Chillin",
+    "slug": "chillin",
+    "totalProdutos": 3,
+    "categoriaId": null,
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "Clipper",
+    "slug": "clipper",
+    "totalProdutos": 36,
+    "categoriaId": null,
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "Cookies",
+    "slug": "cookies",
+    "totalProdutos": 4,
+    "categoriaId": "119",
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "Coyote",
+    "slug": "coyote",
+    "totalProdutos": 2,
+    "categoriaId": null,
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "Cremaria",
+    "slug": "cremaria",
+    "totalProdutos": 1,
+    "categoriaId": null,
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "DelaTrip",
+    "slug": "delatrip",
+    "totalProdutos": 7,
+    "categoriaId": "247",
+    "marcaPropria": true,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "Elements",
+    "slug": "elements",
+    "totalProdutos": 29,
+    "categoriaId": "121",
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "Fire",
+    "slug": "fire",
+    "totalProdutos": 2,
+    "categoriaId": null,
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "Firestar",
+    "slug": "firestar",
+    "totalProdutos": 6,
+    "categoriaId": null,
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "G-Rollz",
+    "slug": "g-rollz",
+    "totalProdutos": 63,
+    "categoriaId": null,
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "Gizeh",
+    "slug": "gizeh",
+    "totalProdutos": 87,
+    "categoriaId": "123",
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "Glass Nail",
+    "slug": "glass-nail",
+    "totalProdutos": 1,
+    "categoriaId": null,
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "Gorilla",
+    "slug": "gorilla",
+    "totalProdutos": 21,
+    "categoriaId": null,
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "Greengo",
+    "slug": "greengo",
+    "totalProdutos": 1,
+    "categoriaId": "161",
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "Gti",
+    "slug": "gti",
+    "totalProdutos": 8,
+    "categoriaId": null,
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "Guard Fresh",
+    "slug": "guard-fresh",
+    "totalProdutos": 4,
+    "categoriaId": null,
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "Guru",
+    "slug": "guru",
+    "totalProdutos": 30,
+    "categoriaId": null,
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "Guru Spirit",
+    "slug": "guru-spirit",
+    "totalProdutos": 3,
+    "categoriaId": null,
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "Hard Glass",
+    "slug": "hard-glass",
+    "totalProdutos": 1,
+    "categoriaId": "125",
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "HardGlass",
+    "slug": "hardglass",
+    "totalProdutos": 21,
+    "categoriaId": "125",
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "HBT",
+    "slug": "hbt",
+    "totalProdutos": 36,
+    "categoriaId": null,
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "Himalaya",
+    "slug": "himalaya",
+    "totalProdutos": 2,
+    "categoriaId": null,
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "Hippie bong",
+    "slug": "hippie-bong",
+    "totalProdutos": 23,
+    "categoriaId": "185",
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "Hippie Bong x Gils In Green",
+    "slug": "hippie-bong-x-gils-in-green",
+    "totalProdutos": 4,
+    "categoriaId": null,
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "Hippie Bong x Squadafum",
+    "slug": "hippie-bong-x-squadafum",
+    "totalProdutos": 3,
+    "categoriaId": null,
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "Hit",
+    "slug": "hit",
+    "totalProdutos": 1,
+    "categoriaId": null,
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "Horns Hippo",
+    "slug": "horns-hippo",
+    "totalProdutos": 1,
+    "categoriaId": null,
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "Jack Paiol",
+    "slug": "jack-paiol",
+    "totalProdutos": 6,
+    "categoriaId": null,
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "Jass",
+    "slug": "jass",
+    "totalProdutos": 2,
+    "categoriaId": null,
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "jilter",
+    "slug": "jilter",
+    "totalProdutos": 1,
+    "categoriaId": null,
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "King",
+    "slug": "king",
+    "totalProdutos": 4,
+    "categoriaId": null,
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "King Blunt",
+    "slug": "king-blunt",
+    "totalProdutos": 2,
+    "categoriaId": null,
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "Lion Rolling Circus",
+    "slug": "lion-rolling-circus",
+    "totalProdutos": 4,
+    "categoriaId": null,
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "M2000",
+    "slug": "m2000",
+    "totalProdutos": 1,
+    "categoriaId": null,
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "Mantra",
+    "slug": "mantra",
+    "totalProdutos": 1,
+    "categoriaId": null,
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "Marajo",
+    "slug": "marajo",
+    "totalProdutos": 2,
+    "categoriaId": null,
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "Mascotte",
+    "slug": "mascotte",
+    "totalProdutos": 102,
+    "categoriaId": null,
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "NAAR",
+    "slug": "naar",
+    "totalProdutos": 4,
+    "categoriaId": null,
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "Nativo",
+    "slug": "nativo",
+    "totalProdutos": 2,
+    "categoriaId": "317",
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "Nobru Glass",
+    "slug": "nobru-glass",
+    "totalProdutos": 2,
+    "categoriaId": null,
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "Nybc",
+    "slug": "nybc",
+    "totalProdutos": 2,
+    "categoriaId": null,
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "OCB",
+    "slug": "ocb",
+    "totalProdutos": 44,
+    "categoriaId": "127",
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "Palheiros Paulistinha",
+    "slug": "palheiros-paulistinha",
+    "totalProdutos": 3,
+    "categoriaId": null,
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "Papelito",
+    "slug": "papelito",
+    "totalProdutos": 40,
+    "categoriaId": "255",
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "Papelitos",
+    "slug": "papelitos",
+    "totalProdutos": 17,
+    "categoriaId": null,
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "Parvathi",
+    "slug": "parvathi",
+    "totalProdutos": 6,
+    "categoriaId": "129",
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "Pocket Scale",
+    "slug": "pocket-scale",
+    "totalProdutos": 1,
+    "categoriaId": null,
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "Pueblo",
+    "slug": "pueblo",
+    "totalProdutos": 4,
+    "categoriaId": "275",
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "Puff",
+    "slug": "puff",
+    "totalProdutos": 16,
+    "categoriaId": "131",
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "Puff x Hippie bong",
+    "slug": "puff-x-hippie-bong",
+    "totalProdutos": 1,
+    "categoriaId": null,
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "Raw",
+    "slug": "raw",
+    "totalProdutos": 153,
+    "categoriaId": "23",
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "Raw Brazil",
+    "slug": "raw-brazil",
+    "totalProdutos": 16,
+    "categoriaId": null,
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "Rok",
+    "slug": "rok",
+    "totalProdutos": 4,
+    "categoriaId": null,
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "Sadhu",
+    "slug": "sadhu",
+    "totalProdutos": 128,
+    "categoriaId": "265",
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "Sasso",
+    "slug": "sasso",
+    "totalProdutos": 8,
+    "categoriaId": "273",
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "Save Money",
+    "slug": "save-money",
+    "totalProdutos": 2,
+    "categoriaId": null,
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "Sem Marca",
+    "slug": "sem-marca",
+    "totalProdutos": 1,
+    "categoriaId": null,
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "Slow Burning",
+    "slug": "slow-burning",
+    "totalProdutos": 12,
+    "categoriaId": "303",
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "Smk",
+    "slug": "smk",
+    "totalProdutos": 3,
+    "categoriaId": null,
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "Smoking",
+    "slug": "smoking",
+    "totalProdutos": 67,
+    "categoriaId": "137",
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "Smokus focus",
+    "slug": "smokus-focus",
+    "totalProdutos": 1,
+    "categoriaId": null,
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "Souza Paiol",
+    "slug": "souza-paiol",
+    "totalProdutos": 2,
+    "categoriaId": null,
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "Squadafum",
+    "slug": "squadafum",
+    "totalProdutos": 57,
+    "categoriaId": "139",
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "Tabear",
+    "slug": "tabear",
+    "totalProdutos": 5,
+    "categoriaId": "141",
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "TGB",
+    "slug": "tgb",
+    "totalProdutos": 1,
+    "categoriaId": null,
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "The Hash Crew",
+    "slug": "the-hash-crew",
+    "totalProdutos": 4,
+    "categoriaId": null,
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "The Ice Cream Thc",
+    "slug": "the-ice-cream-thc",
+    "totalProdutos": 5,
+    "categoriaId": null,
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "The Og",
+    "slug": "the-og",
+    "totalProdutos": 5,
+    "categoriaId": null,
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "Tonabê",
+    "slug": "tonabe",
+    "totalProdutos": 4,
+    "categoriaId": null,
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "Tóka Hauú",
+    "slug": "toka-hauu",
+    "totalProdutos": 7,
+    "categoriaId": null,
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "V-Syndicate",
+    "slug": "v-syndicate",
+    "totalProdutos": 1,
+    "categoriaId": "145",
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "Volcano",
+    "slug": "volcano",
+    "totalProdutos": 42,
+    "categoriaId": "147",
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "Véio Pimenta",
+    "slug": "veio-pimenta",
+    "totalProdutos": 6,
+    "categoriaId": null,
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "Weedz",
+    "slug": "weedz",
+    "totalProdutos": 20,
+    "categoriaId": "153",
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "Yanking",
+    "slug": "yanking",
+    "totalProdutos": 1,
+    "categoriaId": null,
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
+  },
+  {
+    "nome": "Zengáz",
+    "slug": "zengaz",
+    "totalProdutos": 41,
+    "categoriaId": null,
+    "marcaPropria": false,
+    "logo": null,
+    "descricao": null
   }
 ]
