@@ -20,10 +20,10 @@ import {
 } from "@/lib/catalog";
 
 type CatalogoSearch = {
-  q: string;
-  categoria: string;
-  marca: string;
-  ordem: SortKey;
+  q?: string;
+  categoria?: string;
+  marca?: string;
+  ordem?: SortKey;
 };
 
 const ORDENS: SortKey[] = ["relevancia", "nome-az", "nome-za", "novidades"];
@@ -60,11 +60,16 @@ export const Route = createFileRoute("/catalogo/")({
 });
 
 function Catalogo() {
-  const { q, categoria, marca, ordem } = Route.useSearch();
-  const navigate = useNavigate({ from: "/catalogo" });
+  const {
+    q = "",
+    categoria = "",
+    marca = "",
+    ordem = "relevancia",
+  } = Route.useSearch();
+  const navigate = useNavigate({ from: "/catalogo/" });
 
   const setSearch = (patch: Partial<CatalogoSearch>) =>
-    navigate({ search: (prev: CatalogoSearch) => ({ ...prev, ...patch }) });
+    navigate({ search: (prev) => ({ ...prev, ...patch }) });
 
   const lista = useMemo(
     () => filterProducts({ q, categoria, marca, ordem }),
