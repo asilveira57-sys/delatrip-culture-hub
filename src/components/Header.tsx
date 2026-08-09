@@ -49,15 +49,23 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 border-b border-ink-border surface-ink">
       <div className="mx-auto flex h-16 max-w-6xl items-center gap-4 px-4">
-        <Link to="/" aria-label="DeLaTrip — página inicial" className="shrink-0">
+        <Link
+          to="/"
+          aria-label="DeLaTrip — página inicial"
+          className="flex shrink-0 items-center gap-2"
+        >
           <img
-            src={logo}
+            src={mark}
             alt="DeLaTrip"
-            width={1536}
+            width={512}
             height={512}
-            className="h-7 w-auto brightness-0 invert"
+            className="h-8 w-8"
           />
+          <span className="font-display text-xl uppercase tracking-wide text-ink-foreground">
+            DeLaTrip
+          </span>
         </Link>
+
 
         <nav aria-label="Navegação principal" className="ml-4 hidden lg:block">
           <ul className="flex items-center gap-6">
