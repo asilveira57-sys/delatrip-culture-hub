@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 
-import { absoluteUrl, canonical } from "@/lib/seo";
+import { absoluteUrl, breadcrumbLd, canonical, jsonLd } from "@/lib/seo";
 import { ExternalLink, ShoppingBag } from "lucide-react";
 
 import { EmptyState } from "@/components/EmptyState";
