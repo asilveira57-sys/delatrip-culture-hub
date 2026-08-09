@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 
+import { absoluteUrl, canonical } from "@/lib/seo";
+
 import { BrandCard } from "@/components/BrandCard";
 import { PageHeader } from "@/components/PageHeader";
 import { brands } from "@/lib/catalog";
@@ -18,7 +20,9 @@ export const Route = createFileRoute("/marcas/")({
         property: "og:description",
         content: "Clássicos internacionais e marcas brasileiras da tabacaria.",
       },
+      { property: "og:url", content: absoluteUrl("/marcas") },
     ],
+    links: [canonical("/marcas")],
   }),
   component: MarcasPage,
 });

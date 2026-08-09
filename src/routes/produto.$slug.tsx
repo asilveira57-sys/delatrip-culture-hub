@@ -1,4 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+
+import { absoluteUrl, canonical } from "@/lib/seo";
 import { ExternalLink, ShoppingBag } from "lucide-react";
 
 import { EmptyState } from "@/components/EmptyState";
@@ -33,7 +35,9 @@ export const Route = createFileRoute("/produto/$slug")({
         { name: "description", content: descricao },
         { property: "og:title", content: titulo },
         { property: "og:description", content: descricao },
+        { property: "og:url", content: absoluteUrl(`/produto/${params.slug}`) },
       ],
+      links: [canonical(`/produto/${params.slug}`)],
     };
   },
   component: ProdutoPage,

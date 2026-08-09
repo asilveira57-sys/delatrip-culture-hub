@@ -1,5 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 
+import { absoluteUrl, canonical } from "@/lib/seo";
+
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { EmptyState } from "@/components/EmptyState";
 import { Button } from "@/components/ui/button";
@@ -17,7 +19,9 @@ export const Route = createFileRoute("/blog/$slug")({
         { property: "og:title", content: titulo },
         { property: "og:description", content: descricao },
         { property: "og:type", content: "article" },
+        { property: "og:url", content: absoluteUrl(`/blog/${params.slug}`) },
       ],
+      links: [canonical(`/blog/${params.slug}`)],
     };
   },
   component: PostPage,

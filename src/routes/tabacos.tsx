@@ -1,5 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 
+import { absoluteUrl, canonical } from "@/lib/seo";
+
 import { PageHeader } from "@/components/PageHeader";
 import { Button } from "@/components/ui/button";
 import { AVISO_SANITARIO } from "@/config/site";
@@ -18,7 +20,9 @@ export const Route = createFileRoute("/tabacos")({
         property: "og:description",
         content: "Tipos de tabaco, curas e usos explicados de forma direta.",
       },
+      { property: "og:url", content: absoluteUrl("/tabacos") },
     ],
+    links: [canonical("/tabacos")],
   }),
   component: TabacosPage,
 });

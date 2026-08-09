@@ -1,4 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+
+import { absoluteUrl, canonical } from "@/lib/seo";
 import { useMemo } from "react";
 import { Search } from "lucide-react";
 
@@ -50,7 +52,9 @@ export const Route = createFileRoute("/catalogo/")({
         content:
           "Sedas, dichavadores, vidros, bandejas e acessórios com filtros por categoria e marca.",
       },
+      { property: "og:url", content: absoluteUrl("/catalogo") },
     ],
+    links: [canonical("/catalogo")],
   }),
   component: Catalogo,
 });

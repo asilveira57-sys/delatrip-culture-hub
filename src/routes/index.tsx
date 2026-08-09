@@ -1,4 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+
+import { absoluteUrl, canonical } from "@/lib/seo";
 import { ArrowRight, BadgeCheck, Headphones, ShieldAlert, Truck } from "lucide-react";
 
 import { BrandChip } from "@/components/BrandCard";
@@ -27,7 +29,9 @@ export const Route = createFileRoute("/")({
         content:
           "Catálogo, marcas e conteúdo sobre sedas, dichavadores, bongs, bandejas e tabacos.",
       },
+      { property: "og:url", content: absoluteUrl("/") },
     ],
+    links: [canonical("/")],
   }),
   component: Home,
 });

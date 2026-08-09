@@ -1,5 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 
+import { absoluteUrl, canonical } from "@/lib/seo";
+
 import { EmptyState } from "@/components/EmptyState";
 import { PageHeader } from "@/components/PageHeader";
 import { ProductCard } from "@/components/ProductCard";
@@ -27,7 +29,9 @@ export const Route = createFileRoute("/catalogo/$")({
         { name: "description", content: descricao },
         { property: "og:title", content: titulo },
         { property: "og:description", content: descricao },
+        { property: "og:url", content: absoluteUrl(`/catalogo/${params._splat ?? ""}`) },
       ],
+      links: [canonical(`/catalogo/${params._splat ?? ""}`)],
     };
   },
   component: CategoriaPage,
