@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 
+import { absoluteUrl, canonical } from "@/lib/seo";
+
 import { PageHeader } from "@/components/PageHeader";
 import { PostCard } from "@/components/PostCard";
 import { posts } from "@/lib/catalog";
@@ -18,7 +20,9 @@ export const Route = createFileRoute("/blog/")({
         property: "og:description",
         content: "Conteúdo prático sobre sedas, dichavadores, vidros e tabacos.",
       },
+      { property: "og:url", content: absoluteUrl("/blog") },
     ],
+    links: [canonical("/blog")],
   }),
   component: BlogPage,
 });

@@ -1,4 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+
+import { absoluteUrl, canonical } from "@/lib/seo";
 import { useMemo } from "react";
 import { Search } from "lucide-react";
 
@@ -45,7 +47,9 @@ export const Route = createFileRoute("/busca")({
         property: "og:description",
         content: "Pesquise produtos e marcas do catálogo DeLaTrip.",
       },
+      { property: "og:url", content: absoluteUrl("/busca") },
     ],
+    links: [canonical("/busca")],
   }),
   component: BuscaPage,
 });

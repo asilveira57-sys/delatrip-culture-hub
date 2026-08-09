@@ -1,4 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+
+import { absoluteUrl, breadcrumbLd, canonical, jsonLd } from "@/lib/seo";
 import { ExternalLink, ShoppingBag } from "lucide-react";
 
 import { EmptyState } from "@/components/EmptyState";
@@ -27,13 +29,58 @@ export const Route = createFileRoute("/produto/$slug")({
     const descricao = produto
       ? (produto.seoDescricao ?? plainText(produto.descricaoHtml, 155))
       : "Este produto não está disponível no catálogo DeLaTrip.";
+    const foto = produto?.imagens.find((u) => u.startsWith("https://"));
+    const categoria = produto ? getCategoryById(produto.categoriaId) : undefined;
+
     return {
       meta: [
         { title: titulo },
         { name: "description", content: descricao },
         { property: "og:title", content: titulo },
         { property: "og:description", content: descricao },
+        { property: "og:type", content: "product" },
+        { property: "og:url", content: absoluteUrl(`/produto/${params.slug}`) },
+        ...(foto
+          ? [
+              { property: "og:image", content: foto },
+              { name: "twitter:image", content: foto },
+            ]
+          : []),
       ],
+      links: [canonical(`/produto/${params.slug}`)],
+      scripts: produto
+        ? [
+            jsonLd({
+              "@context": "https://schema.org",
+              "@type": "Product",
+              name: produto.nome,
+              description: plainText(produto.descricaoHtml, 300),
+              sku: produto.referencia ?? produto.id,
+              ...(produto.ean ? { gtin13: produto.ean } : {}),
+              ...(foto ? { image: [foto] } : {}),
+              ...(produto.marca
+                ? { brand: { "@type": "Brand", name: produto.marca } }
+                : {}),
+              ...(categoria ? { category: categoria.nome } : {}),
+              url: absoluteUrl(`/produto/${produto.slug}`),
+            }),
+            jsonLd(
+              breadcrumbLd([
+                { name: "Início", path: "/" },
+                { name: "Catálogo", path: "/catalogo" },
+                ...(categoria
+                  ? [
+                      {
+                        name: categoria.nome,
+                        path: `/catalogo/${categoryPath(categoria)}`,
+                      },
+                    ]
+                  : []),
+                { name: produto.nome, path: `/produto/${produto.slug}` },
+              ]),
+            ),
+          ]
+        : [],
     };
   },
   component: ProdutoPage,

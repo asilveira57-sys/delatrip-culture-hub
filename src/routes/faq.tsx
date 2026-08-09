@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 
+import { absoluteUrl, canonical } from "@/lib/seo";
+
 import { PageHeader } from "@/components/PageHeader";
 import {
   Accordion,
@@ -56,7 +58,9 @@ export const Route = createFileRoute("/faq")({
         content: "Respostas rápidas sobre catálogo, compras, garantia e uso dos produtos.",
       },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: absoluteUrl("/faq") },
     ],
+    links: [canonical("/faq")],
     scripts: [
       {
         type: "application/ld+json",

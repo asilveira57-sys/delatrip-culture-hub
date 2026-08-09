@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 
+import { absoluteUrl, canonical } from "@/lib/seo";
+
 import { PageHeader } from "@/components/PageHeader";
 
 export const Route = createFileRoute("/legal/termos")({
@@ -13,7 +15,9 @@ export const Route = createFileRoute("/legal/termos")({
       },
       { property: "og:title", content: "Termos de uso — DeLaTrip" },
       { property: "og:description", content: "Regras de uso, propriedade intelectual e responsabilidades." },
+      { property: "og:url", content: absoluteUrl("/legal/termos") },
     ],
+    links: [canonical("/legal/termos")],
   }),
   component: Termos,
 });

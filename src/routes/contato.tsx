@@ -1,4 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+
+import { absoluteUrl, canonical } from "@/lib/seo";
 import { useState } from "react";
 import { Mail, MapPin, Phone, Store } from "lucide-react";
 import { toast } from "sonner";
@@ -51,7 +53,9 @@ export const Route = createFileRoute("/contato")({
         property: "og:description",
         content: "Canais de atendimento da tabacaria DeLaTrip.",
       },
+      { property: "og:url", content: absoluteUrl("/contato") },
     ],
+    links: [canonical("/contato")],
   }),
   component: ContatoPage,
 });

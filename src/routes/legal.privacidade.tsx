@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 
+import { absoluteUrl, canonical } from "@/lib/seo";
+
 import { PageHeader } from "@/components/PageHeader";
 import { SITE } from "@/config/site";
 
@@ -14,7 +16,9 @@ export const Route = createFileRoute("/legal/privacidade")({
       },
       { property: "og:title", content: "Política de privacidade — DeLaTrip" },
       { property: "og:description", content: "Tratamento de dados, cookies e direitos do titular (LGPD)." },
+      { property: "og:url", content: absoluteUrl("/legal/privacidade") },
     ],
+    links: [canonical("/legal/privacidade")],
   }),
   component: Privacidade,
 });

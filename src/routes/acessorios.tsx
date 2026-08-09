@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 
+import { absoluteUrl, canonical } from "@/lib/seo";
+
 import { CategoryCard } from "@/components/CategoryCard";
 import { PageHeader } from "@/components/PageHeader";
 import { SectionHeading } from "@/components/SectionHeading";
@@ -19,7 +21,9 @@ export const Route = createFileRoute("/acessorios")({
         property: "og:description",
         content: "Guia dos acessórios que compõem a tabacaria brasileira.",
       },
+      { property: "og:url", content: absoluteUrl("/acessorios") },
     ],
+    links: [canonical("/acessorios")],
   }),
   component: AcessoriosPage,
 });

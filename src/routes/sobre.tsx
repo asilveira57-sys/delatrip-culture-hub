@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 
+import { absoluteUrl, canonical } from "@/lib/seo";
+
 import { PageHeader } from "@/components/PageHeader";
 import { SITE } from "@/config/site";
 
@@ -17,7 +19,9 @@ export const Route = createFileRoute("/sobre")({
         property: "og:description",
         content: "Curadoria, atendimento especializado e cultura da tabacaria brasileira.",
       },
+      { property: "og:url", content: absoluteUrl("/sobre") },
     ],
+    links: [canonical("/sobre")],
   }),
   component: SobrePage,
 });

@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 
+import { absoluteUrl, canonical } from "@/lib/seo";
+
 import { PageHeader } from "@/components/PageHeader";
 import { AVISO_SANITARIO } from "@/config/site";
 
@@ -14,7 +16,9 @@ export const Route = createFileRoute("/legal/aviso-legal")({
       },
       { property: "og:title", content: "Avisos legais e legislação — DeLaTrip" },
       { property: "og:description", content: "Advertências, restrição de idade e legislação aplicável." },
+      { property: "og:url", content: absoluteUrl("/legal/aviso-legal") },
     ],
+    links: [canonical("/legal/aviso-legal")],
   }),
   component: AvisoLegal,
 });
