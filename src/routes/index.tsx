@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import { SITE } from "@/config/site";
 import { brands, destaques, posts, rootCategories } from "@/lib/catalog";
 import heroImg from "@/assets/hero.jpg";
-import logo from "@/assets/delatrip-logo.png";
+import mark from "@/assets/delatrip-mark.png";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -84,12 +84,12 @@ function Home() {
 
         <div className="mx-auto w-full max-w-6xl px-4 py-24">
           <img
-            src={logo}
+            src={mark}
             alt="DeLaTrip"
             loading="lazy"
-            width={1536}
+            width={512}
             height={512}
-            className="h-14 w-auto brightness-0 invert sm:h-20"
+            className="h-16 w-16 sm:h-20 sm:w-20"
           />
           <h1 className="mt-8 max-w-3xl text-4xl font-bold uppercase leading-[1.05] text-ink-foreground sm:text-6xl lg:text-7xl">
             A cultura, os produtos e o conhecimento da tabacaria brasileira

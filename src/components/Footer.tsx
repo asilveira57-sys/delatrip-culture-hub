@@ -3,7 +3,7 @@ import { Facebook, Instagram, Youtube } from "lucide-react";
 
 import { AVISO_SANITARIO, SITE } from "@/config/site";
 import { categories } from "@/lib/catalog";
-import logo from "@/assets/delatrip-logo.png";
+import mark from "@/assets/delatrip-mark.png";
 
 export function Footer() {
   return (
@@ -12,12 +12,12 @@ export function Footer() {
         <div className="grid grid-cols-2 gap-10 md:grid-cols-4">
           <div className="col-span-2 md:col-span-1">
             <img
-              src={logo}
+              src={mark}
               alt="DeLaTrip"
               loading="lazy"
-              width={1536}
+              width={512}
               height={512}
-              className="h-8 w-auto brightness-0 invert"
+              className="h-10 w-10"
             />
             <p className="mt-4 text-sm leading-relaxed text-ink-muted">
               Portal institucional e catálogo da tabacaria DeLaTrip.
