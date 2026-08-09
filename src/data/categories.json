@@ -103,7 +103,7 @@
     "paiId": "17",
     "nome": "1 1/4",
     "nivel": 2,
-    "slug": "sedas/1-14",
+    "slug": "1-14",
     "ativo": true,
     "totalProdutos": 60
   },
@@ -112,7 +112,7 @@
     "paiId": "17",
     "nome": "Rolos",
     "nivel": 2,
-    "slug": "sedas/rolos",
+    "slug": "rolos",
     "ativo": true,
     "totalProdutos": 5
   },
@@ -121,7 +121,7 @@
     "paiId": "17",
     "nome": "Blunt",
     "nivel": 2,
-    "slug": "sedas/blunt",
+    "slug": "blunt",
     "ativo": true,
     "totalProdutos": 26
   },
@@ -130,7 +130,7 @@
     "paiId": "17",
     "nome": "Com Piteira",
     "nivel": 2,
-    "slug": "sedas/com-piteira",
+    "slug": "com-piteira",
     "ativo": true,
     "totalProdutos": 40
   },
@@ -139,7 +139,7 @@
     "paiId": "17",
     "nome": "Cone",
     "nivel": 2,
-    "slug": "sedas/cone",
+    "slug": "cone",
     "ativo": true,
     "totalProdutos": 88
   },
@@ -148,7 +148,7 @@
     "paiId": "17",
     "nome": "King Size",
     "nivel": 2,
-    "slug": "sedas/king-size",
+    "slug": "king-size",
     "ativo": true,
     "totalProdutos": 121
   },
@@ -157,7 +157,7 @@
     "paiId": "17",
     "nome": "Single Wide",
     "nivel": 2,
-    "slug": "sedas/single-wide",
+    "slug": "single-wide",
     "ativo": true,
     "totalProdutos": 10
   },
@@ -166,7 +166,7 @@
     "paiId": "17",
     "nome": "Tamanhos Especiais",
     "nivel": 2,
-    "slug": "sedas/tamanhos-especiais",
+    "slug": "tamanhos-especiais",
     "ativo": true,
     "totalProdutos": 5
   },
@@ -175,7 +175,7 @@
     "paiId": "17",
     "nome": "Vidro",
     "nivel": 2,
-    "slug": "sedas/vidro",
+    "slug": "vidro",
     "ativo": true,
     "totalProdutos": 6
   },
@@ -184,7 +184,7 @@
     "paiId": "15",
     "nome": "Acessórios",
     "nivel": 2,
-    "slug": "piteiras-filtros/acessorios",
+    "slug": "acessorios",
     "ativo": true,
     "totalProdutos": 0
   },
@@ -193,7 +193,7 @@
     "paiId": "15",
     "nome": "Filtros",
     "nivel": 2,
-    "slug": "piteiras-filtros/filtros",
+    "slug": "filtros",
     "ativo": true,
     "totalProdutos": 1
   },
@@ -202,7 +202,7 @@
     "paiId": "15",
     "nome": "Piteiras",
     "nivel": 2,
-    "slug": "piteiras-filtros/piteiras",
+    "slug": "piteiras",
     "ativo": true,
     "totalProdutos": 0
   },
@@ -211,7 +211,7 @@
     "paiId": "9",
     "nome": "Alumínio",
     "nivel": 2,
-    "slug": "dichavadores/aluminio",
+    "slug": "aluminio",
     "ativo": true,
     "totalProdutos": 9
   },
@@ -220,7 +220,7 @@
     "paiId": "9",
     "nome": "Fibra",
     "nivel": 2,
-    "slug": "dichavadores/fibra",
+    "slug": "fibra",
     "ativo": true,
     "totalProdutos": 4
   },
@@ -229,7 +229,7 @@
     "paiId": "9",
     "nome": "Policarbonato",
     "nivel": 2,
-    "slug": "dichavadores/policarbonato",
+    "slug": "policarbonato",
     "ativo": true,
     "totalProdutos": 9
   },
@@ -238,7 +238,7 @@
     "paiId": "9",
     "nome": "Polipropileno",
     "nivel": 2,
-    "slug": "dichavadores/polipropileno",
+    "slug": "polipropileno",
     "ativo": true,
     "totalProdutos": 0
   },
@@ -247,7 +247,7 @@
     "paiId": "9",
     "nome": "Plástico",
     "nivel": 2,
-    "slug": "dichavadores/plastico",
+    "slug": "plastico",
     "ativo": true,
     "totalProdutos": 4
   },
@@ -256,7 +256,7 @@
     "paiId": "9",
     "nome": "Metal",
     "nivel": 2,
-    "slug": "dichavadores/metal",
+    "slug": "metal",
     "ativo": true,
     "totalProdutos": 15
   },
@@ -265,7 +265,7 @@
     "paiId": "3",
     "nome": "Anel",
     "nivel": 2,
-    "slug": "acessorios/anel",
+    "slug": "anel",
     "ativo": true,
     "totalProdutos": 1
   },
@@ -274,7 +274,7 @@
     "paiId": "3",
     "nome": "Carteiras",
     "nivel": 2,
-    "slug": "acessorios/carteiras",
+    "slug": "carteiras",
     "ativo": true,
     "totalProdutos": 1
   },
@@ -283,7 +283,7 @@
     "paiId": "3",
     "nome": "Cases",
     "nivel": 2,
-    "slug": "acessorios/cases",
+    "slug": "cases",
     "ativo": true,
     "totalProdutos": 12
   },
@@ -292,7 +292,7 @@
     "paiId": "3",
     "nome": "Chaveiro",
     "nivel": 2,
-    "slug": "acessorios/chaveiro",
+    "slug": "chaveiro",
     "ativo": true,
     "totalProdutos": 3
   },
@@ -301,7 +301,7 @@
     "paiId": "3",
     "nome": "Cinzeiros",
     "nivel": 2,
-    "slug": "acessorios/cinzeiros",
+    "slug": "cinzeiros",
     "ativo": true,
     "totalProdutos": 0
   },
@@ -310,7 +310,7 @@
     "paiId": "3",
     "nome": "Tesoura",
     "nivel": 2,
-    "slug": "acessorios/tesoura",
+    "slug": "tesoura",
     "ativo": true,
     "totalProdutos": 23
   },
@@ -319,7 +319,7 @@
     "paiId": "3",
     "nome": "Cuia",
     "nivel": 2,
-    "slug": "acessorios/cuia",
+    "slug": "cuia",
     "ativo": true,
     "totalProdutos": 29
   },
@@ -328,7 +328,7 @@
     "paiId": "3",
     "nome": "Diversos",
     "nivel": 2,
-    "slug": "acessorios/diversos",
+    "slug": "diversos",
     "ativo": true,
     "totalProdutos": 32
   },
@@ -337,7 +337,7 @@
     "paiId": "3",
     "nome": "Guarda Sol",
     "nivel": 2,
-    "slug": "acessorios/guarda-sol",
+    "slug": "guarda-sol",
     "ativo": true,
     "totalProdutos": 0
   },
@@ -346,7 +346,7 @@
     "paiId": "3",
     "nome": "Incenso",
     "nivel": 2,
-    "slug": "acessorios/incenso",
+    "slug": "incenso",
     "ativo": true,
     "totalProdutos": 0
   },
@@ -355,7 +355,7 @@
     "paiId": "3",
     "nome": "Lata Estojo",
     "nivel": 2,
-    "slug": "acessorios/lata-estojo",
+    "slug": "lata-estojo",
     "ativo": true,
     "totalProdutos": 8
   },
@@ -364,7 +364,7 @@
     "paiId": "3",
     "nome": "Limpeza",
     "nivel": 2,
-    "slug": "acessorios/limpeza",
+    "slug": "limpeza",
     "ativo": true,
     "totalProdutos": 4
   },
@@ -373,7 +373,7 @@
     "paiId": "3",
     "nome": "Máquina de Enrolar",
     "nivel": 2,
-    "slug": "acessorios/maquina-de-enrolar",
+    "slug": "maquina-de-enrolar",
     "ativo": true,
     "totalProdutos": 20
   },
@@ -382,7 +382,7 @@
     "paiId": "3",
     "nome": "Moco",
     "nivel": 2,
-    "slug": "acessorios/moco",
+    "slug": "moco",
     "ativo": true,
     "totalProdutos": 31
   },
@@ -391,7 +391,7 @@
     "paiId": "3",
     "nome": "Potes Reservatório",
     "nivel": 2,
-    "slug": "acessorios/potes-reservatorio",
+    "slug": "potes-reservatorio",
     "ativo": true,
     "totalProdutos": 0
   },
@@ -400,7 +400,7 @@
     "paiId": "3",
     "nome": "Zip lock",
     "nivel": 2,
-    "slug": "acessorios/zip-lock",
+    "slug": "zip-lock",
     "ativo": true,
     "totalProdutos": 4
   },
@@ -409,7 +409,7 @@
     "paiId": "7",
     "nome": "Pipes",
     "nivel": 2,
-    "slug": "bongs-pipes/pipes",
+    "slug": "pipes",
     "ativo": true,
     "totalProdutos": 0
   },
@@ -418,7 +418,7 @@
     "paiId": "7",
     "nome": "Acessórios Para Bong",
     "nivel": 2,
-    "slug": "bongs-pipes/acessorios-para-bong",
+    "slug": "acessorios-para-bong",
     "ativo": true,
     "totalProdutos": 3
   },
@@ -427,7 +427,7 @@
     "paiId": "7",
     "nome": "Bongs",
     "nivel": 2,
-    "slug": "bongs-pipes/bongs",
+    "slug": "bongs",
     "ativo": true,
     "totalProdutos": 0
   },
@@ -436,7 +436,7 @@
     "paiId": "21",
     "nome": "Shoulder Bag",
     "nivel": 2,
-    "slug": "vestuario/shoulder-bag",
+    "slug": "shoulder-bag",
     "ativo": true,
     "totalProdutos": 3
   },
@@ -445,7 +445,7 @@
     "paiId": "21",
     "nome": "Boné",
     "nivel": 2,
-    "slug": "vestuario/bone",
+    "slug": "bone",
     "ativo": true,
     "totalProdutos": 5
   },
@@ -454,7 +454,7 @@
     "paiId": "21",
     "nome": "Bermuda",
     "nivel": 2,
-    "slug": "vestuario/bermuda",
+    "slug": "bermuda",
     "ativo": true,
     "totalProdutos": 2
   },
@@ -463,7 +463,7 @@
     "paiId": "21",
     "nome": "Calça",
     "nivel": 2,
-    "slug": "vestuario/calca",
+    "slug": "calca",
     "ativo": true,
     "totalProdutos": 1
   },
@@ -472,7 +472,7 @@
     "paiId": "21",
     "nome": "Camisa",
     "nivel": 2,
-    "slug": "vestuario/camisa",
+    "slug": "camisa",
     "ativo": true,
     "totalProdutos": 17
   },
@@ -481,7 +481,7 @@
     "paiId": "21",
     "nome": "Casaco",
     "nivel": 2,
-    "slug": "vestuario/casaco",
+    "slug": "casaco",
     "ativo": true,
     "totalProdutos": 0
   },
@@ -490,7 +490,7 @@
     "paiId": "21",
     "nome": "Regata",
     "nivel": 2,
-    "slug": "vestuario/regata",
+    "slug": "regata",
     "ativo": true,
     "totalProdutos": 9
   },
@@ -499,7 +499,7 @@
     "paiId": "21",
     "nome": "Meia",
     "nivel": 2,
-    "slug": "vestuario/meia",
+    "slug": "meia",
     "ativo": true,
     "totalProdutos": 0
   },
@@ -508,7 +508,7 @@
     "paiId": "21",
     "nome": "Short",
     "nivel": 2,
-    "slug": "vestuario/short",
+    "slug": "short",
     "ativo": true,
     "totalProdutos": 0
   },
@@ -517,7 +517,7 @@
     "paiId": "21",
     "nome": "Saia",
     "nivel": 2,
-    "slug": "vestuario/saia",
+    "slug": "saia",
     "ativo": true,
     "totalProdutos": 0
   },
@@ -526,7 +526,7 @@
     "paiId": "21",
     "nome": "Tunica",
     "nivel": 2,
-    "slug": "vestuario/tunica",
+    "slug": "tunica",
     "ativo": true,
     "totalProdutos": 1
   },
@@ -535,7 +535,7 @@
     "paiId": "5491",
     "nome": "Fluido",
     "nivel": 2,
-    "slug": "gas-isqueiro-macarico/fluido",
+    "slug": "fluido",
     "ativo": true,
     "totalProdutos": 3
   },
@@ -544,7 +544,7 @@
     "paiId": "5491",
     "nome": "Gás",
     "nivel": 2,
-    "slug": "gas-isqueiro-macarico/gas",
+    "slug": "gas",
     "ativo": true,
     "totalProdutos": 0
   },
@@ -553,7 +553,7 @@
     "paiId": "5491",
     "nome": "Isqueiro",
     "nivel": 2,
-    "slug": "gas-isqueiro-macarico/isqueiro",
+    "slug": "isqueiro",
     "ativo": true,
     "totalProdutos": 0
   },
@@ -562,7 +562,7 @@
     "paiId": "5491",
     "nome": "Maçarico",
     "nivel": 2,
-    "slug": "gas-isqueiro-macarico/macarico",
+    "slug": "macarico",
     "ativo": true,
     "totalProdutos": 1
   },
@@ -571,7 +571,7 @@
     "paiId": "19",
     "nome": "Cigarro de Palha",
     "nivel": 2,
-    "slug": "tabacos/cigarro-de-palha",
+    "slug": "cigarro-de-palha",
     "ativo": true,
     "totalProdutos": 13
   },
@@ -580,7 +580,7 @@
     "paiId": "19",
     "nome": "Tabaco Natural",
     "nivel": 2,
-    "slug": "tabacos/tabaco-natural",
+    "slug": "tabaco-natural",
     "ativo": true,
     "totalProdutos": 55
   },
@@ -589,7 +589,7 @@
     "paiId": "19",
     "nome": "Acessórios Tabaco",
     "nivel": 2,
-    "slug": "tabacos/acessorios-tabaco",
+    "slug": "acessorios-tabaco",
     "ativo": true,
     "totalProdutos": 0
   },
@@ -598,7 +598,7 @@
     "paiId": "19",
     "nome": "Ervas & Flores",
     "nivel": 2,
-    "slug": "tabacos/ervas-flores",
+    "slug": "ervas-flores",
     "ativo": true,
     "totalProdutos": 2
   },
@@ -607,7 +607,7 @@
     "paiId": "19",
     "nome": "Enrolado",
     "nivel": 2,
-    "slug": "tabacos/enrolado",
+    "slug": "enrolado",
     "ativo": true,
     "totalProdutos": 0
   },
@@ -616,7 +616,7 @@
     "paiId": "19",
     "nome": "Orgânico",
     "nivel": 2,
-    "slug": "tabacos/organico",
+    "slug": "organico",
     "ativo": true,
     "totalProdutos": 0
   },
@@ -625,7 +625,7 @@
     "paiId": "5",
     "nome": "Madeira",
     "nivel": 2,
-    "slug": "bandejas/madeira",
+    "slug": "madeira",
     "ativo": true,
     "totalProdutos": 2
   },
@@ -634,7 +634,7 @@
     "paiId": "5",
     "nome": "Bamboo",
     "nivel": 2,
-    "slug": "bandejas/bamboo",
+    "slug": "bamboo",
     "ativo": true,
     "totalProdutos": 1
   },
@@ -643,7 +643,7 @@
     "paiId": "5",
     "nome": "Metal",
     "nivel": 2,
-    "slug": "bandejas/metal",
+    "slug": "metal",
     "ativo": true,
     "totalProdutos": 57
   },
@@ -652,7 +652,7 @@
     "paiId": "5",
     "nome": "Cristal",
     "nivel": 2,
-    "slug": "bandejas/cristal",
+    "slug": "cristal",
     "ativo": true,
     "totalProdutos": 0
   },
@@ -661,7 +661,7 @@
     "paiId": "5",
     "nome": "Plástico",
     "nivel": 2,
-    "slug": "bandejas/plastico",
+    "slug": "plastico",
     "ativo": true,
     "totalProdutos": 2
   },
@@ -670,7 +670,7 @@
     "paiId": "5",
     "nome": "Tampa de Bandeja",
     "nivel": 2,
-    "slug": "bandejas/tampa-de-bandeja",
+    "slug": "tampa-de-bandeja",
     "ativo": true,
     "totalProdutos": 0
   },
@@ -679,7 +679,7 @@
     "paiId": "5",
     "nome": "Inflável",
     "nivel": 2,
-    "slug": "bandejas/inflavel",
+    "slug": "inflavel",
     "ativo": true,
     "totalProdutos": 0
   },
@@ -688,7 +688,7 @@
     "paiId": "5517",
     "nome": "Case",
     "nivel": 3,
-    "slug": "piteiras-filtros/acessorios/case",
+    "slug": "case",
     "ativo": true,
     "totalProdutos": 2
   },
@@ -697,7 +697,7 @@
     "paiId": "5517",
     "nome": "Limpador de Piteira",
     "nivel": 3,
-    "slug": "piteiras-filtros/acessorios/limpador-de-piteira",
+    "slug": "limpador-de-piteira",
     "ativo": true,
     "totalProdutos": 0
   },
@@ -706,7 +706,7 @@
     "paiId": "5523",
     "nome": "Acetato",
     "nivel": 3,
-    "slug": "piteiras-filtros/filtros/acetato",
+    "slug": "acetato",
     "ativo": true,
     "totalProdutos": 88
   },
@@ -715,7 +715,7 @@
     "paiId": "5523",
     "nome": "Carvão",
     "nivel": 3,
-    "slug": "piteiras-filtros/filtros/carvao",
+    "slug": "carvao",
     "ativo": true,
     "totalProdutos": 37
   },
@@ -724,7 +724,7 @@
     "paiId": "5523",
     "nome": "Celulose",
     "nivel": 3,
-    "slug": "piteiras-filtros/filtros/celulose",
+    "slug": "celulose",
     "ativo": true,
     "totalProdutos": 2
   },
@@ -733,7 +733,7 @@
     "paiId": "5531",
     "nome": "Madeira",
     "nivel": 3,
-    "slug": "piteiras-filtros/piteiras/madeira",
+    "slug": "madeira",
     "ativo": true,
     "totalProdutos": 3
   },
@@ -742,7 +742,7 @@
     "paiId": "5531",
     "nome": "Papel",
     "nivel": 3,
-    "slug": "piteiras-filtros/piteiras/papel",
+    "slug": "papel",
     "ativo": true,
     "totalProdutos": 97
   },
@@ -751,7 +751,7 @@
     "paiId": "5531",
     "nome": "Vidro",
     "nivel": 3,
-    "slug": "piteiras-filtros/piteiras/vidro",
+    "slug": "vidro",
     "ativo": true,
     "totalProdutos": 37
   },
@@ -760,7 +760,7 @@
     "paiId": "5599",
     "nome": "Bolso",
     "nivel": 3,
-    "slug": "acessorios/cinzeiros/bolso",
+    "slug": "bolso",
     "ativo": true,
     "totalProdutos": 3
   },
@@ -769,7 +769,7 @@
     "paiId": "5599",
     "nome": "Cristal",
     "nivel": 3,
-    "slug": "acessorios/cinzeiros/cristal",
+    "slug": "cristal",
     "ativo": true,
     "totalProdutos": 1
   },
@@ -778,7 +778,7 @@
     "paiId": "5599",
     "nome": "Metal",
     "nivel": 3,
-    "slug": "acessorios/cinzeiros/metal",
+    "slug": "metal",
     "ativo": true,
     "totalProdutos": 13
   },
@@ -787,7 +787,7 @@
     "paiId": "5599",
     "nome": "Plástico",
     "nivel": 3,
-    "slug": "acessorios/cinzeiros/plastico",
+    "slug": "plastico",
     "ativo": true,
     "totalProdutos": 7
   },
@@ -796,7 +796,7 @@
     "paiId": "5599",
     "nome": "Silicone",
     "nivel": 3,
-    "slug": "acessorios/cinzeiros/silicone",
+    "slug": "silicone",
     "ativo": true,
     "totalProdutos": 15
   },
@@ -805,7 +805,7 @@
     "paiId": "5599",
     "nome": "Vidro",
     "nivel": 3,
-    "slug": "acessorios/cinzeiros/vidro",
+    "slug": "vidro",
     "ativo": true,
     "totalProdutos": 0
   },
@@ -814,7 +814,7 @@
     "paiId": "5631",
     "nome": "Aço Inox",
     "nivel": 3,
-    "slug": "acessorios/potes-reservatorio/aco-inox",
+    "slug": "aco-inox",
     "ativo": true,
     "totalProdutos": 0
   },
@@ -823,7 +823,7 @@
     "paiId": "5631",
     "nome": "Alumínio",
     "nivel": 3,
-    "slug": "acessorios/potes-reservatorio/aluminio",
+    "slug": "aluminio",
     "ativo": true,
     "totalProdutos": 3
   },
@@ -832,7 +832,7 @@
     "paiId": "5631",
     "nome": "Plástico",
     "nivel": 3,
-    "slug": "acessorios/potes-reservatorio/plastico",
+    "slug": "plastico",
     "ativo": true,
     "totalProdutos": 3
   },
@@ -841,7 +841,7 @@
     "paiId": "5631",
     "nome": "Silicone",
     "nivel": 3,
-    "slug": "acessorios/potes-reservatorio/silicone",
+    "slug": "silicone",
     "ativo": true,
     "totalProdutos": 16
   },
@@ -850,7 +850,7 @@
     "paiId": "5631",
     "nome": "Vidro",
     "nivel": 3,
-    "slug": "acessorios/potes-reservatorio/vidro",
+    "slug": "vidro",
     "ativo": true,
     "totalProdutos": 19
   },
@@ -859,7 +859,7 @@
     "paiId": "217",
     "nome": "Vidro",
     "nivel": 3,
-    "slug": "bongs-pipes/pipes/vidro",
+    "slug": "vidro",
     "ativo": true,
     "totalProdutos": 6
   },
@@ -868,7 +868,7 @@
     "paiId": "217",
     "nome": "Metal",
     "nivel": 3,
-    "slug": "bongs-pipes/pipes/metal",
+    "slug": "metal",
     "ativo": true,
     "totalProdutos": 2
   },
@@ -877,7 +877,7 @@
     "paiId": "217",
     "nome": "Silicone",
     "nivel": 3,
-    "slug": "bongs-pipes/pipes/silicone",
+    "slug": "silicone",
     "ativo": true,
     "totalProdutos": 1
   },
@@ -886,7 +886,7 @@
     "paiId": "5539",
     "nome": "Perculator",
     "nivel": 3,
-    "slug": "bongs-pipes/acessorios-para-bong/perculator",
+    "slug": "perculator",
     "ativo": true,
     "totalProdutos": 1
   },
@@ -895,7 +895,7 @@
     "paiId": "5539",
     "nome": "Banger",
     "nivel": 3,
-    "slug": "bongs-pipes/acessorios-para-bong/banger",
+    "slug": "banger",
     "ativo": true,
     "totalProdutos": 7
   },
@@ -904,7 +904,7 @@
     "paiId": "5539",
     "nome": "Bowl",
     "nivel": 3,
-    "slug": "bongs-pipes/acessorios-para-bong/bowl",
+    "slug": "bowl",
     "ativo": true,
     "totalProdutos": 7
   },
@@ -913,7 +913,7 @@
     "paiId": "5539",
     "nome": "Carb Cap",
     "nivel": 3,
-    "slug": "bongs-pipes/acessorios-para-bong/carb-cap",
+    "slug": "carb-cap",
     "ativo": true,
     "totalProdutos": 3
   },
@@ -922,7 +922,7 @@
     "paiId": "5539",
     "nome": "Dabber",
     "nivel": 3,
-    "slug": "bongs-pipes/acessorios-para-bong/dabber",
+    "slug": "dabber",
     "ativo": true,
     "totalProdutos": 4
   },
@@ -931,7 +931,7 @@
     "paiId": "5539",
     "nome": "Domeless",
     "nivel": 3,
-    "slug": "bongs-pipes/acessorios-para-bong/domeless",
+    "slug": "domeless",
     "ativo": true,
     "totalProdutos": 3
   },
@@ -940,7 +940,7 @@
     "paiId": "5539",
     "nome": "Downstem",
     "nivel": 3,
-    "slug": "bongs-pipes/acessorios-para-bong/downstem",
+    "slug": "downstem",
     "ativo": true,
     "totalProdutos": 1
   },
@@ -949,7 +949,7 @@
     "paiId": "5539",
     "nome": "DropDown",
     "nivel": 3,
-    "slug": "bongs-pipes/acessorios-para-bong/dropdown",
+    "slug": "dropdown",
     "ativo": true,
     "totalProdutos": 3
   },
@@ -958,7 +958,7 @@
     "paiId": "5539",
     "nome": "Glass Tube",
     "nivel": 3,
-    "slug": "bongs-pipes/acessorios-para-bong/glass-tube",
+    "slug": "glass-tube",
     "ativo": true,
     "totalProdutos": 1
   },
@@ -967,7 +967,7 @@
     "paiId": "5539",
     "nome": "Nail",
     "nivel": 3,
-    "slug": "bongs-pipes/acessorios-para-bong/nail",
+    "slug": "nail",
     "ativo": true,
     "totalProdutos": 1
   },
@@ -976,7 +976,7 @@
     "paiId": "5565",
     "nome": "Acrílico",
     "nivel": 3,
-    "slug": "bongs-pipes/bongs/acrilico",
+    "slug": "acrilico",
     "ativo": true,
     "totalProdutos": 3
   },
@@ -985,7 +985,7 @@
     "paiId": "5565",
     "nome": "Silicone",
     "nivel": 3,
-    "slug": "bongs-pipes/bongs/silicone",
+    "slug": "silicone",
     "ativo": true,
     "totalProdutos": 2
   },
@@ -994,7 +994,7 @@
     "paiId": "5565",
     "nome": "Vidro",
     "nivel": 3,
-    "slug": "bongs-pipes/bongs/vidro",
+    "slug": "vidro",
     "ativo": true,
     "totalProdutos": 13
   },
@@ -1003,7 +1003,7 @@
     "paiId": "5495",
     "nome": "Gás Para Isqueiro",
     "nivel": 3,
-    "slug": "gas-isqueiro-macarico/gas/gas-para-isqueiro",
+    "slug": "gas-para-isqueiro",
     "ativo": true,
     "totalProdutos": 8
   },
@@ -1012,7 +1012,7 @@
     "paiId": "5495",
     "nome": "Gás Para Maçarico",
     "nivel": 3,
-    "slug": "gas-isqueiro-macarico/gas/gas-para-macarico",
+    "slug": "gas-para-macarico",
     "ativo": true,
     "totalProdutos": 7
   },
@@ -1021,7 +1021,7 @@
     "paiId": "5497",
     "nome": "Recarregável",
     "nivel": 3,
-    "slug": "gas-isqueiro-macarico/isqueiro/recarregavel",
+    "slug": "recarregavel",
     "ativo": true,
     "totalProdutos": 41
   },
@@ -1030,7 +1030,7 @@
     "paiId": "5497",
     "nome": "Isqueiro Maçarico",
     "nivel": 3,
-    "slug": "gas-isqueiro-macarico/isqueiro/isqueiro-macarico",
+    "slug": "isqueiro-macarico",
     "ativo": true,
     "totalProdutos": 43
   },
@@ -1039,7 +1039,7 @@
     "paiId": "5497",
     "nome": "Descartável",
     "nivel": 3,
-    "slug": "gas-isqueiro-macarico/isqueiro/descartavel",
+    "slug": "descartavel",
     "ativo": true,
     "totalProdutos": 4
   },
@@ -1048,7 +1048,7 @@
     "paiId": "5501",
     "nome": "Maçarico Engate",
     "nivel": 3,
-    "slug": "gas-isqueiro-macarico/macarico/macarico-engate",
+    "slug": "macarico-engate",
     "ativo": true,
     "totalProdutos": 6
   },
@@ -1057,7 +1057,7 @@
     "paiId": "5501",
     "nome": "Maçarico Reservatório",
     "nivel": 3,
-    "slug": "gas-isqueiro-macarico/macarico/macarico-reservatorio",
+    "slug": "macarico-reservatorio",
     "ativo": true,
     "totalProdutos": 0
   },
@@ -1066,7 +1066,7 @@
     "paiId": "5523",
     "nome": "Papel",
     "nivel": 3,
-    "slug": "piteiras-filtros/filtros/papel",
+    "slug": "papel",
     "ativo": true,
     "totalProdutos": 2
   }
