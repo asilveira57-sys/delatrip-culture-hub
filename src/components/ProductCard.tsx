@@ -24,8 +24,10 @@ export function ProductCard({ produto }: { produto: Product }) {
           src={imageFor(produto)}
           alt={`${produto.nome}${produto.marca ? ` — ${produto.marca}` : ""}`}
           loading="lazy"
+          decoding="async"
           width={1024}
           height={1024}
+
           className="aspect-square w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
         />
       </Link>

@@ -85,7 +85,29 @@ export type Post = {
   conteudo: string;
 };
 
-export const products = (productsData as Product[]).filter((p) => p.disponivel);
+/** Registro compacto gravado por scripts/split-products.mjs. */
+type SlimProduct = {
+  s: string;
+  n: string;
+  d?: string;
+  m?: string;
+  c?: string;
+  r?: string;
+  p?: number;
+  pp?: number;
+  e?: number;
+  f?: number;
+  i?: string;
+  u?: string | null;
+  ml?: string | null;
+  mn?: string;
+  cn?: string;
+};
+
+const IMG_PREFIX = "https://images.tcdn.com.br/img/img_prod/";
+const LOJA_PREFIX = "https://www.delatrip.com.br/";
+const ML_PREFIX = "https://lista.mercadolivre.com.br/";
+
 export const categories = (categoriesData as Category[]).filter((c) => c.ativo);
 export const brands = brandsData as Brand[];
 export const posts = [...(postsData as Post[])].sort((a, b) =>
@@ -93,14 +115,65 @@ export const posts = [...(postsData as Post[])].sort((a, b) =>
 );
 
 const byId = new Map(categories.map((c) => [c.id, c]));
+const brandById = new Map(brands.map((b) => [b.slug, b]));
+
+/** Texto pré-normalizado usado pela busca (evita lowercase por tecla). */
+const haystack = new WeakMap<Product, string>();
+
+function hydrate(r: SlimProduct): Product {
+  const categoria = r.c ? byId.get(r.c) : undefined;
+  const flags = r.f ?? 0;
+  const produto: Product = {
+    id: r.d ?? r.s,
+    slug: r.s,
+    nome: r.n,
+    imagem: r.i ? (r.i.startsWith("http") ? r.i : IMG_PREFIX + r.i) : null,
+    categoriaId: r.c ?? null,
+    categoriaNome: categoria?.nome ?? r.cn ?? null,
+    categoriaSlug: categoria?.slug ?? null,
+    marca: (r.m ? brandById.get(r.m)?.nome : undefined) ?? r.mn ?? null,
+    marcaSlug: r.m ?? null,
+    referencia: r.r ?? null,
+    preco: r.p ?? null,
+    precoPromocional: r.pp ?? null,
+    estoque: r.e ?? 0,
+    disponivel: (flags & 4) === 0,
+    destaque: (flags & 1) !== 0,
+    lancamento: (flags & 2) !== 0,
+    urlLoja: r.u !== undefined ? r.u : LOJA_PREFIX + r.s,
+    urlMercadoLivre: r.ml !== undefined ? r.ml : ML_PREFIX + r.s,
+  };
+  haystack.set(
+    produto,
+    [produto.nome, produto.marca, produto.categoriaNome, produto.referencia]
+      .filter(Boolean)
+      .join(" ")
+      .toLowerCase(),
+  );
+  return produto;
+}
+
+export const products = (productsData as SlimProduct[])
+  .map(hydrate)
+  .filter((p) => p.disponivel);
+
 
 /* ---------------- categorias / hierarquia ---------------- */
 
 export const rootCategories = categories.filter((c) => !c.paiId);
 
-export function childrenOf(id: string) {
-  return categories.filter((c) => c.paiId === id);
+const childrenById = new Map<string, Category[]>();
+for (const c of categories) {
+  if (!c.paiId) continue;
+  const lista = childrenById.get(c.paiId);
+  if (lista) lista.push(c);
+  else childrenById.set(c.paiId, [c]);
 }
+
+export function childrenOf(id: string) {
+  return childrenById.get(id) ?? [];
+}
+
 
 export function ancestorsOf(categoria: Category): Category[] {
   const cadeia: Category[] = [];
@@ -142,9 +215,19 @@ export function getCategoryByPath(path: string) {
   return atual;
 }
 
-function descendantIds(id: string, acc: Set<string> = new Set()): Set<string> {
-  acc.add(id);
-  for (const filho of childrenOf(id)) descendantIds(filho.id, acc);
+const descendantCache = new Map<string, Set<string>>();
+
+function descendantIds(id: string): Set<string> {
+  const cached = descendantCache.get(id);
+  if (cached) return cached;
+  const acc = new Set<string>();
+  const fila = [id];
+  while (fila.length) {
+    const atual = fila.pop() as string;
+    acc.add(atual);
+    for (const filho of childrenOf(atual)) fila.push(filho.id);
+  }
+  descendantCache.set(id, acc);
   return acc;
 }
 
@@ -158,18 +241,46 @@ export function categoryName(id: string | null) {
 
 /* ---------------- produtos ---------------- */
 
-export function getProduct(slug: string) {
-  return products.find((p) => p.slug === slug);
+const productBySlug = new Map(products.map((p) => [p.slug, p]));
+
+const productsByCategoryId = new Map<string, Product[]>();
+const productsByBrandSlug = new Map<string, Product[]>();
+for (const p of products) {
+  if (p.categoriaId) {
+    const lista = productsByCategoryId.get(p.categoriaId);
+    if (lista) lista.push(p);
+    else productsByCategoryId.set(p.categoriaId, [p]);
+  }
+  if (p.marcaSlug) {
+    const lista = productsByBrandSlug.get(p.marcaSlug);
+    if (lista) lista.push(p);
+    else productsByBrandSlug.set(p.marcaSlug, [p]);
+  }
 }
 
+export function getProduct(slug: string) {
+  return productBySlug.get(slug);
+}
+
+const categoryProductsCache = new Map<string, Product[]>();
+
 export function productsByCategory(categoria: Category) {
+  const cached = categoryProductsCache.get(categoria.id);
+  if (cached) return cached;
   const ids = descendantIds(categoria.id);
-  return products.filter((p) => p.categoriaId && ids.has(p.categoriaId));
+  const lista: Product[] = [];
+  for (const id of ids) {
+    const doNo = productsByCategoryId.get(id);
+    if (doNo) lista.push(...doNo);
+  }
+  categoryProductsCache.set(categoria.id, lista);
+  return lista;
 }
 
 export function productsByBrand(marcaSlug: string) {
-  return products.filter((p) => p.marcaSlug === marcaSlug);
+  return productsByBrandSlug.get(marcaSlug) ?? [];
 }
+
 
 export const destaques = products.filter((p) => p.destaque);
 
@@ -257,8 +368,9 @@ export function imageForKey(key: string) {
 /* ---------------- marcas ---------------- */
 
 export function getBrand(slug: string) {
-  return brands.find((b) => b.slug === slug);
+  return brandById.get(slug);
 }
+
 
 export function brandName(slug: string | null) {
   if (!slug) return "";
@@ -277,19 +389,22 @@ export function getPost(slug: string) {
 export function matchesQuery(produto: Product, q: string) {
   const termo = q.trim().toLowerCase();
   if (!termo) return true;
-  return [
-    produto.nome,
-    produto.marca,
-    produto.categoriaNome ?? categoryName(produto.categoriaId),
-    produto.referencia,
-  ]
-    .filter(Boolean)
-    .some((campo) => (campo as string).toLowerCase().includes(termo));
+  return (haystack.get(produto) ?? "").includes(termo);
 }
 
-export function searchProducts(termo: string) {
-  return products.filter((p) => matchesQuery(p, termo));
+export function searchProducts(termo: string, limite = Infinity) {
+  const q = termo.trim().toLowerCase();
+  if (!q) return products;
+  const achados: Product[] = [];
+  for (const p of products) {
+    if ((haystack.get(p) ?? "").includes(q)) {
+      achados.push(p);
+      if (achados.length >= limite) break;
+    }
+  }
+  return achados;
 }
+
 
 export function searchBrands(termo: string) {
   const q = termo.trim().toLowerCase();
@@ -301,7 +416,7 @@ export function searchAll(termo: string) {
   const q = termo.trim();
   if (!q) return { produtos: [] as Product[], marcas: [] as Brand[] };
   return {
-    produtos: searchProducts(q).slice(0, 8),
+    produtos: searchProducts(q, 8),
     marcas: searchBrands(q).slice(0, 5),
   };
 }
@@ -315,27 +430,25 @@ export const SORT_OPTIONS = [
 
 export type SortKey = (typeof SORT_OPTIONS)[number]["value"];
 
+/** Comparador reutilizado: Intl.Collator é ~10x mais rápido que localeCompare. */
+const collator = new Intl.Collator("pt-BR");
+
+const comparadores: Record<SortKey, (a: Product, b: Product) => number> = {
+  "nome-az": (a, b) => collator.compare(a.nome, b.nome),
+  "nome-za": (a, b) => collator.compare(b.nome, a.nome),
+  novidades: (a, b) =>
+    Number(b.lancamento) - Number(a.lancamento) ||
+    Number(b.destaque) - Number(a.destaque),
+  relevancia: (a, b) =>
+    Number(b.destaque) - Number(a.destaque) || collator.compare(a.nome, b.nome),
+};
+
 export function sortProducts(lista: Product[], ordem: SortKey) {
-  const copia = [...lista];
-  switch (ordem) {
-    case "nome-az":
-      return copia.sort((a, b) => a.nome.localeCompare(b.nome, "pt-BR"));
-    case "nome-za":
-      return copia.sort((a, b) => b.nome.localeCompare(a.nome, "pt-BR"));
-    case "novidades":
-      return copia.sort(
-        (a, b) =>
-          Number(b.lancamento) - Number(a.lancamento) ||
-          Number(b.destaque) - Number(a.destaque),
-      );
-    default:
-      return copia.sort(
-        (a, b) =>
-          Number(b.destaque) - Number(a.destaque) ||
-          a.nome.localeCompare(b.nome, "pt-BR"),
-      );
-  }
+  return [...lista].sort(comparadores[ordem] ?? comparadores.relevancia);
 }
+
+/** Resultados memoizados por (categoria|marca|ordem) sem termo de busca. */
+const listaCache = new Map<string, Product[]>();
 
 /** Filtro unificado usado pelo catálogo e pela página de busca. */
 export function filterProducts({
@@ -349,13 +462,31 @@ export function filterProducts({
   marca?: string;
   ordem?: SortKey;
 }) {
+  const termo = q.trim().toLowerCase();
+  const chave = `${categoria}|${marca}|${ordem}`;
+  if (!termo) {
+    const cached = listaCache.get(chave);
+    if (cached) return cached;
+  }
+
   const cat = categoria ? getCategoryByPath(categoria) : undefined;
-  const base = categoria ? (cat ? productsByCategory(cat) : []) : products;
-  const filtrados = base.filter(
-    (p) => (!marca || p.marcaSlug === marca) && matchesQuery(p, q),
-  );
-  return sortProducts(filtrados, ordem);
+  let base: Product[];
+  if (categoria) base = cat ? productsByCategory(cat) : [];
+  else if (marca) base = productsByBrand(marca);
+  else base = products;
+
+  const filtrados: Product[] = [];
+  for (const p of base) {
+    if (marca && p.marcaSlug !== marca) continue;
+    if (termo && !(haystack.get(p) ?? "").includes(termo)) continue;
+    filtrados.push(p);
+  }
+
+  const ordenados = sortProducts(filtrados, ordem);
+  if (!termo) listaCache.set(chave, ordenados);
+  return ordenados;
 }
+
 
 /** Marcas presentes em um conjunto de produtos (para filtros contextuais). */
 export function brandsOf(lista: Product[]) {
