@@ -32,6 +32,22 @@ e podem ser substituídos diretamente pelos exports reais da loja, sem tocar em 
 - Produtos com `disponivel: false` são filtrados automaticamente.
 - Nunca gere o JSON com a opção **preço de custo** ligada: o arquivo é público.
 
+### Importante: rode o split depois de substituir o arquivo
+
+`products.json` é a **fonte** (não é importada pelo app, para não pesar o bundle).
+Depois de substituí-lo, rode:
+
+```bash
+node scripts/split-products.mjs   # gera products.index.json + details/*.json
+node scripts/gen-sitemap.mjs      # regenera public/sitemap.xml
+```
+
+- `products.index.json` — campos leves usados em listagens, filtros e busca
+  (inclui apenas `imagem`, a primeira foto).
+- `details/NN.json` — descrição, SEO, galeria e ficha técnica, em 64 fatias
+  carregadas sob demanda pela página do produto.
+
+
 ## categories.json
 
 Lista **plana** com hierarquia por `paiId`:
