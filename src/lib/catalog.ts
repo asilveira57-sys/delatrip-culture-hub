@@ -1,4 +1,4 @@
-import productsData from "@/data/products.json";
+import productsData from "@/data/products.index.json";
 import categoriesData from "@/data/categories.json";
 import brandsData from "@/data/brands.json";
 import postsData from "@/data/posts.json";
@@ -23,28 +23,32 @@ export type Product = {
   id: string;
   slug: string;
   nome: string;
-  descricaoHtml: string;
-  imagens: string[];
+  imagem: string | null;
   categoriaId: string | null;
   categoriaNome: string | null;
   categoriaSlug: string | null;
   marca: string | null;
   marcaSlug: string | null;
   referencia: string | null;
-  ean: string | null;
-  ncm: string | null;
-  pesoGramas: number | null;
   preco: number | null;
   precoPromocional: number | null;
   estoque: number;
   disponivel: boolean;
   destaque: boolean;
   lancamento: boolean;
-  seoTitulo: string;
-  seoDescricao: string | null;
   urlLoja: string | null;
   urlMercadoLivre: string | null;
-  mlMapeado: boolean;
+};
+
+/** Campos pesados carregados sob demanda na página do produto. */
+export type ProductDetail = {
+  descricaoHtml: string;
+  seoTitulo: string;
+  seoDescricao: string | null;
+  imagens: string[];
+  ean: string | null;
+  ncm: string | null;
+  pesoGramas: number | null;
   /** Opcional: pares chave/valor extras exibidos na ficha técnica. */
   specs?: Record<string, string>;
 };
