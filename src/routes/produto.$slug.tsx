@@ -14,6 +14,7 @@ import {
   formatPrice,
   getCategoryById,
   getProduct,
+  getProductDetail,
   imageFor,
   plainText,
   productSpecs,
@@ -21,15 +22,20 @@ import {
 } from "@/lib/catalog";
 
 export const Route = createFileRoute("/produto/$slug")({
-  head: ({ params }) => {
+  loader: ({ params }) => getProductDetail(params.slug),
+  head: ({ params, loaderData }) => {
     const produto = getProduct(params.slug);
+    const detalhe = loaderData ?? null;
     const titulo = produto
-      ? `${produto.seoTitulo}${produto.marca ? ` — ${produto.marca}` : ""} | DeLaTrip`
+      ? `${detalhe?.seoTitulo ?? produto.nome}${produto.marca ? ` — ${produto.marca}` : ""} | DeLaTrip`
       : "Produto não encontrado — DeLaTrip";
     const descricao = produto
-      ? (produto.seoDescricao ?? plainText(produto.descricaoHtml, 155))
+      ? (detalhe?.seoDescricao ?? plainText(detalhe?.descricaoHtml ?? "", 155))
       : "Este produto não está disponível no catálogo DeLaTrip.";
-    const foto = produto?.imagens.find((u) => u.startsWith("https://"));
+    const foto =
+      detalhe?.imagens.find((u: string) => u.startsWith("https://")) ??
+      produto?.imagem ??
+      undefined;
     const categoria = produto ? getCategoryById(produto.categoriaId) : undefined;
 
     return {
@@ -54,9 +60,9 @@ export const Route = createFileRoute("/produto/$slug")({
               "@context": "https://schema.org",
               "@type": "Product",
               name: produto.nome,
-              description: plainText(produto.descricaoHtml, 300),
+              description: plainText(detalhe?.descricaoHtml ?? "", 300),
               sku: produto.referencia ?? produto.id,
-              ...(produto.ean ? { gtin13: produto.ean } : {}),
+              ...(detalhe?.ean ? { gtin13: detalhe.ean } : {}),
               ...(foto ? { image: [foto] } : {}),
               ...(produto.marca
                 ? { brand: { "@type": "Brand", name: produto.marca } }
@@ -88,6 +94,7 @@ export const Route = createFileRoute("/produto/$slug")({
 
 function ProdutoPage() {
   const { slug } = Route.useParams();
+  const detalhe = Route.useLoaderData();
   const produto = getProduct(slug);
 
   if (!produto) {
@@ -111,7 +118,7 @@ function ProdutoPage() {
     .filter((p) => p.slug !== produto.slug)
     .slice(0, 4);
   const preco = produto.precoPromocional ?? produto.preco;
-  const specs = productSpecs(produto);
+  const specs = productSpecs(produto, detalhe);
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10">
@@ -134,9 +141,9 @@ function ProdutoPage() {
             height={1024}
             className="w-full rounded-lg border border-border bg-ink object-cover"
           />
-          {produto.imagens.length > 1 && (
+          {(detalhe?.imagens.length ?? 0) > 1 && (
             <div className="mt-3 grid grid-cols-4 gap-3">
-              {produto.imagens.slice(1, 5).map((url) => (
+              {detalhe!.imagens.slice(1, 5).map((url: string) => (
                 <img
                   key={url}
                   src={url}
@@ -178,7 +185,7 @@ function ProdutoPage() {
           <div
             className="prose-delatrip mt-6 text-sm leading-relaxed [&_li]:mt-1 [&_ul]:mt-3 [&_ul]:list-disc [&_ul]:pl-5"
             // Conteúdo vem do export da própria loja (HTML já higienizado no conversor).
-            dangerouslySetInnerHTML={{ __html: produto.descricaoHtml }}
+            dangerouslySetInnerHTML={{ __html: detalhe?.descricaoHtml ?? "" }}
           />
 
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">

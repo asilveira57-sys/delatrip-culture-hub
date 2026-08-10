@@ -212,7 +212,9 @@ export async function getProductDetail(
     k.endsWith(`/details/${nome}.json`),
   );
   if (!chave) return null;
-  const fatia = await detailModules[chave]();
+  const carregar = detailModules[chave];
+  if (!carregar) return null;
+  const fatia = await carregar();
   return fatia[slug] ?? null;
 }
 
