@@ -174,15 +174,46 @@ export function productsByBrand(marcaSlug: string) {
 export const destaques = products.filter((p) => p.destaque);
 
 /** Ficha técnica montada a partir dos campos do export + specs opcionais. */
-export function productSpecs(produto: Product): [string, string][] {
+export function productSpecs(
+  produto: Product,
+  detalhe?: ProductDetail | null,
+): [string, string][] {
   const base: [string, string | null][] = [
-    ...Object.entries(produto.specs ?? {}),
+    ...Object.entries(detalhe?.specs ?? {}),
     ["Referência", produto.referencia],
-    ["EAN", produto.ean],
-    ["NCM", produto.ncm],
-    ["Peso", produto.pesoGramas ? `${produto.pesoGramas} g` : null],
+    ["EAN", detalhe?.ean ?? null],
+    ["NCM", detalhe?.ncm ?? null],
+    ["Peso", detalhe?.pesoGramas ? `${detalhe.pesoGramas} g` : null],
   ];
   return base.filter((par): par is [string, string] => Boolean(par[1]));
+}
+
+/* ---------------- detalhes sob demanda ---------------- */
+
+const DETAIL_BUCKETS = 64;
+
+const detailModules = import.meta.glob<Record<string, ProductDetail>>(
+  "@/data/details/*.json",
+  { import: "default" },
+);
+
+function bucketOf(slug: string) {
+  let h = 0;
+  for (let i = 0; i < slug.length; i++) h = (h * 31 + slug.charCodeAt(i)) >>> 0;
+  return h % DETAIL_BUCKETS;
+}
+
+/** Carrega apenas a fatia de detalhes que contém o produto pedido. */
+export async function getProductDetail(
+  slug: string,
+): Promise<ProductDetail | null> {
+  const nome = String(bucketOf(slug)).padStart(2, "0");
+  const chave = Object.keys(detailModules).find((k) =>
+    k.endsWith(`/details/${nome}.json`),
+  );
+  if (!chave) return null;
+  const fatia = await detailModules[chave]();
+  return fatia[slug] ?? null;
 }
 
 /* ---------------- imagens ---------------- */
@@ -203,7 +234,7 @@ const fallbackPorCategoria: Record<string, string> = {
 
 
 export function imageFor(produto: Product) {
-  if (produto.imagens.length > 0) return produto.imagens[0];
+  if (produto.imagem) return produto.imagem;
   const categoria = getCategoryById(produto.categoriaId);
   const raiz = categoria ? rootOf(categoria).slug : "";
   return fallbackPorCategoria[raiz] ?? imgSedas;
