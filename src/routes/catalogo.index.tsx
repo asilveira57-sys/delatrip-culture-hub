@@ -80,6 +80,20 @@ function Catalogo() {
   const [visiveis, setVisiveis] = useState(PAGINA);
   useEffect(() => setVisiveis(PAGINA), [q, categoria, marca, ordem]);
 
+  // O campo de busca atualiza a URL com atraso: digitar não refaz o filtro
+  // dos ~1.500 produtos a cada tecla.
+  const [termo, setTermo] = useState(q);
+  useEffect(() => setTermo(q), [q]);
+  useEffect(() => {
+    if (termo === q) return;
+    const id = setTimeout(
+      () => navigate({ search: (prev: CatalogoSearch) => ({ ...prev, q: termo }) }),
+      250,
+    );
+    return () => clearTimeout(id);
+  }, [termo, q, navigate]);
+
+
   const nomeCategoria = categoria ? getCategoryByPath(categoria)?.nome : undefined;
 
   const chips = [
@@ -151,8 +165,9 @@ function Catalogo() {
                   aria-hidden="true"
                 />
                 <Input
-                  value={q}
-                  onChange={(e) => setSearch({ q: e.target.value.slice(0, 100) })}
+                  value={termo}
+                  onChange={(e) => setTermo(e.target.value.slice(0, 100))}
+
                   placeholder="Filtrar por nome, marca ou referência"
                   aria-label="Filtrar produtos do catálogo"
                   className="pl-9"

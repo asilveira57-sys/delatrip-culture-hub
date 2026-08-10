@@ -1,4 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
+
 
 import { absoluteUrl, breadcrumbLd, canonical, jsonLd } from "@/lib/seo";
 
@@ -52,9 +54,13 @@ export const Route = createFileRoute("/catalogo/$")({
   component: CategoriaPage,
 });
 
+const PAGINA = 48;
+
 function CategoriaPage() {
   const { _splat } = Route.useParams();
   const categoria = getCategoryByPath(_splat ?? "");
+  const [visiveis, setVisiveis] = useState(PAGINA);
+  useEffect(() => setVisiveis(PAGINA), [_splat]);
 
   if (!categoria) {
     return (
@@ -80,6 +86,8 @@ function CategoriaPage() {
 
   const subcategorias = childrenOf(categoria.id);
   const lista = productsByCategory(categoria);
+
+
   const path = categoryPath(categoria);
   const trilha = path.split("/");
   const pai =
@@ -130,12 +138,22 @@ function CategoriaPage() {
             }
           />
         ) : (
-          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {lista.map((p) => (
-              <ProductCard key={p.slug} produto={p} />
-            ))}
-          </div>
+          <>
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {lista.slice(0, visiveis).map((p) => (
+                <ProductCard key={p.slug} produto={p} />
+              ))}
+            </div>
+            {visiveis < lista.length && (
+              <div className="mt-8 flex justify-center">
+                <Button variant="outline" onClick={() => setVisiveis((v) => v + PAGINA)}>
+                  Carregar mais ({lista.length - visiveis} restantes)
+                </Button>
+              </div>
+            )}
+          </>
         )}
+
       </div>
     </>
   );
