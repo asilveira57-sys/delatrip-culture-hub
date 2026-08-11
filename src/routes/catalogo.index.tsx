@@ -127,44 +127,8 @@ function Catalogo() {
 
       <div className="mx-auto max-w-6xl px-4 py-12">
         <div className="grid gap-10 lg:grid-cols-[220px_1fr]">
-          <aside aria-label="Filtros">
-            <h2 className="eyebrow text-primary">Categorias</h2>
-            <ul className="mt-3 space-y-1">
-              <li>
-                <FilterButton ativo={!categoria} onClick={() => setSearch({ categoria: "" })}>
-                  Todas
-                </FilterButton>
-              </li>
-              {rootCategories.map((c) => (
-                <li key={c.id}>
-                  <FilterButton
-                    ativo={categoria === c.slug}
-                    onClick={() => setSearch({ categoria: c.slug })}
-                  >
-                    {c.nome}
-                  </FilterButton>
-                </li>
-              ))}
-            </ul>
-
-            <h2 className="eyebrow mt-8 text-primary">Marcas</h2>
-            <ul className="mt-3 space-y-1">
-              <li>
-                <FilterButton ativo={!marca} onClick={() => setSearch({ marca: "" })}>
-                  Todas
-                </FilterButton>
-              </li>
-              {brands.map((b) => (
-                <li key={b.slug}>
-                  <FilterButton
-                    ativo={marca === b.slug}
-                    onClick={() => setSearch({ marca: b.slug })}
-                  >
-                    {b.nome}
-                  </FilterButton>
-                </li>
-              ))}
-            </ul>
+          <aside aria-label="Filtros" className="hidden lg:block">
+            <FiltersPanel categoria={categoria} marca={marca} onChange={setSearch} />
           </aside>
 
           <div>
@@ -187,8 +151,34 @@ function Catalogo() {
                 <p className="text-sm text-muted-foreground">
                   {lista.length} {lista.length === 1 ? "produto" : "produtos"}
                 </p>
-                <SortSelect valor={ordem} onChange={(v) => setSearch({ ordem: v })} />
+                <div className="flex items-center gap-2">
+                  <Sheet open={filtrosAbertos} onOpenChange={setFiltrosAbertos}>
+                    <SheetTrigger asChild>
+                      <Button variant="outline" size="sm" className="lg:hidden">
+                        <SlidersHorizontal className="size-4" aria-hidden="true" />
+                        Filtros
+                      </Button>
+                    </SheetTrigger>
+                    <SheetContent side="left" className="w-[85vw] max-w-sm overflow-y-auto">
+                      <SheetHeader>
+                        <SheetTitle>Filtros</SheetTitle>
+                      </SheetHeader>
+                      <div className="mt-4">
+                        <FiltersPanel
+                          categoria={categoria}
+                          marca={marca}
+                          onChange={(patch) => {
+                            setSearch(patch);
+                            setFiltrosAbertos(false);
+                          }}
+                        />
+                      </div>
+                    </SheetContent>
+                  </Sheet>
+                  <SortSelect valor={ordem} onChange={(v) => setSearch({ ordem: v })} />
+                </div>
               </div>
+
               <ActiveChips chips={chips} />
             </div>
 
