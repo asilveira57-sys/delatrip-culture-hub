@@ -87,7 +87,24 @@ export const Route = createFileRoute("/produto/$slug")({
                 ? { brand: { "@type": "Brand", name: produto.marca } }
                 : {}),
               ...(categoria ? { category: categoria.nome } : {}),
+              offers: {
+                "@type": "Offer",
+                url: produto.urlLoja ?? absoluteUrl(`/produto/${produto.slug}`),
+                priceCurrency: "BRL",
+                availability: produto.disponivel
+                  ? "https://schema.org/InStock"
+                  : "https://schema.org/OutOfStock",
+                ...(SHOW_PRICES && (produto.precoPromocional ?? produto.preco)
+                  ? {
+                      price: String(produto.precoPromocional ?? produto.preco),
+                    }
+                  : {}),
+                ...(produto.marca
+                  ? { seller: { "@type": "Organization", name: SITE.nome } }
+                  : { seller: { "@type": "Organization", name: SITE.nome } }),
+              },
               url: absoluteUrl(`/produto/${produto.slug}`),
+
             }),
             jsonLd(
               breadcrumbLd([
