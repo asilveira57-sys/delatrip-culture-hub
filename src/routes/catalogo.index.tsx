@@ -2,22 +2,32 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 
 import { absoluteUrl, canonical } from "@/lib/seo";
 import { useEffect, useMemo, useState } from "react";
-import { Search } from "lucide-react";
+import { Search, SlidersHorizontal } from "lucide-react";
 
-import { ActiveChips, FilterButton, SortSelect } from "@/components/CatalogFilters";
+import {
+  ActiveChips,
+  FiltersPanel,
+  SortSelect,
+} from "@/components/CatalogFilters";
 import { EmptyState } from "@/components/EmptyState";
 import { PageHeader } from "@/components/PageHeader";
 import { ProductCard } from "@/components/ProductCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import {
   brandName,
-  brands,
   filterProducts,
   getCategoryByPath,
-  rootCategories,
   type SortKey,
 } from "@/lib/catalog";
+
 
 type CatalogoSearch = {
   q?: string;
