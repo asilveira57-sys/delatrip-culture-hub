@@ -6,6 +6,8 @@ import { ExternalLink, ShoppingBag } from "lucide-react";
 import { EmptyState } from "@/components/EmptyState";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { ProductCard } from "@/components/ProductCard";
+import { ProductGallery } from "@/components/ProductGallery";
+
 import { SectionHeading } from "@/components/SectionHeading";
 import { Button } from "@/components/ui/button";
 import { SHOW_PRICES, SITE } from "@/config/site";
