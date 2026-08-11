@@ -133,28 +133,12 @@ function ProdutoPage() {
       />
 
       <div className="grid gap-10 lg:grid-cols-2">
-        <div>
-          <img
-            src={imageFor(produto)}
-            alt={produto.nome}
-            width={1024}
-            height={1024}
-            className="w-full rounded-lg border border-border bg-ink object-cover"
-          />
-          {(detalhe?.imagens.length ?? 0) > 1 && (
-            <div className="mt-3 grid grid-cols-4 gap-3">
-              {detalhe!.imagens.slice(1, 5).map((url: string) => (
-                <img
-                  key={url}
-                  src={url}
-                  alt={`${produto.nome} — imagem adicional`}
-                  loading="lazy"
-                  className="aspect-square w-full rounded-md border border-border object-cover"
-                />
-              ))}
-            </div>
-          )}
-        </div>
+        <ProductGallery
+          nome={produto.nome}
+          principal={imageFor(produto)}
+          imagens={detalhe?.imagens ?? []}
+        />
+
 
         <div>
           <p className="eyebrow text-primary">{produto.marca ?? "DeLaTrip"}</p>
