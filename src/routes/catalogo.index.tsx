@@ -88,6 +88,8 @@ function Catalogo() {
 
   const PAGINA = 48;
   const [visiveis, setVisiveis] = useState(PAGINA);
+  const [filtrosAbertos, setFiltrosAbertos] = useState(false);
+
   useEffect(() => setVisiveis(PAGINA), [q, categoria, marca, ordem]);
 
   // O campo de busca atualiza a URL com atraso: digitar não refaz o filtro
