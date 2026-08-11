@@ -31,30 +31,47 @@ export const Route = createFileRoute("/produto/$slug")({
     const titulo = produto
       ? `${detalhe?.seoTitulo ?? produto.nome}${produto.marca ? ` — ${produto.marca}` : ""} | DeLaTrip`
       : "Produto não encontrado — DeLaTrip";
+    const categoria = produto ? getCategoryById(produto.categoriaId) : undefined;
+    const resumo = detalhe?.seoDescricao?.trim()
+      ? detalhe.seoDescricao.trim()
+      : plainText(detalhe?.descricaoHtml ?? "", 155);
     const descricao = produto
-      ? (detalhe?.seoDescricao ?? plainText(detalhe?.descricaoHtml ?? "", 155))
+      ? resumo ||
+        `${produto.nome}${produto.marca ? ` da marca ${produto.marca}` : ""}${
+          categoria ? ` na categoria ${categoria.nome}` : ""
+        }. Confira no catálogo da DeLaTrip.`
       : "Este produto não está disponível no catálogo DeLaTrip.";
     const foto =
       detalhe?.imagens.find((u: string) => u.startsWith("https://")) ??
       produto?.imagem ??
       undefined;
-    const categoria = produto ? getCategoryById(produto.categoriaId) : undefined;
 
     return {
       meta: [
         { title: titulo },
         { name: "description", content: descricao },
+        { property: "og:site_name", content: SITE.nome },
+        { property: "og:locale", content: "pt_BR" },
         { property: "og:title", content: titulo },
         { property: "og:description", content: descricao },
         { property: "og:type", content: "product" },
         { property: "og:url", content: absoluteUrl(`/produto/${params.slug}`) },
+        {
+          name: "twitter:card",
+          content: foto ? "summary_large_image" : "summary",
+        },
+        { name: "twitter:title", content: titulo },
+        { name: "twitter:description", content: descricao },
         ...(foto
           ? [
               { property: "og:image", content: foto },
+              { property: "og:image:alt", content: produto?.nome ?? "DeLaTrip" },
               { name: "twitter:image", content: foto },
             ]
           : []),
+        ...(produto ? [] : [{ name: "robots", content: "noindex" }]),
       ],
+
       links: [canonical(`/produto/${params.slug}`)],
       scripts: produto
         ? [
@@ -70,7 +87,23 @@ export const Route = createFileRoute("/produto/$slug")({
                 ? { brand: { "@type": "Brand", name: produto.marca } }
                 : {}),
               ...(categoria ? { category: categoria.nome } : {}),
+              offers: {
+                "@type": "Offer",
+                url: produto.urlLoja ?? absoluteUrl(`/produto/${produto.slug}`),
+                priceCurrency: "BRL",
+                availability: produto.disponivel
+                  ? "https://schema.org/InStock"
+                  : "https://schema.org/OutOfStock",
+                ...(SHOW_PRICES && (produto.precoPromocional ?? produto.preco)
+                  ? {
+                      price: String(produto.precoPromocional ?? produto.preco),
+                    }
+                  : {}),
+                seller: { "@type": "Organization", name: SITE.nome },
+
+              },
               url: absoluteUrl(`/produto/${produto.slug}`),
+
             }),
             jsonLd(
               breadcrumbLd([
