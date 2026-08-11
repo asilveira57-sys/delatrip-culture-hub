@@ -6,6 +6,8 @@ import { ExternalLink, ShoppingBag } from "lucide-react";
 import { EmptyState } from "@/components/EmptyState";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { ProductCard } from "@/components/ProductCard";
+import { ProductGallery } from "@/components/ProductGallery";
+
 import { SectionHeading } from "@/components/SectionHeading";
 import { Button } from "@/components/ui/button";
 import { SHOW_PRICES, SITE } from "@/config/site";
@@ -133,28 +135,12 @@ function ProdutoPage() {
       />
 
       <div className="grid gap-10 lg:grid-cols-2">
-        <div>
-          <img
-            src={imageFor(produto)}
-            alt={produto.nome}
-            width={1024}
-            height={1024}
-            className="w-full rounded-lg border border-border bg-ink object-cover"
-          />
-          {(detalhe?.imagens.length ?? 0) > 1 && (
-            <div className="mt-3 grid grid-cols-4 gap-3">
-              {detalhe!.imagens.slice(1, 5).map((url: string) => (
-                <img
-                  key={url}
-                  src={url}
-                  alt={`${produto.nome} — imagem adicional`}
-                  loading="lazy"
-                  className="aspect-square w-full rounded-md border border-border object-cover"
-                />
-              ))}
-            </div>
-          )}
-        </div>
+        <ProductGallery
+          nome={produto.nome}
+          principal={imageFor(produto)}
+          imagens={detalhe?.imagens ?? []}
+        />
+
 
         <div>
           <p className="eyebrow text-primary">{produto.marca ?? "DeLaTrip"}</p>
@@ -183,7 +169,7 @@ function ProdutoPage() {
           )}
 
           <div
-            className="prose-delatrip mt-6 text-sm leading-relaxed [&_li]:mt-1 [&_ul]:mt-3 [&_ul]:list-disc [&_ul]:pl-5"
+            className="prose-delatrip mt-6 text-sm leading-relaxed [&_img]:mx-auto [&_img]:my-4 [&_img]:h-auto [&_img]:max-h-72 [&_img]:w-auto [&_img]:max-w-full [&_img]:rounded-md [&_li]:mt-1 [&_ul]:mt-3 [&_ul]:list-disc [&_ul]:pl-5"
             // Conteúdo vem do export da própria loja (HTML já higienizado no conversor).
             dangerouslySetInnerHTML={{ __html: detalhe?.descricaoHtml ?? "" }}
           />
