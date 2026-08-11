@@ -169,7 +169,7 @@ function ProdutoPage() {
           )}
 
           <div
-            className="prose-delatrip mt-6 text-sm leading-relaxed [&_li]:mt-1 [&_ul]:mt-3 [&_ul]:list-disc [&_ul]:pl-5"
+            className="prose-delatrip mt-6 text-sm leading-relaxed [&_img]:mx-auto [&_img]:my-4 [&_img]:h-auto [&_img]:max-h-72 [&_img]:w-auto [&_img]:max-w-full [&_img]:rounded-md [&_li]:mt-1 [&_ul]:mt-3 [&_ul]:list-disc [&_ul]:pl-5"
             // Conteúdo vem do export da própria loja (HTML já higienizado no conversor).
             dangerouslySetInnerHTML={{ __html: detalhe?.descricaoHtml ?? "" }}
           />
