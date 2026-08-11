@@ -99,9 +99,8 @@ export const Route = createFileRoute("/produto/$slug")({
                       price: String(produto.precoPromocional ?? produto.preco),
                     }
                   : {}),
-                ...(produto.marca
-                  ? { seller: { "@type": "Organization", name: SITE.nome } }
-                  : { seller: { "@type": "Organization", name: SITE.nome } }),
+                seller: { "@type": "Organization", name: SITE.nome },
+
               },
               url: absoluteUrl(`/produto/${produto.slug}`),
 
