@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { Link } from "@tanstack/react-router";
 
 import { Input } from "@/components/ui/input";
 import { brands, rootCategories, SORT_OPTIONS, type SortKey } from "@/lib/catalog";

@@ -130,7 +130,7 @@ function Catalogo() {
       <div className="mx-auto max-w-6xl px-4 py-12">
         <div className="grid gap-10 lg:grid-cols-[220px_1fr]">
           <aside aria-label="Filtros" className="hidden lg:block">
-            <FiltersPanel categoria={categoria} marca={marca} onChange={setSearch} />
+            <FiltersPanel categoria={categoria} onChange={setSearch} />
           </aside>
 
           <div>
@@ -168,7 +168,6 @@ function Catalogo() {
                       <div className="mt-4">
                         <FiltersPanel
                           categoria={categoria}
-                          marca={marca}
                           onChange={(patch) => {
                             setSearch(patch);
                             setFiltrosAbertos(false);
