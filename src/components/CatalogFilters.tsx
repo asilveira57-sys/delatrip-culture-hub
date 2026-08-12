@@ -89,12 +89,10 @@ export function ActiveChips({
 
 export function FiltersPanel({
   categoria,
-  marca,
   onChange,
 }: {
   categoria: string;
-  marca: string;
-  onChange: (patch: { categoria?: string; marca?: string }) => void;
+  onChange: (patch: { categoria?: string }) => void;
 }) {
   const [termoMarca, setTermoMarca] = useState("");
   const [verTodas, setVerTodas] = useState(false);
@@ -128,6 +126,9 @@ export function FiltersPanel({
       </ul>
 
       <h2 className="eyebrow mt-8 text-primary">Marcas</h2>
+      <p className="mt-1 text-xs text-muted-foreground">
+        Cada marca tem sua página com apresentação e produtos relacionados.
+      </p>
       <Input
         value={termoMarca}
         onChange={(e) => setTermoMarca(e.target.value)}
@@ -136,22 +137,20 @@ export function FiltersPanel({
         className="mt-3 h-9"
       />
       <ul className="mt-2 space-y-1">
-        <li>
-          <FilterButton ativo={!marca} onClick={() => onChange({ marca: "" })}>
-            Todas
-          </FilterButton>
-        </li>
         {visiveis.map((b) => (
           <li key={b.slug}>
-            <FilterButton
-              ativo={marca === b.slug}
-              onClick={() => onChange({ marca: b.slug })}
+            <Link
+              to="/$brandSlug"
+              params={{ brandSlug: b.slug }}
+              className="block rounded-md px-3 py-2 text-left text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+              activeProps={{ className: "bg-primary text-primary-foreground" }}
             >
               {b.nome}
-            </FilterButton>
+            </Link>
           </li>
         ))}
       </ul>
+
       {!termoMarca && filtradas.length > 12 && (
         <button
           type="button"
