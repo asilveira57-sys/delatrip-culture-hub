@@ -25,6 +25,12 @@ import {
 
 export const Route = createFileRoute("/produto/$slug")({
   loader: ({ params }) => getProductDetail(params.slug),
+  headers: ({ params }) => {
+    const produto = getProduct(params.slug);
+    return {
+      "X-Robots-Tag": produto ? "index, follow" : "noindex, nofollow",
+    };
+  },
   head: ({ params, loaderData }) => {
     const produto = getProduct(params.slug);
     const detalhe = loaderData ?? null;
@@ -50,6 +56,7 @@ export const Route = createFileRoute("/produto/$slug")({
       meta: [
         { title: titulo },
         { name: "description", content: descricao },
+        { name: "robots", content: produto ? "index, follow" : "noindex, nofollow" },
         { property: "og:site_name", content: SITE.nome },
         { property: "og:locale", content: "pt_BR" },
         { property: "og:title", content: titulo },
@@ -69,7 +76,6 @@ export const Route = createFileRoute("/produto/$slug")({
               { name: "twitter:image", content: foto },
             ]
           : []),
-        ...(produto ? [] : [{ name: "robots", content: "noindex" }]),
       ],
 
       links: [canonical(`/produto/${params.slug}`)],
