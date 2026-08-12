@@ -12,7 +12,7 @@ const urls=[
  ["/sobre",0.5],["/contato",0.5],["/faq",0.5],["/busca",0.3],
  ["/legal/termos",0.3],["/legal/privacidade",0.3],["/legal/aviso-legal",0.3],
  ...cats.map(c=>[`/catalogo/${path(c)}`,0.8]),
- ...brands.map(b=>[`/marcas/${b.slug}`,0.6]),
+ ...brands.map(b=>[`/${b.slug}`,0.6]),
  ...products.map(p=>[`/produto/${p.slug}`,0.6]),
  ...posts.map(p=>[`/blog/${p.slug}`,0.5]),
 ];
