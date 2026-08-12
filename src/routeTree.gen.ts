@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as BrandSlugRouteImport } from './routes/$brandSlug'
 import { Route as AcessoriosRouteImport } from './routes/acessorios'
 import { Route as BuscaRouteImport } from './routes/busca'
 import { Route as ContatoRouteImport } from './routes/contato'
@@ -30,6 +31,11 @@ import { Route as ProdutoSlugRouteImport } from './routes/produto.$slug'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BrandSlugRoute = BrandSlugRouteImport.update({
+  id: '/$brandSlug',
+  path: '/$brandSlug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AcessoriosRoute = AcessoriosRouteImport.update({
@@ -115,6 +121,7 @@ const ProdutoSlugRoute = ProdutoSlugRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/$brandSlug': typeof BrandSlugRoute
   '/acessorios': typeof AcessoriosRoute
   '/busca': typeof BuscaRoute
   '/contato': typeof ContatoRoute
@@ -134,6 +141,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/$brandSlug': typeof BrandSlugRoute
   '/acessorios': typeof AcessoriosRoute
   '/busca': typeof BuscaRoute
   '/contato': typeof ContatoRoute
@@ -154,6 +162,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/$brandSlug': typeof BrandSlugRoute
   '/acessorios': typeof AcessoriosRoute
   '/busca': typeof BuscaRoute
   '/contato': typeof ContatoRoute
@@ -175,6 +184,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/$brandSlug'
     | '/acessorios'
     | '/busca'
     | '/contato'
@@ -194,6 +204,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/$brandSlug'
     | '/acessorios'
     | '/busca'
     | '/contato'
@@ -213,6 +224,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/$brandSlug'
     | '/acessorios'
     | '/busca'
     | '/contato'
@@ -233,6 +245,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  BrandSlugRoute: typeof BrandSlugRoute
   AcessoriosRoute: typeof AcessoriosRoute
   BuscaRoute: typeof BuscaRoute
   ContatoRoute: typeof ContatoRoute
@@ -258,6 +271,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/$brandSlug': {
+      id: '/$brandSlug'
+      path: '/$brandSlug'
+      fullPath: '/$brandSlug'
+      preLoaderRoute: typeof BrandSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/acessorios': {
@@ -377,6 +397,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  BrandSlugRoute: BrandSlugRoute,
   AcessoriosRoute: AcessoriosRoute,
   BuscaRoute: BuscaRoute,
   ContatoRoute: ContatoRoute,
