@@ -108,7 +108,53 @@ const IMG_PREFIX = "https://images.tcdn.com.br/img/img_prod/";
 const LOJA_PREFIX = "https://www.delatrip.com.br/";
 const ML_PREFIX = "https://lista.mercadolivre.com.br/";
 
-export const categories = (categoriesData as Category[]).filter((c) => c.ativo);
+/* ---------------- restrição legal (RDC ANVISA nº 558/2021) ----------------
+ * Produtos derivados do tabaco não podem ser comercializados pela internet.
+ * Este é o ponto único de restrição: `categories` e `products` derivam daqui,
+ * então busca, filtros, páginas de marca e contagens seguem automaticamente.
+ */
+
+const rawCategories = (categoriesData as Category[]).filter((c) => c.ativo);
+const rawById = new Map(rawCategories.map((c) => [c.id, c]));
+
+/** Raízes cujo conteúdo é produto fumígeno derivado do tabaco. */
+const RAIZES_RESTRITAS = new Set(["tabaco", "charutos"]);
+/** Exceções: não são derivados do tabaco (blend sem nicotina / acessórios). */
+const CATEGORIAS_LIBERADAS = new Set(["ervas-flores", "acessorios-tabaco"]);
+
+const acessoriosId =
+  rawCategories.find((c) => !c.paiId && c.slug === "acessorios")?.id ?? null;
+
+function rawRootOf(categoria: Category): Category {
+  let atual: Category = categoria;
+  let guard = 0;
+  while (atual.paiId && guard++ < 6) {
+    const pai = rawById.get(atual.paiId);
+    if (!pai) break;
+    atual = pai;
+  }
+  return atual;
+}
+
+/** True quando a categoria representa produto derivado do tabaco. */
+export function categoriaRestrita(categoria: Category): boolean {
+  if (CATEGORIAS_LIBERADAS.has(categoria.slug)) return false;
+  return RAIZES_RESTRITAS.has(rawRootOf(categoria).slug);
+}
+
+const idsRestritos = new Set(
+  rawCategories.filter(categoriaRestrita).map((c) => c.id),
+);
+
+export const categories = rawCategories
+  .filter((c) => !idsRestritos.has(c.id))
+  // Reparenta as liberadas (hoje filhas de "tabaco") sob "acessorios".
+  .map((c) =>
+    CATEGORIAS_LIBERADAS.has(c.slug) && acessoriosId
+      ? { ...c, paiId: acessoriosId, nivel: 2 }
+      : c,
+  );
+
 export const brands = brandsData as Brand[];
 export const posts = [...(postsData as Post[])].sort((a, b) =>
   b.data.localeCompare(a.data),
@@ -154,6 +200,7 @@ function hydrate(r: SlimProduct): Product {
 }
 
 export const products = (productsData as SlimProduct[])
+  .filter((r) => !(r.c && idsRestritos.has(r.c)))
   .map(hydrate)
   .filter((p) => p.disponivel);
 
