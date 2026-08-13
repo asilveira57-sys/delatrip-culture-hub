@@ -18,4 +18,4 @@ export const SITE = {
 } as const;
 
 export const AVISO_SANITARIO =
-  "Venda proibida para menores de 18 anos. Este site não realiza vendas online. Os produtos aqui apresentados são acessórios para fumantes e produtos derivados do tabaco; fumar é prejudicial à saúde e pode causar doenças graves. Consulte a legislação vigente (Lei nº 9.294/1996 e RDC ANVISA nº 14/2012).";
+  "Conteúdo destinado a maiores de 18 anos. Este site não realiza vendas online e não comercializa produtos derivados do tabaco: a RDC ANVISA nº 558/2021 proíbe a venda desses produtos pela internet. As informações sobre tabaco publicadas aqui têm caráter exclusivamente informativo. Fumar é prejudicial à saúde e pode causar doenças graves. Consulte a legislação vigente (Lei nº 9.294/1996 e RDC ANVISA nº 558/2021).";

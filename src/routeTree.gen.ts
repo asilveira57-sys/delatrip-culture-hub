@@ -16,7 +16,6 @@ import { Route as BuscaRouteImport } from './routes/busca'
 import { Route as ContatoRouteImport } from './routes/contato'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as SobreRouteImport } from './routes/sobre'
-import { Route as TabacosRouteImport } from './routes/tabacos'
 import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as CatalogoIndexRouteImport } from './routes/catalogo.index'
@@ -62,11 +61,6 @@ const FaqRoute = FaqRouteImport.update({
 const SobreRoute = SobreRouteImport.update({
   id: '/sobre',
   path: '/sobre',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const TabacosRoute = TabacosRouteImport.update({
-  id: '/tabacos',
-  path: '/tabacos',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BlogIndexRoute = BlogIndexRouteImport.update({
@@ -133,7 +127,6 @@ export interface FileRoutesByFullPath {
   '/contato': typeof ContatoRoute
   '/faq': typeof FaqRoute
   '/sobre': typeof SobreRoute
-  '/tabacos': typeof TabacosRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/catalogo/$': typeof CatalogoSplatRoute
   '/conteudo/tabaco': typeof ConteudoTabacoRoute
@@ -154,7 +147,6 @@ export interface FileRoutesByTo {
   '/contato': typeof ContatoRoute
   '/faq': typeof FaqRoute
   '/sobre': typeof SobreRoute
-  '/tabacos': typeof TabacosRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/catalogo/$': typeof CatalogoSplatRoute
   '/conteudo/tabaco': typeof ConteudoTabacoRoute
@@ -176,7 +168,6 @@ export interface FileRoutesById {
   '/contato': typeof ContatoRoute
   '/faq': typeof FaqRoute
   '/sobre': typeof SobreRoute
-  '/tabacos': typeof TabacosRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/catalogo/$': typeof CatalogoSplatRoute
   '/conteudo/tabaco': typeof ConteudoTabacoRoute
@@ -199,7 +190,6 @@ export interface FileRouteTypes {
     | '/contato'
     | '/faq'
     | '/sobre'
-    | '/tabacos'
     | '/blog/$slug'
     | '/catalogo/$'
     | '/conteudo/tabaco'
@@ -220,7 +210,6 @@ export interface FileRouteTypes {
     | '/contato'
     | '/faq'
     | '/sobre'
-    | '/tabacos'
     | '/blog/$slug'
     | '/catalogo/$'
     | '/conteudo/tabaco'
@@ -241,7 +230,6 @@ export interface FileRouteTypes {
     | '/contato'
     | '/faq'
     | '/sobre'
-    | '/tabacos'
     | '/blog/$slug'
     | '/catalogo/$'
     | '/conteudo/tabaco'
@@ -263,7 +251,6 @@ export interface RootRouteChildren {
   ContatoRoute: typeof ContatoRoute
   FaqRoute: typeof FaqRoute
   SobreRoute: typeof SobreRoute
-  TabacosRoute: typeof TabacosRoute
   BlogSlugRoute: typeof BlogSlugRoute
   CatalogoSplatRoute: typeof CatalogoSplatRoute
   ConteudoTabacoRoute: typeof ConteudoTabacoRoute
@@ -326,13 +313,6 @@ declare module '@tanstack/react-router' {
       path: '/sobre'
       fullPath: '/sobre'
       preLoaderRoute: typeof SobreRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/tabacos': {
-      id: '/tabacos'
-      path: '/tabacos'
-      fullPath: '/tabacos'
-      preLoaderRoute: typeof TabacosRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/blog/': {
@@ -423,7 +403,6 @@ const rootRouteChildren: RootRouteChildren = {
   ContatoRoute: ContatoRoute,
   FaqRoute: FaqRoute,
   SobreRoute: SobreRoute,
-  TabacosRoute: TabacosRoute,
   BlogSlugRoute: BlogSlugRoute,
   CatalogoSplatRoute: CatalogoSplatRoute,
   ConteudoTabacoRoute: ConteudoTabacoRoute,
