@@ -200,6 +200,7 @@ function hydrate(r: SlimProduct): Product {
 }
 
 export const products = (productsData as SlimProduct[])
+  .filter((r) => !(r.c && idsRestritos.has(r.c)))
   .map(hydrate)
   .filter((p) => p.disponivel);
 
