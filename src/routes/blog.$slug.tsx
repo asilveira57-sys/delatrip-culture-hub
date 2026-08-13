@@ -83,7 +83,19 @@ function PostPage() {
         className="mt-8 aspect-[16/9] w-full rounded-lg border border-border bg-ink object-cover"
       />
       <p className="mt-8 text-lg leading-relaxed text-muted-foreground">{post.resumo}</p>
-      <p className="mt-6 leading-relaxed">{post.conteudo}</p>
+      <div className="mt-6 space-y-4">
+        {post.conteudo.split("\n\n").map((paragrafo, i) =>
+          paragrafo.startsWith("## ") ? (
+            <h2 key={i} className="pt-4 text-xl font-semibold uppercase">
+              {paragrafo.slice(3)}
+            </h2>
+          ) : (
+            <p key={i} className="leading-relaxed">
+              {paragrafo}
+            </p>
+          ),
+        )}
+      </div>
     </article>
   );
 }
