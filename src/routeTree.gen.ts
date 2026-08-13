@@ -21,6 +21,7 @@ import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as CatalogoIndexRouteImport } from './routes/catalogo.index'
 import { Route as CatalogoSplatRouteImport } from './routes/catalogo.$'
+import { Route as ConteudoTabacoRouteImport } from './routes/conteudo.tabaco'
 import { Route as LegalAvisoLegalRouteImport } from './routes/legal.aviso-legal'
 import { Route as LegalPrivacidadeRouteImport } from './routes/legal.privacidade'
 import { Route as LegalTermosRouteImport } from './routes/legal.termos'
@@ -88,6 +89,11 @@ const CatalogoSplatRoute = CatalogoSplatRouteImport.update({
   path: '/catalogo/$',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ConteudoTabacoRoute = ConteudoTabacoRouteImport.update({
+  id: '/conteudo/tabaco',
+  path: '/conteudo/tabaco',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LegalAvisoLegalRoute = LegalAvisoLegalRouteImport.update({
   id: '/legal/aviso-legal',
   path: '/legal/aviso-legal',
@@ -130,6 +136,7 @@ export interface FileRoutesByFullPath {
   '/tabacos': typeof TabacosRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/catalogo/$': typeof CatalogoSplatRoute
+  '/conteudo/tabaco': typeof ConteudoTabacoRoute
   '/legal/aviso-legal': typeof LegalAvisoLegalRoute
   '/legal/privacidade': typeof LegalPrivacidadeRoute
   '/legal/termos': typeof LegalTermosRoute
@@ -150,6 +157,7 @@ export interface FileRoutesByTo {
   '/tabacos': typeof TabacosRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/catalogo/$': typeof CatalogoSplatRoute
+  '/conteudo/tabaco': typeof ConteudoTabacoRoute
   '/legal/aviso-legal': typeof LegalAvisoLegalRoute
   '/legal/privacidade': typeof LegalPrivacidadeRoute
   '/legal/termos': typeof LegalTermosRoute
@@ -171,6 +179,7 @@ export interface FileRoutesById {
   '/tabacos': typeof TabacosRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/catalogo/$': typeof CatalogoSplatRoute
+  '/conteudo/tabaco': typeof ConteudoTabacoRoute
   '/legal/aviso-legal': typeof LegalAvisoLegalRoute
   '/legal/privacidade': typeof LegalPrivacidadeRoute
   '/legal/termos': typeof LegalTermosRoute
@@ -193,6 +202,7 @@ export interface FileRouteTypes {
     | '/tabacos'
     | '/blog/$slug'
     | '/catalogo/$'
+    | '/conteudo/tabaco'
     | '/legal/aviso-legal'
     | '/legal/privacidade'
     | '/legal/termos'
@@ -213,6 +223,7 @@ export interface FileRouteTypes {
     | '/tabacos'
     | '/blog/$slug'
     | '/catalogo/$'
+    | '/conteudo/tabaco'
     | '/legal/aviso-legal'
     | '/legal/privacidade'
     | '/legal/termos'
@@ -233,6 +244,7 @@ export interface FileRouteTypes {
     | '/tabacos'
     | '/blog/$slug'
     | '/catalogo/$'
+    | '/conteudo/tabaco'
     | '/legal/aviso-legal'
     | '/legal/privacidade'
     | '/legal/termos'
@@ -254,6 +266,7 @@ export interface RootRouteChildren {
   TabacosRoute: typeof TabacosRoute
   BlogSlugRoute: typeof BlogSlugRoute
   CatalogoSplatRoute: typeof CatalogoSplatRoute
+  ConteudoTabacoRoute: typeof ConteudoTabacoRoute
   LegalAvisoLegalRoute: typeof LegalAvisoLegalRoute
   LegalPrivacidadeRoute: typeof LegalPrivacidadeRoute
   LegalTermosRoute: typeof LegalTermosRoute
@@ -350,6 +363,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CatalogoSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/conteudo/tabaco': {
+      id: '/conteudo/tabaco'
+      path: '/conteudo/tabaco'
+      fullPath: '/conteudo/tabaco'
+      preLoaderRoute: typeof ConteudoTabacoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/legal/aviso-legal': {
       id: '/legal/aviso-legal'
       path: '/legal/aviso-legal'
@@ -406,6 +426,7 @@ const rootRouteChildren: RootRouteChildren = {
   TabacosRoute: TabacosRoute,
   BlogSlugRoute: BlogSlugRoute,
   CatalogoSplatRoute: CatalogoSplatRoute,
+  ConteudoTabacoRoute: ConteudoTabacoRoute,
   LegalAvisoLegalRoute: LegalAvisoLegalRoute,
   LegalPrivacidadeRoute: LegalPrivacidadeRoute,
   LegalTermosRoute: LegalTermosRoute,
