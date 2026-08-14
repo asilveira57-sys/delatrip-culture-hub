@@ -35,6 +35,7 @@ import { Route as AdminGateIndexRouteImport } from './routes/admin/_gate/index'
 import { Route as AdminGateSeoRouteImport } from './routes/admin/_gate/seo'
 import { Route as AdminGateBlogIndexRouteImport } from './routes/admin/_gate/blog.index'
 import { Route as AdminGateBlogSlugRouteImport } from './routes/admin/_gate/blog.$slug'
+import { Route as AdminGateBlogPreviewSlugRouteImport } from './routes/admin/_gate/blog.preview.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -166,6 +167,12 @@ const AdminGateBlogSlugRoute = AdminGateBlogSlugRouteImport.update({
   path: '/blog/$slug',
   getParentRoute: () => AdminGateRoute,
 } as any)
+const AdminGateBlogPreviewSlugRoute =
+  AdminGateBlogPreviewSlugRouteImport.update({
+    id: '/blog/preview/$slug',
+    path: '/blog/preview/$slug',
+    getParentRoute: () => AdminGateRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -194,6 +201,7 @@ export interface FileRoutesByFullPath {
   '/admin/': typeof AdminGateIndexRoute
   '/admin/blog/$slug': typeof AdminGateBlogSlugRoute
   '/admin/blog/': typeof AdminGateBlogIndexRoute
+  '/admin/blog/preview/$slug': typeof AdminGateBlogPreviewSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -221,6 +229,7 @@ export interface FileRoutesByTo {
   '/admin': typeof AdminGateIndexRoute
   '/admin/blog/$slug': typeof AdminGateBlogSlugRoute
   '/admin/blog': typeof AdminGateBlogIndexRoute
+  '/admin/blog/preview/$slug': typeof AdminGateBlogPreviewSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -250,6 +259,7 @@ export interface FileRoutesById {
   '/admin/_gate/': typeof AdminGateIndexRoute
   '/admin/_gate/blog/$slug': typeof AdminGateBlogSlugRoute
   '/admin/_gate/blog/': typeof AdminGateBlogIndexRoute
+  '/admin/_gate/blog/preview/$slug': typeof AdminGateBlogPreviewSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -280,6 +290,7 @@ export interface FileRouteTypes {
     | '/admin/'
     | '/admin/blog/$slug'
     | '/admin/blog/'
+    | '/admin/blog/preview/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -307,6 +318,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/admin/blog/$slug'
     | '/admin/blog'
+    | '/admin/blog/preview/$slug'
   id:
     | '__root__'
     | '/'
@@ -335,6 +347,7 @@ export interface FileRouteTypes {
     | '/admin/_gate/'
     | '/admin/_gate/blog/$slug'
     | '/admin/_gate/blog/'
+    | '/admin/_gate/blog/preview/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -546,6 +559,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminGateBlogSlugRouteImport
       parentRoute: typeof AdminGateRoute
     }
+    '/admin/_gate/blog/preview/$slug': {
+      id: '/admin/_gate/blog/preview/$slug'
+      path: '/blog/preview/$slug'
+      fullPath: '/admin/blog/preview/$slug'
+      preLoaderRoute: typeof AdminGateBlogPreviewSlugRouteImport
+      parentRoute: typeof AdminGateRoute
+    }
   }
 }
 
@@ -554,6 +574,7 @@ interface AdminGateRouteChildren {
   AdminGateIndexRoute: typeof AdminGateIndexRoute
   AdminGateBlogSlugRoute: typeof AdminGateBlogSlugRoute
   AdminGateBlogIndexRoute: typeof AdminGateBlogIndexRoute
+  AdminGateBlogPreviewSlugRoute: typeof AdminGateBlogPreviewSlugRoute
 }
 
 const AdminGateRouteChildren: AdminGateRouteChildren = {
@@ -561,6 +582,7 @@ const AdminGateRouteChildren: AdminGateRouteChildren = {
   AdminGateIndexRoute: AdminGateIndexRoute,
   AdminGateBlogSlugRoute: AdminGateBlogSlugRoute,
   AdminGateBlogIndexRoute: AdminGateBlogIndexRoute,
+  AdminGateBlogPreviewSlugRoute: AdminGateBlogPreviewSlugRoute,
 }
 
 const AdminGateRouteWithChildren = AdminGateRoute._addFileChildren(
