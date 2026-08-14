@@ -1,6 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 
+import { ArtigoConteudo } from "@/components/ArtigoConteudo";
 import { PageHeader } from "@/components/PageHeader";
+import { rich, texto } from "@/lib/paginas-core";
+import { carregarPagina } from "@/lib/paginas.functions";
 import {
   Accordion,
   AccordionContent,
@@ -11,6 +14,7 @@ import { AVISO_SANITARIO } from "@/config/site";
 import { absoluteUrl, canonical } from "@/lib/seo";
 
 export const Route = createFileRoute("/conteudo/tabaco")({
+  loader: () => carregarPagina({ data: { caminho: "/conteudo/tabaco" } }),
   head: () => ({
     meta: [
       { title: "Tabaco: guia informativo sobre a planta e seus processos | DeLaTrip" },
@@ -213,11 +217,14 @@ const postsRelacionados = [
 ];
 
 function ConteudoTabacoPage() {
+  const blocosPagina = Route.useLoaderData();
+  const corpoEditavel = rich(blocosPagina, "corpo");
+
   return (
     <>
       <PageHeader
         eyebrow="Conteúdo informativo"
-        titulo="Tabaco"
+        titulo={texto(blocosPagina, "titulo", "Tabaco")}
         descricao="Guia enciclopédico sobre a planta, suas folhas, seus processos e sua classificação legal no Brasil. Esta página não oferece produtos à venda."
         crumbs={[{ label: "Conteúdo" }, { label: "Tabaco" }]}
       />
@@ -229,6 +236,10 @@ function ConteudoTabacoPage() {
             {AVISO_SANITARIO}
           </p>
         </div>
+
+        {corpoEditavel ? (
+          <ArtigoConteudo html={corpoEditavel} className="mt-10 max-w-3xl" />
+        ) : null}
 
         <div className="mt-10 gap-10 lg:flex">
           <aside className="lg:w-60 lg:shrink-0">
