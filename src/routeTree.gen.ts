@@ -35,6 +35,7 @@ import { Route as AdminGateIndexRouteImport } from './routes/admin/_gate/index'
 import { Route as AdminGateSeoRouteImport } from './routes/admin/_gate/seo'
 import { Route as AdminGateBlogIndexRouteImport } from './routes/admin/_gate/blog.index'
 import { Route as AdminGateBlogSlugRouteImport } from './routes/admin/_gate/blog.$slug'
+import { Route as AdminGatePaginasIndexRouteImport } from './routes/admin/_gate/paginas.index'
 import { Route as AdminGateBlogPreviewSlugRouteImport } from './routes/admin/_gate/blog.preview.$slug'
 
 const IndexRoute = IndexRouteImport.update({
@@ -167,6 +168,11 @@ const AdminGateBlogSlugRoute = AdminGateBlogSlugRouteImport.update({
   path: '/blog/$slug',
   getParentRoute: () => AdminGateRoute,
 } as any)
+const AdminGatePaginasIndexRoute = AdminGatePaginasIndexRouteImport.update({
+  id: '/paginas/',
+  path: '/paginas/',
+  getParentRoute: () => AdminGateRoute,
+} as any)
 const AdminGateBlogPreviewSlugRoute =
   AdminGateBlogPreviewSlugRouteImport.update({
     id: '/blog/preview/$slug',
@@ -201,6 +207,7 @@ export interface FileRoutesByFullPath {
   '/admin/': typeof AdminGateIndexRoute
   '/admin/blog/$slug': typeof AdminGateBlogSlugRoute
   '/admin/blog/': typeof AdminGateBlogIndexRoute
+  '/admin/paginas/': typeof AdminGatePaginasIndexRoute
   '/admin/blog/preview/$slug': typeof AdminGateBlogPreviewSlugRoute
 }
 export interface FileRoutesByTo {
@@ -229,6 +236,7 @@ export interface FileRoutesByTo {
   '/admin': typeof AdminGateIndexRoute
   '/admin/blog/$slug': typeof AdminGateBlogSlugRoute
   '/admin/blog': typeof AdminGateBlogIndexRoute
+  '/admin/paginas': typeof AdminGatePaginasIndexRoute
   '/admin/blog/preview/$slug': typeof AdminGateBlogPreviewSlugRoute
 }
 export interface FileRoutesById {
@@ -259,6 +267,7 @@ export interface FileRoutesById {
   '/admin/_gate/': typeof AdminGateIndexRoute
   '/admin/_gate/blog/$slug': typeof AdminGateBlogSlugRoute
   '/admin/_gate/blog/': typeof AdminGateBlogIndexRoute
+  '/admin/_gate/paginas/': typeof AdminGatePaginasIndexRoute
   '/admin/_gate/blog/preview/$slug': typeof AdminGateBlogPreviewSlugRoute
 }
 export interface FileRouteTypes {
@@ -290,6 +299,7 @@ export interface FileRouteTypes {
     | '/admin/'
     | '/admin/blog/$slug'
     | '/admin/blog/'
+    | '/admin/paginas/'
     | '/admin/blog/preview/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -318,6 +328,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/admin/blog/$slug'
     | '/admin/blog'
+    | '/admin/paginas'
     | '/admin/blog/preview/$slug'
   id:
     | '__root__'
@@ -347,6 +358,7 @@ export interface FileRouteTypes {
     | '/admin/_gate/'
     | '/admin/_gate/blog/$slug'
     | '/admin/_gate/blog/'
+    | '/admin/_gate/paginas/'
     | '/admin/_gate/blog/preview/$slug'
   fileRoutesById: FileRoutesById
 }
@@ -559,6 +571,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminGateBlogSlugRouteImport
       parentRoute: typeof AdminGateRoute
     }
+    '/admin/_gate/paginas/': {
+      id: '/admin/_gate/paginas/'
+      path: '/paginas'
+      fullPath: '/admin/paginas/'
+      preLoaderRoute: typeof AdminGatePaginasIndexRouteImport
+      parentRoute: typeof AdminGateRoute
+    }
     '/admin/_gate/blog/preview/$slug': {
       id: '/admin/_gate/blog/preview/$slug'
       path: '/blog/preview/$slug'
@@ -574,6 +593,7 @@ interface AdminGateRouteChildren {
   AdminGateIndexRoute: typeof AdminGateIndexRoute
   AdminGateBlogSlugRoute: typeof AdminGateBlogSlugRoute
   AdminGateBlogIndexRoute: typeof AdminGateBlogIndexRoute
+  AdminGatePaginasIndexRoute: typeof AdminGatePaginasIndexRoute
   AdminGateBlogPreviewSlugRoute: typeof AdminGateBlogPreviewSlugRoute
 }
 
@@ -582,6 +602,7 @@ const AdminGateRouteChildren: AdminGateRouteChildren = {
   AdminGateIndexRoute: AdminGateIndexRoute,
   AdminGateBlogSlugRoute: AdminGateBlogSlugRoute,
   AdminGateBlogIndexRoute: AdminGateBlogIndexRoute,
+  AdminGatePaginasIndexRoute: AdminGatePaginasIndexRoute,
   AdminGateBlogPreviewSlugRoute: AdminGateBlogPreviewSlugRoute,
 }
 
