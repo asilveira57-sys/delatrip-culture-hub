@@ -1,7 +1,7 @@
 import { createClient } from "@supabase/supabase-js";
 
 /** Cliente publicável de servidor: apenas leituras públicas (políticas anon). */
-function clientePublico() {
+export function clientePublico() {
   const url = process.env["SUPABASE_URL"];
   const key = process.env["SUPABASE_PUBLISHABLE_KEY"];
   if (!url || !key) return null;
