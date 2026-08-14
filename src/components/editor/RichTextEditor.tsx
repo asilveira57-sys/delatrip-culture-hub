@@ -195,8 +195,14 @@ export function RichTextEditor({
   }
 
   async function inserirImagem() {
-    if (!imgArquivo) return toast.error("Escolha um arquivo.");
-    if (!imgAlt.trim()) return toast.error("O texto alternativo é obrigatório.");
+    if (!imgArquivo) {
+      toast.error("Escolha um arquivo.");
+      return;
+    }
+    if (!imgAlt.trim()) {
+      toast.error("O texto alternativo é obrigatório.");
+      return;
+    }
     setEnviando(true);
     try {
       const { url, tamanho } = await enviarImagem(imgArquivo, baseArquivo);
