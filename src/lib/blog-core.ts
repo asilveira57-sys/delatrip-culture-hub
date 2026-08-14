@@ -1,4 +1,4 @@
-import { posts as postsJson } from "@/lib/catalog";
+import { imageForKey, posts as postsJson } from "@/lib/catalog";
 import { sanitizarHtml } from "@/lib/sanitize";
 
 export const CATEGORIAS_POST = [
@@ -84,3 +84,9 @@ export function postsFallback(): PostPublico[] {
 
 export const CAMPOS_POST =
   "slug, titulo, resumo, conteudo_html, capa_url, capa_alt, categoria, autor, publicado_em, created_at, seo_titulo, seo_descricao";
+
+/** Resolve a capa: "asset:chave" usa as imagens locais; o resto é URL direta. */
+export function resolverCapa(capaUrl: string | null | undefined, chaveFallback = "sedas") {
+  if (!capaUrl) return imageForKey(chaveFallback);
+  return capaUrl.startsWith("asset:") ? imageForKey(capaUrl.slice(6)) : capaUrl;
+}
