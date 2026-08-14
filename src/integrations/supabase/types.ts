@@ -14,13 +14,251 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      config_site: {
+        Row: {
+          chave: string
+          created_at: string
+          updated_at: string
+          valor: Json
+        }
+        Insert: {
+          chave: string
+          created_at?: string
+          updated_at?: string
+          valor: Json
+        }
+        Update: {
+          chave?: string
+          created_at?: string
+          updated_at?: string
+          valor?: Json
+        }
+        Relationships: []
+      }
+      curtida: {
+        Row: {
+          alvo: string
+          anon_id: string
+          created_at: string
+          id: string
+          tipo: string
+          updated_at: string
+        }
+        Insert: {
+          alvo: string
+          anon_id: string
+          created_at?: string
+          id?: string
+          tipo: string
+          updated_at?: string
+        }
+        Update: {
+          alvo?: string
+          anon_id?: string
+          created_at?: string
+          id?: string
+          tipo?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      pagina: {
+        Row: {
+          atualizado_em: string | null
+          blocos: Json | null
+          caminho: string
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          atualizado_em?: string | null
+          blocos?: Json | null
+          caminho: string
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          atualizado_em?: string | null
+          blocos?: Json | null
+          caminho?: string
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      post: {
+        Row: {
+          autor: string | null
+          capa_alt: string | null
+          capa_url: string | null
+          categoria: string | null
+          conteudo_html: string | null
+          created_at: string
+          publicado: boolean
+          publicado_em: string | null
+          resumo: string | null
+          seo_descricao: string | null
+          seo_titulo: string | null
+          slug: string
+          titulo: string
+          updated_at: string
+        }
+        Insert: {
+          autor?: string | null
+          capa_alt?: string | null
+          capa_url?: string | null
+          categoria?: string | null
+          conteudo_html?: string | null
+          created_at?: string
+          publicado?: boolean
+          publicado_em?: string | null
+          resumo?: string | null
+          seo_descricao?: string | null
+          seo_titulo?: string | null
+          slug: string
+          titulo: string
+          updated_at?: string
+        }
+        Update: {
+          autor?: string | null
+          capa_alt?: string | null
+          capa_url?: string | null
+          categoria?: string | null
+          conteudo_html?: string | null
+          created_at?: string
+          publicado?: boolean
+          publicado_em?: string | null
+          resumo?: string | null
+          seo_descricao?: string | null
+          seo_titulo?: string | null
+          slug?: string
+          titulo?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      produto_overlay: {
+        Row: {
+          created_at: string
+          descricao_html: string | null
+          descricao_original: string | null
+          destaque: boolean | null
+          enriquecido_em: string | null
+          enriquecido_modelo: string | null
+          observacao: string | null
+          oculto: boolean
+          seo_descricao: string | null
+          seo_titulo: string | null
+          slug: string
+          status_revisao: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          descricao_html?: string | null
+          descricao_original?: string | null
+          destaque?: boolean | null
+          enriquecido_em?: string | null
+          enriquecido_modelo?: string | null
+          observacao?: string | null
+          oculto?: boolean
+          seo_descricao?: string | null
+          seo_titulo?: string | null
+          slug: string
+          status_revisao?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          descricao_html?: string | null
+          descricao_original?: string | null
+          destaque?: boolean | null
+          enriquecido_em?: string | null
+          enriquecido_modelo?: string | null
+          observacao?: string | null
+          oculto?: boolean
+          seo_descricao?: string | null
+          seo_titulo?: string | null
+          slug?: string
+          status_revisao?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      produto_relacionado: {
+        Row: {
+          created_at: string
+          ordem: number
+          slug_destino: string
+          slug_origem: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          ordem?: number
+          slug_destino: string
+          slug_origem: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          ordem?: number
+          slug_destino?: string
+          slug_origem?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      seo_rota: {
+        Row: {
+          caminho: string
+          created_at: string
+          descricao: string | null
+          noindex: boolean
+          og_imagem: string | null
+          titulo: string | null
+          updated_at: string
+        }
+        Insert: {
+          caminho: string
+          created_at?: string
+          descricao?: string | null
+          noindex?: boolean
+          og_imagem?: string | null
+          titulo?: string | null
+          updated_at?: string
+        }
+        Update: {
+          caminho?: string
+          created_at?: string
+          descricao?: string | null
+          noindex?: boolean
+          og_imagem?: string | null
+          titulo?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
-      [_ in never]: never
+      curtida_contagem: {
+        Row: {
+          alvo: string | null
+          tipo: string | null
+          total: number | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
-      [_ in never]: never
+      curtir: {
+        Args: { p_alvo: string; p_anon_id: string; p_tipo: string }
+        Returns: number
+      }
+      descurtir: {
+        Args: { p_alvo: string; p_anon_id: string; p_tipo: string }
+        Returns: number
+      }
     }
     Enums: {
       [_ in never]: never
