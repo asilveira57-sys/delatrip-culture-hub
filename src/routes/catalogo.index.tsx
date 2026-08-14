@@ -82,9 +82,10 @@ function Catalogo() {
   const setSearch = (patch: Partial<CatalogoSearch>) =>
     navigate({ search: (prev: CatalogoSearch) => ({ ...prev, ...patch }) });
 
+  const overlays = useOverlays();
   const lista = useMemo(
     () => mergeList(filterProducts({ q, categoria, marca, ordem }), overlays),
-    [q, categoria, marca, ordem],
+    [q, categoria, marca, ordem, overlays],
   );
 
   const PAGINA = 48;

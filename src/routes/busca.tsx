@@ -62,9 +62,10 @@ function BuscaPage() {
   const setSearch = (patch: Partial<BuscaSearch>) =>
     navigate({ search: (prev: BuscaSearch) => ({ ...prev, ...patch }) });
 
+  const overlays = useOverlays();
   const produtos = useMemo(
     () => mergeList(q ? filterProducts({ q, marca, ordem }) : [], overlays),
-    [q, marca, ordem],
+    [q, marca, ordem, overlays],
   );
   const marcas = useMemo(() => (q ? searchBrands(q) : []), [q]);
   const marcasDisponiveis = useMemo(

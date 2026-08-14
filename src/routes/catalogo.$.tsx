@@ -86,7 +86,7 @@ function CategoriaPage() {
   }
 
   const subcategorias = childrenOf(categoria.id);
-  const lista = mergeList(productsByCategory(categoria), useOverlays());
+  const lista = mergeList(productsByCategory(categoria), overlays);
 
 
   const path = categoryPath(categoria);
