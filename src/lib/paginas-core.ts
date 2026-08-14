@@ -1,6 +1,14 @@
 import { sanitizarHtml } from "@/lib/sanitize";
 
-export type Blocos = Record<string, unknown>;
+export type JsonValor =
+  | string
+  | number
+  | boolean
+  | null
+  | JsonValor[]
+  | { [chave: string]: JsonValor };
+
+export type Blocos = Record<string, JsonValor>;
 
 export type FaqItem = { pergunta: string; resposta: string; categoria?: string };
 
