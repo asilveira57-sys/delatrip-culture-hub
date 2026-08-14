@@ -19,7 +19,7 @@ const ROTAS_FIXAS: [string, number][] = [
   ["/legal/aviso-legal", 0.3],
 ];
 
-export const Route = createFileRoute("/sitemap[.]xml")({
+export const Route = createFileRoute("/sitemap.xml")({
   server: {
     handlers: {
       GET: async () => {
