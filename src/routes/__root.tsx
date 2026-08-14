@@ -4,6 +4,7 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
+  useRouterState,
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
@@ -14,6 +15,12 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
 import { Toaster } from "../components/ui/sonner";
+import { ConsentTracking } from "../components/ConsentTracking";
+import {
+  carregarSeoPublico,
+  SEO_PUBLICO_PADRAO,
+} from "../lib/site-config.functions";
+
 
 function NotFoundComponent() {
   return (
