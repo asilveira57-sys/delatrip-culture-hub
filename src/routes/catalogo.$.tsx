@@ -60,6 +60,7 @@ const PAGINA = 48;
 function CategoriaPage() {
   const { _splat } = Route.useParams();
   const categoria = getCategoryByPath(_splat ?? "");
+  const overlays = useOverlays();
   const [visiveis, setVisiveis] = useState(PAGINA);
   useEffect(() => setVisiveis(PAGINA), [_splat]);
 

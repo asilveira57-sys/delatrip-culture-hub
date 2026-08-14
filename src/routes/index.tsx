@@ -70,6 +70,8 @@ const confianca = [
 ];
 
 function Home() {
+  const overlaysHome = useOverlays();
+
   return (
     <>
       {/* Hero */}
