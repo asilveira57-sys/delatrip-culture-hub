@@ -7,6 +7,8 @@ import { EmptyState } from "@/components/EmptyState";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { ProductCard } from "@/components/ProductCard";
 import { ProductGallery } from "@/components/ProductGallery";
+import { Curtir } from "@/components/Curtir";
+import { mergeList, overlayDescricao, useOverlays } from "@/lib/overlay";
 
 import { SectionHeading } from "@/components/SectionHeading";
 import { Button } from "@/components/ui/button";
@@ -136,7 +138,9 @@ export const Route = createFileRoute("/produto/$slug")({
 function ProdutoPage() {
   const { slug } = Route.useParams();
   const detalhe = Route.useLoaderData();
-  const produto = getProduct(slug);
+  const overlays = useOverlays();
+  const ov = overlays.get(slug);
+  const produto = ov?.oculto ? undefined : getProduct(slug);
 
   if (!produto) {
     return (
@@ -155,9 +159,13 @@ function ProdutoPage() {
   }
 
   const categoria = getCategoryById(produto.categoriaId);
-  const relacionados = (categoria ? productsByCategory(categoria) : [])
+  const relacionados = mergeList(
+    categoria ? productsByCategory(categoria) : [],
+    overlays,
+  )
     .filter((p) => p.slug !== produto.slug)
     .slice(0, 4);
+  const descricaoHtml = overlayDescricao(ov) ?? detalhe?.descricaoHtml ?? "";
   const preco = produto.precoPromocional ?? produto.preco;
   const specs = productSpecs(produto, detalhe);
 
@@ -210,7 +218,7 @@ function ProdutoPage() {
           <div
             className="prose-delatrip mt-6 text-sm leading-relaxed [&_img]:mx-auto [&_img]:my-4 [&_img]:h-auto [&_img]:max-h-72 [&_img]:w-auto [&_img]:max-w-full [&_img]:rounded-md [&_li]:mt-1 [&_ul]:mt-3 [&_ul]:list-disc [&_ul]:pl-5"
             // Conteúdo vem do export da própria loja (HTML já higienizado no conversor).
-            dangerouslySetInnerHTML={{ __html: detalhe?.descricaoHtml ?? "" }}
+            dangerouslySetInnerHTML={{ __html: descricaoHtml }}
           />
 
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
@@ -236,6 +244,10 @@ function ProdutoPage() {
                 </a>
               </Button>
             ) : null}
+          </div>
+
+          <div className="mt-6">
+            <Curtir tipo="produto" alvo={produto.slug} />
           </div>
 
           {specs.length > 0 && (
