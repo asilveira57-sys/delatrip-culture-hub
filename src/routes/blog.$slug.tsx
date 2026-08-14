@@ -96,6 +96,11 @@ function PostPage() {
           ),
         )}
       </div>
+
+      <div className="mt-10 border-t border-border pt-6">
+        <Curtir tipo="post" alvo={post.slug} />
+      </div>
     </article>
+
   );
 }
