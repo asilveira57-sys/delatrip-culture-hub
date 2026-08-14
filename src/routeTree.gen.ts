@@ -15,6 +15,7 @@ import { Route as AcessoriosRouteImport } from './routes/acessorios'
 import { Route as BuscaRouteImport } from './routes/busca'
 import { Route as ContatoRouteImport } from './routes/contato'
 import { Route as FaqRouteImport } from './routes/faq'
+import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
 import { Route as SobreRouteImport } from './routes/sobre'
 import { Route as AdminGateRouteImport } from './routes/admin/_gate'
 import { Route as AdminLoginRouteImport } from './routes/admin/login'
@@ -60,6 +61,11 @@ const ContatoRoute = ContatoRouteImport.update({
 const FaqRoute = FaqRouteImport.update({
   id: '/faq',
   path: '/faq',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
+  id: '/robots.txt',
+  path: '/robots.txt',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SobreRoute = SobreRouteImport.update({
@@ -150,6 +156,7 @@ export interface FileRoutesByFullPath {
   '/busca': typeof BuscaRoute
   '/contato': typeof ContatoRoute
   '/faq': typeof FaqRoute
+  '/robots.txt': typeof RobotsDottxtRoute
   '/sobre': typeof SobreRoute
   '/admin': typeof AdminGateRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
@@ -174,6 +181,7 @@ export interface FileRoutesByTo {
   '/busca': typeof BuscaRoute
   '/contato': typeof ContatoRoute
   '/faq': typeof FaqRoute
+  '/robots.txt': typeof RobotsDottxtRoute
   '/sobre': typeof SobreRoute
   '/admin/login': typeof AdminLoginRoute
   '/blog/$slug': typeof BlogSlugRoute
@@ -198,6 +206,7 @@ export interface FileRoutesById {
   '/busca': typeof BuscaRoute
   '/contato': typeof ContatoRoute
   '/faq': typeof FaqRoute
+  '/robots.txt': typeof RobotsDottxtRoute
   '/sobre': typeof SobreRoute
   '/admin/_gate': typeof AdminGateRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
@@ -224,6 +233,7 @@ export interface FileRouteTypes {
     | '/busca'
     | '/contato'
     | '/faq'
+    | '/robots.txt'
     | '/sobre'
     | '/admin'
     | '/admin/login'
@@ -248,6 +258,7 @@ export interface FileRouteTypes {
     | '/busca'
     | '/contato'
     | '/faq'
+    | '/robots.txt'
     | '/sobre'
     | '/admin/login'
     | '/blog/$slug'
@@ -271,6 +282,7 @@ export interface FileRouteTypes {
     | '/busca'
     | '/contato'
     | '/faq'
+    | '/robots.txt'
     | '/sobre'
     | '/admin/_gate'
     | '/admin/login'
@@ -296,6 +308,7 @@ export interface RootRouteChildren {
   BuscaRoute: typeof BuscaRoute
   ContatoRoute: typeof ContatoRoute
   FaqRoute: typeof FaqRoute
+  RobotsDottxtRoute: typeof RobotsDottxtRoute
   SobreRoute: typeof SobreRoute
   AdminGateRoute: typeof AdminGateRouteWithChildren
   AdminLoginRoute: typeof AdminLoginRoute
@@ -354,6 +367,13 @@ declare module '@tanstack/react-router' {
       path: '/faq'
       fullPath: '/faq'
       preLoaderRoute: typeof FaqRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/robots.txt': {
+      id: '/robots.txt'
+      path: '/robots.txt'
+      fullPath: '/robots.txt'
+      preLoaderRoute: typeof RobotsDottxtRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sobre': {
@@ -492,6 +512,7 @@ const rootRouteChildren: RootRouteChildren = {
   BuscaRoute: BuscaRoute,
   ContatoRoute: ContatoRoute,
   FaqRoute: FaqRoute,
+  RobotsDottxtRoute: RobotsDottxtRoute,
   SobreRoute: SobreRoute,
   AdminGateRoute: AdminGateRouteWithChildren,
   AdminLoginRoute: AdminLoginRoute,

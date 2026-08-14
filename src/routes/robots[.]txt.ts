@@ -3,7 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { SITE_URL } from "@/lib/seo";
 import { lerConfigServidor } from "@/lib/public-db.server";
 
-export const Route = createFileRoute("/robots[.]txt")({
+export const Route = createFileRoute("/robots.txt")({
   server: {
     handlers: {
       GET: async () => {
