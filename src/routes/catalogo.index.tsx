@@ -27,6 +27,7 @@ import {
   getCategoryByPath,
   type SortKey,
 } from "@/lib/catalog";
+import { mergeList, useOverlays } from "@/lib/overlay";
 
 
 type CatalogoSearch = {
@@ -82,7 +83,7 @@ function Catalogo() {
     navigate({ search: (prev: CatalogoSearch) => ({ ...prev, ...patch }) });
 
   const lista = useMemo(
-    () => filterProducts({ q, categoria, marca, ordem }),
+    () => mergeList(filterProducts({ q, categoria, marca, ordem }), overlays),
     [q, categoria, marca, ordem],
   );
 

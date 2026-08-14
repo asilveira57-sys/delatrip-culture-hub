@@ -19,6 +19,7 @@ import {
   searchProducts,
   type SortKey,
 } from "@/lib/catalog";
+import { mergeList, useOverlays } from "@/lib/overlay";
 
 type BuscaSearch = { q: string; marca: string; ordem: SortKey };
 
@@ -62,7 +63,7 @@ function BuscaPage() {
     navigate({ search: (prev: BuscaSearch) => ({ ...prev, ...patch }) });
 
   const produtos = useMemo(
-    () => (q ? filterProducts({ q, marca, ordem }) : []),
+    () => mergeList(q ? filterProducts({ q, marca, ordem }) : [], overlays),
     [q, marca, ordem],
   );
   const marcas = useMemo(() => (q ? searchBrands(q) : []), [q]);
