@@ -1,7 +1,15 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 
 import { absoluteUrl, canonical, jsonLd, SITE_URL } from "@/lib/seo";
-import { ArrowRight, BadgeCheck, Headphones, ShieldAlert, Truck } from "lucide-react";
+import {
+  ArrowRight,
+  Award,
+  BadgeCheck,
+  Headphones,
+  Leaf,
+  ShieldAlert,
+  Truck,
+} from "lucide-react";
 
 import { BrandChip } from "@/components/BrandCard";
 import { CategoryCard } from "@/components/CategoryCard";
@@ -10,7 +18,10 @@ import { ProductCard } from "@/components/ProductCard";
 import { SectionHeading } from "@/components/SectionHeading";
 import { Button } from "@/components/ui/button";
 import { SITE } from "@/config/site";
-import { brands, destaques, posts, rootCategories } from "@/lib/catalog";
+import { listarPostsPublicos } from "@/lib/blog.functions";
+import { carregarPagina } from "@/lib/paginas.functions";
+import { lista, texto } from "@/lib/paginas-core";
+import { brands, destaques, rootCategories } from "@/lib/catalog";
 import heroImg from "@/assets/hero.jpg";
 import mark from "@/assets/delatrip-mark.png";
 import { mergeList, useOverlays } from "@/lib/overlay";
