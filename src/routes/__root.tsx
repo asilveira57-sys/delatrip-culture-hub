@@ -76,8 +76,19 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
 }
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
-  head: () => ({
+  loader: async () => {
+    try {
+      return await carregarSeoPublico();
+    } catch {
+      return SEO_PUBLICO_PADRAO;
+    }
+  },
+  head: ({ loaderData }) => ({
     meta: [
+      ...(loaderData?.modoConstrucao
+        ? [{ name: "robots", content: "noindex, nofollow" }]
+        : []),
+
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "DeLaTrip — Tabacaria e head shop brasileira" },
