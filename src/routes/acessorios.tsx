@@ -57,6 +57,9 @@ const blocos = [
 ];
 
 function AcessoriosPage() {
+  const blocosPagina = Route.useLoaderData();
+  const intro = rich(blocosPagina, "intro");
+
   return (
     <>
       <PageHeader
