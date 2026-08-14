@@ -6,6 +6,7 @@ import { Breadcrumb } from "@/components/Breadcrumb";
 import { EmptyState } from "@/components/EmptyState";
 import { Button } from "@/components/ui/button";
 import { formatDate, getPost, imageForKey } from "@/lib/catalog";
+import { Curtir } from "@/components/Curtir";
 
 export const Route = createFileRoute("/blog/$slug")({
   head: ({ params }) => {
