@@ -2,10 +2,14 @@ import { createFileRoute } from "@tanstack/react-router";
 
 import { absoluteUrl, canonical } from "@/lib/seo";
 
+import { ArtigoConteudo } from "@/components/ArtigoConteudo";
 import { PageHeader } from "@/components/PageHeader";
 import { SITE } from "@/config/site";
+import { rich, texto } from "@/lib/paginas-core";
+import { carregarPagina } from "@/lib/paginas.functions";
 
 export const Route = createFileRoute("/sobre")({
+  loader: () => carregarPagina({ data: { caminho: "/sobre" } }),
   head: () => ({
     meta: [
       { title: "Sobre a DeLaTrip — tabacaria e head shop" },
@@ -27,15 +31,20 @@ export const Route = createFileRoute("/sobre")({
 });
 
 function SobrePage() {
+  const blocos = Route.useLoaderData();
+  const corpo = rich(blocos, "corpo");
+
   return (
     <>
       <PageHeader
         eyebrow="Institucional"
-        titulo="Sobre a DeLaTrip"
+        titulo={texto(blocos, "titulo", "Sobre a DeLaTrip")}
         descricao="Uma tabacaria brasileira construída em torno de curadoria, originalidade e informação."
         crumbs={[{ label: "Sobre" }]}
       />
       <div className="mx-auto max-w-3xl px-4 py-12">
+        {corpo ? <ArtigoConteudo html={corpo} /> : (
+          <>
         <p className="leading-relaxed">
           A DeLaTrip nasceu do balcão: do contato diário com quem procura o papel
           certo, o dichavador que dura e a peça de vidro bem acabada. Esse
@@ -55,6 +64,8 @@ function SobrePage() {
           <li>Informação clara sobre uso, materiais e manutenção.</li>
           <li>Venda estritamente proibida para menores de 18 anos.</li>
         </ul>
+          </>
+        )}
         <p className="mt-10 text-sm text-muted-foreground">
           {SITE.endereco} · CNPJ {SITE.cnpj}
         </p>

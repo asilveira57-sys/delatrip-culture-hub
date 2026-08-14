@@ -1,6 +1,14 @@
 import { createFileRoute, Link, Outlet, redirect, useNavigate } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
-import { BarChart3, FileText, LayoutPanelLeft, LogOut, Package, Search } from "lucide-react";
+import {
+  BarChart3,
+  FileText,
+  HelpCircle,
+  LayoutPanelLeft,
+  LogOut,
+  Package,
+  Search,
+} from "lucide-react";
 
 import { supabase } from "@/integrations/supabase/client";
 import { cn } from "@/lib/utils";
@@ -24,8 +32,9 @@ export const Route = createFileRoute("/admin/_gate")({
 const ITENS = [
   { label: "Painel", to: "/admin", icon: BarChart3, ativo: true },
   { label: "SEO", to: "/admin/seo", icon: Search, ativo: true },
-  { label: "Blog", to: "#", icon: FileText, ativo: false },
-  { label: "Páginas", to: "#", icon: LayoutPanelLeft, ativo: false },
+  { label: "Blog", to: "/admin/blog", icon: FileText, ativo: true },
+  { label: "Páginas", to: "/admin/paginas", icon: LayoutPanelLeft, ativo: true },
+  { label: "FAQ", to: "/admin/faq", icon: HelpCircle, ativo: true },
   { label: "Produtos", to: "#", icon: Package, ativo: false },
 ] as const;
 

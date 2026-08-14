@@ -1,14 +1,25 @@
 import { Link } from "@tanstack/react-router";
 
-import { formatDate, imageForKey, type Post } from "@/lib/catalog";
+import { resolverCapa } from "@/lib/blog-core";
+import { formatDate } from "@/lib/catalog";
 
-export function PostCard({ post }: { post: Post }) {
+export type PostResumo = {
+  slug: string;
+  titulo: string;
+  resumo: string;
+  categoria: string;
+  data: string;
+  capaUrl?: string | null;
+  capaAlt?: string | null;
+};
+
+export function PostCard({ post }: { post: PostResumo }) {
   return (
     <article className="card-lift flex h-full flex-col overflow-hidden rounded-lg border border-border bg-card">
       <Link to="/blog/$slug" params={{ slug: post.slug }} className="bg-ink">
         <img
-          src={imageForKey(post.imagem)}
-          alt={post.titulo}
+          src={resolverCapa(post.capaUrl)}
+          alt={post.capaAlt ?? post.titulo}
           loading="lazy"
           width={1024}
           height={1024}
@@ -29,9 +40,7 @@ export function PostCard({ post }: { post: Post }) {
         <p className="mt-2 flex-1 text-sm leading-relaxed text-muted-foreground">
           {post.resumo}
         </p>
-        <p className="mt-4 text-xs text-muted-foreground">
-          {formatDate(post.data)}
-        </p>
+        <p className="mt-4 text-xs text-muted-foreground">{formatDate(post.data)}</p>
       </div>
     </article>
   );

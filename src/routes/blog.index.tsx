@@ -4,9 +4,10 @@ import { absoluteUrl, canonical } from "@/lib/seo";
 
 import { PageHeader } from "@/components/PageHeader";
 import { PostCard } from "@/components/PostCard";
-import { posts } from "@/lib/catalog";
+import { listarPostsPublicos } from "@/lib/blog.functions";
 
 export const Route = createFileRoute("/blog/")({
+  loader: () => listarPostsPublicos(),
   head: () => ({
     meta: [
       { title: "Blog — guias e conteúdo da tabacaria | DeLaTrip" },
@@ -24,10 +25,17 @@ export const Route = createFileRoute("/blog/")({
     ],
     links: [canonical("/blog")],
   }),
+  errorComponent: () => (
+    <div className="mx-auto max-w-6xl px-4 py-16">
+      <p className="text-muted-foreground">Não foi possível carregar o blog agora.</p>
+    </div>
+  ),
   component: BlogPage,
 });
 
 function BlogPage() {
+  const posts = Route.useLoaderData();
+
   return (
     <>
       <PageHeader

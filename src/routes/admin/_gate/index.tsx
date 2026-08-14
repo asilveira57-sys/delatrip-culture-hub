@@ -15,7 +15,8 @@ export const Route = createFileRoute("/admin/_gate/")({
 });
 
 async function carregarNumeros() {
-  const [overlays, ocultos, revisao, curtidas, config] = await Promise.all([
+  const agora = new Date().toISOString();
+  const [overlays, ocultos, revisao, curtidas, config, posts] = await Promise.all([
     supabase.from("produto_overlay").select("slug", { count: "exact", head: true }),
     supabase
       .from("produto_overlay")
@@ -28,7 +29,16 @@ async function carregarNumeros() {
       .not("enriquecido_em", "is", null),
     supabase.from("curtida").select("id", { count: "exact", head: true }),
     supabase.from("config_site").select("valor").eq("chave", "modo_construcao").maybeSingle(),
+    supabase.from("post").select("titulo, publicado, publicado_em"),
   ]);
+
+  const linhas = posts.data ?? [];
+  const publicados = linhas.filter(
+    (p) => p.publicado && p.publicado_em && p.publicado_em <= agora,
+  );
+  const ultimo = [...publicados].sort((a, b) =>
+    (b.publicado_em ?? "").localeCompare(a.publicado_em ?? ""),
+  )[0];
 
   return {
     overlays: overlays.count ?? 0,
@@ -36,6 +46,10 @@ async function carregarNumeros() {
     revisao: revisao.count ?? 0,
     curtidas: curtidas.count ?? 0,
     modoConstrucao: config.data?.valor !== false,
+    posts: linhas.length,
+    rascunhos: linhas.filter((p) => !p.publicado).length,
+    agendados: linhas.filter((p) => p.publicado && (p.publicado_em ?? "") > agora).length,
+    ultimoPost: ultimo?.titulo ?? "—",
   };
 }
 
@@ -75,6 +89,14 @@ function PainelPage() {
           titulo="Modo construção"
           valor={isLoading ? "…" : data?.modoConstrucao ? "Ligado" : "Desligado"}
         />
+      </div>
+
+      <h2 className="mt-8 text-base font-semibold">Blog</h2>
+      <div className="mt-3 grid grid-cols-2 gap-3 lg:grid-cols-4">
+        <Cartao titulo="Posts" valor={isLoading ? "…" : (data?.posts ?? 0)} />
+        <Cartao titulo="Rascunhos" valor={isLoading ? "…" : (data?.rascunhos ?? 0)} />
+        <Cartao titulo="Agendados" valor={isLoading ? "…" : (data?.agendados ?? 0)} />
+        <Cartao titulo="Último publicado" valor={isLoading ? "…" : (data?.ultimoPost ?? "—")} />
       </div>
     </div>
   );
