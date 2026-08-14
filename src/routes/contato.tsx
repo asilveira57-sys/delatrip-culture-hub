@@ -1,11 +1,15 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 
+import { rich, texto } from "@/lib/paginas-core";
+import { carregarPagina } from "@/lib/paginas.functions";
+
 import { absoluteUrl, canonical } from "@/lib/seo";
 import { useState } from "react";
 import { Mail, MapPin, Phone, Store } from "lucide-react";
 import { toast } from "sonner";
 import { z } from "zod";
 
+import { ArtigoConteudo } from "@/components/ArtigoConteudo";
 import { PageHeader } from "@/components/PageHeader";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -40,6 +44,7 @@ type Campos = z.infer<typeof contatoSchema>;
 const VAZIO: Campos = { nome: "", email: "", assunto: "", mensagem: "" };
 
 export const Route = createFileRoute("/contato")({
+  loader: () => carregarPagina({ data: { caminho: "/contato" } }),
   head: () => ({
     meta: [
       { title: "Contato — DeLaTrip" },
@@ -61,6 +66,13 @@ export const Route = createFileRoute("/contato")({
 });
 
 function ContatoPage() {
+  const blocosPagina = Route.useLoaderData();
+  const introContato = rich(blocosPagina, "intro");
+  const email = texto(blocosPagina, "email", SITE.email);
+  const whatsapp = texto(blocosPagina, "whatsapp", SITE.telefone);
+  const endereco = texto(blocosPagina, "endereco", SITE.endereco);
+  const horario = texto(blocosPagina, "horario_atendimento", "");
+
   const [valores, setValores] = useState<Campos>(VAZIO);
   const [erros, setErros] = useState<Partial<Record<keyof Campos, string>>>({});
 
@@ -98,7 +110,7 @@ function ContatoPage() {
     <>
       <PageHeader
         eyebrow="Fale com a gente"
-        titulo="Contato"
+        titulo={texto(blocosPagina, "titulo", "Contato")}
         descricao="Dúvidas sobre produtos, parcerias ou imprensa: envie uma mensagem ou use um dos canais diretos."
         crumbs={[{ label: "Contato" }]}
       />
@@ -184,10 +196,10 @@ function ContatoPage() {
               <div>
                 <h2 className="font-semibold uppercase">E-mail</h2>
                 <a
-                  href={`mailto:${SITE.email}`}
+                  href={`mailto:${email}`}
                   className="text-sm text-primary underline underline-offset-4"
                 >
-                  {SITE.email}
+                  {email}
                 </a>
               </div>
             </li>
@@ -195,14 +207,17 @@ function ContatoPage() {
               <Phone className="mt-0.5 size-5 text-primary" aria-hidden="true" />
               <div>
                 <h2 className="font-semibold uppercase">Telefone</h2>
-                <p className="text-sm text-muted-foreground">{SITE.telefone}</p>
+                <p className="text-sm text-muted-foreground">{whatsapp}</p>
+                {horario ? (
+                  <p className="mt-1 text-xs text-muted-foreground">{horario}</p>
+                ) : null}
               </div>
             </li>
             <li className="flex items-start gap-3 rounded-lg border border-border bg-card p-5">
               <MapPin className="mt-0.5 size-5 text-primary" aria-hidden="true" />
               <div>
                 <h2 className="font-semibold uppercase">Endereço</h2>
-                <p className="text-sm text-muted-foreground">{SITE.endereco}</p>
+                <p className="text-sm text-muted-foreground">{endereco}</p>
               </div>
             </li>
           </ul>
