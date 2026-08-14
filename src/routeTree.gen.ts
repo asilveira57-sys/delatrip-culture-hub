@@ -16,6 +16,7 @@ import { Route as BuscaRouteImport } from './routes/busca'
 import { Route as ContatoRouteImport } from './routes/contato'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as SobreRouteImport } from './routes/sobre'
+import { Route as AdminLoginRouteImport } from './routes/admin/login'
 import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as CatalogoIndexRouteImport } from './routes/catalogo.index'
@@ -61,6 +62,11 @@ const FaqRoute = FaqRouteImport.update({
 const SobreRoute = SobreRouteImport.update({
   id: '/sobre',
   path: '/sobre',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminLoginRoute = AdminLoginRouteImport.update({
+  id: '/admin/login',
+  path: '/admin/login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BlogIndexRoute = BlogIndexRouteImport.update({
@@ -127,6 +133,7 @@ export interface FileRoutesByFullPath {
   '/contato': typeof ContatoRoute
   '/faq': typeof FaqRoute
   '/sobre': typeof SobreRoute
+  '/admin/login': typeof AdminLoginRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/catalogo/$': typeof CatalogoSplatRoute
   '/conteudo/tabaco': typeof ConteudoTabacoRoute
@@ -147,6 +154,7 @@ export interface FileRoutesByTo {
   '/contato': typeof ContatoRoute
   '/faq': typeof FaqRoute
   '/sobre': typeof SobreRoute
+  '/admin/login': typeof AdminLoginRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/catalogo/$': typeof CatalogoSplatRoute
   '/conteudo/tabaco': typeof ConteudoTabacoRoute
@@ -168,6 +176,7 @@ export interface FileRoutesById {
   '/contato': typeof ContatoRoute
   '/faq': typeof FaqRoute
   '/sobre': typeof SobreRoute
+  '/admin/login': typeof AdminLoginRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/catalogo/$': typeof CatalogoSplatRoute
   '/conteudo/tabaco': typeof ConteudoTabacoRoute
@@ -190,6 +199,7 @@ export interface FileRouteTypes {
     | '/contato'
     | '/faq'
     | '/sobre'
+    | '/admin/login'
     | '/blog/$slug'
     | '/catalogo/$'
     | '/conteudo/tabaco'
@@ -210,6 +220,7 @@ export interface FileRouteTypes {
     | '/contato'
     | '/faq'
     | '/sobre'
+    | '/admin/login'
     | '/blog/$slug'
     | '/catalogo/$'
     | '/conteudo/tabaco'
@@ -230,6 +241,7 @@ export interface FileRouteTypes {
     | '/contato'
     | '/faq'
     | '/sobre'
+    | '/admin/login'
     | '/blog/$slug'
     | '/catalogo/$'
     | '/conteudo/tabaco'
@@ -251,6 +263,7 @@ export interface RootRouteChildren {
   ContatoRoute: typeof ContatoRoute
   FaqRoute: typeof FaqRoute
   SobreRoute: typeof SobreRoute
+  AdminLoginRoute: typeof AdminLoginRoute
   BlogSlugRoute: typeof BlogSlugRoute
   CatalogoSplatRoute: typeof CatalogoSplatRoute
   ConteudoTabacoRoute: typeof ConteudoTabacoRoute
@@ -313,6 +326,13 @@ declare module '@tanstack/react-router' {
       path: '/sobre'
       fullPath: '/sobre'
       preLoaderRoute: typeof SobreRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/login': {
+      id: '/admin/login'
+      path: '/admin/login'
+      fullPath: '/admin/login'
+      preLoaderRoute: typeof AdminLoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/blog/': {
@@ -403,6 +423,7 @@ const rootRouteChildren: RootRouteChildren = {
   ContatoRoute: ContatoRoute,
   FaqRoute: FaqRoute,
   SobreRoute: SobreRoute,
+  AdminLoginRoute: AdminLoginRoute,
   BlogSlugRoute: BlogSlugRoute,
   CatalogoSplatRoute: CatalogoSplatRoute,
   ConteudoTabacoRoute: ConteudoTabacoRoute,
