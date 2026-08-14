@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 
 import { absoluteUrl, canonical } from "@/lib/seo";
 
+import { ArtigoConteudo } from "@/components/ArtigoConteudo";
 import { PageHeader } from "@/components/PageHeader";
 import {
   Accordion,
@@ -11,40 +12,47 @@ import {
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { SITE } from "@/config/site";
+import { itensFaq, type FaqItem } from "@/lib/paginas-core";
+import { carregarPagina } from "@/lib/paginas.functions";
 
-const PERGUNTAS = [
+const PADRAO: FaqItem[] = [
   {
-    p: "Dá para comprar direto neste site?",
-    r: "Não. Este portal é institucional e serve como catálogo de consulta. As compras são feitas na loja oficial ou nos marketplaces onde a DeLaTrip está presente — cada produto traz os links disponíveis.",
+    pergunta: "Dá para comprar direto neste site?",
+    resposta: "Não. Este portal é institucional e serve como catálogo de consulta. As compras são feitas na loja oficial ou nos marketplaces onde a DeLaTrip está presente — cada produto traz os links disponíveis.",
   },
   {
-    p: "Por que alguns produtos não mostram preço?",
-    r: "Preços e disponibilidade mudam com frequência. Para evitar informação desatualizada, exibimos o valor apenas nos canais de venda oficiais.",
+    pergunta: "Por que alguns produtos não mostram preço?",
+    resposta: "Preços e disponibilidade mudam com frequência. Para evitar informação desatualizada, exibimos o valor apenas nos canais de venda oficiais.",
   },
   {
-    p: "Os produtos são originais?",
-    r: "Sim. Trabalhamos apenas com distribuidores autorizados e importação com nota, e conferimos selos e lacres de autenticidade das marcas internacionais.",
+    pergunta: "Os produtos são originais?",
+    resposta: "Sim. Trabalhamos apenas com distribuidores autorizados e importação com nota, e conferimos selos e lacres de autenticidade das marcas internacionais.",
   },
   {
-    p: "Existe idade mínima?",
-    r: "Sim. A venda e o uso dos produtos são estritamente proibidos para menores de 18 anos, conforme a legislação brasileira.",
+    pergunta: "Existe idade mínima?",
+    resposta: "Sim. A venda e o uso dos produtos são estritamente proibidos para menores de 18 anos, conforme a legislação brasileira.",
   },
   {
-    p: "Como funciona a troca ou a garantia?",
-    r: "Trocas e garantias seguem a política do canal onde a compra foi feita (loja oficial ou marketplace). Guarde a nota fiscal e fale com o atendimento do canal em até 7 dias corridos para arrependimento.",
+    pergunta: "Como funciona a troca ou a garantia?",
+    resposta: "Trocas e garantias seguem a política do canal onde a compra foi feita (loja oficial ou marketplace). Guarde a nota fiscal e fale com o atendimento do canal em até 7 dias corridos para arrependimento.",
   },
   {
-    p: "Vocês atendem lojistas e revenda?",
-    r: `Sim. Enviamos condições de atacado e catálogo comercial por e-mail: escreva para ${SITE.email} com CNPJ e cidade.`,
+    pergunta: "Vocês atendem lojistas e revenda?",
+    resposta: `Sim. Enviamos condições de atacado e catálogo comercial por e-mail: escreva para ${SITE.email} com CNPJ e cidade.`,
   },
   {
-    p: "Como cuidar de peças de vidro e dichavadores?",
-    r: "Vidro: lave com álcool isopropílico e sal grosso, enxágue bem e seque ao ar. Dichavadores de alumínio: escove a rosca a seco e evite água, que oxida o metal.",
+    pergunta: "Como cuidar de peças de vidro e dichavadores?",
+    resposta: "Vidro: lave com álcool isopropílico e sal grosso, enxágue bem e seque ao ar. Dichavadores de alumínio: escove a rosca a seco e evite água, que oxida o metal.",
   },
 ];
 
 export const Route = createFileRoute("/faq")({
-  head: () => ({
+  loader: async () => {
+    const blocos = await carregarPagina({ data: { caminho: "/faq" } });
+    const itens = itensFaq(blocos);
+    return { itens: itens.length > 0 ? itens : PADRAO };
+  },
+  head: ({ loaderData }) => ({
     meta: [
       { title: "Perguntas frequentes — DeLaTrip" },
       {
@@ -67,10 +75,13 @@ export const Route = createFileRoute("/faq")({
         children: JSON.stringify({
           "@context": "https://schema.org",
           "@type": "FAQPage",
-          mainEntity: PERGUNTAS.map((item) => ({
+          mainEntity: (loaderData?.itens ?? PADRAO).map((item) => ({
             "@type": "Question",
-            name: item.p,
-            acceptedAnswer: { "@type": "Answer", text: item.r },
+            name: item.pergunta,
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: item.resposta.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim(),
+            },
           })),
         }),
       },
@@ -80,6 +91,8 @@ export const Route = createFileRoute("/faq")({
 });
 
 function FaqPage() {
+  const { itens } = Route.useLoaderData();
+
   return (
     <>
       <PageHeader
@@ -90,13 +103,17 @@ function FaqPage() {
       />
       <div className="mx-auto max-w-3xl px-4 py-12">
         <Accordion type="single" collapsible className="w-full">
-          {PERGUNTAS.map((item, i) => (
-            <AccordionItem key={item.p} value={`item-${i}`}>
+          {itens.map((item, i) => (
+            <AccordionItem key={item.pergunta} value={`item-${i}`}>
               <AccordionTrigger className="text-left text-base font-semibold">
-                {item.p}
+                {item.pergunta}
               </AccordionTrigger>
               <AccordionContent className="text-sm leading-relaxed text-muted-foreground">
-                {item.r}
+                {/<[a-z][\s\S]*>/i.test(item.resposta) ? (
+                  <ArtigoConteudo html={item.resposta} className="text-sm" />
+                ) : (
+                  item.resposta
+                )}
               </AccordionContent>
             </AccordionItem>
           ))}
