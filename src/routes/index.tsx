@@ -59,8 +59,24 @@ export const Route = createFileRoute("/")({
       }),
     ],
   }),
+  loader: async () => {
+    const [blocos, listaPosts] = await Promise.all([
+      carregarPagina({ data: { caminho: "/" } }),
+      listarPostsPublicos(),
+    ]);
+    return { blocos, posts: listaPosts.slice(0, 3) };
+  },
   component: Home,
 });
+
+const ICONES: Record<string, typeof BadgeCheck> = {
+  shield: ShieldAlert,
+  truck: Truck,
+  sparkles: BadgeCheck,
+  headset: Headphones,
+  leaf: Leaf,
+  award: Award,
+};
 
 const confianca = [
   { icone: BadgeCheck, titulo: "Produtos originais", texto: "Trabalhamos apenas com marcas oficiais e distribuidores autorizados." },
@@ -71,6 +87,17 @@ const confianca = [
 
 function Home() {
   const overlaysHome = useOverlays();
+  const { blocos, posts } = Route.useLoaderData();
+
+  const faixa = lista<{ icone?: string; titulo?: string }>(blocos, "faixa_confianca", []);
+  const blocosConfianca = confianca.map((item, i) => {
+    const custom = faixa[i];
+    return {
+      ...item,
+      icone: (custom?.icone && ICONES[custom.icone]) || item.icone,
+      titulo: custom?.titulo?.trim() ? custom.titulo : item.titulo,
+    };
+  });
 
   return (
     <>
