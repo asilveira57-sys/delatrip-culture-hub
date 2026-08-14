@@ -90,6 +90,14 @@ function PainelPage() {
           valor={isLoading ? "…" : data?.modoConstrucao ? "Ligado" : "Desligado"}
         />
       </div>
+
+      <h2 className="mt-8 text-base font-semibold">Blog</h2>
+      <div className="mt-3 grid grid-cols-2 gap-3 lg:grid-cols-4">
+        <Cartao titulo="Posts" valor={isLoading ? "…" : (data?.posts ?? 0)} />
+        <Cartao titulo="Rascunhos" valor={isLoading ? "…" : (data?.rascunhos ?? 0)} />
+        <Cartao titulo="Agendados" valor={isLoading ? "…" : (data?.agendados ?? 0)} />
+        <Cartao titulo="Último publicado" valor={isLoading ? "…" : (data?.ultimoPost ?? "—")} />
+      </div>
     </div>
   );
 }
