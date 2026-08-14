@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input";
 import { getBrandPageContent } from "@/config/brand-pages";
 import { getBrand, productsByBrand, sortProducts, type SortKey } from "@/lib/catalog";
 import { absoluteUrl, breadcrumbLd, canonical, jsonLd } from "@/lib/seo";
+import { mergeList, useOverlays } from "@/lib/overlay";
 
 export const Route = createFileRoute("/$brandSlug")({
   head: ({ params }) => {
@@ -97,7 +98,11 @@ function BrandPage() {
 function BrandContent({ slug }: { slug: string }) {
   const marca = getBrand(slug)!;
   const conteudo = getBrandPageContent(marca.slug, marca.nome, marca.totalProdutos);
-  const produtos = useMemo(() => productsByBrand(marca.slug), [marca.slug]);
+  const overlays = useOverlays();
+  const produtos = useMemo(
+    () => mergeList(productsByBrand(marca.slug), overlays),
+    [marca.slug, overlays],
+  );
 
   const categorias = useMemo(() => {
     const mapa = new Map<string, number>();

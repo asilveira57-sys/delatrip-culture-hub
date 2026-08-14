@@ -15,7 +15,11 @@ import { Route as AcessoriosRouteImport } from './routes/acessorios'
 import { Route as BuscaRouteImport } from './routes/busca'
 import { Route as ContatoRouteImport } from './routes/contato'
 import { Route as FaqRouteImport } from './routes/faq'
+import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SobreRouteImport } from './routes/sobre'
+import { Route as AdminGateRouteImport } from './routes/admin/_gate'
+import { Route as AdminLoginRouteImport } from './routes/admin/login'
 import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as CatalogoIndexRouteImport } from './routes/catalogo.index'
@@ -27,6 +31,8 @@ import { Route as LegalTermosRouteImport } from './routes/legal.termos'
 import { Route as MarcasIndexRouteImport } from './routes/marcas.index'
 import { Route as MarcasSlugRouteImport } from './routes/marcas.$slug'
 import { Route as ProdutoSlugRouteImport } from './routes/produto.$slug'
+import { Route as AdminGateIndexRouteImport } from './routes/admin/_gate/index'
+import { Route as AdminGateSeoRouteImport } from './routes/admin/_gate/seo'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -58,9 +64,29 @@ const FaqRoute = FaqRouteImport.update({
   path: '/faq',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
+  id: '/robots.txt',
+  path: '/robots.txt',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SobreRoute = SobreRouteImport.update({
   id: '/sobre',
   path: '/sobre',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminGateRoute = AdminGateRouteImport.update({
+  id: '/admin/_gate',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminLoginRoute = AdminLoginRouteImport.update({
+  id: '/admin/login',
+  path: '/admin/login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BlogIndexRoute = BlogIndexRouteImport.update({
@@ -118,6 +144,16 @@ const ProdutoSlugRoute = ProdutoSlugRouteImport.update({
   path: '/produto/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminGateIndexRoute = AdminGateIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminGateRoute,
+} as any)
+const AdminGateSeoRoute = AdminGateSeoRouteImport.update({
+  id: '/seo',
+  path: '/seo',
+  getParentRoute: () => AdminGateRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -126,7 +162,11 @@ export interface FileRoutesByFullPath {
   '/busca': typeof BuscaRoute
   '/contato': typeof ContatoRoute
   '/faq': typeof FaqRoute
+  '/robots.txt': typeof RobotsDottxtRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/sobre': typeof SobreRoute
+  '/admin': typeof AdminGateRouteWithChildren
+  '/admin/login': typeof AdminLoginRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/catalogo/$': typeof CatalogoSplatRoute
   '/conteudo/tabaco': typeof ConteudoTabacoRoute
@@ -138,6 +178,8 @@ export interface FileRoutesByFullPath {
   '/blog/': typeof BlogIndexRoute
   '/catalogo/': typeof CatalogoIndexRoute
   '/marcas/': typeof MarcasIndexRoute
+  '/admin/seo': typeof AdminGateSeoRoute
+  '/admin/': typeof AdminGateIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -146,7 +188,10 @@ export interface FileRoutesByTo {
   '/busca': typeof BuscaRoute
   '/contato': typeof ContatoRoute
   '/faq': typeof FaqRoute
+  '/robots.txt': typeof RobotsDottxtRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/sobre': typeof SobreRoute
+  '/admin/login': typeof AdminLoginRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/catalogo/$': typeof CatalogoSplatRoute
   '/conteudo/tabaco': typeof ConteudoTabacoRoute
@@ -158,6 +203,8 @@ export interface FileRoutesByTo {
   '/blog': typeof BlogIndexRoute
   '/catalogo': typeof CatalogoIndexRoute
   '/marcas': typeof MarcasIndexRoute
+  '/admin/seo': typeof AdminGateSeoRoute
+  '/admin': typeof AdminGateIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -167,7 +214,11 @@ export interface FileRoutesById {
   '/busca': typeof BuscaRoute
   '/contato': typeof ContatoRoute
   '/faq': typeof FaqRoute
+  '/robots.txt': typeof RobotsDottxtRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/sobre': typeof SobreRoute
+  '/admin/_gate': typeof AdminGateRouteWithChildren
+  '/admin/login': typeof AdminLoginRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/catalogo/$': typeof CatalogoSplatRoute
   '/conteudo/tabaco': typeof ConteudoTabacoRoute
@@ -179,6 +230,8 @@ export interface FileRoutesById {
   '/blog/': typeof BlogIndexRoute
   '/catalogo/': typeof CatalogoIndexRoute
   '/marcas/': typeof MarcasIndexRoute
+  '/admin/_gate/seo': typeof AdminGateSeoRoute
+  '/admin/_gate/': typeof AdminGateIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -189,7 +242,11 @@ export interface FileRouteTypes {
     | '/busca'
     | '/contato'
     | '/faq'
+    | '/robots.txt'
+    | '/sitemap.xml'
     | '/sobre'
+    | '/admin'
+    | '/admin/login'
     | '/blog/$slug'
     | '/catalogo/$'
     | '/conteudo/tabaco'
@@ -201,6 +258,8 @@ export interface FileRouteTypes {
     | '/blog/'
     | '/catalogo/'
     | '/marcas/'
+    | '/admin/seo'
+    | '/admin/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -209,7 +268,10 @@ export interface FileRouteTypes {
     | '/busca'
     | '/contato'
     | '/faq'
+    | '/robots.txt'
+    | '/sitemap.xml'
     | '/sobre'
+    | '/admin/login'
     | '/blog/$slug'
     | '/catalogo/$'
     | '/conteudo/tabaco'
@@ -221,6 +283,8 @@ export interface FileRouteTypes {
     | '/blog'
     | '/catalogo'
     | '/marcas'
+    | '/admin/seo'
+    | '/admin'
   id:
     | '__root__'
     | '/'
@@ -229,7 +293,11 @@ export interface FileRouteTypes {
     | '/busca'
     | '/contato'
     | '/faq'
+    | '/robots.txt'
+    | '/sitemap.xml'
     | '/sobre'
+    | '/admin/_gate'
+    | '/admin/login'
     | '/blog/$slug'
     | '/catalogo/$'
     | '/conteudo/tabaco'
@@ -241,6 +309,8 @@ export interface FileRouteTypes {
     | '/blog/'
     | '/catalogo/'
     | '/marcas/'
+    | '/admin/_gate/seo'
+    | '/admin/_gate/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -250,7 +320,11 @@ export interface RootRouteChildren {
   BuscaRoute: typeof BuscaRoute
   ContatoRoute: typeof ContatoRoute
   FaqRoute: typeof FaqRoute
+  RobotsDottxtRoute: typeof RobotsDottxtRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SobreRoute: typeof SobreRoute
+  AdminGateRoute: typeof AdminGateRouteWithChildren
+  AdminLoginRoute: typeof AdminLoginRoute
   BlogSlugRoute: typeof BlogSlugRoute
   CatalogoSplatRoute: typeof CatalogoSplatRoute
   ConteudoTabacoRoute: typeof ConteudoTabacoRoute
@@ -308,11 +382,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FaqRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/robots.txt': {
+      id: '/robots.txt'
+      path: '/robots.txt'
+      fullPath: '/robots.txt'
+      preLoaderRoute: typeof RobotsDottxtRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/sobre': {
       id: '/sobre'
       path: '/sobre'
       fullPath: '/sobre'
       preLoaderRoute: typeof SobreRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/_gate': {
+      id: '/admin/_gate'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminGateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/login': {
+      id: '/admin/login'
+      path: '/admin/login'
+      fullPath: '/admin/login'
+      preLoaderRoute: typeof AdminLoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/blog/': {
@@ -392,8 +494,36 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProdutoSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/_gate/': {
+      id: '/admin/_gate/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminGateIndexRouteImport
+      parentRoute: typeof AdminGateRoute
+    }
+    '/admin/_gate/seo': {
+      id: '/admin/_gate/seo'
+      path: '/seo'
+      fullPath: '/admin/seo'
+      preLoaderRoute: typeof AdminGateSeoRouteImport
+      parentRoute: typeof AdminGateRoute
+    }
   }
 }
+
+interface AdminGateRouteChildren {
+  AdminGateSeoRoute: typeof AdminGateSeoRoute
+  AdminGateIndexRoute: typeof AdminGateIndexRoute
+}
+
+const AdminGateRouteChildren: AdminGateRouteChildren = {
+  AdminGateSeoRoute: AdminGateSeoRoute,
+  AdminGateIndexRoute: AdminGateIndexRoute,
+}
+
+const AdminGateRouteWithChildren = AdminGateRoute._addFileChildren(
+  AdminGateRouteChildren,
+)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
@@ -402,7 +532,11 @@ const rootRouteChildren: RootRouteChildren = {
   BuscaRoute: BuscaRoute,
   ContatoRoute: ContatoRoute,
   FaqRoute: FaqRoute,
+  RobotsDottxtRoute: RobotsDottxtRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   SobreRoute: SobreRoute,
+  AdminGateRoute: AdminGateRouteWithChildren,
+  AdminLoginRoute: AdminLoginRoute,
   BlogSlugRoute: BlogSlugRoute,
   CatalogoSplatRoute: CatalogoSplatRoute,
   ConteudoTabacoRoute: ConteudoTabacoRoute,

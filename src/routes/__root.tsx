@@ -4,6 +4,7 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
+  useRouterState,
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
@@ -14,6 +15,12 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
 import { Toaster } from "../components/ui/sonner";
+import { ConsentTracking } from "../components/ConsentTracking";
+import {
+  carregarSeoPublico,
+  SEO_PUBLICO_PADRAO,
+} from "../lib/site-config.functions";
+
 
 function NotFoundComponent() {
   return (
@@ -76,8 +83,19 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
 }
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
-  head: () => ({
+  loader: async () => {
+    try {
+      return await carregarSeoPublico();
+    } catch {
+      return SEO_PUBLICO_PADRAO;
+    }
+  },
+  head: ({ loaderData }) => ({
     meta: [
+      ...(loaderData?.modoConstrucao
+        ? [{ name: "robots", content: "noindex, nofollow" }]
+        : []),
+
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "DeLaTrip — Tabacaria e head shop brasileira" },
@@ -126,11 +144,46 @@ function RootShell({ children }: { children: ReactNode }) {
   );
 }
 
+/** Aplica título/descrição definidos no admin para as rotas estáticas. */
+function SeoDeRota({ rotas }: { rotas: { caminho: string; titulo: string | null; descricao: string | null }[] }) {
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+
+  useEffect(() => {
+    const rota = rotas.find((r) => r.caminho === pathname);
+    if (!rota) return;
+    if (rota.titulo) document.title = rota.titulo;
+    if (rota.descricao) {
+      let tag = document.querySelector<HTMLMetaElement>('meta[name="description"]');
+      if (!tag) {
+        tag = document.createElement("meta");
+        tag.name = "description";
+        document.head.appendChild(tag);
+      }
+      tag.content = rota.descricao;
+    }
+  }, [pathname, rotas]);
+
+  return null;
+}
+
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const seo = Route.useLoaderData() ?? SEO_PUBLICO_PADRAO;
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const isAdmin = pathname.startsWith("/admin");
+
+  if (isAdmin) {
+    return (
+      <QueryClientProvider client={queryClient}>
+        <Outlet />
+        <Toaster />
+      </QueryClientProvider>
+    );
+  }
 
   return (
     <QueryClientProvider client={queryClient}>
+      <SeoDeRota rotas={seo.rotas} />
       <a
         href="#conteudo"
         className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[60] focus:rounded-md focus:bg-primary focus:px-4 focus:py-2 focus:text-primary-foreground"
@@ -145,7 +198,9 @@ function RootComponent() {
         </main>
         <Footer />
       </div>
+      <ConsentTracking seo={seo} />
       <Toaster />
     </QueryClientProvider>
   );
+
 }

@@ -27,6 +27,7 @@ import {
   getCategoryByPath,
   type SortKey,
 } from "@/lib/catalog";
+import { mergeList, useOverlays } from "@/lib/overlay";
 
 
 type CatalogoSearch = {
@@ -81,9 +82,10 @@ function Catalogo() {
   const setSearch = (patch: Partial<CatalogoSearch>) =>
     navigate({ search: (prev: CatalogoSearch) => ({ ...prev, ...patch }) });
 
+  const overlays = useOverlays();
   const lista = useMemo(
-    () => filterProducts({ q, categoria, marca, ordem }),
-    [q, categoria, marca, ordem],
+    () => mergeList(filterProducts({ q, categoria, marca, ordem }), overlays),
+    [q, categoria, marca, ordem, overlays],
   );
 
   const PAGINA = 48;

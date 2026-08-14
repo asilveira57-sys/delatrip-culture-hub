@@ -13,6 +13,7 @@ import { SITE } from "@/config/site";
 import { brands, destaques, posts, rootCategories } from "@/lib/catalog";
 import heroImg from "@/assets/hero.jpg";
 import mark from "@/assets/delatrip-mark.png";
+import { mergeList, useOverlays } from "@/lib/overlay";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -69,6 +70,8 @@ const confianca = [
 ];
 
 function Home() {
+  const overlaysHome = useOverlays();
+
   return (
     <>
       {/* Hero */}
@@ -164,7 +167,7 @@ function Home() {
           }
         />
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {destaques.slice(0, 8).map((p) => (
+          {mergeList(destaques, overlaysHome).slice(0, 8).map((p) => (
             <ProductCard key={p.slug} produto={p} />
           ))}
         </div>

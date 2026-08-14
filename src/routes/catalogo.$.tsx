@@ -16,6 +16,7 @@ import {
   getCategoryByPath,
   productsByCategory,
 } from "@/lib/catalog";
+import { mergeList, useOverlays } from "@/lib/overlay";
 
 export const Route = createFileRoute("/catalogo/$")({
   head: ({ params }) => {
@@ -59,6 +60,7 @@ const PAGINA = 48;
 function CategoriaPage() {
   const { _splat } = Route.useParams();
   const categoria = getCategoryByPath(_splat ?? "");
+  const overlays = useOverlays();
   const [visiveis, setVisiveis] = useState(PAGINA);
   useEffect(() => setVisiveis(PAGINA), [_splat]);
 
@@ -85,7 +87,7 @@ function CategoriaPage() {
   }
 
   const subcategorias = childrenOf(categoria.id);
-  const lista = productsByCategory(categoria);
+  const lista = mergeList(productsByCategory(categoria), overlays);
 
 
   const path = categoryPath(categoria);
