@@ -133,21 +133,26 @@ function Home() {
             className="h-16 w-16 sm:h-20 sm:w-20"
           />
           <h1 className="mt-8 max-w-3xl text-4xl font-bold uppercase leading-[1.05] text-ink-foreground sm:text-6xl lg:text-7xl">
-            A cultura, os produtos e o conhecimento da tabacaria brasileira
+            {campoTexto(blocos, "hero_titulo", "A cultura, os produtos e o conhecimento da tabacaria brasileira")}
           </h1>
           <p className="mt-6 max-w-xl text-base leading-relaxed text-ink-muted">
-            Um catálogo curado de sedas, dichavadores, vidros e acessórios — com
-            conteúdo para quem leva o segmento a sério.
+            {campoTexto(
+              blocos,
+              "hero_subtitulo",
+              "Um catálogo curado de sedas, dichavadores, vidros e acessórios — com conteúdo para quem leva o segmento a sério.",
+            )}
           </p>
           <div className="mt-10 flex flex-col gap-3 sm:flex-row">
             <Button asChild size="lg">
               <Link to="/catalogo">
-                Ver catálogo
+                {campoTexto(blocos, "hero_cta_primario", "Ver catálogo")}
                 <ArrowRight aria-hidden="true" />
               </Link>
             </Button>
             <Button asChild size="lg" variant="goldOutline">
-              <Link to="/marcas">Conhecer as marcas</Link>
+              <Link to="/marcas">
+                {campoTexto(blocos, "hero_cta_secundario", "Conhecer as marcas")}
+              </Link>
             </Button>
           </div>
         </div>
@@ -157,7 +162,7 @@ function Home() {
       <section className="mx-auto max-w-6xl px-4 py-20">
         <SectionHeading
           eyebrow="Navegue por tipo"
-          titulo="Categorias"
+          titulo={campoTexto(blocos, "secao_categorias_titulo", "Categorias")}
           descricao="Do papel ao vidro: tudo que compõe o balcão de uma tabacaria completa."
         />
         <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
@@ -173,7 +178,7 @@ function Home() {
           <SectionHeading
             onInk
             eyebrow="Curadoria"
-            titulo="Marcas que trabalhamos"
+            titulo={campoTexto(blocos, "secao_marcas_titulo", "Marcas que trabalhamos")}
             descricao="Clássicos internacionais e produção nacional de alto padrão."
             acao={
               <Button asChild variant="onInk">
@@ -216,7 +221,7 @@ function Home() {
         <div className="mx-auto max-w-6xl px-4">
           <SectionHeading
             eyebrow="Conteúdo"
-            titulo="Aprenda sobre o segmento"
+            titulo={campoTexto(blocos, "secao_blog_titulo", "Aprenda sobre o segmento")}
             descricao="Guias, comparativos e manutenção escritos por quem vive a tabacaria."
             acao={
               <Button asChild variant="outline">
@@ -225,7 +230,7 @@ function Home() {
             }
           />
           <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
-            {posts.slice(0, 3).map((p) => (
+            {posts.map((p) => (
               <PostCard key={p.slug} post={p} />
             ))}
           </div>
@@ -235,7 +240,7 @@ function Home() {
       {/* Confiança */}
       <section className="mx-auto max-w-6xl px-4 py-20">
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {confianca.map(({ icone: Icone, titulo, texto }) => (
+          {blocosConfianca.map(({ icone: Icone, titulo, texto }) => (
             <div key={titulo} className="rounded-lg border border-border bg-card p-5">
               <Icone className="size-5 text-gold" aria-hidden="true" />
               <h3 className="mt-4 text-base font-semibold uppercase">{titulo}</h3>
