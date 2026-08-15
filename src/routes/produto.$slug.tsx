@@ -8,7 +8,11 @@ import { Breadcrumb } from "@/components/Breadcrumb";
 import { ProductCard } from "@/components/ProductCard";
 import { ProductGallery } from "@/components/ProductGallery";
 import { Curtir } from "@/components/Curtir";
+import { useQuery } from "@tanstack/react-query";
+
 import { mergeList, overlayDescricao, useOverlays } from "@/lib/overlay";
+import { fetchPostsPorSlug, useRelacionados } from "@/lib/relacionados";
+import { PostCard } from "@/components/PostCard";
 
 import { SectionHeading } from "@/components/SectionHeading";
 import { Button } from "@/components/ui/button";
@@ -140,6 +144,14 @@ function ProdutoPage() {
   const detalhe = Route.useLoaderData();
   const overlays = useOverlays();
   const ov = overlays.get(slug);
+  const relacionadosManuais = useRelacionados(slug);
+  const { data: postsRelacionados } = useQuery({
+    queryKey: ["produto-posts", slug, relacionadosManuais.posts.join(",")],
+    queryFn: () => fetchPostsPorSlug(relacionadosManuais.posts),
+    enabled: relacionadosManuais.posts.length > 0,
+    staleTime: 5 * 60 * 1000,
+    retry: false,
+  });
   const produto = ov?.oculto ? undefined : getProduct(slug);
 
   if (!produto) {
@@ -159,12 +171,19 @@ function ProdutoPage() {
   }
 
   const categoria = getCategoryById(produto.categoriaId);
-  const relacionados = mergeList(
-    categoria ? productsByCategory(categoria) : [],
+  const manuais = mergeList(
+    relacionadosManuais.produtos
+      .map((s: string) => getProduct(s))
+      .filter((p): p is NonNullable<ReturnType<typeof getProduct>> => Boolean(p)),
     overlays,
+  );
+  const relacionados = (
+    manuais.length > 0
+      ? manuais
+      : mergeList(categoria ? productsByCategory(categoria) : [], overlays)
   )
     .filter((p) => p.slug !== produto.slug)
-    .slice(0, 4);
+    .slice(0, 8);
   const descricaoHtml = overlayDescricao(ov) ?? detalhe?.descricaoHtml ?? "";
   const preco = produto.precoPromocional ?? produto.preco;
   const specs = productSpecs(produto, detalhe);
@@ -269,6 +288,28 @@ function ProdutoPage() {
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {relacionados.map((p) => (
               <ProductCard key={p.slug} produto={p} />
+            ))}
+          </div>
+        </section>
+      )}
+
+      {(postsRelacionados ?? []).length > 0 && (
+        <section className="mt-16">
+          <SectionHeading eyebrow="Conteúdo" titulo="Leia também" />
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {(postsRelacionados ?? []).map((post) => (
+              <PostCard
+                key={post.slug}
+                post={{
+                  slug: post.slug,
+                  titulo: post.titulo,
+                  resumo: post.resumo ?? "",
+                  categoria: post.categoria ?? "Cultura",
+                  data: (post.publicado_em ?? "").slice(0, 10),
+                  capaUrl: post.capa_url,
+                  capaAlt: post.capa_alt,
+                }}
+              />
             ))}
           </div>
         </section>

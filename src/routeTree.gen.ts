@@ -38,6 +38,9 @@ import { Route as AdminGateBlogIndexRouteImport } from './routes/admin/_gate/blo
 import { Route as AdminGateBlogSlugRouteImport } from './routes/admin/_gate/blog.$slug'
 import { Route as AdminGatePaginasIndexRouteImport } from './routes/admin/_gate/paginas.index'
 import { Route as AdminGatePaginasIdRouteImport } from './routes/admin/_gate/paginas.$id'
+import { Route as AdminGateProdutosIndexRouteImport } from './routes/admin/_gate/produtos.index'
+import { Route as AdminGateProdutosSlugRouteImport } from './routes/admin/_gate/produtos.$slug'
+import { Route as AdminGateProdutosEnriquecerRouteImport } from './routes/admin/_gate/produtos.enriquecer'
 import { Route as AdminGateBlogPreviewSlugRouteImport } from './routes/admin/_gate/blog.preview.$slug'
 
 const IndexRoute = IndexRouteImport.update({
@@ -185,6 +188,22 @@ const AdminGatePaginasIdRoute = AdminGatePaginasIdRouteImport.update({
   path: '/paginas/$id',
   getParentRoute: () => AdminGateRoute,
 } as any)
+const AdminGateProdutosIndexRoute = AdminGateProdutosIndexRouteImport.update({
+  id: '/produtos/',
+  path: '/produtos/',
+  getParentRoute: () => AdminGateRoute,
+} as any)
+const AdminGateProdutosSlugRoute = AdminGateProdutosSlugRouteImport.update({
+  id: '/produtos/$slug',
+  path: '/produtos/$slug',
+  getParentRoute: () => AdminGateRoute,
+} as any)
+const AdminGateProdutosEnriquecerRoute =
+  AdminGateProdutosEnriquecerRouteImport.update({
+    id: '/produtos/enriquecer',
+    path: '/produtos/enriquecer',
+    getParentRoute: () => AdminGateRoute,
+  } as any)
 const AdminGateBlogPreviewSlugRoute =
   AdminGateBlogPreviewSlugRouteImport.update({
     id: '/blog/preview/$slug',
@@ -220,8 +239,11 @@ export interface FileRoutesByFullPath {
   '/admin/': typeof AdminGateIndexRoute
   '/admin/blog/$slug': typeof AdminGateBlogSlugRoute
   '/admin/paginas/$id': typeof AdminGatePaginasIdRoute
+  '/admin/produtos/$slug': typeof AdminGateProdutosSlugRoute
+  '/admin/produtos/enriquecer': typeof AdminGateProdutosEnriquecerRoute
   '/admin/blog/': typeof AdminGateBlogIndexRoute
   '/admin/paginas/': typeof AdminGatePaginasIndexRoute
+  '/admin/produtos/': typeof AdminGateProdutosIndexRoute
   '/admin/blog/preview/$slug': typeof AdminGateBlogPreviewSlugRoute
 }
 export interface FileRoutesByTo {
@@ -251,8 +273,11 @@ export interface FileRoutesByTo {
   '/admin': typeof AdminGateIndexRoute
   '/admin/blog/$slug': typeof AdminGateBlogSlugRoute
   '/admin/paginas/$id': typeof AdminGatePaginasIdRoute
+  '/admin/produtos/$slug': typeof AdminGateProdutosSlugRoute
+  '/admin/produtos/enriquecer': typeof AdminGateProdutosEnriquecerRoute
   '/admin/blog': typeof AdminGateBlogIndexRoute
   '/admin/paginas': typeof AdminGatePaginasIndexRoute
+  '/admin/produtos': typeof AdminGateProdutosIndexRoute
   '/admin/blog/preview/$slug': typeof AdminGateBlogPreviewSlugRoute
 }
 export interface FileRoutesById {
@@ -284,8 +309,11 @@ export interface FileRoutesById {
   '/admin/_gate/': typeof AdminGateIndexRoute
   '/admin/_gate/blog/$slug': typeof AdminGateBlogSlugRoute
   '/admin/_gate/paginas/$id': typeof AdminGatePaginasIdRoute
+  '/admin/_gate/produtos/$slug': typeof AdminGateProdutosSlugRoute
+  '/admin/_gate/produtos/enriquecer': typeof AdminGateProdutosEnriquecerRoute
   '/admin/_gate/blog/': typeof AdminGateBlogIndexRoute
   '/admin/_gate/paginas/': typeof AdminGatePaginasIndexRoute
+  '/admin/_gate/produtos/': typeof AdminGateProdutosIndexRoute
   '/admin/_gate/blog/preview/$slug': typeof AdminGateBlogPreviewSlugRoute
 }
 export interface FileRouteTypes {
@@ -318,8 +346,11 @@ export interface FileRouteTypes {
     | '/admin/'
     | '/admin/blog/$slug'
     | '/admin/paginas/$id'
+    | '/admin/produtos/$slug'
+    | '/admin/produtos/enriquecer'
     | '/admin/blog/'
     | '/admin/paginas/'
+    | '/admin/produtos/'
     | '/admin/blog/preview/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -349,8 +380,11 @@ export interface FileRouteTypes {
     | '/admin'
     | '/admin/blog/$slug'
     | '/admin/paginas/$id'
+    | '/admin/produtos/$slug'
+    | '/admin/produtos/enriquecer'
     | '/admin/blog'
     | '/admin/paginas'
+    | '/admin/produtos'
     | '/admin/blog/preview/$slug'
   id:
     | '__root__'
@@ -381,8 +415,11 @@ export interface FileRouteTypes {
     | '/admin/_gate/'
     | '/admin/_gate/blog/$slug'
     | '/admin/_gate/paginas/$id'
+    | '/admin/_gate/produtos/$slug'
+    | '/admin/_gate/produtos/enriquecer'
     | '/admin/_gate/blog/'
     | '/admin/_gate/paginas/'
+    | '/admin/_gate/produtos/'
     | '/admin/_gate/blog/preview/$slug'
   fileRoutesById: FileRoutesById
 }
@@ -616,6 +653,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminGatePaginasIdRouteImport
       parentRoute: typeof AdminGateRoute
     }
+    '/admin/_gate/produtos/': {
+      id: '/admin/_gate/produtos/'
+      path: '/produtos'
+      fullPath: '/admin/produtos/'
+      preLoaderRoute: typeof AdminGateProdutosIndexRouteImport
+      parentRoute: typeof AdminGateRoute
+    }
+    '/admin/_gate/produtos/$slug': {
+      id: '/admin/_gate/produtos/$slug'
+      path: '/produtos/$slug'
+      fullPath: '/admin/produtos/$slug'
+      preLoaderRoute: typeof AdminGateProdutosSlugRouteImport
+      parentRoute: typeof AdminGateRoute
+    }
+    '/admin/_gate/produtos/enriquecer': {
+      id: '/admin/_gate/produtos/enriquecer'
+      path: '/produtos/enriquecer'
+      fullPath: '/admin/produtos/enriquecer'
+      preLoaderRoute: typeof AdminGateProdutosEnriquecerRouteImport
+      parentRoute: typeof AdminGateRoute
+    }
     '/admin/_gate/blog/preview/$slug': {
       id: '/admin/_gate/blog/preview/$slug'
       path: '/blog/preview/$slug'
@@ -632,8 +690,11 @@ interface AdminGateRouteChildren {
   AdminGateIndexRoute: typeof AdminGateIndexRoute
   AdminGateBlogSlugRoute: typeof AdminGateBlogSlugRoute
   AdminGatePaginasIdRoute: typeof AdminGatePaginasIdRoute
+  AdminGateProdutosSlugRoute: typeof AdminGateProdutosSlugRoute
+  AdminGateProdutosEnriquecerRoute: typeof AdminGateProdutosEnriquecerRoute
   AdminGateBlogIndexRoute: typeof AdminGateBlogIndexRoute
   AdminGatePaginasIndexRoute: typeof AdminGatePaginasIndexRoute
+  AdminGateProdutosIndexRoute: typeof AdminGateProdutosIndexRoute
   AdminGateBlogPreviewSlugRoute: typeof AdminGateBlogPreviewSlugRoute
 }
 
@@ -643,8 +704,11 @@ const AdminGateRouteChildren: AdminGateRouteChildren = {
   AdminGateIndexRoute: AdminGateIndexRoute,
   AdminGateBlogSlugRoute: AdminGateBlogSlugRoute,
   AdminGatePaginasIdRoute: AdminGatePaginasIdRoute,
+  AdminGateProdutosSlugRoute: AdminGateProdutosSlugRoute,
+  AdminGateProdutosEnriquecerRoute: AdminGateProdutosEnriquecerRoute,
   AdminGateBlogIndexRoute: AdminGateBlogIndexRoute,
   AdminGatePaginasIndexRoute: AdminGatePaginasIndexRoute,
+  AdminGateProdutosIndexRoute: AdminGateProdutosIndexRoute,
   AdminGateBlogPreviewSlugRoute: AdminGateBlogPreviewSlugRoute,
 }
 
