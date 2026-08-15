@@ -140,6 +140,14 @@ function ProdutoPage() {
   const detalhe = Route.useLoaderData();
   const overlays = useOverlays();
   const ov = overlays.get(slug);
+  const relacionadosManuais = useRelacionados(slug);
+  const { data: postsRelacionados } = useQuery({
+    queryKey: ["produto-posts", slug, relacionadosManuais.posts.join(",")],
+    queryFn: () => fetchPostsPorSlug(relacionadosManuais.posts),
+    enabled: relacionadosManuais.posts.length > 0,
+    staleTime: 5 * 60 * 1000,
+    retry: false,
+  });
   const produto = ov?.oculto ? undefined : getProduct(slug);
 
   if (!produto) {
