@@ -159,12 +159,19 @@ function ProdutoPage() {
   }
 
   const categoria = getCategoryById(produto.categoriaId);
-  const relacionados = mergeList(
-    categoria ? productsByCategory(categoria) : [],
+  const manuais = mergeList(
+    relacionadosManuais.produtos
+      .map((s) => getProduct(s))
+      .filter((p): p is NonNullable<typeof p> => Boolean(p)),
     overlays,
+  );
+  const relacionados = (
+    manuais.length > 0
+      ? manuais
+      : mergeList(categoria ? productsByCategory(categoria) : [], overlays)
   )
     .filter((p) => p.slug !== produto.slug)
-    .slice(0, 4);
+    .slice(0, 8);
   const descricaoHtml = overlayDescricao(ov) ?? detalhe?.descricaoHtml ?? "";
   const preco = produto.precoPromocional ?? produto.preco;
   const specs = productSpecs(produto, detalhe);
