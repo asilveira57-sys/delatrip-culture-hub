@@ -62,6 +62,45 @@ export type Database = {
         }
         Relationships: []
       }
+      enriquecimento_log: {
+        Row: {
+          aprovado: boolean
+          created_at: string
+          custo_usd: number
+          id: string
+          modelo: string
+          motivos: string[]
+          slug: string
+          tokens_entrada: number
+          tokens_saida: number
+          updated_at: string
+        }
+        Insert: {
+          aprovado?: boolean
+          created_at?: string
+          custo_usd?: number
+          id?: string
+          modelo: string
+          motivos?: string[]
+          slug: string
+          tokens_entrada?: number
+          tokens_saida?: number
+          updated_at?: string
+        }
+        Update: {
+          aprovado?: boolean
+          created_at?: string
+          custo_usd?: number
+          id?: string
+          modelo?: string
+          motivos?: string[]
+          slug?: string
+          tokens_entrada?: number
+          tokens_saida?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       pagina: {
         Row: {
           atualizado_em: string | null
@@ -181,6 +220,30 @@ export type Database = {
           seo_titulo?: string | null
           slug?: string
           status_revisao?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      produto_post_relacionado: {
+        Row: {
+          created_at: string
+          ordem: number
+          slug_post: string
+          slug_produto: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          ordem?: number
+          slug_post: string
+          slug_produto: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          ordem?: number
+          slug_post?: string
+          slug_produto?: string
           updated_at?: string
         }
         Relationships: []
