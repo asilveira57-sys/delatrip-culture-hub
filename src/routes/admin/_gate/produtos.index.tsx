@@ -132,7 +132,7 @@ function ProdutosAdminPage() {
           </p>
         </div>
         <Button asChild variant="outline">
-          <Link to="/admin/produtos/enriquecer">
+          <Link to="/admin/produtos/enriquecer" search={{ slugs: "" }}>
             <Sparkles className="size-4" aria-hidden="true" />
             Enriquecer com IA
           </Link>
