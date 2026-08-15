@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import { supabase } from "@/integrations/supabase/client";
 import { products } from "@/lib/catalog";
+import { estatisticasEnriquecimento, formatarUsd } from "@/lib/produtos-admin";
 
 export const Route = createFileRoute("/admin/_gate/")({
   head: () => ({
@@ -63,6 +64,11 @@ function Cartao({ titulo, valor }: { titulo: string; valor: string | number }) {
 }
 
 function PainelPage() {
+  const { data: ia } = useQuery({
+    queryKey: ["admin", "enriquecimento-stats"],
+    queryFn: estatisticasEnriquecimento,
+    retry: false,
+  });
   const { data, isLoading } = useQuery({
     queryKey: ["admin", "painel"],
     queryFn: carregarNumeros,
@@ -89,6 +95,14 @@ function PainelPage() {
           titulo="Modo construção"
           valor={isLoading ? "…" : data?.modoConstrucao ? "Ligado" : "Desligado"}
         />
+      </div>
+
+      <h2 className="mt-8 text-base font-semibold">Enriquecimento por IA</h2>
+      <div className="mt-3 grid grid-cols-2 gap-3 lg:grid-cols-4">
+        <Cartao titulo="Textos gerados" valor={ia?.gerados ?? 0} />
+        <Cartao titulo="Sem ressalvas" valor={ia?.aprovados ?? 0} />
+        <Cartao titulo="Custo no mês" valor={formatarUsd(ia?.custoMes ?? 0)} />
+        <Cartao titulo="Custo acumulado" valor={formatarUsd(ia?.custoTotal ?? 0)} />
       </div>
 
       <h2 className="mt-8 text-base font-semibold">Blog</h2>
