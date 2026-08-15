@@ -38,6 +38,7 @@ import { Route as AdminGateBlogIndexRouteImport } from './routes/admin/_gate/blo
 import { Route as AdminGateBlogSlugRouteImport } from './routes/admin/_gate/blog.$slug'
 import { Route as AdminGatePaginasIndexRouteImport } from './routes/admin/_gate/paginas.index'
 import { Route as AdminGatePaginasIdRouteImport } from './routes/admin/_gate/paginas.$id'
+import { Route as AdminGateProdutosIndexRouteImport } from './routes/admin/_gate/produtos.index'
 import { Route as AdminGateBlogPreviewSlugRouteImport } from './routes/admin/_gate/blog.preview.$slug'
 
 const IndexRoute = IndexRouteImport.update({
@@ -185,6 +186,11 @@ const AdminGatePaginasIdRoute = AdminGatePaginasIdRouteImport.update({
   path: '/paginas/$id',
   getParentRoute: () => AdminGateRoute,
 } as any)
+const AdminGateProdutosIndexRoute = AdminGateProdutosIndexRouteImport.update({
+  id: '/produtos/',
+  path: '/produtos/',
+  getParentRoute: () => AdminGateRoute,
+} as any)
 const AdminGateBlogPreviewSlugRoute =
   AdminGateBlogPreviewSlugRouteImport.update({
     id: '/blog/preview/$slug',
@@ -222,6 +228,7 @@ export interface FileRoutesByFullPath {
   '/admin/paginas/$id': typeof AdminGatePaginasIdRoute
   '/admin/blog/': typeof AdminGateBlogIndexRoute
   '/admin/paginas/': typeof AdminGatePaginasIndexRoute
+  '/admin/produtos/': typeof AdminGateProdutosIndexRoute
   '/admin/blog/preview/$slug': typeof AdminGateBlogPreviewSlugRoute
 }
 export interface FileRoutesByTo {
@@ -253,6 +260,7 @@ export interface FileRoutesByTo {
   '/admin/paginas/$id': typeof AdminGatePaginasIdRoute
   '/admin/blog': typeof AdminGateBlogIndexRoute
   '/admin/paginas': typeof AdminGatePaginasIndexRoute
+  '/admin/produtos': typeof AdminGateProdutosIndexRoute
   '/admin/blog/preview/$slug': typeof AdminGateBlogPreviewSlugRoute
 }
 export interface FileRoutesById {
@@ -286,6 +294,7 @@ export interface FileRoutesById {
   '/admin/_gate/paginas/$id': typeof AdminGatePaginasIdRoute
   '/admin/_gate/blog/': typeof AdminGateBlogIndexRoute
   '/admin/_gate/paginas/': typeof AdminGatePaginasIndexRoute
+  '/admin/_gate/produtos/': typeof AdminGateProdutosIndexRoute
   '/admin/_gate/blog/preview/$slug': typeof AdminGateBlogPreviewSlugRoute
 }
 export interface FileRouteTypes {
@@ -320,6 +329,7 @@ export interface FileRouteTypes {
     | '/admin/paginas/$id'
     | '/admin/blog/'
     | '/admin/paginas/'
+    | '/admin/produtos/'
     | '/admin/blog/preview/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -351,6 +361,7 @@ export interface FileRouteTypes {
     | '/admin/paginas/$id'
     | '/admin/blog'
     | '/admin/paginas'
+    | '/admin/produtos'
     | '/admin/blog/preview/$slug'
   id:
     | '__root__'
@@ -383,6 +394,7 @@ export interface FileRouteTypes {
     | '/admin/_gate/paginas/$id'
     | '/admin/_gate/blog/'
     | '/admin/_gate/paginas/'
+    | '/admin/_gate/produtos/'
     | '/admin/_gate/blog/preview/$slug'
   fileRoutesById: FileRoutesById
 }
@@ -616,6 +628,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminGatePaginasIdRouteImport
       parentRoute: typeof AdminGateRoute
     }
+    '/admin/_gate/produtos/': {
+      id: '/admin/_gate/produtos/'
+      path: '/produtos'
+      fullPath: '/admin/produtos/'
+      preLoaderRoute: typeof AdminGateProdutosIndexRouteImport
+      parentRoute: typeof AdminGateRoute
+    }
     '/admin/_gate/blog/preview/$slug': {
       id: '/admin/_gate/blog/preview/$slug'
       path: '/blog/preview/$slug'
@@ -634,6 +653,7 @@ interface AdminGateRouteChildren {
   AdminGatePaginasIdRoute: typeof AdminGatePaginasIdRoute
   AdminGateBlogIndexRoute: typeof AdminGateBlogIndexRoute
   AdminGatePaginasIndexRoute: typeof AdminGatePaginasIndexRoute
+  AdminGateProdutosIndexRoute: typeof AdminGateProdutosIndexRoute
   AdminGateBlogPreviewSlugRoute: typeof AdminGateBlogPreviewSlugRoute
 }
 
@@ -645,6 +665,7 @@ const AdminGateRouteChildren: AdminGateRouteChildren = {
   AdminGatePaginasIdRoute: AdminGatePaginasIdRoute,
   AdminGateBlogIndexRoute: AdminGateBlogIndexRoute,
   AdminGatePaginasIndexRoute: AdminGatePaginasIndexRoute,
+  AdminGateProdutosIndexRoute: AdminGateProdutosIndexRoute,
   AdminGateBlogPreviewSlugRoute: AdminGateBlogPreviewSlugRoute,
 }
 
