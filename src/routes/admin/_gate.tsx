@@ -35,7 +35,7 @@ const ITENS = [
   { label: "Blog", to: "/admin/blog", icon: FileText, ativo: true },
   { label: "Páginas", to: "/admin/paginas", icon: LayoutPanelLeft, ativo: true },
   { label: "FAQ", to: "/admin/faq", icon: HelpCircle, ativo: true },
-  { label: "Produtos", to: "#", icon: Package, ativo: false },
+  { label: "Produtos", to: "/admin/produtos", icon: Package, ativo: true },
 ] as const;
 
 function AdminLayout() {
