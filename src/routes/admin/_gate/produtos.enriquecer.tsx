@@ -91,7 +91,7 @@ function EnriquecerPage() {
     parar.current = false;
     setRodando(true);
     setLinhas(
-      lote.map((s) => ({
+      lote.map((s: string) => ({
         slug: s,
         nome: getProduct(s)?.nome ?? s,
         estado: "fila" as const,
@@ -122,7 +122,7 @@ function EnriquecerPage() {
               ? {
                   ...l,
                   estado: !r.ok ? "erro" : r.aprovado ? "aprovado" : "ressalva",
-                  detalhe: r.erro ?? r.motivos.join(" · ") || "Passou nas verificações",
+                  detalhe: r.erro ?? (r.motivos.join(" · ") || "Passou nas verificações"),
                   custo: r.custo,
                 }
               : l,
