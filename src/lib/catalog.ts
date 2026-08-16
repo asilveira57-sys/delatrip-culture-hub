@@ -1,5 +1,6 @@
 import productsData from "@/data/products.index.json";
 import categoriesData from "@/data/categories.json";
+import { SITE } from "@/config/site";
 import brandsData from "@/data/brands.json";
 import postsData from "@/data/posts.json";
 
