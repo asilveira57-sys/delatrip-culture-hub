@@ -1,5 +1,6 @@
 import productsData from "@/data/products.index.json";
 import categoriesData from "@/data/categories.json";
+import { SITE } from "@/config/site";
 import brandsData from "@/data/brands.json";
 import postsData from "@/data/posts.json";
 
@@ -108,6 +109,20 @@ const IMG_PREFIX = "https://images.tcdn.com.br/img/img_prod/";
 const LOJA_PREFIX = "https://www.delatrip.com.br/";
 const ML_PREFIX = "https://lista.mercadolivre.com.br/";
 
+/**
+ * Busca do Mercado Livre pelo título do produto, restrita à loja oficial
+ * DeLaTrip (filtro `_Tienda_`).
+ */
+export function mercadoLivreSearchUrl(titulo: string) {
+  const termo = titulo
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+  return `${ML_PREFIX}${termo}_Tienda_${SITE.mercadoLivreLoja}`;
+}
+
 /* ---------------- restrição legal (RDC ANVISA nº 558/2021) ----------------
  * Produtos derivados do tabaco não podem ser comercializados pela internet.
  * Este é o ponto único de restrição: `categories` e `products` derivam daqui,
@@ -187,7 +202,8 @@ function hydrate(r: SlimProduct): Product {
     destaque: (flags & 1) !== 0,
     lancamento: (flags & 2) !== 0,
     urlLoja: r.u !== undefined ? r.u : LOJA_PREFIX + r.s,
-    urlMercadoLivre: r.ml !== undefined ? r.ml : ML_PREFIX + r.s,
+    // Sempre busca pelo título dentro da loja oficial DeLaTrip no ML.
+    urlMercadoLivre: mercadoLivreSearchUrl(r.n),
   };
   haystack.set(
     produto,
