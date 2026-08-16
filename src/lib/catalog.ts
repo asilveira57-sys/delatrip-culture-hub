@@ -107,11 +107,11 @@ type SlimProduct = {
 
 const IMG_PREFIX = "https://images.tcdn.com.br/img/img_prod/";
 const LOJA_PREFIX = "https://www.delatrip.com.br/";
-const ML_PREFIX = "https://lista.mercadolivre.com.br/";
+const ML_PREFIX = "https://lista.mercadolivre.com.br/loja/";
 
 /**
- * Busca do Mercado Livre pelo título do produto, restrita à loja oficial
- * DeLaTrip (filtro `_Tienda_`).
+ * Busca do Mercado Livre pelo título do produto dentro da loja oficial
+ * DeLaTrip (URL de storefront).
  */
 export function mercadoLivreSearchUrl(titulo: string) {
   const termo = titulo
@@ -120,8 +120,10 @@ export function mercadoLivreSearchUrl(titulo: string) {
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
-  return `${ML_PREFIX}${termo}_Tienda_${SITE.mercadoLivreLoja}`;
+  const busca = titulo.replace(/\s+/g, " ").trim();
+  return `${ML_PREFIX}${SITE.mercadoLivreLoja}/${termo}_NoIndex_True?sb=storefront_url#D[A:${encodeURIComponent(busca)}]`;
 }
+
 
 /* ---------------- restrição legal (RDC ANVISA nº 558/2021) ----------------
  * Produtos derivados do tabaco não podem ser comercializados pela internet.
