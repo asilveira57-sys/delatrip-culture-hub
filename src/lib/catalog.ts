@@ -202,7 +202,8 @@ function hydrate(r: SlimProduct): Product {
     destaque: (flags & 1) !== 0,
     lancamento: (flags & 2) !== 0,
     urlLoja: r.u !== undefined ? r.u : LOJA_PREFIX + r.s,
-    urlMercadoLivre: r.ml !== undefined ? r.ml : ML_PREFIX + r.s,
+    // Sempre busca pelo título dentro da loja oficial DeLaTrip no ML.
+    urlMercadoLivre: mercadoLivreSearchUrl(r.n),
   };
   haystack.set(
     produto,
