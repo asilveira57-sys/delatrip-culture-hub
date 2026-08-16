@@ -131,12 +131,18 @@ function ProdutosAdminPage() {
             alterado — tudo aqui é sobreposição por slug.
           </p>
         </div>
-        <Button asChild variant="outline">
-          <Link to="/admin/produtos/enriquecer" search={{ slugs: "" }}>
-            <Sparkles className="size-4" aria-hidden="true" />
-            Enriquecer com IA
-          </Link>
-        </Button>
+        <div className="flex gap-2">
+          <Button asChild variant="outline">
+            <Link to="/admin/produtos/revisar">Revisar textos de IA</Link>
+          </Button>
+          <Button asChild variant="outline">
+            <Link to="/admin/produtos/enriquecer" search={{ slugs: "" }}>
+              <Sparkles className="size-4" aria-hidden="true" />
+              Enriquecer com IA
+            </Link>
+          </Button>
+        </div>
+
       </div>
 
       <div className="mt-6 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
