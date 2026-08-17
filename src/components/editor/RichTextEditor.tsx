@@ -21,11 +21,13 @@ import {
   Strikethrough,
   Undo2,
   Youtube,
+  FileCode2,
 } from "lucide-react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Dialog,
   DialogContent,
