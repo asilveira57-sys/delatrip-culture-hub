@@ -1,11 +1,17 @@
 import { useMemo, useState } from "react";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Eye, EyeOff, Pencil, Sparkles } from "lucide-react";
+import { Eye, EyeOff, MoreHorizontal, Pencil, RotateCcw, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -19,6 +25,7 @@ import {
   definirOcultoEmLote,
   definirRevisaoEmLote,
   listarOverlaysAdmin,
+  reverterOverlay,
   statusOverlay,
   type StatusEnriquecimento,
 } from "@/lib/produtos-admin";
