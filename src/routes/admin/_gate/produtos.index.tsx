@@ -1,11 +1,17 @@
 import { useMemo, useState } from "react";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Eye, EyeOff, Pencil, Sparkles } from "lucide-react";
+import { Eye, EyeOff, MoreHorizontal, Pencil, RotateCcw, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -19,6 +25,7 @@ import {
   definirOcultoEmLote,
   definirRevisaoEmLote,
   listarOverlaysAdmin,
+  reverterOverlay,
   statusOverlay,
   type StatusEnriquecimento,
 } from "@/lib/produtos-admin";
@@ -84,6 +91,25 @@ function ProdutosAdminPage() {
       void atualizar();
     },
     onError: () => toast.error("Não foi possível aplicar a ação em lote."),
+  });
+
+  const reverter = useMutation({
+    mutationFn: (slug: string) => reverterOverlay(slug),
+    onSuccess: () => {
+      toast.success("Edição revertida — o site volta ao texto da Tray.");
+      void atualizar();
+    },
+    onError: () => toast.error("Não foi possível reverter a edição."),
+  });
+
+  const ocultar = useMutation({
+    mutationFn: ({ slug, oculto }: { slug: string; oculto: boolean }) =>
+      definirOcultoEmLote([slug], oculto),
+    onSuccess: (_, vars) => {
+      toast.success(vars.oculto ? "Produto ocultado do site." : "Produto exibido no site.");
+      void atualizar();
+    },
+    onError: () => toast.error("Não foi possível alterar a visibilidade."),
   });
 
   const filtrados = useMemo(() => {
@@ -311,12 +337,48 @@ function ProdutosAdminPage() {
                     {ov?.oculto ? "Oculto" : "Visível"}
                   </td>
                   <td className="p-3 text-right">
-                    <Button asChild size="sm" variant="ghost">
-                      <Link to="/admin/produtos/$slug" params={{ slug: p.slug }}>
-                        <Pencil className="size-4" aria-hidden="true" />
-                        Editar
-                      </Link>
-                    </Button>
+                    <div className="flex items-center justify-end gap-1">
+                      <Button asChild size="sm" variant="ghost">
+                        <Link to="/admin/produtos/$slug" params={{ slug: p.slug }}>
+                          <Pencil className="size-4" aria-hidden="true" />
+                          Editar
+                        </Link>
+                      </Button>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button size="sm" variant="ghost" aria-label="Mais ações">
+                            <MoreHorizontal className="size-4" aria-hidden="true" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <DropdownMenuItem
+                            onClick={() => reverter.mutate(p.slug)}
+                            disabled={reverter.isPending || st === "original"}
+                          >
+                            <RotateCcw className="mr-2 size-4" aria-hidden="true" />
+                            Reverter edições
+                          </DropdownMenuItem>
+                          <DropdownMenuItem
+                            onClick={() =>
+                              ocultar.mutate({ slug: p.slug, oculto: !ov?.oculto })
+                            }
+                            disabled={ocultar.isPending}
+                          >
+                            {ov?.oculto ? (
+                              <>
+                                <Eye className="mr-2 size-4" aria-hidden="true" />
+                                Exibir no site
+                              </>
+                            ) : (
+                              <>
+                                <EyeOff className="mr-2 size-4" aria-hidden="true" />
+                                Ocultar do site
+                              </>
+                            )}
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </div>
                   </td>
                 </tr>
               );
