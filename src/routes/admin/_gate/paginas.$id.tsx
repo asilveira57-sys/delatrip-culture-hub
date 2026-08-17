@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Save } from "lucide-react";
 import { toast } from "sonner";
 
+import { BotaoSeoIa } from "@/components/admin/BotaoSeoIa";
 import { RichTextEditor } from "@/components/editor/RichTextEditor";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -52,6 +53,7 @@ function EditarPaginaPage() {
     caminho: pagina?.caminho ?? "/",
     titulo: "",
     descricao: "",
+    keywords: "",
     noindex: false,
   });
   const [salvando, setSalvando] = useState(false);
@@ -198,6 +200,25 @@ function EditarPaginaPage() {
 
         <section className="rounded-lg border border-border bg-card p-4">
           <h2 className="text-sm font-semibold uppercase">SEO da página</h2>
+          <div className="mt-3">
+            <BotaoSeoIa
+              tipo="pagina"
+              titulo={pagina.nome}
+              contexto={Object.values(blocos)
+                .map((v) => (typeof v === "string" ? v : JSON.stringify(v)))
+                .join("\n")}
+              extra={`Endereço: ${pagina.caminho}`}
+              vazio={!seo.titulo.trim() && !seo.descricao.trim() && !seo.keywords.trim()}
+              onGerado={(gerado) =>
+                setSeo((atual) => ({
+                  ...atual,
+                  titulo: gerado.titulo,
+                  descricao: gerado.descricao,
+                  keywords: gerado.keywords,
+                }))
+              }
+            />
+          </div>
           <div className="mt-3 space-y-3">
             <div>
               <div className="flex items-center justify-between">
@@ -220,6 +241,15 @@ function EditarPaginaPage() {
                 rows={2}
                 value={seo.descricao}
                 onChange={(e) => setSeo({ ...seo, descricao: e.target.value })}
+              />
+            </div>
+            <div>
+              <Label htmlFor="seo-keywords">Palavras-chave</Label>
+              <Input
+                id="seo-keywords"
+                value={seo.keywords}
+                onChange={(e) => setSeo({ ...seo, keywords: e.target.value })}
+                placeholder="termo um, termo dois, termo três"
               />
             </div>
             <label className="flex items-center justify-between text-sm">

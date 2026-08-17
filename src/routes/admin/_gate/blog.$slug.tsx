@@ -4,6 +4,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { AlertTriangle, ExternalLink, Save } from "lucide-react";
 import { toast } from "sonner";
 
+import { BotaoSeoIa } from "@/components/admin/BotaoSeoIa";
 import { RichTextEditor } from "@/components/editor/RichTextEditor";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -51,6 +52,7 @@ const VAZIO: PostAdmin = {
   publicado_em: null,
   seo_titulo: "",
   seo_descricao: "",
+  seo_keywords: "",
 };
 
 function Contador({ texto, limite }: { texto: string; limite: number }) {
@@ -290,6 +292,28 @@ function EditorPostPage() {
 
           <section className="rounded-lg border border-border bg-card p-4">
             <h2 className="text-base font-semibold">SEO</h2>
+            <div className="mt-3">
+              <BotaoSeoIa
+                tipo="post"
+                titulo={post.titulo}
+                contexto={`${post.resumo ?? ""}\n${post.conteudo_html ?? ""}`}
+                extra={post.categoria ? `Categoria: ${post.categoria}` : null}
+                vazio={
+                  !post.seo_titulo?.trim() &&
+                  !post.seo_descricao?.trim() &&
+                  !post.seo_keywords?.trim()
+                }
+                onGerado={(seo) => {
+                  setPost((atual) => ({
+                    ...atual,
+                    seo_titulo: seo.titulo,
+                    seo_descricao: seo.descricao,
+                    seo_keywords: seo.keywords,
+                  }));
+                  setSujo(true);
+                }}
+              />
+            </div>
             <div className="mt-3 space-y-3">
               <div>
                 <div className="flex items-center justify-between">
@@ -312,6 +336,15 @@ function EditorPostPage() {
                   rows={2}
                   value={post.seo_descricao ?? ""}
                   onChange={(e) => alterar("seo_descricao", e.target.value)}
+                />
+              </div>
+              <div>
+                <Label htmlFor="seo-keywords">Palavras-chave</Label>
+                <Input
+                  id="seo-keywords"
+                  value={post.seo_keywords ?? ""}
+                  onChange={(e) => alterar("seo_keywords", e.target.value)}
+                  placeholder="termo um, termo dois, termo três"
                 />
               </div>
               <div className="rounded border border-border bg-background p-3">
