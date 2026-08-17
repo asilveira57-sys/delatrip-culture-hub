@@ -337,12 +337,48 @@ function ProdutosAdminPage() {
                     {ov?.oculto ? "Oculto" : "Visível"}
                   </td>
                   <td className="p-3 text-right">
-                    <Button asChild size="sm" variant="ghost">
-                      <Link to="/admin/produtos/$slug" params={{ slug: p.slug }}>
-                        <Pencil className="size-4" aria-hidden="true" />
-                        Editar
-                      </Link>
-                    </Button>
+                    <div className="flex items-center justify-end gap-1">
+                      <Button asChild size="sm" variant="ghost">
+                        <Link to="/admin/produtos/$slug" params={{ slug: p.slug }}>
+                          <Pencil className="size-4" aria-hidden="true" />
+                          Editar
+                        </Link>
+                      </Button>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button size="sm" variant="ghost" aria-label="Mais ações">
+                            <MoreHorizontal className="size-4" aria-hidden="true" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <DropdownMenuItem
+                            onClick={() => reverter.mutate(p.slug)}
+                            disabled={reverter.isPending || st === "original"}
+                          >
+                            <RotateCcw className="mr-2 size-4" aria-hidden="true" />
+                            Reverter edições
+                          </DropdownMenuItem>
+                          <DropdownMenuItem
+                            onClick={() =>
+                              ocultar.mutate({ slug: p.slug, oculto: !ov?.oculto })
+                            }
+                            disabled={ocultar.isPending}
+                          >
+                            {ov?.oculto ? (
+                              <>
+                                <Eye className="mr-2 size-4" aria-hidden="true" />
+                                Exibir no site
+                              </>
+                            ) : (
+                              <>
+                                <EyeOff className="mr-2 size-4" aria-hidden="true" />
+                                Ocultar do site
+                              </>
+                            )}
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </div>
                   </td>
                 </tr>
               );
