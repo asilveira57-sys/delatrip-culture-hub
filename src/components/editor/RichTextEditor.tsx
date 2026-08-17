@@ -359,9 +359,46 @@ export function RichTextEditor({
         <BotaoBarra titulo="Refazer" onClick={() => editor.chain().focus().redo().run()}>
           <Redo2 className="size-4" />
         </BotaoBarra>
+          </>
+        )}
+        <span className="ml-auto" />
+        <BotaoBarra
+          titulo={modoCodigo ? "Voltar ao editor de texto" : "Editar código HTML"}
+          ativo={modoCodigo}
+          onClick={() => {
+            if (modoCodigo) {
+              const html = sanitizarHtml(codigo);
+              ultimoHtml.current = html;
+              editor.commands.setContent(html || "", { emitUpdate: false });
+              onChange(html);
+              setModoCodigo(false);
+            } else {
+              setCodigo(editor.getHTML());
+              setModoCodigo(true);
+            }
+          }}
+        >
+          <FileCode2 className="size-4" />
+        </BotaoBarra>
       </div>
 
-      <EditorContent editor={editor} style={{ minHeight: minAltura }} className="px-4 py-3" />
+      {modoCodigo ? (
+        <Textarea
+          value={codigo}
+          onChange={(e) => setCodigo(e.target.value)}
+          onBlur={() => {
+            const html = sanitizarHtml(codigo);
+            ultimoHtml.current = html;
+            onChange(html);
+          }}
+          spellCheck={false}
+          className="rounded-none border-0 font-mono text-xs focus-visible:ring-0"
+          style={{ minHeight: minAltura }}
+          placeholder="<p>Cole aqui o HTML…</p>"
+        />
+      ) : (
+        <EditorContent editor={editor} style={{ minHeight: minAltura }} className="px-4 py-3" />
+      )}
 
       <Dialog open={dialogoLink} onOpenChange={setDialogoLink}>
         <DialogContent>
