@@ -70,6 +70,7 @@ export async function reverterOverlay(slug: string) {
     descricao_html: null,
     seo_titulo: null,
     seo_descricao: null,
+    seo_keywords: null,
     enriquecido_em: null,
     enriquecido_modelo: null,
     status_revisao: null,
