@@ -102,6 +102,10 @@ export function RichTextEditor({
 
   const [embedUrl, setEmbedUrl] = useState("");
 
+  // Modo código: edição direta do HTML (colar embed, tabela, script permitido…).
+  const [modoCodigo, setModoCodigo] = useState(false);
+  const [codigo, setCodigo] = useState(valor);
+
   const ultimoHtml = useRef(valor);
 
   const editor = useEditor({
