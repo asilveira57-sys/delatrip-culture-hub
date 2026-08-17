@@ -8,6 +8,7 @@ export type SeoRota = {
   titulo: string | null;
   descricao: string | null;
   og_imagem: string | null;
+  seo_keywords: string | null;
   noindex: boolean;
 };
 
@@ -59,7 +60,7 @@ export const carregarSeoPublico = createServerFn({ method: "GET" }).handler(
 
       const [config, rotas] = await Promise.all([
         supabase.from("config_site").select("chave, valor"),
-        supabase.from("seo_rota").select("caminho, titulo, descricao, og_imagem, noindex"),
+        supabase.from("seo_rota").select("caminho, titulo, descricao, og_imagem, seo_keywords, noindex"),
       ]);
 
       const mapa = new Map(

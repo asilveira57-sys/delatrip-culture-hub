@@ -142,6 +142,7 @@ export function RichTextEditor({
     if (!editor) return;
     if (valor !== ultimoHtml.current) {
       ultimoHtml.current = valor;
+      setCodigo(valor);
       editor.commands.setContent(valor || "", { emitUpdate: false });
     }
   }, [valor, editor]);

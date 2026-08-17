@@ -6,6 +6,7 @@ export type SeoRotaAdmin = {
   caminho: string;
   titulo: string;
   descricao: string;
+  keywords: string;
   noindex: boolean;
 };
 
@@ -14,7 +15,7 @@ export async function carregarPaginaAdmin(caminho: string) {
     supabase.from("pagina").select("blocos").eq("caminho", caminho).maybeSingle(),
     supabase
       .from("seo_rota")
-      .select("caminho, titulo, descricao, noindex")
+      .select("caminho, titulo, descricao, seo_keywords, noindex")
       .eq("caminho", caminho)
       .maybeSingle(),
   ]);
@@ -24,6 +25,7 @@ export async function carregarPaginaAdmin(caminho: string) {
       caminho,
       titulo: seo.data?.titulo ?? "",
       descricao: seo.data?.descricao ?? "",
+      keywords: seo.data?.seo_keywords ?? "",
       noindex: seo.data?.noindex ?? false,
     } satisfies SeoRotaAdmin,
   };
@@ -49,6 +51,7 @@ export async function salvarPaginaAdmin(
       caminho,
       titulo: seo.titulo || null,
       descricao: seo.descricao || null,
+      seo_keywords: seo.keywords || null,
       noindex: seo.noindex,
     },
     { onConflict: "caminho" },
