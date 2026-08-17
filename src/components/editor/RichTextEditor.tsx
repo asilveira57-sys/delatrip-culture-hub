@@ -246,6 +246,12 @@ export function RichTextEditor({
   return (
     <div className="rounded-md border border-border bg-background">
       <div className="flex flex-wrap items-center gap-0.5 border-b border-border p-1">
+        {modoCodigo ? (
+          <span className="px-2 py-1 text-xs text-muted-foreground">
+            Modo código — cole ou edite o HTML diretamente.
+          </span>
+        ) : (
+          <>
         <BotaoBarra
           titulo="Parágrafo"
           ativo={editor.isActive("paragraph")}
