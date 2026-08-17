@@ -5,6 +5,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { ArrowLeft, Eye, EyeOff, RotateCcw, Save, Sparkles, Undo2 } from "lucide-react";
 import { toast } from "sonner";
 
+import { BotaoSeoIa } from "@/components/admin/BotaoSeoIa";
 import { RichTextEditor } from "@/components/editor/RichTextEditor";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -50,6 +51,7 @@ const VAZIO: OverlayAdmin = {
   descricao_original: null,
   seo_titulo: null,
   seo_descricao: null,
+  seo_keywords: null,
   oculto: false,
   destaque: null,
   enriquecido_em: null,
@@ -132,6 +134,7 @@ function ProdutoAdminPage() {
         descricao_html: form.descricao_html,
         seo_titulo: form.seo_titulo,
         seo_descricao: form.seo_descricao,
+        seo_keywords: form.seo_keywords,
         oculto: form.oculto,
         destaque: form.destaque,
         status_revisao: form.status_revisao,
@@ -287,6 +290,30 @@ function ProdutoAdminPage() {
           )}
 
           <div className="mt-5 space-y-3">
+            <BotaoSeoIa
+              tipo="produto"
+              titulo={produto?.nome ?? slug}
+              contexto={form.descricao_html || original}
+              extra={[
+                produto?.marca ? `Marca: ${produto.marca}` : null,
+                categoria ? `Categoria: ${categoria.nome}` : null,
+              ]
+                .filter(Boolean)
+                .join(" · ")}
+              vazio={
+                !form.seo_titulo?.trim() &&
+                !form.seo_descricao?.trim() &&
+                !form.seo_keywords?.trim()
+              }
+              onGerado={(seo) =>
+                setForm((f) => ({
+                  ...f,
+                  seo_titulo: seo.titulo,
+                  seo_descricao: seo.descricao,
+                  seo_keywords: seo.keywords,
+                }))
+              }
+            />
             <div>
               <div className="flex items-center justify-between">
                 <Label htmlFor="seo-titulo">Título SEO</Label>
@@ -312,6 +339,17 @@ function ProdutoAdminPage() {
                 onChange={(e) =>
                   setForm((f) => ({ ...f, seo_descricao: e.target.value || null }))
                 }
+              />
+            </div>
+            <div>
+              <Label htmlFor="seo-keywords">Palavras-chave</Label>
+              <Input
+                id="seo-keywords"
+                value={form.seo_keywords ?? ""}
+                onChange={(e) =>
+                  setForm((f) => ({ ...f, seo_keywords: e.target.value || null }))
+                }
+                placeholder="termo um, termo dois, termo três"
               />
             </div>
           </div>

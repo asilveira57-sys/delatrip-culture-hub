@@ -17,6 +17,7 @@ export type PostAdmin = {
   publicado_em: string | null;
   seo_titulo: string | null;
   seo_descricao: string | null;
+  seo_keywords?: string | null;
   created_at?: string;
   updated_at?: string;
 };

@@ -21,11 +21,13 @@ import {
   Strikethrough,
   Undo2,
   Youtube,
+  FileCode2,
 } from "lucide-react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Dialog,
   DialogContent,
@@ -100,6 +102,10 @@ export function RichTextEditor({
 
   const [embedUrl, setEmbedUrl] = useState("");
 
+  // Modo código: edição direta do HTML (colar embed, tabela, script permitido…).
+  const [modoCodigo, setModoCodigo] = useState(false);
+  const [codigo, setCodigo] = useState(valor);
+
   const ultimoHtml = useRef(valor);
 
   const editor = useEditor({
@@ -136,6 +142,7 @@ export function RichTextEditor({
     if (!editor) return;
     if (valor !== ultimoHtml.current) {
       ultimoHtml.current = valor;
+      setCodigo(valor);
       editor.commands.setContent(valor || "", { emitUpdate: false });
     }
   }, [valor, editor]);
@@ -240,6 +247,12 @@ export function RichTextEditor({
   return (
     <div className="rounded-md border border-border bg-background">
       <div className="flex flex-wrap items-center gap-0.5 border-b border-border p-1">
+        {modoCodigo ? (
+          <span className="px-2 py-1 text-xs text-muted-foreground">
+            Modo código — cole ou edite o HTML diretamente.
+          </span>
+        ) : (
+          <>
         <BotaoBarra
           titulo="Parágrafo"
           ativo={editor.isActive("paragraph")}
@@ -347,9 +360,46 @@ export function RichTextEditor({
         <BotaoBarra titulo="Refazer" onClick={() => editor.chain().focus().redo().run()}>
           <Redo2 className="size-4" />
         </BotaoBarra>
+          </>
+        )}
+        <span className="ml-auto" />
+        <BotaoBarra
+          titulo={modoCodigo ? "Voltar ao editor de texto" : "Editar código HTML"}
+          ativo={modoCodigo}
+          onClick={() => {
+            if (modoCodigo) {
+              const html = sanitizarHtml(codigo);
+              ultimoHtml.current = html;
+              editor.commands.setContent(html || "", { emitUpdate: false });
+              onChange(html);
+              setModoCodigo(false);
+            } else {
+              setCodigo(editor.getHTML());
+              setModoCodigo(true);
+            }
+          }}
+        >
+          <FileCode2 className="size-4" />
+        </BotaoBarra>
       </div>
 
-      <EditorContent editor={editor} style={{ minHeight: minAltura }} className="px-4 py-3" />
+      {modoCodigo ? (
+        <Textarea
+          value={codigo}
+          onChange={(e) => setCodigo(e.target.value)}
+          onBlur={() => {
+            const html = sanitizarHtml(codigo);
+            ultimoHtml.current = html;
+            onChange(html);
+          }}
+          spellCheck={false}
+          className="rounded-none border-0 font-mono text-xs focus-visible:ring-0"
+          style={{ minHeight: minAltura }}
+          placeholder="<p>Cole aqui o HTML…</p>"
+        />
+      ) : (
+        <EditorContent editor={editor} style={{ minHeight: minAltura }} className="px-4 py-3" />
+      )}
 
       <Dialog open={dialogoLink} onOpenChange={setDialogoLink}>
         <DialogContent>

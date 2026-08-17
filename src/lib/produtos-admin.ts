@@ -10,6 +10,7 @@ export type OverlayAdmin = {
   descricao_original: string | null;
   seo_titulo: string | null;
   seo_descricao: string | null;
+  seo_keywords: string | null;
   oculto: boolean;
   destaque: boolean | null;
   enriquecido_em: string | null;
@@ -19,7 +20,7 @@ export type OverlayAdmin = {
 };
 
 export const CAMPOS_OVERLAY =
-  "slug, descricao_html, descricao_original, seo_titulo, seo_descricao, oculto, destaque, enriquecido_em, enriquecido_modelo, status_revisao, observacao";
+  "slug, descricao_html, descricao_original, seo_titulo, seo_descricao, seo_keywords, oculto, destaque, enriquecido_em, enriquecido_modelo, status_revisao, observacao";
 
 export type StatusEnriquecimento =
   | "original"
@@ -69,6 +70,7 @@ export async function reverterOverlay(slug: string) {
     descricao_html: null,
     seo_titulo: null,
     seo_descricao: null,
+    seo_keywords: null,
     enriquecido_em: null,
     enriquecido_modelo: null,
     status_revisao: null,
@@ -144,6 +146,7 @@ export async function copiarParaVariantes(
       descricao_html: origem.descricao_html,
       seo_titulo: null,
       seo_descricao: origem.seo_descricao,
+      seo_keywords: origem.seo_keywords,
       status_revisao: origem.status_revisao,
       enriquecido_em: origem.enriquecido_em,
       enriquecido_modelo: origem.enriquecido_modelo,

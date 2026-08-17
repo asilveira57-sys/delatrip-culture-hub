@@ -31,6 +31,7 @@ function FaqAdminPage() {
     caminho: CAMINHO,
     titulo: "",
     descricao: "",
+    keywords: "",
     noindex: false,
   });
   const [salvando, setSalvando] = useState(false);
