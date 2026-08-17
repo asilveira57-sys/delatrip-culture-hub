@@ -137,6 +137,7 @@ export type Database = {
           publicado_em: string | null
           resumo: string | null
           seo_descricao: string | null
+          seo_keywords: string | null
           seo_titulo: string | null
           slug: string
           titulo: string
@@ -153,6 +154,7 @@ export type Database = {
           publicado_em?: string | null
           resumo?: string | null
           seo_descricao?: string | null
+          seo_keywords?: string | null
           seo_titulo?: string | null
           slug: string
           titulo: string
@@ -169,6 +171,7 @@ export type Database = {
           publicado_em?: string | null
           resumo?: string | null
           seo_descricao?: string | null
+          seo_keywords?: string | null
           seo_titulo?: string | null
           slug?: string
           titulo?: string
@@ -187,6 +190,7 @@ export type Database = {
           observacao: string | null
           oculto: boolean
           seo_descricao: string | null
+          seo_keywords: string | null
           seo_titulo: string | null
           slug: string
           status_revisao: string | null
@@ -202,6 +206,7 @@ export type Database = {
           observacao?: string | null
           oculto?: boolean
           seo_descricao?: string | null
+          seo_keywords?: string | null
           seo_titulo?: string | null
           slug: string
           status_revisao?: string | null
@@ -217,6 +222,7 @@ export type Database = {
           observacao?: string | null
           oculto?: boolean
           seo_descricao?: string | null
+          seo_keywords?: string | null
           seo_titulo?: string | null
           slug?: string
           status_revisao?: string | null
@@ -279,6 +285,7 @@ export type Database = {
           descricao: string | null
           noindex: boolean
           og_imagem: string | null
+          seo_keywords: string | null
           titulo: string | null
           updated_at: string
         }
@@ -288,6 +295,7 @@ export type Database = {
           descricao?: string | null
           noindex?: boolean
           og_imagem?: string | null
+          seo_keywords?: string | null
           titulo?: string | null
           updated_at?: string
         }
@@ -297,6 +305,7 @@ export type Database = {
           descricao?: string | null
           noindex?: boolean
           og_imagem?: string | null
+          seo_keywords?: string | null
           titulo?: string | null
           updated_at?: string
         }
