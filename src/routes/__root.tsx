@@ -145,7 +145,7 @@ function RootShell({ children }: { children: ReactNode }) {
 }
 
 /** Aplica título/descrição definidos no admin para as rotas estáticas. */
-function SeoDeRota({ rotas }: { rotas: { caminho: string; titulo: string | null; descricao: string | null }[] }) {
+function SeoDeRota({ rotas }: { rotas: { caminho: string; titulo: string | null; descricao: string | null; seo_keywords?: string | null }[] }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
 
   useEffect(() => {
@@ -160,6 +160,15 @@ function SeoDeRota({ rotas }: { rotas: { caminho: string; titulo: string | null;
         document.head.appendChild(tag);
       }
       tag.content = rota.descricao;
+    }
+    if (rota.seo_keywords) {
+      let tag = document.querySelector<HTMLMetaElement>('meta[name="keywords"]');
+      if (!tag) {
+        tag = document.createElement("meta");
+        tag.name = "keywords";
+        document.head.appendChild(tag);
+      }
+      tag.content = rota.seo_keywords;
     }
   }, [pathname, rotas]);
 
