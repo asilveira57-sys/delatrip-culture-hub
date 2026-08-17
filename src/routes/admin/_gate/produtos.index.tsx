@@ -93,6 +93,25 @@ function ProdutosAdminPage() {
     onError: () => toast.error("Não foi possível aplicar a ação em lote."),
   });
 
+  const reverter = useMutation({
+    mutationFn: (slug: string) => reverterOverlay(slug),
+    onSuccess: () => {
+      toast.success("Edição revertida — o site volta ao texto da Tray.");
+      void atualizar();
+    },
+    onError: () => toast.error("Não foi possível reverter a edição."),
+  });
+
+  const ocultar = useMutation({
+    mutationFn: ({ slug, oculto }: { slug: string; oculto: boolean }) =>
+      definirOcultoEmLote([slug], oculto),
+    onSuccess: (_, vars) => {
+      toast.success(vars.oculto ? "Produto ocultado do site." : "Produto exibido no site.");
+      void atualizar();
+    },
+    onError: () => toast.error("Não foi possível alterar a visibilidade."),
+  });
+
   const filtrados = useMemo(() => {
     const termo = busca.trim().toLowerCase();
     return products.filter((p) => {
