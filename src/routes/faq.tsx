@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { absoluteUrl, canonical } from "@/lib/seo";
+import { canonical, metaDaRota } from "@/lib/seo";
 
 import { ArtigoConteudo } from "@/components/ArtigoConteudo";
 import { PageHeader } from "@/components/PageHeader";
@@ -48,25 +48,20 @@ const PADRAO: FaqItem[] = [
 
 export const Route = createFileRoute("/faq")({
   loader: async () => {
-    const blocos = await carregarPagina({ data: { caminho: "/faq" } });
+    const { blocos, seo } = await carregarPagina({ data: { caminho: "/faq" } });
     const itens = itensFaq(blocos);
-    return { itens: itens.length > 0 ? itens : PADRAO };
+    return { itens: itens.length > 0 ? itens : PADRAO, seo };
   },
   head: ({ loaderData }) => ({
     meta: [
-      { title: "Perguntas frequentes — DeLaTrip" },
-      {
-        name: "description",
-        content:
+      ...metaDaRota(loaderData?.seo, {
+        titulo: "Perguntas frequentes — DeLaTrip",
+        descricao:
           "Dúvidas sobre compras, originalidade dos produtos, idade mínima, garantia, atacado e cuidados com vidro e dichavadores.",
-      },
-      { property: "og:title", content: "Perguntas frequentes — DeLaTrip" },
-      {
-        property: "og:description",
-        content: "Respostas rápidas sobre catálogo, compras, garantia e uso dos produtos.",
-      },
+        ogDescricao: "Respostas rápidas sobre catálogo, compras, garantia e uso dos produtos.",
+        caminho: "/faq",
+      }),
       { property: "og:type", content: "website" },
-      { property: "og:url", content: absoluteUrl("/faq") },
     ],
     links: [canonical("/faq")],
     scripts: [

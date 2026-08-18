@@ -209,7 +209,7 @@ const postsRelacionados = [
 ];
 
 function ConteudoTabacoPage() {
-  const blocosPagina = Route.useLoaderData();
+  const { blocos: blocosPagina } = Route.useLoaderData();
   const corpoEditavel = rich(blocosPagina, "corpo");
 
   return (
