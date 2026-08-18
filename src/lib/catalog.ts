@@ -2,7 +2,6 @@ import productsData from "@/data/products.index.json";
 import categoriesData from "@/data/categories.json";
 import { SITE } from "@/config/site";
 import brandsData from "@/data/brands.json";
-import postsData from "@/data/posts.json";
 
 import {
   CATEGORY_META,
@@ -76,15 +75,10 @@ export type Brand = {
   pais?: string | null;
 };
 
-export type Post = {
-  slug: string;
-  titulo: string;
-  resumo: string;
-  data: string;
-  categoria: string;
-  imagem: string;
-  conteudo: string;
-};
+import { posts as postsEditoriais } from "@/lib/editorial";
+
+export type { Post } from "@/lib/editorial";
+export { posts, imageForKey, formatDate } from "@/lib/editorial";
 
 /** Registro compacto gravado por scripts/split-products.mjs. */
 type SlimProduct = {
@@ -173,9 +167,6 @@ export const categories = rawCategories
   );
 
 export const brands = brandsData as Brand[];
-export const posts = [...(postsData as Post[])].sort((a, b) =>
-  b.data.localeCompare(a.data),
-);
 
 const byId = new Map(categories.map((c) => [c.id, c]));
 const brandById = new Map(brands.map((b) => [b.slug, b]));
@@ -418,17 +409,6 @@ export function imageFor(produto: Product) {
   return fallbackPorCategoria[raiz] ?? imgSedas;
 }
 
-const imagensEditoriais: Record<string, string> = {
-  sedas: imgSedas,
-  dichavador: imgDichavador,
-  bong: imgBong,
-  bandeja: imgBandeja,
-};
-
-/** Imagem de posts do blog e blocos editoriais (chave simbólica no JSON). */
-export function imageForKey(key: string) {
-  return imagensEditoriais[key] ?? imgSedas;
-}
 
 /* ---------------- marcas ---------------- */
 
@@ -445,7 +425,7 @@ export function brandName(slug: string | null) {
 /* ---------------- posts ---------------- */
 
 export function getPost(slug: string) {
-  return posts.find((p) => p.slug === slug);
+  return postsEditoriais.find((p) => p.slug === slug);
 }
 
 /* ---------------- busca e formatação ---------------- */
@@ -568,13 +548,6 @@ export function plainText(html: string, limite = 300) {
   return texto.length > limite ? `${texto.slice(0, limite - 1)}…` : texto;
 }
 
-export function formatDate(iso: string) {
-  return new Date(`${iso}T12:00:00`).toLocaleDateString("pt-BR", {
-    day: "2-digit",
-    month: "long",
-    year: "numeric",
-  });
-}
 
 export function formatPrice(valor: number | null) {
   if (valor === null) return "";
