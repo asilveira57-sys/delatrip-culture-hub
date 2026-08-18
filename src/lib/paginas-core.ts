@@ -47,3 +47,11 @@ export function itensFaq(blocos: Blocos | null | undefined): FaqItem[] {
     }))
     .filter((i) => i.pergunta.trim());
 }
+
+/** Metadados de SEO de uma rota, vindos da tabela `seo_rota`. */
+export type PaginaSeo = {
+  titulo: string | null;
+  descricao: string | null;
+  keywords: string | null;
+  noindex: boolean;
+};
