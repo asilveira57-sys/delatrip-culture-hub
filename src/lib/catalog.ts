@@ -2,7 +2,6 @@ import productsData from "@/data/products.index.json";
 import categoriesData from "@/data/categories.json";
 import { SITE } from "@/config/site";
 import brandsData from "@/data/brands.json";
-import postsData from "@/data/posts.json";
 
 import {
   CATEGORY_META,
@@ -166,9 +165,6 @@ export const categories = rawCategories
   );
 
 export const brands = brandsData as Brand[];
-export const posts = [...(postsData as Post[])].sort((a, b) =>
-  b.data.localeCompare(a.data),
-);
 
 const byId = new Map(categories.map((c) => [c.id, c]));
 const brandById = new Map(brands.map((b) => [b.slug, b]));
@@ -411,17 +407,6 @@ export function imageFor(produto: Product) {
   return fallbackPorCategoria[raiz] ?? imgSedas;
 }
 
-const imagensEditoriais: Record<string, string> = {
-  sedas: imgSedas,
-  dichavador: imgDichavador,
-  bong: imgBong,
-  bandeja: imgBandeja,
-};
-
-/** Imagem de posts do blog e blocos editoriais (chave simbólica no JSON). */
-export function imageForKey(key: string) {
-  return imagensEditoriais[key] ?? imgSedas;
-}
 
 /* ---------------- marcas ---------------- */
 
