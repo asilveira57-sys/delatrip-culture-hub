@@ -11,30 +11,22 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { AVISO_SANITARIO } from "@/config/site";
-import { absoluteUrl, canonical } from "@/lib/seo";
+import { canonical, metaDaRota } from "@/lib/seo";
 
 export const Route = createFileRoute("/conteudo/tabaco")({
   loader: () => carregarPagina({ data: { caminho: "/conteudo/tabaco" } }),
-  head: () => ({
+  head: ({ loaderData }) => ({
     meta: [
-      { title: "Tabaco: guia informativo sobre a planta e seus processos | DeLaTrip" },
-      {
-        name: "description",
-        content:
+      ...metaDaRota(loaderData?.seo, {
+        titulo: "Tabaco: guia informativo sobre a planta e seus processos | DeLaTrip",
+        descricao:
           "Conteúdo informativo sobre Nicotiana tabacum: tipos de folha, processos de cura, formatos no mercado brasileiro, classificação legal e glossário. Sem venda de produtos derivados do tabaco.",
-      },
-      {
-        property: "og:title",
-        content: "Tabaco: guia informativo sobre a planta e seus processos | DeLaTrip",
-      },
-      {
-        property: "og:description",
-        content:
+        ogDescricao:
           "Página-pilar informativa sobre tabaco: folhas, curas, formatos, classificação legal e glossário.",
-      },
+        caminho: "/conteudo/tabaco",
+      }),
       { property: "og:type", content: "article" },
       { name: "twitter:card", content: "summary" },
-      { property: "og:url", content: absoluteUrl("/conteudo/tabaco") },
     ],
     links: [canonical("/conteudo/tabaco")],
   }),
@@ -217,7 +209,7 @@ const postsRelacionados = [
 ];
 
 function ConteudoTabacoPage() {
-  const blocosPagina = Route.useLoaderData();
+  const { blocos: blocosPagina } = Route.useLoaderData();
   const corpoEditavel = rich(blocosPagina, "corpo");
 
   return (

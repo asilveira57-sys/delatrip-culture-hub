@@ -30,3 +30,29 @@ export function breadcrumbLd(items: { name: string; path: string }[]) {
     })),
   };
 }
+
+/**
+ * Monta as metatags de uma rota dando prioridade ao que foi salvo no banco
+ * (admin > SEO) e caindo para os valores padrão da própria página.
+ */
+export function metaDaRota(
+  seo: { titulo: string | null; descricao: string | null; keywords: string | null; noindex: boolean } | null | undefined,
+  padrao: { titulo: string; descricao: string; ogTitulo?: string; ogDescricao?: string; caminho: string },
+) {
+  const titulo = seo?.titulo?.trim() || padrao.titulo;
+  const descricao = seo?.descricao?.trim() || padrao.descricao;
+  const keywords = seo?.keywords?.trim();
+
+  return [
+    { title: titulo },
+    { name: "description", content: descricao },
+    ...(keywords ? [{ name: "keywords", content: keywords }] : []),
+    ...(seo?.noindex ? [{ name: "robots", content: "noindex, nofollow" }] : []),
+    { property: "og:title", content: seo?.titulo?.trim() || padrao.ogTitulo || titulo },
+    {
+      property: "og:description",
+      content: seo?.descricao?.trim() || padrao.ogDescricao || descricao,
+    },
+    { property: "og:url", content: absoluteUrl(padrao.caminho) },
+  ];
+}

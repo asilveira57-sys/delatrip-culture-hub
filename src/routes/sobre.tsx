@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { absoluteUrl, canonical } from "@/lib/seo";
+import { canonical, metaDaRota } from "@/lib/seo";
 
 import { ArtigoConteudo } from "@/components/ArtigoConteudo";
 import { PageHeader } from "@/components/PageHeader";
@@ -10,28 +10,21 @@ import { carregarPagina } from "@/lib/paginas.functions";
 
 export const Route = createFileRoute("/sobre")({
   loader: () => carregarPagina({ data: { caminho: "/sobre" } }),
-  head: () => ({
-    meta: [
-      { title: "Sobre a DeLaTrip — tabacaria e head shop" },
-      {
-        name: "description",
-        content:
-          "Quem somos, o que fazemos e por que a curadoria de produtos originais é o centro do trabalho da DeLaTrip.",
-      },
-      { property: "og:title", content: "Sobre a DeLaTrip — tabacaria e head shop" },
-      {
-        property: "og:description",
-        content: "Curadoria, atendimento especializado e cultura da tabacaria brasileira.",
-      },
-      { property: "og:url", content: absoluteUrl("/sobre") },
-    ],
+  head: ({ loaderData }) => ({
+    meta: metaDaRota(loaderData?.seo, {
+      titulo: "Sobre a DeLaTrip — tabacaria e head shop",
+      descricao:
+        "Quem somos, o que fazemos e por que a curadoria de produtos originais é o centro do trabalho da DeLaTrip.",
+      ogDescricao: "Curadoria, atendimento especializado e cultura da tabacaria brasileira.",
+      caminho: "/sobre",
+    }),
     links: [canonical("/sobre")],
   }),
   component: SobrePage,
 });
 
 function SobrePage() {
-  const blocos = Route.useLoaderData();
+  const { blocos } = Route.useLoaderData();
   const corpo = rich(blocos, "corpo");
 
   return (

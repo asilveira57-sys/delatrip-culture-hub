@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 
-import { absoluteUrl, canonical, jsonLd, SITE_URL } from "@/lib/seo";
+import { absoluteUrl, canonical, jsonLd, metaDaRota, SITE_URL } from "@/lib/seo";
 import {
   ArrowRight,
   Award,
@@ -27,22 +27,15 @@ import mark from "@/assets/delatrip-mark.png";
 import { mergeList, useOverlays } from "@/lib/overlay";
 
 export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: "DeLaTrip — Tabacaria e head shop brasileira" },
-      {
-        name: "description",
-        content:
-          "Catálogo, marcas e conteúdo sobre sedas, dichavadores, bongs, bandejas e tabacos. A cultura da tabacaria brasileira em um só lugar.",
-      },
-      { property: "og:title", content: "DeLaTrip — Tabacaria e head shop brasileira" },
-      {
-        property: "og:description",
-        content:
-          "Catálogo, marcas e conteúdo sobre sedas, dichavadores, bongs, bandejas e tabacos.",
-      },
-      { property: "og:url", content: absoluteUrl("/") },
-    ],
+  head: ({ loaderData }) => ({
+    meta: metaDaRota(loaderData?.seo, {
+      titulo: "DeLaTrip — Tabacaria e head shop brasileira",
+      descricao:
+        "Catálogo, marcas e conteúdo sobre sedas, dichavadores, bongs, bandejas e tabacos. A cultura da tabacaria brasileira em um só lugar.",
+      ogDescricao:
+        "Catálogo, marcas e conteúdo sobre sedas, dichavadores, bongs, bandejas e tabacos.",
+      caminho: "/",
+    }),
     links: [canonical("/")],
     scripts: [
       jsonLd({
@@ -71,11 +64,11 @@ export const Route = createFileRoute("/")({
     ],
   }),
   loader: async () => {
-    const [blocos, listaPosts] = await Promise.all([
+    const [pagina, listaPosts] = await Promise.all([
       carregarPagina({ data: { caminho: "/" } }),
       listarPostsPublicos(),
     ]);
-    return { blocos, posts: listaPosts.slice(0, 3) };
+    return { blocos: pagina.blocos, seo: pagina.seo, posts: listaPosts.slice(0, 3) };
   },
   component: Home,
 });
