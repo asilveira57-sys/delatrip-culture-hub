@@ -3,7 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { rich, texto } from "@/lib/paginas-core";
 import { carregarPagina } from "@/lib/paginas.functions";
 
-import { absoluteUrl, canonical } from "@/lib/seo";
+import { canonical, metaDaRota } from "@/lib/seo";
 
 import { CategoryCard } from "@/components/CategoryCard";
 import { ArtigoConteudo } from "@/components/ArtigoConteudo";
@@ -13,21 +13,14 @@ import { rootCategories } from "@/lib/catalog";
 
 export const Route = createFileRoute("/acessorios")({
   loader: () => carregarPagina({ data: { caminho: "/acessorios" } }),
-  head: () => ({
-    meta: [
-      { title: "Acessórios — hub editorial | DeLaTrip" },
-      {
-        name: "description",
-        content:
-          "Dichavadores, bandejas, piteiras, isqueiros e cuidados: um guia dos acessórios que compõem a tabacaria.",
-      },
-      { property: "og:title", content: "Acessórios — hub editorial | DeLaTrip" },
-      {
-        property: "og:description",
-        content: "Guia dos acessórios que compõem a tabacaria brasileira.",
-      },
-      { property: "og:url", content: absoluteUrl("/acessorios") },
-    ],
+  head: ({ loaderData }) => ({
+    meta: metaDaRota(loaderData?.seo, {
+      titulo: "Acessórios — hub editorial | DeLaTrip",
+      descricao:
+        "Dichavadores, bandejas, piteiras, isqueiros e cuidados: um guia dos acessórios que compõem a tabacaria.",
+      ogDescricao: "Guia dos acessórios que compõem a tabacaria brasileira.",
+      caminho: "/acessorios",
+    }),
     links: [canonical("/acessorios")],
   }),
   component: AcessoriosPage,
@@ -57,7 +50,7 @@ const blocos = [
 ];
 
 function AcessoriosPage() {
-  const blocosPagina = Route.useLoaderData();
+  const { blocos: blocosPagina } = Route.useLoaderData();
   const intro = rich(blocosPagina, "intro");
 
   return (

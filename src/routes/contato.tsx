@@ -3,7 +3,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { rich, texto } from "@/lib/paginas-core";
 import { carregarPagina } from "@/lib/paginas.functions";
 
-import { absoluteUrl, canonical } from "@/lib/seo";
+import { canonical, metaDaRota } from "@/lib/seo";
 import { useState } from "react";
 import { Mail, MapPin, Phone, Store } from "lucide-react";
 import { toast } from "sonner";
@@ -45,28 +45,21 @@ const VAZIO: Campos = { nome: "", email: "", assunto: "", mensagem: "" };
 
 export const Route = createFileRoute("/contato")({
   loader: () => carregarPagina({ data: { caminho: "/contato" } }),
-  head: () => ({
-    meta: [
-      { title: "Contato — DeLaTrip" },
-      {
-        name: "description",
-        content:
-          "Fale com a DeLaTrip: formulário de atendimento, e-mail, telefone, endereço e canais para lojistas e imprensa.",
-      },
-      { property: "og:title", content: "Contato — DeLaTrip" },
-      {
-        property: "og:description",
-        content: "Canais de atendimento da tabacaria DeLaTrip.",
-      },
-      { property: "og:url", content: absoluteUrl("/contato") },
-    ],
+  head: ({ loaderData }) => ({
+    meta: metaDaRota(loaderData?.seo, {
+      titulo: "Contato — DeLaTrip",
+      descricao:
+        "Fale com a DeLaTrip: formulário de atendimento, e-mail, telefone, endereço e canais para lojistas e imprensa.",
+      ogDescricao: "Canais de atendimento da tabacaria DeLaTrip.",
+      caminho: "/contato",
+    }),
     links: [canonical("/contato")],
   }),
   component: ContatoPage,
 });
 
 function ContatoPage() {
-  const blocosPagina = Route.useLoaderData();
+  const { blocos: blocosPagina } = Route.useLoaderData();
   const introContato = rich(blocosPagina, "intro");
   const email = texto(blocosPagina, "email", SITE.email);
   const whatsapp = texto(blocosPagina, "whatsapp", SITE.telefone);
