@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import { ArtigoConteudo } from "@/components/ArtigoConteudo";
 import { obterPostAdmin, statusDoPost } from "@/lib/blog-admin";
-import { imageForKey } from "@/lib/catalog";
+import { imageForKey } from "@/lib/editorial";
 
 export const Route = createFileRoute("/admin/_gate/blog/preview/$slug")({
   head: () => ({
