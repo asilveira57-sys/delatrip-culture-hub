@@ -9,7 +9,7 @@ import { EmptyState } from "@/components/EmptyState";
 import { Button } from "@/components/ui/button";
 import { resolverCapa } from "@/lib/blog-core";
 import { obterPostPublico } from "@/lib/blog.functions";
-import { formatDate } from "@/lib/catalog";
+import { formatDate } from "@/lib/editorial";
 
 export const Route = createFileRoute("/blog/$slug")({
   loader: ({ params }) => obterPostPublico({ data: { slug: params.slug } }),

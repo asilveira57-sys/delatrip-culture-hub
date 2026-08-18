@@ -35,3 +35,12 @@ const imagensEditoriais: Record<string, string> = {
 export function imageForKey(key: string) {
   return imagensEditoriais[key] ?? imgSedas;
 }
+
+/** Data legível em pt-BR a partir de uma data ISO (YYYY-MM-DD). */
+export function formatDate(iso: string) {
+  return new Date(`${iso}T12:00:00`).toLocaleDateString("pt-BR", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+  });
+}

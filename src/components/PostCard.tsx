@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 
 import { resolverCapa } from "@/lib/blog-core";
-import { formatDate } from "@/lib/catalog";
+import { formatDate } from "@/lib/editorial";
 
 export type PostResumo = {
   slug: string;

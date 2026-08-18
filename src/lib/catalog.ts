@@ -76,7 +76,7 @@ export type Brand = {
 };
 
 export type { Post } from "@/lib/editorial";
-export { posts, imageForKey } from "@/lib/editorial";
+export { posts, imageForKey, formatDate } from "@/lib/editorial";
 
 /** Registro compacto gravado por scripts/split-products.mjs. */
 type SlimProduct = {
@@ -546,13 +546,6 @@ export function plainText(html: string, limite = 300) {
   return texto.length > limite ? `${texto.slice(0, limite - 1)}…` : texto;
 }
 
-export function formatDate(iso: string) {
-  return new Date(`${iso}T12:00:00`).toLocaleDateString("pt-BR", {
-    day: "2-digit",
-    month: "long",
-    year: "numeric",
-  });
-}
 
 export function formatPrice(valor: number | null) {
   if (valor === null) return "";
