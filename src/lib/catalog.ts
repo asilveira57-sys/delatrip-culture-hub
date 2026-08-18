@@ -76,15 +76,8 @@ export type Brand = {
   pais?: string | null;
 };
 
-export type Post = {
-  slug: string;
-  titulo: string;
-  resumo: string;
-  data: string;
-  categoria: string;
-  imagem: string;
-  conteudo: string;
-};
+export type { Post } from "@/lib/editorial";
+export { posts, imageForKey } from "@/lib/editorial";
 
 /** Registro compacto gravado por scripts/split-products.mjs. */
 type SlimProduct = {
