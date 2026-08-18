@@ -1,7 +1,7 @@
 import { supabase } from "@/integrations/supabase/client";
 
 import { markdownSimplesParaHtml } from "@/lib/blog-core";
-import { posts as postsJson } from "@/lib/catalog";
+import { posts as postsJson } from "@/lib/editorial";
 import { sanitizarHtml } from "@/lib/sanitize";
 
 export type PostAdmin = {

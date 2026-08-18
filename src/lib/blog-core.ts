@@ -1,4 +1,4 @@
-import { imageForKey, posts as postsJson } from "@/lib/catalog";
+import { imageForKey, posts as postsJson } from "@/lib/editorial";
 import { sanitizarHtml } from "@/lib/sanitize";
 
 export const CATEGORIAS_POST = [
