@@ -75,6 +75,8 @@ export type Brand = {
   pais?: string | null;
 };
 
+import { posts as postsEditoriais } from "@/lib/editorial";
+
 export type { Post } from "@/lib/editorial";
 export { posts, imageForKey, formatDate } from "@/lib/editorial";
 
@@ -423,7 +425,7 @@ export function brandName(slug: string | null) {
 /* ---------------- posts ---------------- */
 
 export function getPost(slug: string) {
-  return posts.find((p) => p.slug === slug);
+  return postsEditoriais.find((p) => p.slug === slug);
 }
 
 /* ---------------- busca e formatação ---------------- */
