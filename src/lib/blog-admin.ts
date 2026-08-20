@@ -92,8 +92,11 @@ export async function contarCurtidasPorPost(): Promise<Record<string, number>> {
 export async function obterPostAdmin(slug: string): Promise<PostAdmin | null> {
   const { data, error } = await supabase.from("post").select("*").eq("slug", slug).maybeSingle();
   if (error) throw error;
-  return (data as PostAdmin) ?? null;
+  if (data) return data as PostAdmin;
+  const legado = postsJson.find((p) => p.slug === slug);
+  return legado ? postJsonParaAdmin(legado) : null;
 }
+
 
 /** Grava o post; quando o slug mudou, renomeia o registro existente. */
 export async function salvarPost(post: PostAdmin, slugOriginal?: string) {
