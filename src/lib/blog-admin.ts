@@ -43,14 +43,39 @@ export function gerarSlug(texto: string) {
     .slice(0, 80);
 }
 
+/** Converte um post do JSON legado no formato do admin. */
+export function postJsonParaAdmin(p: (typeof postsJson)[number]): PostAdmin {
+  return {
+    slug: p.slug,
+    titulo: p.titulo,
+    resumo: p.resumo ?? null,
+    conteudo_html: markdownSimplesParaHtml(p.conteudo),
+    capa_url: `asset:${p.imagem}`,
+    capa_alt: p.titulo,
+    categoria: p.categoria ?? null,
+    autor: "DeLaTrip",
+    publicado: true,
+    publicado_em: `${p.data}T12:00:00.000Z`,
+    seo_titulo: null,
+    seo_descricao: null,
+    seo_keywords: null,
+  };
+}
+
 export async function listarPostsAdmin(): Promise<PostAdmin[]> {
   const { data, error } = await supabase
     .from("post")
     .select("*")
     .order("publicado_em", { ascending: false, nullsFirst: false });
   if (error) throw error;
-  return (data ?? []) as PostAdmin[];
+  const doBanco = (data ?? []) as PostAdmin[];
+  const slugs = new Set(doBanco.map((p) => p.slug));
+  const legados = postsJson.filter((p) => !slugs.has(p.slug)).map(postJsonParaAdmin);
+  return [...doBanco, ...legados].sort((a, b) =>
+    (b.publicado_em ?? "").localeCompare(a.publicado_em ?? ""),
+  );
 }
+
 
 export async function contarCurtidasPorPost(): Promise<Record<string, number>> {
   const { data } = await supabase
