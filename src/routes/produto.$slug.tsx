@@ -15,6 +15,9 @@ import { fetchPostsPorSlug, useRelacionados } from "@/lib/relacionados";
 import { PostCard } from "@/components/PostCard";
 
 import { SectionHeading } from "@/components/SectionHeading";
+import { FaqSecao } from "@/components/FaqSecao";
+import { faqLd } from "@/lib/faq-core";
+import { carregarFaq } from "@/lib/faq.functions";
 import { Button } from "@/components/ui/button";
 import { SHOW_PRICES, SITE } from "@/config/site";
 import {
@@ -30,7 +33,13 @@ import {
 } from "@/lib/catalog";
 
 export const Route = createFileRoute("/produto/$slug")({
-  loader: ({ params }) => getProductDetail(params.slug),
+  loader: async ({ params }) => {
+    const [detalhe, faq] = await Promise.all([
+      getProductDetail(params.slug),
+      carregarFaq({ data: { tipo: "produto", alvo: params.slug } }),
+    ]);
+    return { detalhe, faq };
+  },
   headers: ({ params }) => {
     const produto = getProduct(params.slug);
     return {
@@ -39,7 +48,8 @@ export const Route = createFileRoute("/produto/$slug")({
   },
   head: ({ params, loaderData }) => {
     const produto = getProduct(params.slug);
-    const detalhe = loaderData ?? null;
+    const detalhe = loaderData?.detalhe ?? null;
+    const faq = loaderData?.faq ?? [];
     const titulo = produto
       ? `${detalhe?.seoTitulo ?? produto.nome}${produto.marca ? ` — ${produto.marca}` : ""} | DeLaTrip`
       : "Produto não encontrado — DeLaTrip";
@@ -141,7 +151,7 @@ export const Route = createFileRoute("/produto/$slug")({
 
 function ProdutoPage() {
   const { slug } = Route.useParams();
-  const detalhe = Route.useLoaderData();
+  const { detalhe, faq } = Route.useLoaderData();
   const overlays = useOverlays();
   const ov = overlays.get(slug);
   const relacionadosManuais = useRelacionados(slug);
@@ -314,6 +324,8 @@ function ProdutoPage() {
           </div>
         </section>
       )}
+
+      <FaqSecao itens={faq} className="mt-16 border-t border-border pt-10" />
     </div>
   );
 }
