@@ -8,7 +8,10 @@ export const TAGS_PERMITIDAS = [
   "h4",
   "strong",
   "em",
+  "u",
   "s",
+  "sub",
+  "sup",
   "code",
   "pre",
   "ul",
@@ -22,6 +25,14 @@ export const TAGS_PERMITIDAS = [
   "hr",
   "br",
   "iframe",
+  "table",
+  "thead",
+  "tbody",
+  "tfoot",
+  "tr",
+  "th",
+  "td",
+  "span",
 ];
 
 const ATRIBUTOS_PERMITIDOS = [
@@ -38,7 +49,18 @@ const ATRIBUTOS_PERMITIDOS = [
   "loading",
   "frameborder",
   "data-align",
+  "style",
+  "colspan",
+  "rowspan",
+  "start",
 ];
+
+/** Mantém apenas alinhamento de texto no atributo style. */
+export function estiloSeguro(valor: string) {
+  const m = /text-align\s*:\s*(left|right|center|justify)/i.exec(valor);
+  return m ? `text-align: ${m[1]!.toLowerCase()}` : "";
+}
+
 
 const DOMINIOS_IFRAME = [
   "youtube.com",
