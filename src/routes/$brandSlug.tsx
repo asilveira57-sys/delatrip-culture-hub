@@ -181,26 +181,6 @@ function BrandContent({ slug }: { slug: string }) {
                 </p>
               ))
             )}
-            {(conteudo.site || conteudo.instagram) && (
-              <div className="flex flex-wrap gap-3 pt-2">
-                {conteudo.site && (
-                  <Button asChild variant="outline" size="sm">
-                    <a href={conteudo.site} target="_blank" rel="noopener noreferrer">
-                      <ExternalLink aria-hidden="true" />
-                      Site da marca
-                    </a>
-                  </Button>
-                )}
-                {conteudo.instagram && (
-                  <Button asChild variant="outline" size="sm">
-                    <a href={conteudo.instagram} target="_blank" rel="noopener noreferrer">
-                      <Instagram aria-hidden="true" />
-                      Instagram
-                    </a>
-                  </Button>
-                )}
-              </div>
-            )}
           </div>
 
           <aside className="rounded-lg border border-border bg-card p-5">
