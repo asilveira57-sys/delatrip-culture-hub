@@ -1,9 +1,83 @@
+import { useRef, useState } from "react";
+import { toast } from "sonner";
+
 import { RichTextEditor } from "@/components/editor/RichTextEditor";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import type { CampoEditavel } from "@/config/paginas-editaveis";
+import { enviarImagem } from "@/lib/media";
 import type { Blocos, JsonValor } from "@/lib/paginas-core";
+
+function CampoImagem({
+  campo,
+  valor,
+  onChange,
+  baseArquivo,
+}: {
+  campo: CampoEditavel;
+  valor: string;
+  onChange: (v: string) => void;
+  baseArquivo: string;
+}) {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [enviando, setEnviando] = useState(false);
+
+  async function selecionar(file: File | undefined) {
+    if (!file) return;
+    setEnviando(true);
+    try {
+      const { url } = await enviarImagem(file, `${baseArquivo}-capa`);
+      onChange(url);
+      toast.success("Imagem enviada.");
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Falha ao enviar imagem.");
+    } finally {
+      setEnviando(false);
+      if (inputRef.current) inputRef.current.value = "";
+    }
+  }
+
+  return (
+    <div>
+      <Label>{campo.label}</Label>
+      {campo.ajuda ? (
+        <p className="mb-1 text-xs text-muted-foreground">{campo.ajuda}</p>
+      ) : null}
+      {valor ? (
+        <img
+          src={valor}
+          alt="Pré-visualização da imagem de capa"
+          className="mt-2 h-40 w-full rounded-md border border-border object-cover"
+        />
+      ) : null}
+      <input
+        ref={inputRef}
+        type="file"
+        accept="image/*"
+        className="hidden"
+        onChange={(e) => void selecionar(e.target.files?.[0])}
+      />
+      <div className="mt-2 flex gap-2">
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          disabled={enviando}
+          onClick={() => inputRef.current?.click()}
+        >
+          {enviando ? "Enviando…" : valor ? "Trocar imagem" : "Anexar imagem"}
+        </Button>
+        {valor ? (
+          <Button type="button" variant="ghost" size="sm" onClick={() => onChange("")}>
+            Remover
+          </Button>
+        ) : null}
+      </div>
+    </div>
+  );
+}
 
 type Props = {
   campos: CampoEditavel[];
