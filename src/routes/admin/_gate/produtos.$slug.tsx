@@ -6,6 +6,7 @@ import { ArrowLeft, Eye, EyeOff, RotateCcw, Save, Sparkles, Undo2 } from "lucide
 import { toast } from "sonner";
 
 import { BotaoSeoIa } from "@/components/admin/BotaoSeoIa";
+import { FaqEditor } from "@/components/admin/FaqEditor";
 import { RichTextEditor } from "@/components/editor/RichTextEditor";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
