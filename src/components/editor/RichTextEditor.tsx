@@ -1,7 +1,14 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { EditorContent, useEditor, type Editor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
+import Underline from "@tiptap/extension-underline";
+import TextAlign from "@tiptap/extension-text-align";
+import { Table, TableCell, TableHeader, TableRow } from "@tiptap/extension-table";
 import {
+  AlignCenter,
+  AlignJustify,
+  AlignLeft,
+  AlignRight,
   Bold,
   Code,
   Heading2,
@@ -19,11 +26,13 @@ import {
   Redo2,
   Square,
   Strikethrough,
+  Table as TableIcon,
+  Underline as UnderlineIcon,
   Undo2,
   Youtube,
-  FileCode2,
 } from "lucide-react";
 import { toast } from "sonner";
+
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -50,6 +59,14 @@ type Props = {
   placeholder?: string;
   minAltura?: string;
 };
+/** Quebra o HTML em uma linha por bloco, para leitura no modo HTML. */
+function formatarHtml(html: string) {
+  return html
+    .replace(/></g, ">\n<")
+    .replace(/\n<\/(strong|em|u|s|a|code|sub|sup|span)>/g, "</$1>")
+    .trim();
+}
+
 
 function BotaoBarra({
   ativo,
@@ -118,9 +135,16 @@ export function RichTextEditor({
           HTMLAttributes: { rel: "noopener noreferrer" },
         },
       }),
+      Underline,
+      TextAlign.configure({ types: ["heading", "paragraph"] }),
+      Table.configure({ resizable: false }),
+      TableRow,
+      TableHeader,
+      TableCell,
       Figura,
       Embed,
     ],
+
     content: valor || "",
     editorProps: {
       attributes: {
@@ -289,12 +313,20 @@ export function RichTextEditor({
           <Italic className="size-4" />
         </BotaoBarra>
         <BotaoBarra
+          titulo="Sublinhado"
+          ativo={editor.isActive("underline")}
+          onClick={() => editor.chain().focus().toggleUnderline().run()}
+        >
+          <UnderlineIcon className="size-4" />
+        </BotaoBarra>
+        <BotaoBarra
           titulo="Tachado"
           ativo={editor.isActive("strike")}
           onClick={() => editor.chain().focus().toggleStrike().run()}
         >
           <Strikethrough className="size-4" />
         </BotaoBarra>
+
         <BotaoBarra
           titulo="Código inline"
           ativo={editor.isActive("code")}
@@ -354,6 +386,37 @@ export function RichTextEditor({
           <Youtube className="size-4" />
         </BotaoBarra>
         <span className="mx-1 h-5 w-px bg-border" />
+        {(
+          [
+            ["left", AlignLeft, "Alinhar à esquerda"],
+            ["center", AlignCenter, "Centralizar"],
+            ["right", AlignRight, "Alinhar à direita"],
+            ["justify", AlignJustify, "Justificar"],
+          ] as const
+        ).map(([valor, Icone, titulo]) => (
+          <BotaoBarra
+            key={valor}
+            titulo={titulo}
+            ativo={editor.isActive({ textAlign: valor })}
+            onClick={() => editor.chain().focus().setTextAlign(valor).run()}
+          >
+            <Icone className="size-4" />
+          </BotaoBarra>
+        ))}
+        <BotaoBarra
+          titulo="Inserir tabela"
+          ativo={editor.isActive("table")}
+          onClick={() =>
+            editor
+              .chain()
+              .focus()
+              .insertTable({ rows: 3, cols: 3, withHeaderRow: true })
+              .run()
+          }
+        >
+          <TableIcon className="size-4" />
+        </BotaoBarra>
+        <span className="mx-1 h-5 w-px bg-border" />
         <BotaoBarra titulo="Desfazer" onClick={() => editor.chain().focus().undo().run()}>
           <Undo2 className="size-4" />
         </BotaoBarra>
@@ -363,24 +426,41 @@ export function RichTextEditor({
           </>
         )}
         <span className="ml-auto" />
-        <BotaoBarra
-          titulo={modoCodigo ? "Voltar ao editor de texto" : "Editar código HTML"}
-          ativo={modoCodigo}
-          onClick={() => {
-            if (modoCodigo) {
+        <div className="flex items-center rounded-md border border-border p-0.5">
+          <button
+            type="button"
+            aria-pressed={!modoCodigo}
+            onClick={() => {
+              if (!modoCodigo) return;
               const html = sanitizarHtml(codigo);
               ultimoHtml.current = html;
               editor.commands.setContent(html || "", { emitUpdate: false });
               onChange(html);
               setModoCodigo(false);
-            } else {
-              setCodigo(editor.getHTML());
+            }}
+            className={cn(
+              "rounded px-2 py-1 text-xs font-medium",
+              !modoCodigo ? "bg-primary text-primary-foreground" : "text-muted-foreground",
+            )}
+          >
+            Visual
+          </button>
+          <button
+            type="button"
+            aria-pressed={modoCodigo}
+            onClick={() => {
+              if (modoCodigo) return;
+              setCodigo(formatarHtml(editor.getHTML()));
               setModoCodigo(true);
-            }
-          }}
-        >
-          <FileCode2 className="size-4" />
-        </BotaoBarra>
+            }}
+            className={cn(
+              "rounded px-2 py-1 text-xs font-medium",
+              modoCodigo ? "bg-primary text-primary-foreground" : "text-muted-foreground",
+            )}
+          >
+            HTML
+          </button>
+        </div>
       </div>
 
       {modoCodigo ? (
@@ -393,10 +473,11 @@ export function RichTextEditor({
             onChange(html);
           }}
           spellCheck={false}
-          className="rounded-none border-0 font-mono text-xs focus-visible:ring-0"
+          className="rounded-none border-0 bg-muted/40 font-mono text-xs leading-relaxed focus-visible:ring-0"
           style={{ minHeight: minAltura }}
           placeholder="<p>Cole aqui o HTML…</p>"
         />
+
       ) : (
         <EditorContent editor={editor} style={{ minHeight: minAltura }} className="px-4 py-3" />
       )}

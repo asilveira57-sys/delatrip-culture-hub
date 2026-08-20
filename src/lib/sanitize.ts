@@ -8,7 +8,10 @@ export const TAGS_PERMITIDAS = [
   "h4",
   "strong",
   "em",
+  "u",
   "s",
+  "sub",
+  "sup",
   "code",
   "pre",
   "ul",
@@ -22,6 +25,14 @@ export const TAGS_PERMITIDAS = [
   "hr",
   "br",
   "iframe",
+  "table",
+  "thead",
+  "tbody",
+  "tfoot",
+  "tr",
+  "th",
+  "td",
+  "span",
 ];
 
 const ATRIBUTOS_PERMITIDOS = [
@@ -38,7 +49,18 @@ const ATRIBUTOS_PERMITIDOS = [
   "loading",
   "frameborder",
   "data-align",
+  "style",
+  "colspan",
+  "rowspan",
+  "start",
 ];
+
+/** Mantém apenas alinhamento de texto no atributo style. */
+export function estiloSeguro(valor: string) {
+  const m = /text-align\s*:\s*(left|right|center|justify)/i.exec(valor);
+  return m ? `text-align: ${m[1]!.toLowerCase()}` : "";
+}
+
 
 const DOMINIOS_IFRAME = [
   "youtube.com",
@@ -87,7 +109,14 @@ function sanitizarSemDom(html: string) {
       if (!ATRIBUTOS_PERMITIDOS.includes(chave)) continue;
       if ((chave === "href" || chave === "src") && !hrefSeguro(valor)) continue;
       if (nome === "iframe" && chave === "src" && !iframePermitido(valor)) return "";
+      if (chave === "style") {
+        const estilo = estiloSeguro(valor);
+        if (!estilo) continue;
+        atributos.push(`style="${estilo}"`);
+        continue;
+      }
       atributos.push(`${chave}="${valor.replace(/"/g, "&quot;")}"`);
+
     }
     if (nome === "iframe" && !atributos.some((a) => a.startsWith("src="))) return "";
     return `<${nome}${atributos.length ? " " + atributos.join(" ") : ""}>`;
@@ -109,13 +138,19 @@ export function sanitizarHtml(html: string | null | undefined): string {
     ALLOWED_TAGS: TAGS_PERMITIDAS,
     ALLOWED_ATTR: ATRIBUTOS_PERMITIDOS,
     ALLOW_DATA_ATTR: false,
-    FORBID_ATTR: ["style", "class", "id"],
+    FORBID_ATTR: ["class", "id"],
   });
   // DOMPurify não conhece nossa allowlist de provedores de embed.
   const doc = new DOMParser().parseFromString(`<div>${limpo}</div>`, "text/html");
+  doc.querySelectorAll("[style]").forEach((el) => {
+    const estilo = estiloSeguro(el.getAttribute("style") ?? "");
+    if (estilo) el.setAttribute("style", estilo);
+    else el.removeAttribute("style");
+  });
   doc.querySelectorAll("iframe").forEach((frame) => {
     if (!iframePermitido(frame.getAttribute("src") ?? "")) frame.remove();
   });
+
   doc.querySelectorAll("a[href]").forEach((a) => {
     const href = a.getAttribute("href") ?? "";
     if (!hrefSeguro(href)) a.removeAttribute("href");
