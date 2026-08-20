@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Copy, Heart, Pencil, Plus, Trash2 } from "lucide-react";
+import { Copy, Heart, Pencil, Plus, Search, Trash2, X } from "lucide-react";
 import { toast } from "sonner";
 
 import {
@@ -17,6 +17,13 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
   contarCurtidasPorPost,
   duplicarPost,
   excluirPost,
@@ -26,6 +33,7 @@ import {
   type PostAdmin,
   type StatusPost,
 } from "@/lib/blog-admin";
+
 
 export const Route = createFileRoute("/admin/_gate/blog/")({
   head: () => ({
