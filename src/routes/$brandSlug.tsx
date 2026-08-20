@@ -12,12 +12,21 @@ import { getBrandPageContent } from "@/config/brand-pages";
 import { ArtigoConteudo } from "@/components/ArtigoConteudo";
 import { caminhoMarca, conteudoMarca } from "@/lib/marcas-core";
 import { carregarPagina } from "@/lib/paginas.functions";
+import { FaqSecao } from "@/components/FaqSecao";
+import { faqLd } from "@/lib/faq-core";
+import { carregarFaq } from "@/lib/faq.functions";
 import { getBrand, productsByBrand, sortProducts, type SortKey } from "@/lib/catalog";
 import { absoluteUrl, breadcrumbLd, canonical, jsonLd } from "@/lib/seo";
 import { mergeList, useOverlays } from "@/lib/overlay";
 
 export const Route = createFileRoute("/$brandSlug")({
-  loader: ({ params }) => carregarPagina({ data: { caminho: caminhoMarca(params.brandSlug) } }),
+  loader: async ({ params }) => {
+    const [pagina, faq] = await Promise.all([
+      carregarPagina({ data: { caminho: caminhoMarca(params.brandSlug) } }),
+      carregarFaq({ data: { tipo: "marca", alvo: params.brandSlug } }),
+    ]);
+    return { ...pagina, faq };
+  },
   head: ({ params, loaderData }) => {
     const marca = getBrand(params.brandSlug);
     if (!marca) {
@@ -72,6 +81,7 @@ export const Route = createFileRoute("/$brandSlug")({
             { name: marca.nome, path: `/${marca.slug}` },
           ]),
         ),
+        ...((loaderData?.faq ?? []).length > 0 ? [jsonLd(faqLd(loaderData!.faq))] : []),
       ],
     };
   },
@@ -106,7 +116,7 @@ function BrandPage() {
 
 function BrandContent({ slug }: { slug: string }) {
   const marca = getBrand(slug)!;
-  const { blocos } = Route.useLoaderData();
+  const { blocos, faq } = Route.useLoaderData();
   const conteudo = conteudoMarca(
     getBrandPageContent(marca.slug, marca.nome, marca.totalProdutos),
     blocos,
@@ -303,6 +313,8 @@ function BrandContent({ slug }: { slug: string }) {
               </>
             )}
           </div>
+
+          <FaqSecao itens={faq} className="mt-16 border-t border-border pt-10" />
         </div>
       </section>
     </>

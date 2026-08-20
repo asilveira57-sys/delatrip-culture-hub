@@ -6,6 +6,7 @@ import { toast } from "sonner";
 
 import { BotaoSeoIa } from "@/components/admin/BotaoSeoIa";
 import { CamposBlocos } from "@/components/admin/CamposBlocos";
+import { FaqEditor } from "@/components/admin/FaqEditor";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -129,6 +130,18 @@ function EditarMarcaPage() {
           blocos={blocos}
           onChange={definir}
           baseArquivo={`marcas/${slug}`}
+        />
+
+        <FaqEditor
+          tipo="marca"
+          alvo={slug}
+          titulo={
+            (typeof blocos["headline"] === "string" && blocos["headline"].trim()) || marca.nome
+          }
+          contexto={Object.values(blocos)
+            .map((v) => (typeof v === "string" ? v : JSON.stringify(v)))
+            .join("\n")}
+          extra={`Página institucional da marca ${marca.nome}`}
         />
 
         <section className="rounded-lg border border-border bg-card p-4">

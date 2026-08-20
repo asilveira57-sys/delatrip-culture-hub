@@ -5,6 +5,7 @@ import { AlertTriangle, ExternalLink, Save } from "lucide-react";
 import { toast } from "sonner";
 
 import { BotaoSeoIa } from "@/components/admin/BotaoSeoIa";
+import { FaqEditor } from "@/components/admin/FaqEditor";
 import { RichTextEditor } from "@/components/editor/RichTextEditor";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -289,6 +290,15 @@ function EditorPostPage() {
               baseArquivo={post.slug || "post"}
             />
           </div>
+
+          <FaqEditor
+            tipo="post"
+            alvo={slugOriginal ?? post.slug}
+            titulo={post.titulo}
+            contexto={`${post.resumo ?? ""}\n${post.conteudo_html ?? ""}`}
+            extra={post.categoria ? `Categoria: ${post.categoria}` : null}
+            habilitado={!!slugOriginal}
+          />
 
           <section className="rounded-lg border border-border bg-card p-4">
             <h2 className="text-base font-semibold">SEO</h2>

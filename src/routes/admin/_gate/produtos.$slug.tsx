@@ -6,6 +6,7 @@ import { ArrowLeft, Eye, EyeOff, RotateCcw, Save, Sparkles, Undo2 } from "lucide
 import { toast } from "sonner";
 
 import { BotaoSeoIa } from "@/components/admin/BotaoSeoIa";
+import { FaqEditor } from "@/components/admin/FaqEditor";
 import { RichTextEditor } from "@/components/editor/RichTextEditor";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -354,6 +355,22 @@ function ProdutoAdminPage() {
             </div>
           </div>
         </section>
+
+        <div className="lg:col-span-2">
+          <FaqEditor
+            tipo="produto"
+            alvo={slug}
+            titulo={produto?.nome ?? slug}
+            contexto={form.descricao_html || original}
+            extra={[
+              produto?.marca ? `Marca: ${produto.marca}` : null,
+              categoria ? `Categoria: ${categoria.nome}` : null,
+            ]
+              .filter(Boolean)
+              .join(" · ")}
+          />
+        </div>
+
 
         {/* Coluna 3 — ações */}
         <aside className="space-y-4">

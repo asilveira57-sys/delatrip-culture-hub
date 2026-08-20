@@ -101,6 +101,42 @@ export type Database = {
         }
         Relationships: []
       }
+      faq_item: {
+        Row: {
+          alvo: string
+          created_at: string
+          id: string
+          ordem: number
+          origem: string
+          pergunta: string
+          resposta: string
+          tipo: string
+          updated_at: string
+        }
+        Insert: {
+          alvo: string
+          created_at?: string
+          id?: string
+          ordem?: number
+          origem?: string
+          pergunta: string
+          resposta: string
+          tipo: string
+          updated_at?: string
+        }
+        Update: {
+          alvo?: string
+          created_at?: string
+          id?: string
+          ordem?: number
+          origem?: string
+          pergunta?: string
+          resposta?: string
+          tipo?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       pagina: {
         Row: {
           atualizado_em: string | null
