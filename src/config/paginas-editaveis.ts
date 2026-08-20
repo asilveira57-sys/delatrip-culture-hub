@@ -1,4 +1,4 @@
-export type TipoCampo = "texto" | "textarea" | "rich" | "lista";
+export type TipoCampo = "texto" | "textarea" | "rich" | "lista" | "imagem";
 
 export type CampoItem = { chave: string; label: string };
 
