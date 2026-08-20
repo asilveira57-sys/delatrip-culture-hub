@@ -1,7 +1,14 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { EditorContent, useEditor, type Editor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
+import Underline from "@tiptap/extension-underline";
+import TextAlign from "@tiptap/extension-text-align";
+import { Table, TableCell, TableHeader, TableRow } from "@tiptap/extension-table";
 import {
+  AlignCenter,
+  AlignJustify,
+  AlignLeft,
+  AlignRight,
   Bold,
   Code,
   Heading2,
@@ -19,11 +26,13 @@ import {
   Redo2,
   Square,
   Strikethrough,
+  Table as TableIcon,
+  Underline as UnderlineIcon,
   Undo2,
   Youtube,
-  FileCode2,
 } from "lucide-react";
 import { toast } from "sonner";
+
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
