@@ -59,6 +59,14 @@ type Props = {
   placeholder?: string;
   minAltura?: string;
 };
+/** Quebra o HTML em uma linha por bloco, para leitura no modo HTML. */
+function formatarHtml(html: string) {
+  return html
+    .replace(/></g, ">\n<")
+    .replace(/\n<\/(strong|em|u|s|a|code|sub|sup|span)>/g, "</$1>")
+    .trim();
+}
+
 
 function BotaoBarra({
   ativo,
