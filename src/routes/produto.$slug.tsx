@@ -142,6 +142,7 @@ export const Route = createFileRoute("/produto/$slug")({
                 { name: produto.nome, path: `/produto/${produto.slug}` },
               ]),
             ),
+            ...(faq.length > 0 ? [jsonLd(faqLd(faq))] : []),
           ]
         : [],
     };
