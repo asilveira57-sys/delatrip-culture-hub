@@ -138,13 +138,19 @@ export function sanitizarHtml(html: string | null | undefined): string {
     ALLOWED_TAGS: TAGS_PERMITIDAS,
     ALLOWED_ATTR: ATRIBUTOS_PERMITIDOS,
     ALLOW_DATA_ATTR: false,
-    FORBID_ATTR: ["style", "class", "id"],
+    FORBID_ATTR: ["class", "id"],
   });
   // DOMPurify não conhece nossa allowlist de provedores de embed.
   const doc = new DOMParser().parseFromString(`<div>${limpo}</div>`, "text/html");
+  doc.querySelectorAll("[style]").forEach((el) => {
+    const estilo = estiloSeguro(el.getAttribute("style") ?? "");
+    if (estilo) el.setAttribute("style", estilo);
+    else el.removeAttribute("style");
+  });
   doc.querySelectorAll("iframe").forEach((frame) => {
     if (!iframePermitido(frame.getAttribute("src") ?? "")) frame.remove();
   });
+
   doc.querySelectorAll("a[href]").forEach((a) => {
     const href = a.getAttribute("href") ?? "";
     if (!hrefSeguro(href)) a.removeAttribute("href");
