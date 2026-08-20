@@ -30,9 +30,12 @@ export const CAMPOS_MARCA: CampoEditavel[] = [
   },
   { chave: "pais", label: "País de origem", tipo: "texto" },
   { chave: "fundacao", label: "Ano de fundação", tipo: "texto" },
-  { chave: "site", label: "Site oficial (URL)", tipo: "texto" },
-  { chave: "instagram", label: "Instagram (URL)", tipo: "texto" },
-  { chave: "capa", label: "Imagem de capa (URL)", tipo: "texto" },
+  {
+    chave: "capa",
+    label: "Imagem de capa",
+    tipo: "imagem",
+    ajuda: "Envie um arquivo (JPG, PNG ou WebP) de até 8MB.",
+  },
 ];
 
 export type ConteudoMarca = BrandPageContent & { sobreHtml: string | null };

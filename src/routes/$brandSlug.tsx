@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ExternalLink, Instagram, Search } from "lucide-react";
+import { Search } from "lucide-react";
 
 import { EmptyState } from "@/components/EmptyState";
 import { PageHeader } from "@/components/PageHeader";
@@ -180,26 +180,6 @@ function BrandContent({ slug }: { slug: string }) {
                   {p}
                 </p>
               ))
-            )}
-            {(conteudo.site || conteudo.instagram) && (
-              <div className="flex flex-wrap gap-3 pt-2">
-                {conteudo.site && (
-                  <Button asChild variant="outline" size="sm">
-                    <a href={conteudo.site} target="_blank" rel="noopener noreferrer">
-                      <ExternalLink aria-hidden="true" />
-                      Site da marca
-                    </a>
-                  </Button>
-                )}
-                {conteudo.instagram && (
-                  <Button asChild variant="outline" size="sm">
-                    <a href={conteudo.instagram} target="_blank" rel="noopener noreferrer">
-                      <Instagram aria-hidden="true" />
-                      Instagram
-                    </a>
-                  </Button>
-                )}
-              </div>
             )}
           </div>
 
