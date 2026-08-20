@@ -355,6 +355,22 @@ function ProdutoAdminPage() {
           </div>
         </section>
 
+        <div className="lg:col-span-2">
+          <FaqEditor
+            tipo="produto"
+            alvo={slug}
+            titulo={produto?.nome ?? slug}
+            contexto={form.descricao_html || original}
+            extra={[
+              produto?.marca ? `Marca: ${produto.marca}` : null,
+              categoria ? `Categoria: ${categoria.nome}` : null,
+            ]
+              .filter(Boolean)
+              .join(" · ")}
+          />
+        </div>
+
+
         {/* Coluna 3 — ações */}
         <aside className="space-y-4">
           <div className="rounded-lg border border-border bg-card p-4 text-sm">
