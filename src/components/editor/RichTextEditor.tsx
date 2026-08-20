@@ -305,12 +305,20 @@ export function RichTextEditor({
           <Italic className="size-4" />
         </BotaoBarra>
         <BotaoBarra
+          titulo="Sublinhado"
+          ativo={editor.isActive("underline")}
+          onClick={() => editor.chain().focus().toggleUnderline().run()}
+        >
+          <UnderlineIcon className="size-4" />
+        </BotaoBarra>
+        <BotaoBarra
           titulo="Tachado"
           ativo={editor.isActive("strike")}
           onClick={() => editor.chain().focus().toggleStrike().run()}
         >
           <Strikethrough className="size-4" />
         </BotaoBarra>
+
         <BotaoBarra
           titulo="Código inline"
           ativo={editor.isActive("code")}
