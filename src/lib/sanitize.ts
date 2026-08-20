@@ -109,7 +109,14 @@ function sanitizarSemDom(html: string) {
       if (!ATRIBUTOS_PERMITIDOS.includes(chave)) continue;
       if ((chave === "href" || chave === "src") && !hrefSeguro(valor)) continue;
       if (nome === "iframe" && chave === "src" && !iframePermitido(valor)) return "";
+      if (chave === "style") {
+        const estilo = estiloSeguro(valor);
+        if (!estilo) continue;
+        atributos.push(`style="${estilo}"`);
+        continue;
+      }
       atributos.push(`${chave}="${valor.replace(/"/g, "&quot;")}"`);
+
     }
     if (nome === "iframe" && !atributos.some((a) => a.startsWith("src="))) return "";
     return `<${nome}${atributos.length ? " " + atributos.join(" ") : ""}>`;
