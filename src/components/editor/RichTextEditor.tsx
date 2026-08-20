@@ -127,9 +127,16 @@ export function RichTextEditor({
           HTMLAttributes: { rel: "noopener noreferrer" },
         },
       }),
+      Underline,
+      TextAlign.configure({ types: ["heading", "paragraph"] }),
+      Table.configure({ resizable: false }),
+      TableRow,
+      TableHeader,
+      TableCell,
       Figura,
       Embed,
     ],
+
     content: valor || "",
     editorProps: {
       attributes: {
