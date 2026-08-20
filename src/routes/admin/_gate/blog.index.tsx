@@ -71,8 +71,10 @@ function BlogAdminPage() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [filtro, setFiltro] = useState<(typeof FILTROS)[number]["id"]>("todos");
+  const [categoria, setCategoria] = useState<string>("todas");
   const [busca, setBusca] = useState("");
   const [paraExcluir, setParaExcluir] = useState<PostAdmin | null>(null);
+
 
   const { data: posts, isLoading } = useQuery({
     queryKey: ["admin", "posts"],
