@@ -137,6 +137,18 @@ export function CamposBlocos({ campos, blocos, onChange, baseArquivo }: Props) {
           );
         }
 
+        if (campo.tipo === "imagem") {
+          return (
+            <CampoImagem
+              key={campo.chave}
+              campo={campo}
+              valor={typeof valor === "string" ? valor : ""}
+              onChange={(v) => onChange(campo.chave, v)}
+              baseArquivo={baseArquivo}
+            />
+          );
+        }
+
         if (campo.tipo === "rich") {
           return (
             <div key={campo.chave}>
