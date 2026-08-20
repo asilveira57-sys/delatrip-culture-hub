@@ -117,14 +117,39 @@ function BlogAdminPage() {
     onError: () => toast.error("Não foi possível excluir."),
   });
 
+  const categorias = useMemo(() => {
+    const map = new Map<string, string>();
+    (posts ?? []).forEach((p) => {
+      if (p.categoria) map.set(p.categoria.toLowerCase(), p.categoria);
+    });
+    return Array.from(map.values()).sort((a, b) => a.localeCompare(b, "pt-BR"));
+  }, [posts]);
+
+  const filtrosAtivos = useMemo(
+    () => filtro !== "todos" || categoria !== "todas" || busca.trim().length > 0,
+    [filtro, categoria, busca],
+  );
+
   const lista = useMemo(() => {
     const termo = busca.trim().toLowerCase();
     return (posts ?? []).filter((p) => {
       const status = statusDoPost(p);
       if (filtro !== "todos" && status !== filtro) return false;
-      return !termo || p.titulo.toLowerCase().includes(termo);
+      if (categoria !== "todas" && p.categoria?.toLowerCase() !== categoria.toLowerCase()) return false;
+      if (!termo) return true;
+      const campos = [p.titulo, p.resumo, p.categoria, p.autor, p.seo_titulo, p.seo_descricao]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase();
+      return campos.includes(termo);
     });
-  }, [posts, filtro, busca]);
+  }, [posts, filtro, categoria, busca]);
+
+  const limparFiltros = () => {
+    setFiltro("todos");
+    setCategoria("todas");
+    setBusca("");
+  };
 
   return (
     <div>
@@ -149,29 +174,60 @@ function BlogAdminPage() {
         </div>
       </div>
 
-      <div className="mt-5 flex flex-wrap items-center gap-2">
-        {FILTROS.map((f) => (
-          <button
-            key={f.id}
-            onClick={() => setFiltro(f.id)}
-            className={
-              filtro === f.id
-                ? "rounded-full bg-primary px-3 py-1 text-xs font-medium text-primary-foreground"
-                : "rounded-full border border-border px-3 py-1 text-xs text-muted-foreground hover:bg-muted"
-            }
-          >
-            {f.label}
-          </button>
-        ))}
-        <Input
-          value={busca}
-          onChange={(e) => setBusca(e.target.value)}
-          placeholder="Buscar por título"
-          className="ml-auto w-56"
-        />
+      <div className="mt-5 flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+        <div className="flex flex-wrap items-center gap-2">
+          {FILTROS.map((f) => (
+            <button
+              key={f.id}
+              onClick={() => setFiltro(f.id)}
+              className={
+                filtro === f.id
+                  ? "rounded-full bg-primary px-3 py-1 text-xs font-medium text-primary-foreground"
+                  : "rounded-full border border-border px-3 py-1 text-xs text-muted-foreground hover:bg-muted"
+              }
+            >
+              {f.label}
+            </button>
+          ))}
+        </div>
+
+        <div className="flex flex-wrap items-center gap-2">
+          <div className="relative w-full sm:w-64">
+            <Search className="absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+            <Input
+              value={busca}
+              onChange={(e) => setBusca(e.target.value)}
+              placeholder="Buscar título, resumo, categoria..."
+              className="h-9 pl-9"
+            />
+          </div>
+          <Select value={categoria} onValueChange={setCategoria}>
+            <SelectTrigger className="h-9 w-full sm:w-44">
+              <SelectValue placeholder="Categoria" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="todas">Todas categorias</SelectItem>
+              {categorias.map((cat) => (
+                <SelectItem key={cat} value={cat}>
+                  {cat}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          {filtrosAtivos && (
+            <Button variant="ghost" size="sm" onClick={limparFiltros} className="h-9 gap-1">
+              <X className="size-3.5" /> Limpar
+            </Button>
+          )}
+        </div>
       </div>
 
-      <div className="mt-4 overflow-x-auto rounded-lg border border-border bg-card">
+      <p className="mt-2 text-xs text-muted-foreground">
+        {isLoading ? "Carregando…" : `${lista.length} ${lista.length === 1 ? "post" : "posts"} encontrado${lista.length === 1 ? "" : "s"}`}
+      </p>
+
+      <div className="mt-3 overflow-x-auto rounded-lg border border-border bg-card">
+
         <table className="w-full text-sm">
           <thead className="border-b border-border text-left text-xs uppercase text-muted-foreground">
             <tr>
