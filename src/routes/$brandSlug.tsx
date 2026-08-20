@@ -9,12 +9,16 @@ import { FilterButton, SortSelect } from "@/components/CatalogFilters";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { getBrandPageContent } from "@/config/brand-pages";
+import { ArtigoConteudo } from "@/components/ArtigoConteudo";
+import { caminhoMarca, conteudoMarca } from "@/lib/marcas-core";
+import { carregarPagina } from "@/lib/paginas.functions";
 import { getBrand, productsByBrand, sortProducts, type SortKey } from "@/lib/catalog";
 import { absoluteUrl, breadcrumbLd, canonical, jsonLd } from "@/lib/seo";
 import { mergeList, useOverlays } from "@/lib/overlay";
 
 export const Route = createFileRoute("/$brandSlug")({
-  head: ({ params }) => {
+  loader: ({ params }) => carregarPagina({ data: { caminho: caminhoMarca(params.brandSlug) } }),
+  head: ({ params, loaderData }) => {
     const marca = getBrand(params.brandSlug);
     if (!marca) {
       return {
@@ -24,14 +28,19 @@ export const Route = createFileRoute("/$brandSlug")({
         ],
       };
     }
-    const conteudo = getBrandPageContent(marca.slug, marca.nome, marca.totalProdutos);
-    const titulo = conteudo.seoTitle ?? `${marca.nome} — Marca | DeLaTrip`;
-    const descricao = conteudo.seoDescription ?? conteudo.resumo;
+    const conteudo = conteudoMarca(
+      getBrandPageContent(marca.slug, marca.nome, marca.totalProdutos),
+      loaderData?.blocos ?? null,
+    );
+    const seo = loaderData?.seo;
+    const titulo = seo?.titulo?.trim() || conteudo.seoTitle || `${marca.nome} — Marca | DeLaTrip`;
+    const descricao = seo?.descricao?.trim() || conteudo.seoDescription || conteudo.resumo;
     return {
       meta: [
         { title: titulo },
         { name: "description", content: descricao },
-        { name: "robots", content: "index, follow" },
+        ...(seo?.keywords?.trim() ? [{ name: "keywords", content: seo.keywords.trim() }] : []),
+        { name: "robots", content: seo?.noindex ? "noindex, nofollow" : "index, follow" },
         { property: "og:type", content: "website" },
         { property: "og:locale", content: "pt_BR" },
         { property: "og:title", content: titulo },
@@ -97,7 +106,11 @@ function BrandPage() {
 
 function BrandContent({ slug }: { slug: string }) {
   const marca = getBrand(slug)!;
-  const conteudo = getBrandPageContent(marca.slug, marca.nome, marca.totalProdutos);
+  const { blocos } = Route.useLoaderData();
+  const conteudo = conteudoMarca(
+    getBrandPageContent(marca.slug, marca.nome, marca.totalProdutos),
+    blocos,
+  );
   const overlays = useOverlays();
   const produtos = useMemo(
     () => mergeList(productsByBrand(marca.slug), overlays),
@@ -149,11 +162,15 @@ function BrandContent({ slug }: { slug: string }) {
             <h2 className="font-display text-2xl font-semibold uppercase tracking-wide">
               Sobre a marca
             </h2>
-            {conteudo.sobre.map((p, i) => (
-              <p key={i} className="text-sm leading-relaxed text-muted-foreground">
-                {p}
-              </p>
-            ))}
+            {conteudo.sobreHtml ? (
+              <ArtigoConteudo html={conteudo.sobreHtml} />
+            ) : (
+              conteudo.sobre.map((p, i) => (
+                <p key={i} className="text-sm leading-relaxed text-muted-foreground">
+                  {p}
+                </p>
+              ))
+            )}
             {(conteudo.site || conteudo.instagram) && (
               <div className="flex flex-wrap gap-3 pt-2">
                 {conteudo.site && (

@@ -8,6 +8,7 @@ import {
   LogOut,
   Package,
   Search,
+  Tag,
 } from "lucide-react";
 
 import { supabase } from "@/integrations/supabase/client";
@@ -36,6 +37,7 @@ const ITENS = [
   { label: "Páginas", to: "/admin/paginas", icon: LayoutPanelLeft, ativo: true },
   { label: "FAQ", to: "/admin/faq", icon: HelpCircle, ativo: true },
   { label: "Produtos", to: "/admin/produtos", icon: Package, ativo: true },
+  { label: "Marcas", to: "/admin/marcas", icon: Tag, ativo: true },
 ] as const;
 
 function AdminLayout() {
