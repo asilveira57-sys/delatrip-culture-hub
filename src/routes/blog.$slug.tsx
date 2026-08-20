@@ -9,12 +9,22 @@ import { EmptyState } from "@/components/EmptyState";
 import { Button } from "@/components/ui/button";
 import { resolverCapa } from "@/lib/blog-core";
 import { obterPostPublico } from "@/lib/blog.functions";
+import { FaqSecao } from "@/components/FaqSecao";
+import { faqLd } from "@/lib/faq-core";
+import { carregarFaq } from "@/lib/faq.functions";
 import { formatDate } from "@/lib/editorial";
 
 export const Route = createFileRoute("/blog/$slug")({
-  loader: ({ params }) => obterPostPublico({ data: { slug: params.slug } }),
+  loader: async ({ params }) => {
+    const [post, faq] = await Promise.all([
+      obterPostPublico({ data: { slug: params.slug } }),
+      carregarFaq({ data: { tipo: "post", alvo: params.slug } }),
+    ]);
+    return { post, faq };
+  },
   head: ({ params, loaderData }) => {
-    const post = loaderData ?? null;
+    const post = loaderData?.post ?? null;
+    const faq = loaderData?.faq ?? [];
     const titulo = post
       ? (post.seoTitulo ?? `${post.titulo} — Blog DeLaTrip`)
       : "Post não encontrado — DeLaTrip";
@@ -53,6 +63,7 @@ export const Route = createFileRoute("/blog/$slug")({
                 { name: post.titulo, path: `/blog/${post.slug}` },
               ]),
             ),
+            ...(faq.length > 0 ? [jsonLd(faqLd(faq))] : []),
           ]
         : [],
     };
@@ -66,7 +77,7 @@ export const Route = createFileRoute("/blog/$slug")({
 });
 
 function PostPage() {
-  const post = Route.useLoaderData();
+  const { post, faq } = Route.useLoaderData();
 
   if (!post) {
     return (
@@ -104,6 +115,8 @@ function PostPage() {
         <p className="mt-8 text-lg leading-relaxed text-muted-foreground">{post.resumo}</p>
       ) : null}
       <ArtigoConteudo html={post.conteudoHtml} className="mt-6" />
+
+      <FaqSecao itens={faq} className="mt-12 border-t border-border pt-8" />
 
       <div className="mt-10 border-t border-border pt-6">
         <Curtir tipo="post" alvo={post.slug} />
