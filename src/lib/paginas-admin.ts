@@ -58,3 +58,9 @@ export async function salvarPaginaAdmin(
   );
   if (erroSeo) throw erroSeo;
 }
+
+/** Caminhos que já possuem conteúdo salvo na tabela `pagina`. */
+export async function listarCaminhosEditados(): Promise<Set<string>> {
+  const { data } = await supabase.from("pagina").select("caminho");
+  return new Set((data ?? []).map((l) => l.caminho as string));
+}

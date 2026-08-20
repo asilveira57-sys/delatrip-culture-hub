@@ -1,0 +1,110 @@
+import { RichTextEditor } from "@/components/editor/RichTextEditor";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import type { CampoEditavel } from "@/config/paginas-editaveis";
+import type { Blocos, JsonValor } from "@/lib/paginas-core";
+
+type Props = {
+  campos: CampoEditavel[];
+  blocos: Blocos;
+  onChange: (chave: string, valor: JsonValor) => void;
+  /** Prefixo usado no caminho dos uploads de imagem do editor. */
+  baseArquivo: string;
+};
+
+/** Renderiza os campos editáveis de uma página (texto, textarea, rich, lista). */
+export function CamposBlocos({ campos, blocos, onChange, baseArquivo }: Props) {
+  function itensLista(chave: string, quantidade: number, subCampos: { chave: string }[]) {
+    const bruto = blocos[chave];
+    const atual = Array.isArray(bruto) ? (bruto as Record<string, JsonValor>[]) : [];
+    return Array.from({ length: quantidade }, (_, i) => {
+      const item = atual[i] ?? {};
+      const preenchido: Record<string, string> = {};
+      for (const sub of subCampos) preenchido[sub.chave] = String(item[sub.chave] ?? "");
+      return preenchido;
+    });
+  }
+
+  return (
+    <>
+      {campos.map((campo) => {
+        const valor = blocos[campo.chave];
+
+        if (campo.tipo === "lista") {
+          const subCampos = campo.itens ?? [];
+          const itens = itensLista(campo.chave, campo.quantidade ?? 3, subCampos);
+          return (
+            <section key={campo.chave} className="rounded-lg border border-border bg-card p-4">
+              <h2 className="text-sm font-semibold uppercase">{campo.label}</h2>
+              {campo.ajuda ? (
+                <p className="mt-1 text-xs text-muted-foreground">{campo.ajuda}</p>
+              ) : null}
+              <div className="mt-3 space-y-3">
+                {itens.map((item, i) => (
+                  <div key={i} className="grid gap-2 sm:grid-cols-2">
+                    {subCampos.map((sub) => (
+                      <div key={sub.chave}>
+                        <Label>{`${sub.label} ${i + 1}`}</Label>
+                        <Input
+                          value={item[sub.chave] ?? ""}
+                          onChange={(e) => {
+                            const copia = itens.map((x) => ({ ...x }));
+                            copia[i]![sub.chave] = e.target.value;
+                            onChange(campo.chave, copia as unknown as JsonValor);
+                          }}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                ))}
+              </div>
+            </section>
+          );
+        }
+
+        if (campo.tipo === "rich") {
+          return (
+            <div key={campo.chave}>
+              <Label>{campo.label}</Label>
+              {campo.ajuda ? (
+                <p className="mb-1 text-xs text-muted-foreground">{campo.ajuda}</p>
+              ) : null}
+              <RichTextEditor
+                valor={typeof valor === "string" ? valor : ""}
+                onChange={(html) => onChange(campo.chave, html)}
+                baseArquivo={baseArquivo}
+                minAltura="16rem"
+              />
+            </div>
+          );
+        }
+
+        if (campo.tipo === "textarea") {
+          return (
+            <div key={campo.chave}>
+              <Label htmlFor={campo.chave}>{campo.label}</Label>
+              <Textarea
+                id={campo.chave}
+                rows={3}
+                value={typeof valor === "string" ? valor : ""}
+                onChange={(e) => onChange(campo.chave, e.target.value)}
+              />
+            </div>
+          );
+        }
+
+        return (
+          <div key={campo.chave}>
+            <Label htmlFor={campo.chave}>{campo.label}</Label>
+            <Input
+              id={campo.chave}
+              value={typeof valor === "string" ? valor : ""}
+              onChange={(e) => onChange(campo.chave, e.target.value)}
+            />
+          </div>
+        );
+      })}
+    </>
+  );
+}
