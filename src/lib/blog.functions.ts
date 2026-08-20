@@ -15,8 +15,12 @@ export const listarPostsPublicos = createServerFn({ method: "GET" }).handler(
         .eq("publicado", true)
         .lte("publicado_em", new Date().toISOString())
         .order("publicado_em", { ascending: false });
-      if (error || !data || data.length === 0) return postsFallback();
-      return data.map((linha) => mapearPost(linha as never));
+      if (error || !data) return postsFallback();
+      const doBanco = data.map((linha) => mapearPost(linha as never));
+      // Posts legados do JSON continuam na vitrine enquanto não forem importados.
+      const slugs = new Set(doBanco.map((p) => p.slug));
+      const legados = postsFallback().filter((p) => !slugs.has(p.slug));
+      return [...doBanco, ...legados].sort((a, b) => b.data.localeCompare(a.data));
     } catch {
       return postsFallback();
     }
@@ -43,3 +47,4 @@ export const obterPostPublico = createServerFn({ method: "GET" })
       return fallback();
     }
   });
+
