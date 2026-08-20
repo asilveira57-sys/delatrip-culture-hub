@@ -91,7 +91,6 @@ function EditarMarcaPage() {
     setSalvando(true);
     try {
       await salvarPaginaAdmin(caminho, blocos, seo);
-      await Promise.resolve();
       toast.success("Marca salva.");
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Falha ao salvar.");
