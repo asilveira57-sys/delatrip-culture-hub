@@ -60,7 +60,7 @@ function SobrePage() {
           </>
         )}
         <p className="mt-10 text-sm text-muted-foreground">
-          {SITE.endereco} · CNPJ {SITE.cnpj}
+          {SITE.razaoSocial} · {SITE.endereco} · CNPJ {SITE.cnpj}
         </p>
       </div>
     </>

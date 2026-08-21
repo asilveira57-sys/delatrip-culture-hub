@@ -9,9 +9,12 @@ export const SITE = {
   /** Slug da loja oficial usado no filtro _Tienda_ da busca do Mercado Livre. */
   mercadoLivreLoja: "delatrip",
   email: "contato@delatrip.com.br",
-  telefone: "(11) 90000-0000",
-  endereco: "São Paulo — SP, Brasil",
-  cnpj: "00.000.000/0001-00",
+  telefone: "(21) 97246-2459",
+  telefoneLink: "+5521972462459",
+  endereco: "Rio de Janeiro — RJ, Brasil",
+  cnpj: "23.131.813/0001-16",
+  razaoSocial: "JP Comercio Exterior e Representação Eireli-ME",
+  horarioAtendimento: "Atendimento de segunda a sexta, das 9h às 18h",
   redes: {
     instagram: "https://www.instagram.com/",
     facebook: "https://www.facebook.com/",
