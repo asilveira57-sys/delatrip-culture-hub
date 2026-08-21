@@ -1,6 +1,10 @@
 import { supabase } from "@/integrations/supabase/client";
 
 export const LIMITE_BYTES = 8 * 1024 * 1024;
+/** Tipos aceitos no upload de imagens (capa, editor). */
+export const TIPOS_ACEITOS = ["image/jpeg", "image/png", "image/webp", "image/gif", "image/avif"];
+export const ACCEPT_IMAGENS = TIPOS_ACEITOS.join(",");
+const NOMES_TIPOS = "JPG, PNG, WebP, GIF ou AVIF";
 const LARGURA_MAX = 1600;
 /** ~100 anos: a URL assinada funciona como link estável para o site público. */
 const VALIDADE_SEGUNDOS = 60 * 60 * 24 * 365 * 100;
