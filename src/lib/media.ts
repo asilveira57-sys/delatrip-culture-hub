@@ -53,11 +53,29 @@ async function redimensionar(file: File): Promise<{ blob: Blob; ext: string }> {
 
 export type ImagemEnviada = { url: string; tamanho: number; caminho: string };
 
+/**
+ * Valida um arquivo de imagem antes do envio.
+ * Devolve a mensagem de erro em pt-BR ou `null` quando o arquivo é válido.
+ */
+export function validarImagem(file: File): string | null {
+  if (file.size === 0) return "Arquivo vazio ou corrompido. Escolha outra imagem.";
+  const tipo = (file.type || "").toLowerCase();
+  if (!tipo.startsWith("image/")) {
+    return `Este arquivo não é uma imagem. Envie ${NOMES_TIPOS}.`;
+  }
+  if (!TIPOS_ACEITOS.includes(tipo)) {
+    return `Formato não suportado (${tipo.replace("image/", "").toUpperCase()}). Envie ${NOMES_TIPOS}.`;
+  }
+  if (file.size > LIMITE_BYTES) {
+    return `Arquivo muito grande: ${formatarTamanho(file.size)}. O limite é 8MB.`;
+  }
+  return null;
+}
+
 /** Redimensiona no cliente, envia ao bucket "blog" e devolve URL assinada longa. */
 export async function enviarImagem(file: File, base: string): Promise<ImagemEnviada> {
-  if (file.size > LIMITE_BYTES) {
-    throw new Error(`Arquivo acima de 8MB (${formatarTamanho(file.size)}).`);
-  }
+  const erro = validarImagem(file);
+  if (erro) throw new Error(erro);
   const { blob, ext } = await redimensionar(file);
   const slugBase = (base || "imagem")
     .toLowerCase()
