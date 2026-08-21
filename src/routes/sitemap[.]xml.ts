@@ -9,14 +9,17 @@ const ROTAS_FIXAS: [string, number][] = [
   ["/catalogo", 0.9],
   ["/marcas", 0.8],
   ["/blog", 0.7],
+  ["/podcast", 0.7],
   ["/acessorios", 0.7],
   ["/conteudo/tabaco", 0.7],
-  ["/sobre", 0.5],
+  ["/quem-somos", 0.6],
   ["/contato", 0.5],
   ["/faq", 0.5],
-  ["/legal/termos", 0.3],
-  ["/legal/privacidade", 0.3],
-  ["/legal/aviso-legal", 0.3],
+  ["/politica-de-privacidade", 0.3],
+  ["/politica-de-cookies", 0.3],
+  ["/lgpd", 0.3],
+  ["/termos-de-uso", 0.3],
+  ["/maiores-de-18", 0.3],
 ];
 
 export const Route = createFileRoute("/sitemap.xml")({
