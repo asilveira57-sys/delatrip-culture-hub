@@ -85,6 +85,15 @@ function CampoImagem({
           </Button>
         ) : null}
       </div>
+      {erro ? (
+        <p role="alert" className="mt-2 text-xs font-medium text-destructive">
+          {erro}
+        </p>
+      ) : (
+        <p className="mt-2 text-xs text-muted-foreground">
+          Formatos aceitos: JPG, PNG, WebP, GIF ou AVIF. Tamanho máximo: 8MB.
+        </p>
+      )}
     </div>
   );
 }
