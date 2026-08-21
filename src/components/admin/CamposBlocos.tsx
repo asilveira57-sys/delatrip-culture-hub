@@ -23,19 +23,29 @@ function CampoImagem({
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [enviando, setEnviando] = useState(false);
+  const [erro, setErro] = useState<string | null>(null);
 
   async function selecionar(file: File | undefined) {
+    if (inputRef.current) inputRef.current.value = "";
     if (!file) return;
+    const invalido = validarImagem(file);
+    if (invalido) {
+      setErro(invalido);
+      toast.error(invalido);
+      return;
+    }
+    setErro(null);
     setEnviando(true);
     try {
       const { url } = await enviarImagem(file, `${baseArquivo}-capa`);
       onChange(url);
       toast.success("Imagem enviada.");
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Falha ao enviar imagem.");
+      const msg = err instanceof Error ? err.message : "Falha ao enviar imagem.";
+      setErro(msg);
+      toast.error(msg);
     } finally {
       setEnviando(false);
-      if (inputRef.current) inputRef.current.value = "";
     }
   }
 
