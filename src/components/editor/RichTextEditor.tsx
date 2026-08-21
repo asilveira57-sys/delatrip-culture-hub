@@ -46,7 +46,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { enviarImagem, formatarTamanho } from "@/lib/media";
+import { ACCEPT_IMAGENS, enviarImagem, formatarTamanho } from "@/lib/media";
 import { sanitizarHtml } from "@/lib/sanitize";
 import { cn } from "@/lib/utils";
 
