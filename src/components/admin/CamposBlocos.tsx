@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import type { CampoEditavel } from "@/config/paginas-editaveis";
-import { enviarImagem } from "@/lib/media";
+import { ACCEPT_IMAGENS, enviarImagem, validarImagem } from "@/lib/media";
 import type { Blocos, JsonValor } from "@/lib/paginas-core";
 
 function CampoImagem({
