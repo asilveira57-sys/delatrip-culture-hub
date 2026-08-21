@@ -530,7 +530,7 @@ export function RichTextEditor({
           <div className="space-y-3">
             <Input
               type="file"
-              accept="image/*"
+              accept={ACCEPT_IMAGENS}
               onChange={(e) => setImgArquivo(e.target.files?.[0] ?? null)}
             />
             <div>
