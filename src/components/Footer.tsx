@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { Facebook, Instagram, Youtube } from "lucide-react";
 
 import { AVISO_SANITARIO, SITE } from "@/config/site";
+import { abrirPreferenciasCookies } from "@/lib/consentimento";
 import { categories } from "@/lib/catalog";
 import mark from "@/assets/delatrip-mark.png";
 
@@ -52,23 +53,41 @@ export function Footer() {
             </ul>
           </nav>
 
-          <nav aria-label="Institucional">
+          <nav aria-label="Institucional e conteúdo">
             <h2 className="eyebrow text-gold">Institucional</h2>
             <ul className="mt-4 space-y-2">
-              <li><Link to="/sobre" className="text-sm text-ink-muted hover:text-gold">Sobre a DeLaTrip</Link></li>
+              <li><Link to="/quem-somos" className="text-sm text-ink-muted hover:text-gold">Quem somos</Link></li>
               <li><Link to="/marcas" className="text-sm text-ink-muted hover:text-gold">Marcas</Link></li>
               <li><Link to="/blog" className="text-sm text-ink-muted hover:text-gold">Blog</Link></li>
+              <li><Link to="/podcast" className="text-sm text-ink-muted hover:text-gold">Podcast</Link></li>
               <li><Link to="/conteudo/tabaco" className="text-sm text-ink-muted hover:text-gold">Conteúdo: tabaco</Link></li>
               <li><Link to="/faq" className="text-sm text-ink-muted hover:text-gold">Perguntas frequentes</Link></li>
               <li><Link to="/contato" className="text-sm text-ink-muted hover:text-gold">Contato</Link></li>
-              <li><Link to="/legal/aviso-legal" className="text-sm text-ink-muted hover:text-gold">Avisos legais</Link></li>
-              <li><Link to="/legal/privacidade" className="text-sm text-ink-muted hover:text-gold">Privacidade</Link></li>
-              <li><Link to="/legal/termos" className="text-sm text-ink-muted hover:text-gold">Termos de uso</Link></li>
             </ul>
           </nav>
 
           <div>
-            <h2 className="eyebrow text-gold">Contato</h2>
+            <nav aria-label="Legal e privacidade">
+              <h2 className="eyebrow text-gold">Legal e privacidade</h2>
+              <ul className="mt-4 space-y-2">
+                <li><Link to="/politica-de-privacidade" className="text-sm text-ink-muted hover:text-gold">Política de Privacidade</Link></li>
+                <li><Link to="/politica-de-cookies" className="text-sm text-ink-muted hover:text-gold">Política de Cookies</Link></li>
+                <li><Link to="/lgpd" className="text-sm text-ink-muted hover:text-gold">LGPD e seus direitos</Link></li>
+                <li><Link to="/termos-de-uso" className="text-sm text-ink-muted hover:text-gold">Termos de Uso</Link></li>
+                <li><Link to="/maiores-de-18" className="text-sm text-ink-muted hover:text-gold">Maiores de 18 anos</Link></li>
+                <li>
+                  <button
+                    type="button"
+                    onClick={() => abrirPreferenciasCookies()}
+                    className="text-sm text-ink-muted underline-offset-4 hover:text-gold hover:underline"
+                  >
+                    Preferências de Cookies
+                  </button>
+                </li>
+              </ul>
+            </nav>
+
+            <h2 className="eyebrow mt-8 text-gold">Contato</h2>
             <address className="mt-4 space-y-2 text-sm not-italic text-ink-muted">
               <p>{SITE.endereco}</p>
               <p>
