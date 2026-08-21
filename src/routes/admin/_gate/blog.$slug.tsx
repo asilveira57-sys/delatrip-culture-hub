@@ -454,7 +454,7 @@ function EditorPostPage() {
               ) : null}
               <Input
                 type="file"
-                accept="image/*"
+                accept={ACCEPT_IMAGENS}
                 disabled={enviandoCapa}
                 onChange={(e) => {
                   const f = e.target.files?.[0];
