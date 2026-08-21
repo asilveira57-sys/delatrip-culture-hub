@@ -27,7 +27,7 @@ import {
   statusDoPost,
   type PostAdmin,
 } from "@/lib/blog-admin";
-import { enviarImagem, formatarTamanho } from "@/lib/media";
+import { ACCEPT_IMAGENS, enviarImagem, formatarTamanho } from "@/lib/media";
 import { SITE_URL } from "@/lib/seo";
 
 export const Route = createFileRoute("/admin/_gate/blog/$slug")({
