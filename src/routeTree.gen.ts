@@ -15,9 +15,15 @@ import { Route as AcessoriosRouteImport } from './routes/acessorios'
 import { Route as BuscaRouteImport } from './routes/busca'
 import { Route as ContatoRouteImport } from './routes/contato'
 import { Route as FaqRouteImport } from './routes/faq'
+import { Route as LgpdRouteImport } from './routes/lgpd'
+import { Route as MaioresDe18RouteImport } from './routes/maiores-de-18'
+import { Route as PoliticaDeCookiesRouteImport } from './routes/politica-de-cookies'
+import { Route as PoliticaDePrivacidadeRouteImport } from './routes/politica-de-privacidade'
+import { Route as QuemSomosRouteImport } from './routes/quem-somos'
 import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SobreRouteImport } from './routes/sobre'
+import { Route as TermosDeUsoRouteImport } from './routes/termos-de-uso'
 import { Route as AdminGateRouteImport } from './routes/admin/_gate'
 import { Route as AdminLoginRouteImport } from './routes/admin/login'
 import { Route as BlogIndexRouteImport } from './routes/blog.index'
@@ -30,6 +36,8 @@ import { Route as LegalPrivacidadeRouteImport } from './routes/legal.privacidade
 import { Route as LegalTermosRouteImport } from './routes/legal.termos'
 import { Route as MarcasIndexRouteImport } from './routes/marcas.index'
 import { Route as MarcasSlugRouteImport } from './routes/marcas.$slug'
+import { Route as PodcastIndexRouteImport } from './routes/podcast.index'
+import { Route as PodcastSlugRouteImport } from './routes/podcast.$slug'
 import { Route as ProdutoSlugRouteImport } from './routes/produto.$slug'
 import { Route as AdminGateIndexRouteImport } from './routes/admin/_gate/index'
 import { Route as AdminGateFaqRouteImport } from './routes/admin/_gate/faq'
@@ -76,6 +84,31 @@ const FaqRoute = FaqRouteImport.update({
   path: '/faq',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LgpdRoute = LgpdRouteImport.update({
+  id: '/lgpd',
+  path: '/lgpd',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MaioresDe18Route = MaioresDe18RouteImport.update({
+  id: '/maiores-de-18',
+  path: '/maiores-de-18',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PoliticaDeCookiesRoute = PoliticaDeCookiesRouteImport.update({
+  id: '/politica-de-cookies',
+  path: '/politica-de-cookies',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PoliticaDePrivacidadeRoute = PoliticaDePrivacidadeRouteImport.update({
+  id: '/politica-de-privacidade',
+  path: '/politica-de-privacidade',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const QuemSomosRoute = QuemSomosRouteImport.update({
+  id: '/quem-somos',
+  path: '/quem-somos',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
   id: '/robots.txt',
   path: '/robots.txt',
@@ -89,6 +122,11 @@ const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
 const SobreRoute = SobreRouteImport.update({
   id: '/sobre',
   path: '/sobre',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermosDeUsoRoute = TermosDeUsoRouteImport.update({
+  id: '/termos-de-uso',
+  path: '/termos-de-uso',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminGateRoute = AdminGateRouteImport.update({
@@ -149,6 +187,16 @@ const MarcasIndexRoute = MarcasIndexRouteImport.update({
 const MarcasSlugRoute = MarcasSlugRouteImport.update({
   id: '/marcas/$slug',
   path: '/marcas/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PodcastIndexRoute = PodcastIndexRouteImport.update({
+  id: '/podcast/',
+  path: '/podcast/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PodcastSlugRoute = PodcastSlugRouteImport.update({
+  id: '/podcast/$slug',
+  path: '/podcast/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProdutoSlugRoute = ProdutoSlugRouteImport.update({
@@ -237,9 +285,15 @@ export interface FileRoutesByFullPath {
   '/busca': typeof BuscaRoute
   '/contato': typeof ContatoRoute
   '/faq': typeof FaqRoute
+  '/lgpd': typeof LgpdRoute
+  '/maiores-de-18': typeof MaioresDe18Route
+  '/politica-de-cookies': typeof PoliticaDeCookiesRoute
+  '/politica-de-privacidade': typeof PoliticaDePrivacidadeRoute
+  '/quem-somos': typeof QuemSomosRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/sobre': typeof SobreRoute
+  '/termos-de-uso': typeof TermosDeUsoRoute
   '/admin': typeof AdminGateRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
   '/blog/$slug': typeof BlogSlugRoute
@@ -249,10 +303,12 @@ export interface FileRoutesByFullPath {
   '/legal/privacidade': typeof LegalPrivacidadeRoute
   '/legal/termos': typeof LegalTermosRoute
   '/marcas/$slug': typeof MarcasSlugRoute
+  '/podcast/$slug': typeof PodcastSlugRoute
   '/produto/$slug': typeof ProdutoSlugRoute
   '/blog/': typeof BlogIndexRoute
   '/catalogo/': typeof CatalogoIndexRoute
   '/marcas/': typeof MarcasIndexRoute
+  '/podcast/': typeof PodcastIndexRoute
   '/admin/faq': typeof AdminGateFaqRoute
   '/admin/seo': typeof AdminGateSeoRoute
   '/admin/': typeof AdminGateIndexRoute
@@ -275,9 +331,15 @@ export interface FileRoutesByTo {
   '/busca': typeof BuscaRoute
   '/contato': typeof ContatoRoute
   '/faq': typeof FaqRoute
+  '/lgpd': typeof LgpdRoute
+  '/maiores-de-18': typeof MaioresDe18Route
+  '/politica-de-cookies': typeof PoliticaDeCookiesRoute
+  '/politica-de-privacidade': typeof PoliticaDePrivacidadeRoute
+  '/quem-somos': typeof QuemSomosRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/sobre': typeof SobreRoute
+  '/termos-de-uso': typeof TermosDeUsoRoute
   '/admin/login': typeof AdminLoginRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/catalogo/$': typeof CatalogoSplatRoute
@@ -286,10 +348,12 @@ export interface FileRoutesByTo {
   '/legal/privacidade': typeof LegalPrivacidadeRoute
   '/legal/termos': typeof LegalTermosRoute
   '/marcas/$slug': typeof MarcasSlugRoute
+  '/podcast/$slug': typeof PodcastSlugRoute
   '/produto/$slug': typeof ProdutoSlugRoute
   '/blog': typeof BlogIndexRoute
   '/catalogo': typeof CatalogoIndexRoute
   '/marcas': typeof MarcasIndexRoute
+  '/podcast': typeof PodcastIndexRoute
   '/admin/faq': typeof AdminGateFaqRoute
   '/admin/seo': typeof AdminGateSeoRoute
   '/admin': typeof AdminGateIndexRoute
@@ -313,9 +377,15 @@ export interface FileRoutesById {
   '/busca': typeof BuscaRoute
   '/contato': typeof ContatoRoute
   '/faq': typeof FaqRoute
+  '/lgpd': typeof LgpdRoute
+  '/maiores-de-18': typeof MaioresDe18Route
+  '/politica-de-cookies': typeof PoliticaDeCookiesRoute
+  '/politica-de-privacidade': typeof PoliticaDePrivacidadeRoute
+  '/quem-somos': typeof QuemSomosRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/sobre': typeof SobreRoute
+  '/termos-de-uso': typeof TermosDeUsoRoute
   '/admin/_gate': typeof AdminGateRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
   '/blog/$slug': typeof BlogSlugRoute
@@ -325,10 +395,12 @@ export interface FileRoutesById {
   '/legal/privacidade': typeof LegalPrivacidadeRoute
   '/legal/termos': typeof LegalTermosRoute
   '/marcas/$slug': typeof MarcasSlugRoute
+  '/podcast/$slug': typeof PodcastSlugRoute
   '/produto/$slug': typeof ProdutoSlugRoute
   '/blog/': typeof BlogIndexRoute
   '/catalogo/': typeof CatalogoIndexRoute
   '/marcas/': typeof MarcasIndexRoute
+  '/podcast/': typeof PodcastIndexRoute
   '/admin/_gate/faq': typeof AdminGateFaqRoute
   '/admin/_gate/seo': typeof AdminGateSeoRoute
   '/admin/_gate/': typeof AdminGateIndexRoute
@@ -353,9 +425,15 @@ export interface FileRouteTypes {
     | '/busca'
     | '/contato'
     | '/faq'
+    | '/lgpd'
+    | '/maiores-de-18'
+    | '/politica-de-cookies'
+    | '/politica-de-privacidade'
+    | '/quem-somos'
     | '/robots.txt'
     | '/sitemap.xml'
     | '/sobre'
+    | '/termos-de-uso'
     | '/admin'
     | '/admin/login'
     | '/blog/$slug'
@@ -365,10 +443,12 @@ export interface FileRouteTypes {
     | '/legal/privacidade'
     | '/legal/termos'
     | '/marcas/$slug'
+    | '/podcast/$slug'
     | '/produto/$slug'
     | '/blog/'
     | '/catalogo/'
     | '/marcas/'
+    | '/podcast/'
     | '/admin/faq'
     | '/admin/seo'
     | '/admin/'
@@ -391,9 +471,15 @@ export interface FileRouteTypes {
     | '/busca'
     | '/contato'
     | '/faq'
+    | '/lgpd'
+    | '/maiores-de-18'
+    | '/politica-de-cookies'
+    | '/politica-de-privacidade'
+    | '/quem-somos'
     | '/robots.txt'
     | '/sitemap.xml'
     | '/sobre'
+    | '/termos-de-uso'
     | '/admin/login'
     | '/blog/$slug'
     | '/catalogo/$'
@@ -402,10 +488,12 @@ export interface FileRouteTypes {
     | '/legal/privacidade'
     | '/legal/termos'
     | '/marcas/$slug'
+    | '/podcast/$slug'
     | '/produto/$slug'
     | '/blog'
     | '/catalogo'
     | '/marcas'
+    | '/podcast'
     | '/admin/faq'
     | '/admin/seo'
     | '/admin'
@@ -428,9 +516,15 @@ export interface FileRouteTypes {
     | '/busca'
     | '/contato'
     | '/faq'
+    | '/lgpd'
+    | '/maiores-de-18'
+    | '/politica-de-cookies'
+    | '/politica-de-privacidade'
+    | '/quem-somos'
     | '/robots.txt'
     | '/sitemap.xml'
     | '/sobre'
+    | '/termos-de-uso'
     | '/admin/_gate'
     | '/admin/login'
     | '/blog/$slug'
@@ -440,10 +534,12 @@ export interface FileRouteTypes {
     | '/legal/privacidade'
     | '/legal/termos'
     | '/marcas/$slug'
+    | '/podcast/$slug'
     | '/produto/$slug'
     | '/blog/'
     | '/catalogo/'
     | '/marcas/'
+    | '/podcast/'
     | '/admin/_gate/faq'
     | '/admin/_gate/seo'
     | '/admin/_gate/'
@@ -467,9 +563,15 @@ export interface RootRouteChildren {
   BuscaRoute: typeof BuscaRoute
   ContatoRoute: typeof ContatoRoute
   FaqRoute: typeof FaqRoute
+  LgpdRoute: typeof LgpdRoute
+  MaioresDe18Route: typeof MaioresDe18Route
+  PoliticaDeCookiesRoute: typeof PoliticaDeCookiesRoute
+  PoliticaDePrivacidadeRoute: typeof PoliticaDePrivacidadeRoute
+  QuemSomosRoute: typeof QuemSomosRoute
   RobotsDottxtRoute: typeof RobotsDottxtRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SobreRoute: typeof SobreRoute
+  TermosDeUsoRoute: typeof TermosDeUsoRoute
   AdminGateRoute: typeof AdminGateRouteWithChildren
   AdminLoginRoute: typeof AdminLoginRoute
   BlogSlugRoute: typeof BlogSlugRoute
@@ -479,10 +581,12 @@ export interface RootRouteChildren {
   LegalPrivacidadeRoute: typeof LegalPrivacidadeRoute
   LegalTermosRoute: typeof LegalTermosRoute
   MarcasSlugRoute: typeof MarcasSlugRoute
+  PodcastSlugRoute: typeof PodcastSlugRoute
   ProdutoSlugRoute: typeof ProdutoSlugRoute
   BlogIndexRoute: typeof BlogIndexRoute
   CatalogoIndexRoute: typeof CatalogoIndexRoute
   MarcasIndexRoute: typeof MarcasIndexRoute
+  PodcastIndexRoute: typeof PodcastIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -529,6 +633,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FaqRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/lgpd': {
+      id: '/lgpd'
+      path: '/lgpd'
+      fullPath: '/lgpd'
+      preLoaderRoute: typeof LgpdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/maiores-de-18': {
+      id: '/maiores-de-18'
+      path: '/maiores-de-18'
+      fullPath: '/maiores-de-18'
+      preLoaderRoute: typeof MaioresDe18RouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/politica-de-cookies': {
+      id: '/politica-de-cookies'
+      path: '/politica-de-cookies'
+      fullPath: '/politica-de-cookies'
+      preLoaderRoute: typeof PoliticaDeCookiesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/politica-de-privacidade': {
+      id: '/politica-de-privacidade'
+      path: '/politica-de-privacidade'
+      fullPath: '/politica-de-privacidade'
+      preLoaderRoute: typeof PoliticaDePrivacidadeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/quem-somos': {
+      id: '/quem-somos'
+      path: '/quem-somos'
+      fullPath: '/quem-somos'
+      preLoaderRoute: typeof QuemSomosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/robots.txt': {
       id: '/robots.txt'
       path: '/robots.txt'
@@ -548,6 +687,13 @@ declare module '@tanstack/react-router' {
       path: '/sobre'
       fullPath: '/sobre'
       preLoaderRoute: typeof SobreRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/termos-de-uso': {
+      id: '/termos-de-uso'
+      path: '/termos-de-uso'
+      fullPath: '/termos-de-uso'
+      preLoaderRoute: typeof TermosDeUsoRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/_gate': {
@@ -632,6 +778,20 @@ declare module '@tanstack/react-router' {
       path: '/marcas/$slug'
       fullPath: '/marcas/$slug'
       preLoaderRoute: typeof MarcasSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/podcast/': {
+      id: '/podcast/'
+      path: '/podcast'
+      fullPath: '/podcast/'
+      preLoaderRoute: typeof PodcastIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/podcast/$slug': {
+      id: '/podcast/$slug'
+      path: '/podcast/$slug'
+      fullPath: '/podcast/$slug'
+      preLoaderRoute: typeof PodcastSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/produto/$slug': {
@@ -787,9 +947,15 @@ const rootRouteChildren: RootRouteChildren = {
   BuscaRoute: BuscaRoute,
   ContatoRoute: ContatoRoute,
   FaqRoute: FaqRoute,
+  LgpdRoute: LgpdRoute,
+  MaioresDe18Route: MaioresDe18Route,
+  PoliticaDeCookiesRoute: PoliticaDeCookiesRoute,
+  PoliticaDePrivacidadeRoute: PoliticaDePrivacidadeRoute,
+  QuemSomosRoute: QuemSomosRoute,
   RobotsDottxtRoute: RobotsDottxtRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   SobreRoute: SobreRoute,
+  TermosDeUsoRoute: TermosDeUsoRoute,
   AdminGateRoute: AdminGateRouteWithChildren,
   AdminLoginRoute: AdminLoginRoute,
   BlogSlugRoute: BlogSlugRoute,
@@ -799,10 +965,12 @@ const rootRouteChildren: RootRouteChildren = {
   LegalPrivacidadeRoute: LegalPrivacidadeRoute,
   LegalTermosRoute: LegalTermosRoute,
   MarcasSlugRoute: MarcasSlugRoute,
+  PodcastSlugRoute: PodcastSlugRoute,
   ProdutoSlugRoute: ProdutoSlugRoute,
   BlogIndexRoute: BlogIndexRoute,
   CatalogoIndexRoute: CatalogoIndexRoute,
   MarcasIndexRoute: MarcasIndexRoute,
+  PodcastIndexRoute: PodcastIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

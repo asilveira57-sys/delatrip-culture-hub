@@ -35,6 +35,81 @@ export type Database = {
         }
         Relationships: []
       }
+      consentimento_cookie: {
+        Row: {
+          anon_id: string
+          categorias: Json
+          created_at: string
+          id: string
+          updated_at: string
+          versao: string
+        }
+        Insert: {
+          anon_id: string
+          categorias?: Json
+          created_at?: string
+          id?: string
+          updated_at?: string
+          versao: string
+        }
+        Update: {
+          anon_id?: string
+          categorias?: Json
+          created_at?: string
+          id?: string
+          updated_at?: string
+          versao?: string
+        }
+        Relationships: []
+      }
+      contato_mensagem: {
+        Row: {
+          assunto: string
+          categoria: string
+          created_at: string
+          email: string
+          id: string
+          ip_hash: string | null
+          mensagem: string
+          nome: string
+          origem: string | null
+          status: string
+          telefone: string | null
+          updated_at: string
+          utm: Json
+        }
+        Insert: {
+          assunto: string
+          categoria?: string
+          created_at?: string
+          email: string
+          id?: string
+          ip_hash?: string | null
+          mensagem: string
+          nome: string
+          origem?: string | null
+          status?: string
+          telefone?: string | null
+          updated_at?: string
+          utm?: Json
+        }
+        Update: {
+          assunto?: string
+          categoria?: string
+          created_at?: string
+          email?: string
+          id?: string
+          ip_hash?: string | null
+          mensagem?: string
+          nome?: string
+          origem?: string | null
+          status?: string
+          telefone?: string | null
+          updated_at?: string
+          utm?: Json
+        }
+        Relationships: []
+      }
       curtida: {
         Row: {
           alvo: string
@@ -61,6 +136,74 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      documento_legal: {
+        Row: {
+          chave: string
+          conteudo_html: string
+          created_at: string
+          publicado_em: string | null
+          status: string
+          titulo: string
+          updated_at: string
+          versao: string
+        }
+        Insert: {
+          chave: string
+          conteudo_html?: string
+          created_at?: string
+          publicado_em?: string | null
+          status?: string
+          titulo: string
+          updated_at?: string
+          versao?: string
+        }
+        Update: {
+          chave?: string
+          conteudo_html?: string
+          created_at?: string
+          publicado_em?: string | null
+          status?: string
+          titulo?: string
+          updated_at?: string
+          versao?: string
+        }
+        Relationships: []
+      }
+      documento_legal_versao: {
+        Row: {
+          chave: string
+          conteudo_html: string
+          created_at: string
+          id: string
+          titulo: string
+          versao: string
+        }
+        Insert: {
+          chave: string
+          conteudo_html: string
+          created_at?: string
+          id?: string
+          titulo: string
+          versao: string
+        }
+        Update: {
+          chave?: string
+          conteudo_html?: string
+          created_at?: string
+          id?: string
+          titulo?: string
+          versao?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "documento_legal_versao_chave_fkey"
+            columns: ["chave"]
+            isOneToOne: false
+            referencedRelation: "documento_legal"
+            referencedColumns: ["chave"]
+          },
+        ]
       }
       enriquecimento_log: {
         Row: {
@@ -137,6 +280,42 @@ export type Database = {
         }
         Relationships: []
       }
+      lgpd_solicitacao: {
+        Row: {
+          created_at: string
+          descricao: string
+          email: string
+          id: string
+          ip_hash: string | null
+          nome: string
+          status: string
+          tipo: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          descricao: string
+          email: string
+          id?: string
+          ip_hash?: string | null
+          nome: string
+          status?: string
+          tipo: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          descricao?: string
+          email?: string
+          id?: string
+          ip_hash?: string | null
+          nome?: string
+          status?: string
+          tipo?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       pagina: {
         Row: {
           atualizado_em: string | null
@@ -158,6 +337,78 @@ export type Database = {
           caminho?: string
           created_at?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      podcast_episodio: {
+        Row: {
+          capa_alt: string | null
+          capa_url: string | null
+          conteudo_html: string | null
+          created_at: string
+          data_publicacao: string | null
+          descricao: string | null
+          duracao: string | null
+          og_imagem: string | null
+          outro_url: string | null
+          participantes: string | null
+          publicado: boolean
+          resumo: string | null
+          seo_descricao: string | null
+          seo_keywords: string | null
+          seo_titulo: string | null
+          slug: string
+          spotify_url: string | null
+          titulo: string
+          transcricao: string | null
+          updated_at: string
+          youtube_url: string | null
+        }
+        Insert: {
+          capa_alt?: string | null
+          capa_url?: string | null
+          conteudo_html?: string | null
+          created_at?: string
+          data_publicacao?: string | null
+          descricao?: string | null
+          duracao?: string | null
+          og_imagem?: string | null
+          outro_url?: string | null
+          participantes?: string | null
+          publicado?: boolean
+          resumo?: string | null
+          seo_descricao?: string | null
+          seo_keywords?: string | null
+          seo_titulo?: string | null
+          slug: string
+          spotify_url?: string | null
+          titulo: string
+          transcricao?: string | null
+          updated_at?: string
+          youtube_url?: string | null
+        }
+        Update: {
+          capa_alt?: string | null
+          capa_url?: string | null
+          conteudo_html?: string | null
+          created_at?: string
+          data_publicacao?: string | null
+          descricao?: string | null
+          duracao?: string | null
+          og_imagem?: string | null
+          outro_url?: string | null
+          participantes?: string | null
+          publicado?: boolean
+          resumo?: string | null
+          seo_descricao?: string | null
+          seo_keywords?: string | null
+          seo_titulo?: string | null
+          slug?: string
+          spotify_url?: string | null
+          titulo?: string
+          transcricao?: string | null
+          updated_at?: string
+          youtube_url?: string | null
         }
         Relationships: []
       }
@@ -317,32 +568,41 @@ export type Database = {
       seo_rota: {
         Row: {
           caminho: string
+          canonical: string | null
           created_at: string
           descricao: string | null
+          nofollow: boolean
           noindex: boolean
           og_imagem: string | null
           seo_keywords: string | null
           titulo: string | null
+          twitter_imagem: string | null
           updated_at: string
         }
         Insert: {
           caminho: string
+          canonical?: string | null
           created_at?: string
           descricao?: string | null
+          nofollow?: boolean
           noindex?: boolean
           og_imagem?: string | null
           seo_keywords?: string | null
           titulo?: string | null
+          twitter_imagem?: string | null
           updated_at?: string
         }
         Update: {
           caminho?: string
+          canonical?: string | null
           created_at?: string
           descricao?: string | null
+          nofollow?: boolean
           noindex?: boolean
           og_imagem?: string | null
           seo_keywords?: string | null
           titulo?: string | null
+          twitter_imagem?: string | null
           updated_at?: string
         }
         Relationships: []
@@ -366,6 +626,34 @@ export type Database = {
       descurtir: {
         Args: { p_alvo: string; p_anon_id: string; p_tipo: string }
         Returns: number
+      }
+      registrar_consentimento: {
+        Args: { p_anon_id: string; p_categorias: Json; p_versao: string }
+        Returns: undefined
+      }
+      registrar_contato: {
+        Args: {
+          p_assunto: string
+          p_categoria: string
+          p_email: string
+          p_ip_hash: string
+          p_mensagem: string
+          p_nome: string
+          p_origem: string
+          p_telefone: string
+          p_utm: Json
+        }
+        Returns: string
+      }
+      registrar_lgpd: {
+        Args: {
+          p_descricao: string
+          p_email: string
+          p_ip_hash: string
+          p_nome: string
+          p_tipo: string
+        }
+        Returns: string
       }
     }
     Enums: {
