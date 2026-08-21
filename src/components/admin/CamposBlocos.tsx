@@ -65,7 +65,7 @@ function CampoImagem({
       <input
         ref={inputRef}
         type="file"
-        accept="image/*"
+        accept={ACCEPT_IMAGENS}
         className="hidden"
         onChange={(e) => void selecionar(e.target.files?.[0])}
       />
