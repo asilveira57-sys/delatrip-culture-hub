@@ -36,6 +36,8 @@ export const Route = createFileRoute("/sitemap.xml")({
           );
         }
 
+        const episodios = await listarEpisodiosPublicos();
+
         const urls: [string, number][] = [
           ...ROTAS_FIXAS.filter(([u]) => !rotasNoindex.has(u)),
           ...categories.map<[string, number]>((c) => [
@@ -47,6 +49,7 @@ export const Route = createFileRoute("/sitemap.xml")({
             .filter((p) => !produtosOcultos.has(p.slug))
             .map<[string, number]>((p) => [`/produto/${p.slug}`, 0.6]),
           ...posts.map<[string, number]>((p) => [`/blog/${p.slug}`, 0.5]),
+          ...episodios.map<[string, number]>((e) => [`/podcast/${e.slug}`, 0.5]),
         ];
 
         const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls
