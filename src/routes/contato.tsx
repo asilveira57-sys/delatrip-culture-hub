@@ -64,7 +64,7 @@ function ContatoPage() {
   const email = texto(blocosPagina, "email", SITE.email);
   const whatsapp = texto(blocosPagina, "whatsapp", SITE.telefone);
   const endereco = texto(blocosPagina, "endereco", SITE.endereco);
-  const horario = texto(blocosPagina, "horario_atendimento", "");
+  const horario = texto(blocosPagina, "horario_atendimento", SITE.horarioAtendimento);
 
   const [valores, setValores] = useState<Campos>(VAZIO);
   const [erros, setErros] = useState<Partial<Record<keyof Campos, string>>>({});

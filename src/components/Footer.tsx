@@ -75,6 +75,7 @@ export function Footer() {
                 <a href={`mailto:${SITE.email}`} className="hover:text-gold">{SITE.email}</a>
               </p>
               <p>{SITE.telefone}</p>
+              <p>{SITE.razaoSocial}</p>
               <p>CNPJ {SITE.cnpj}</p>
             </address>
           </div>

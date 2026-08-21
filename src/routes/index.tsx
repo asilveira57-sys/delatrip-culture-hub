@@ -46,7 +46,7 @@ export const Route = createFileRoute("/")({
         url: SITE_URL,
         email: SITE.email,
         telephone: SITE.telefone,
-        address: { "@type": "PostalAddress", addressLocality: "São Paulo", addressRegion: "SP", addressCountry: "BR" },
+        address: { "@type": "PostalAddress", addressLocality: "Rio de Janeiro", addressRegion: "RJ", addressCountry: "BR" },
         sameAs: [SITE.lojaOficial, SITE.redes.instagram, SITE.redes.facebook, SITE.redes.youtube],
       }),
       jsonLd({
