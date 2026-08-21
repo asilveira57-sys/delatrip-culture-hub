@@ -46,7 +46,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { enviarImagem, formatarTamanho } from "@/lib/media";
+import { ACCEPT_IMAGENS, enviarImagem, formatarTamanho } from "@/lib/media";
 import { sanitizarHtml } from "@/lib/sanitize";
 import { cn } from "@/lib/utils";
 
@@ -530,7 +530,7 @@ export function RichTextEditor({
           <div className="space-y-3">
             <Input
               type="file"
-              accept="image/*"
+              accept={ACCEPT_IMAGENS}
               onChange={(e) => setImgArquivo(e.target.files?.[0] ?? null)}
             />
             <div>

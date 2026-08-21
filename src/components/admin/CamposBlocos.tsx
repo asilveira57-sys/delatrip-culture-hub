@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import type { CampoEditavel } from "@/config/paginas-editaveis";
-import { enviarImagem } from "@/lib/media";
+import { ACCEPT_IMAGENS, enviarImagem, validarImagem } from "@/lib/media";
 import type { Blocos, JsonValor } from "@/lib/paginas-core";
 
 function CampoImagem({
@@ -23,19 +23,29 @@ function CampoImagem({
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [enviando, setEnviando] = useState(false);
+  const [erro, setErro] = useState<string | null>(null);
 
   async function selecionar(file: File | undefined) {
+    if (inputRef.current) inputRef.current.value = "";
     if (!file) return;
+    const invalido = validarImagem(file);
+    if (invalido) {
+      setErro(invalido);
+      toast.error(invalido);
+      return;
+    }
+    setErro(null);
     setEnviando(true);
     try {
       const { url } = await enviarImagem(file, `${baseArquivo}-capa`);
       onChange(url);
       toast.success("Imagem enviada.");
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Falha ao enviar imagem.");
+      const msg = err instanceof Error ? err.message : "Falha ao enviar imagem.";
+      setErro(msg);
+      toast.error(msg);
     } finally {
       setEnviando(false);
-      if (inputRef.current) inputRef.current.value = "";
     }
   }
 
@@ -55,7 +65,7 @@ function CampoImagem({
       <input
         ref={inputRef}
         type="file"
-        accept="image/*"
+        accept={ACCEPT_IMAGENS}
         className="hidden"
         onChange={(e) => void selecionar(e.target.files?.[0])}
       />
@@ -75,6 +85,15 @@ function CampoImagem({
           </Button>
         ) : null}
       </div>
+      {erro ? (
+        <p role="alert" className="mt-2 text-xs font-medium text-destructive">
+          {erro}
+        </p>
+      ) : (
+        <p className="mt-2 text-xs text-muted-foreground">
+          Formatos aceitos: JPG, PNG, WebP, GIF ou AVIF. Tamanho máximo: 8MB.
+        </p>
+      )}
     </div>
   );
 }
