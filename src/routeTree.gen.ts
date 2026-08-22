@@ -40,6 +40,7 @@ import { Route as PodcastIndexRouteImport } from './routes/podcast.index'
 import { Route as PodcastSlugRouteImport } from './routes/podcast.$slug'
 import { Route as ProdutoSlugRouteImport } from './routes/produto.$slug'
 import { Route as AdminGateIndexRouteImport } from './routes/admin/_gate/index'
+import { Route as AdminGateConfiguracoesRouteImport } from './routes/admin/_gate/configuracoes'
 import { Route as AdminGateFaqRouteImport } from './routes/admin/_gate/faq'
 import { Route as AdminGateMensagensRouteImport } from './routes/admin/_gate/mensagens'
 import { Route as AdminGateSeoRouteImport } from './routes/admin/_gate/seo'
@@ -210,6 +211,11 @@ const AdminGateIndexRoute = AdminGateIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AdminGateRoute,
 } as any)
+const AdminGateConfiguracoesRoute = AdminGateConfiguracoesRouteImport.update({
+  id: '/configuracoes',
+  path: '/configuracoes',
+  getParentRoute: () => AdminGateRoute,
+} as any)
 const AdminGateFaqRoute = AdminGateFaqRouteImport.update({
   id: '/faq',
   path: '/faq',
@@ -315,6 +321,7 @@ export interface FileRoutesByFullPath {
   '/catalogo/': typeof CatalogoIndexRoute
   '/marcas/': typeof MarcasIndexRoute
   '/podcast/': typeof PodcastIndexRoute
+  '/admin/configuracoes': typeof AdminGateConfiguracoesRoute
   '/admin/faq': typeof AdminGateFaqRoute
   '/admin/mensagens': typeof AdminGateMensagensRoute
   '/admin/seo': typeof AdminGateSeoRoute
@@ -361,6 +368,7 @@ export interface FileRoutesByTo {
   '/catalogo': typeof CatalogoIndexRoute
   '/marcas': typeof MarcasIndexRoute
   '/podcast': typeof PodcastIndexRoute
+  '/admin/configuracoes': typeof AdminGateConfiguracoesRoute
   '/admin/faq': typeof AdminGateFaqRoute
   '/admin/mensagens': typeof AdminGateMensagensRoute
   '/admin/seo': typeof AdminGateSeoRoute
@@ -409,6 +417,7 @@ export interface FileRoutesById {
   '/catalogo/': typeof CatalogoIndexRoute
   '/marcas/': typeof MarcasIndexRoute
   '/podcast/': typeof PodcastIndexRoute
+  '/admin/_gate/configuracoes': typeof AdminGateConfiguracoesRoute
   '/admin/_gate/faq': typeof AdminGateFaqRoute
   '/admin/_gate/mensagens': typeof AdminGateMensagensRoute
   '/admin/_gate/seo': typeof AdminGateSeoRoute
@@ -458,6 +467,7 @@ export interface FileRouteTypes {
     | '/catalogo/'
     | '/marcas/'
     | '/podcast/'
+    | '/admin/configuracoes'
     | '/admin/faq'
     | '/admin/mensagens'
     | '/admin/seo'
@@ -504,6 +514,7 @@ export interface FileRouteTypes {
     | '/catalogo'
     | '/marcas'
     | '/podcast'
+    | '/admin/configuracoes'
     | '/admin/faq'
     | '/admin/mensagens'
     | '/admin/seo'
@@ -551,6 +562,7 @@ export interface FileRouteTypes {
     | '/catalogo/'
     | '/marcas/'
     | '/podcast/'
+    | '/admin/_gate/configuracoes'
     | '/admin/_gate/faq'
     | '/admin/_gate/mensagens'
     | '/admin/_gate/seo'
@@ -820,6 +832,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminGateIndexRouteImport
       parentRoute: typeof AdminGateRoute
     }
+    '/admin/_gate/configuracoes': {
+      id: '/admin/_gate/configuracoes'
+      path: '/configuracoes'
+      fullPath: '/admin/configuracoes'
+      preLoaderRoute: typeof AdminGateConfiguracoesRouteImport
+      parentRoute: typeof AdminGateRoute
+    }
     '/admin/_gate/faq': {
       id: '/admin/_gate/faq'
       path: '/faq'
@@ -922,6 +941,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface AdminGateRouteChildren {
+  AdminGateConfiguracoesRoute: typeof AdminGateConfiguracoesRoute
   AdminGateFaqRoute: typeof AdminGateFaqRoute
   AdminGateMensagensRoute: typeof AdminGateMensagensRoute
   AdminGateSeoRoute: typeof AdminGateSeoRoute
@@ -940,6 +960,7 @@ interface AdminGateRouteChildren {
 }
 
 const AdminGateRouteChildren: AdminGateRouteChildren = {
+  AdminGateConfiguracoesRoute: AdminGateConfiguracoesRoute,
   AdminGateFaqRoute: AdminGateFaqRoute,
   AdminGateMensagensRoute: AdminGateMensagensRoute,
   AdminGateSeoRoute: AdminGateSeoRoute,
