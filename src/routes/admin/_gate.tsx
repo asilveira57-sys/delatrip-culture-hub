@@ -4,12 +4,17 @@ import {
   BarChart3,
   FileText,
   HelpCircle,
+  Inbox,
   LayoutPanelLeft,
   LogOut,
+  Mic,
   Package,
+  Scale,
   Search,
+  Settings,
   Tag,
 } from "lucide-react";
+
 
 import { supabase } from "@/integrations/supabase/client";
 import { cn } from "@/lib/utils";
