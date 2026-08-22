@@ -40,7 +40,10 @@ import { Route as PodcastIndexRouteImport } from './routes/podcast.index'
 import { Route as PodcastSlugRouteImport } from './routes/podcast.$slug'
 import { Route as ProdutoSlugRouteImport } from './routes/produto.$slug'
 import { Route as AdminGateIndexRouteImport } from './routes/admin/_gate/index'
+import { Route as AdminGateConfiguracoesRouteImport } from './routes/admin/_gate/configuracoes'
 import { Route as AdminGateFaqRouteImport } from './routes/admin/_gate/faq'
+import { Route as AdminGateLegalRouteImport } from './routes/admin/_gate/legal'
+import { Route as AdminGateMensagensRouteImport } from './routes/admin/_gate/mensagens'
 import { Route as AdminGateSeoRouteImport } from './routes/admin/_gate/seo'
 import { Route as AdminGateBlogIndexRouteImport } from './routes/admin/_gate/blog.index'
 import { Route as AdminGateBlogSlugRouteImport } from './routes/admin/_gate/blog.$slug'
@@ -48,6 +51,8 @@ import { Route as AdminGateMarcasIndexRouteImport } from './routes/admin/_gate/m
 import { Route as AdminGateMarcasSlugRouteImport } from './routes/admin/_gate/marcas.$slug'
 import { Route as AdminGatePaginasIndexRouteImport } from './routes/admin/_gate/paginas.index'
 import { Route as AdminGatePaginasIdRouteImport } from './routes/admin/_gate/paginas.$id'
+import { Route as AdminGatePodcastIndexRouteImport } from './routes/admin/_gate/podcast.index'
+import { Route as AdminGatePodcastSlugRouteImport } from './routes/admin/_gate/podcast.$slug'
 import { Route as AdminGateProdutosIndexRouteImport } from './routes/admin/_gate/produtos.index'
 import { Route as AdminGateProdutosSlugRouteImport } from './routes/admin/_gate/produtos.$slug'
 import { Route as AdminGateProdutosEnriquecerRouteImport } from './routes/admin/_gate/produtos.enriquecer'
@@ -209,9 +214,24 @@ const AdminGateIndexRoute = AdminGateIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AdminGateRoute,
 } as any)
+const AdminGateConfiguracoesRoute = AdminGateConfiguracoesRouteImport.update({
+  id: '/configuracoes',
+  path: '/configuracoes',
+  getParentRoute: () => AdminGateRoute,
+} as any)
 const AdminGateFaqRoute = AdminGateFaqRouteImport.update({
   id: '/faq',
   path: '/faq',
+  getParentRoute: () => AdminGateRoute,
+} as any)
+const AdminGateLegalRoute = AdminGateLegalRouteImport.update({
+  id: '/legal',
+  path: '/legal',
+  getParentRoute: () => AdminGateRoute,
+} as any)
+const AdminGateMensagensRoute = AdminGateMensagensRouteImport.update({
+  id: '/mensagens',
+  path: '/mensagens',
   getParentRoute: () => AdminGateRoute,
 } as any)
 const AdminGateSeoRoute = AdminGateSeoRouteImport.update({
@@ -247,6 +267,16 @@ const AdminGatePaginasIndexRoute = AdminGatePaginasIndexRouteImport.update({
 const AdminGatePaginasIdRoute = AdminGatePaginasIdRouteImport.update({
   id: '/paginas/$id',
   path: '/paginas/$id',
+  getParentRoute: () => AdminGateRoute,
+} as any)
+const AdminGatePodcastIndexRoute = AdminGatePodcastIndexRouteImport.update({
+  id: '/podcast/',
+  path: '/podcast/',
+  getParentRoute: () => AdminGateRoute,
+} as any)
+const AdminGatePodcastSlugRoute = AdminGatePodcastSlugRouteImport.update({
+  id: '/podcast/$slug',
+  path: '/podcast/$slug',
   getParentRoute: () => AdminGateRoute,
 } as any)
 const AdminGateProdutosIndexRoute = AdminGateProdutosIndexRouteImport.update({
@@ -309,18 +339,23 @@ export interface FileRoutesByFullPath {
   '/catalogo/': typeof CatalogoIndexRoute
   '/marcas/': typeof MarcasIndexRoute
   '/podcast/': typeof PodcastIndexRoute
+  '/admin/configuracoes': typeof AdminGateConfiguracoesRoute
   '/admin/faq': typeof AdminGateFaqRoute
+  '/admin/legal': typeof AdminGateLegalRoute
+  '/admin/mensagens': typeof AdminGateMensagensRoute
   '/admin/seo': typeof AdminGateSeoRoute
   '/admin/': typeof AdminGateIndexRoute
   '/admin/blog/$slug': typeof AdminGateBlogSlugRoute
   '/admin/marcas/$slug': typeof AdminGateMarcasSlugRoute
   '/admin/paginas/$id': typeof AdminGatePaginasIdRoute
+  '/admin/podcast/$slug': typeof AdminGatePodcastSlugRoute
   '/admin/produtos/$slug': typeof AdminGateProdutosSlugRoute
   '/admin/produtos/enriquecer': typeof AdminGateProdutosEnriquecerRoute
   '/admin/produtos/revisar': typeof AdminGateProdutosRevisarRoute
   '/admin/blog/': typeof AdminGateBlogIndexRoute
   '/admin/marcas/': typeof AdminGateMarcasIndexRoute
   '/admin/paginas/': typeof AdminGatePaginasIndexRoute
+  '/admin/podcast/': typeof AdminGatePodcastIndexRoute
   '/admin/produtos/': typeof AdminGateProdutosIndexRoute
   '/admin/blog/preview/$slug': typeof AdminGateBlogPreviewSlugRoute
 }
@@ -354,18 +389,23 @@ export interface FileRoutesByTo {
   '/catalogo': typeof CatalogoIndexRoute
   '/marcas': typeof MarcasIndexRoute
   '/podcast': typeof PodcastIndexRoute
+  '/admin/configuracoes': typeof AdminGateConfiguracoesRoute
   '/admin/faq': typeof AdminGateFaqRoute
+  '/admin/legal': typeof AdminGateLegalRoute
+  '/admin/mensagens': typeof AdminGateMensagensRoute
   '/admin/seo': typeof AdminGateSeoRoute
   '/admin': typeof AdminGateIndexRoute
   '/admin/blog/$slug': typeof AdminGateBlogSlugRoute
   '/admin/marcas/$slug': typeof AdminGateMarcasSlugRoute
   '/admin/paginas/$id': typeof AdminGatePaginasIdRoute
+  '/admin/podcast/$slug': typeof AdminGatePodcastSlugRoute
   '/admin/produtos/$slug': typeof AdminGateProdutosSlugRoute
   '/admin/produtos/enriquecer': typeof AdminGateProdutosEnriquecerRoute
   '/admin/produtos/revisar': typeof AdminGateProdutosRevisarRoute
   '/admin/blog': typeof AdminGateBlogIndexRoute
   '/admin/marcas': typeof AdminGateMarcasIndexRoute
   '/admin/paginas': typeof AdminGatePaginasIndexRoute
+  '/admin/podcast': typeof AdminGatePodcastIndexRoute
   '/admin/produtos': typeof AdminGateProdutosIndexRoute
   '/admin/blog/preview/$slug': typeof AdminGateBlogPreviewSlugRoute
 }
@@ -401,18 +441,23 @@ export interface FileRoutesById {
   '/catalogo/': typeof CatalogoIndexRoute
   '/marcas/': typeof MarcasIndexRoute
   '/podcast/': typeof PodcastIndexRoute
+  '/admin/_gate/configuracoes': typeof AdminGateConfiguracoesRoute
   '/admin/_gate/faq': typeof AdminGateFaqRoute
+  '/admin/_gate/legal': typeof AdminGateLegalRoute
+  '/admin/_gate/mensagens': typeof AdminGateMensagensRoute
   '/admin/_gate/seo': typeof AdminGateSeoRoute
   '/admin/_gate/': typeof AdminGateIndexRoute
   '/admin/_gate/blog/$slug': typeof AdminGateBlogSlugRoute
   '/admin/_gate/marcas/$slug': typeof AdminGateMarcasSlugRoute
   '/admin/_gate/paginas/$id': typeof AdminGatePaginasIdRoute
+  '/admin/_gate/podcast/$slug': typeof AdminGatePodcastSlugRoute
   '/admin/_gate/produtos/$slug': typeof AdminGateProdutosSlugRoute
   '/admin/_gate/produtos/enriquecer': typeof AdminGateProdutosEnriquecerRoute
   '/admin/_gate/produtos/revisar': typeof AdminGateProdutosRevisarRoute
   '/admin/_gate/blog/': typeof AdminGateBlogIndexRoute
   '/admin/_gate/marcas/': typeof AdminGateMarcasIndexRoute
   '/admin/_gate/paginas/': typeof AdminGatePaginasIndexRoute
+  '/admin/_gate/podcast/': typeof AdminGatePodcastIndexRoute
   '/admin/_gate/produtos/': typeof AdminGateProdutosIndexRoute
   '/admin/_gate/blog/preview/$slug': typeof AdminGateBlogPreviewSlugRoute
 }
@@ -449,18 +494,23 @@ export interface FileRouteTypes {
     | '/catalogo/'
     | '/marcas/'
     | '/podcast/'
+    | '/admin/configuracoes'
     | '/admin/faq'
+    | '/admin/legal'
+    | '/admin/mensagens'
     | '/admin/seo'
     | '/admin/'
     | '/admin/blog/$slug'
     | '/admin/marcas/$slug'
     | '/admin/paginas/$id'
+    | '/admin/podcast/$slug'
     | '/admin/produtos/$slug'
     | '/admin/produtos/enriquecer'
     | '/admin/produtos/revisar'
     | '/admin/blog/'
     | '/admin/marcas/'
     | '/admin/paginas/'
+    | '/admin/podcast/'
     | '/admin/produtos/'
     | '/admin/blog/preview/$slug'
   fileRoutesByTo: FileRoutesByTo
@@ -494,18 +544,23 @@ export interface FileRouteTypes {
     | '/catalogo'
     | '/marcas'
     | '/podcast'
+    | '/admin/configuracoes'
     | '/admin/faq'
+    | '/admin/legal'
+    | '/admin/mensagens'
     | '/admin/seo'
     | '/admin'
     | '/admin/blog/$slug'
     | '/admin/marcas/$slug'
     | '/admin/paginas/$id'
+    | '/admin/podcast/$slug'
     | '/admin/produtos/$slug'
     | '/admin/produtos/enriquecer'
     | '/admin/produtos/revisar'
     | '/admin/blog'
     | '/admin/marcas'
     | '/admin/paginas'
+    | '/admin/podcast'
     | '/admin/produtos'
     | '/admin/blog/preview/$slug'
   id:
@@ -540,18 +595,23 @@ export interface FileRouteTypes {
     | '/catalogo/'
     | '/marcas/'
     | '/podcast/'
+    | '/admin/_gate/configuracoes'
     | '/admin/_gate/faq'
+    | '/admin/_gate/legal'
+    | '/admin/_gate/mensagens'
     | '/admin/_gate/seo'
     | '/admin/_gate/'
     | '/admin/_gate/blog/$slug'
     | '/admin/_gate/marcas/$slug'
     | '/admin/_gate/paginas/$id'
+    | '/admin/_gate/podcast/$slug'
     | '/admin/_gate/produtos/$slug'
     | '/admin/_gate/produtos/enriquecer'
     | '/admin/_gate/produtos/revisar'
     | '/admin/_gate/blog/'
     | '/admin/_gate/marcas/'
     | '/admin/_gate/paginas/'
+    | '/admin/_gate/podcast/'
     | '/admin/_gate/produtos/'
     | '/admin/_gate/blog/preview/$slug'
   fileRoutesById: FileRoutesById
@@ -808,11 +868,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminGateIndexRouteImport
       parentRoute: typeof AdminGateRoute
     }
+    '/admin/_gate/configuracoes': {
+      id: '/admin/_gate/configuracoes'
+      path: '/configuracoes'
+      fullPath: '/admin/configuracoes'
+      preLoaderRoute: typeof AdminGateConfiguracoesRouteImport
+      parentRoute: typeof AdminGateRoute
+    }
     '/admin/_gate/faq': {
       id: '/admin/_gate/faq'
       path: '/faq'
       fullPath: '/admin/faq'
       preLoaderRoute: typeof AdminGateFaqRouteImport
+      parentRoute: typeof AdminGateRoute
+    }
+    '/admin/_gate/legal': {
+      id: '/admin/_gate/legal'
+      path: '/legal'
+      fullPath: '/admin/legal'
+      preLoaderRoute: typeof AdminGateLegalRouteImport
+      parentRoute: typeof AdminGateRoute
+    }
+    '/admin/_gate/mensagens': {
+      id: '/admin/_gate/mensagens'
+      path: '/mensagens'
+      fullPath: '/admin/mensagens'
+      preLoaderRoute: typeof AdminGateMensagensRouteImport
       parentRoute: typeof AdminGateRoute
     }
     '/admin/_gate/seo': {
@@ -864,6 +945,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminGatePaginasIdRouteImport
       parentRoute: typeof AdminGateRoute
     }
+    '/admin/_gate/podcast/': {
+      id: '/admin/_gate/podcast/'
+      path: '/podcast'
+      fullPath: '/admin/podcast/'
+      preLoaderRoute: typeof AdminGatePodcastIndexRouteImport
+      parentRoute: typeof AdminGateRoute
+    }
+    '/admin/_gate/podcast/$slug': {
+      id: '/admin/_gate/podcast/$slug'
+      path: '/podcast/$slug'
+      fullPath: '/admin/podcast/$slug'
+      preLoaderRoute: typeof AdminGatePodcastSlugRouteImport
+      parentRoute: typeof AdminGateRoute
+    }
     '/admin/_gate/produtos/': {
       id: '/admin/_gate/produtos/'
       path: '/produtos'
@@ -903,35 +998,45 @@ declare module '@tanstack/react-router' {
 }
 
 interface AdminGateRouteChildren {
+  AdminGateConfiguracoesRoute: typeof AdminGateConfiguracoesRoute
   AdminGateFaqRoute: typeof AdminGateFaqRoute
+  AdminGateLegalRoute: typeof AdminGateLegalRoute
+  AdminGateMensagensRoute: typeof AdminGateMensagensRoute
   AdminGateSeoRoute: typeof AdminGateSeoRoute
   AdminGateIndexRoute: typeof AdminGateIndexRoute
   AdminGateBlogSlugRoute: typeof AdminGateBlogSlugRoute
   AdminGateMarcasSlugRoute: typeof AdminGateMarcasSlugRoute
   AdminGatePaginasIdRoute: typeof AdminGatePaginasIdRoute
+  AdminGatePodcastSlugRoute: typeof AdminGatePodcastSlugRoute
   AdminGateProdutosSlugRoute: typeof AdminGateProdutosSlugRoute
   AdminGateProdutosEnriquecerRoute: typeof AdminGateProdutosEnriquecerRoute
   AdminGateProdutosRevisarRoute: typeof AdminGateProdutosRevisarRoute
   AdminGateBlogIndexRoute: typeof AdminGateBlogIndexRoute
   AdminGateMarcasIndexRoute: typeof AdminGateMarcasIndexRoute
   AdminGatePaginasIndexRoute: typeof AdminGatePaginasIndexRoute
+  AdminGatePodcastIndexRoute: typeof AdminGatePodcastIndexRoute
   AdminGateProdutosIndexRoute: typeof AdminGateProdutosIndexRoute
   AdminGateBlogPreviewSlugRoute: typeof AdminGateBlogPreviewSlugRoute
 }
 
 const AdminGateRouteChildren: AdminGateRouteChildren = {
+  AdminGateConfiguracoesRoute: AdminGateConfiguracoesRoute,
   AdminGateFaqRoute: AdminGateFaqRoute,
+  AdminGateLegalRoute: AdminGateLegalRoute,
+  AdminGateMensagensRoute: AdminGateMensagensRoute,
   AdminGateSeoRoute: AdminGateSeoRoute,
   AdminGateIndexRoute: AdminGateIndexRoute,
   AdminGateBlogSlugRoute: AdminGateBlogSlugRoute,
   AdminGateMarcasSlugRoute: AdminGateMarcasSlugRoute,
   AdminGatePaginasIdRoute: AdminGatePaginasIdRoute,
+  AdminGatePodcastSlugRoute: AdminGatePodcastSlugRoute,
   AdminGateProdutosSlugRoute: AdminGateProdutosSlugRoute,
   AdminGateProdutosEnriquecerRoute: AdminGateProdutosEnriquecerRoute,
   AdminGateProdutosRevisarRoute: AdminGateProdutosRevisarRoute,
   AdminGateBlogIndexRoute: AdminGateBlogIndexRoute,
   AdminGateMarcasIndexRoute: AdminGateMarcasIndexRoute,
   AdminGatePaginasIndexRoute: AdminGatePaginasIndexRoute,
+  AdminGatePodcastIndexRoute: AdminGatePodcastIndexRoute,
   AdminGateProdutosIndexRoute: AdminGateProdutosIndexRoute,
   AdminGateBlogPreviewSlugRoute: AdminGateBlogPreviewSlugRoute,
 }

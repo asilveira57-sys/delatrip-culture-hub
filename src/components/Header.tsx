@@ -14,11 +14,12 @@ const nav = [
   { label: "Catálogo", to: "/catalogo" },
   { label: "Marcas", to: "/marcas" },
   { label: "Acessórios", to: "/acessorios" },
-  
   { label: "Blog", to: "/blog" },
-  { label: "Sobre", to: "/sobre" },
-  { label: "FAQ", to: "/faq" },
+  { label: "Podcast", to: "/podcast" },
+  { label: "Quem somos", to: "/quem-somos" },
+  { label: "Contato", to: "/contato" },
 ] as const;
+
 
 export function Header() {
   const [buscaAberta, setBuscaAberta] = useState(false);

@@ -4,12 +4,17 @@ import {
   BarChart3,
   FileText,
   HelpCircle,
+  Inbox,
   LayoutPanelLeft,
   LogOut,
+  Mic,
   Package,
+  Scale,
   Search,
+  Settings,
   Tag,
 } from "lucide-react";
+
 
 import { supabase } from "@/integrations/supabase/client";
 import { cn } from "@/lib/utils";
@@ -38,7 +43,12 @@ const ITENS = [
   { label: "FAQ", to: "/admin/faq", icon: HelpCircle, ativo: true },
   { label: "Produtos", to: "/admin/produtos", icon: Package, ativo: true },
   { label: "Marcas", to: "/admin/marcas", icon: Tag, ativo: true },
+  { label: "Podcast", to: "/admin/podcast", icon: Mic, ativo: true },
+  { label: "Mensagens", to: "/admin/mensagens", icon: Inbox, ativo: true },
+  { label: "Legal", to: "/admin/legal", icon: Scale, ativo: true },
+  { label: "Configurações", to: "/admin/configuracoes", icon: Settings, ativo: true },
 ] as const;
+
 
 function AdminLayout() {
   const navigate = useNavigate();
