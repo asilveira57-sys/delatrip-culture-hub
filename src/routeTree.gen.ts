@@ -41,6 +41,7 @@ import { Route as PodcastSlugRouteImport } from './routes/podcast.$slug'
 import { Route as ProdutoSlugRouteImport } from './routes/produto.$slug'
 import { Route as AdminGateIndexRouteImport } from './routes/admin/_gate/index'
 import { Route as AdminGateFaqRouteImport } from './routes/admin/_gate/faq'
+import { Route as AdminGateMensagensRouteImport } from './routes/admin/_gate/mensagens'
 import { Route as AdminGateSeoRouteImport } from './routes/admin/_gate/seo'
 import { Route as AdminGateBlogIndexRouteImport } from './routes/admin/_gate/blog.index'
 import { Route as AdminGateBlogSlugRouteImport } from './routes/admin/_gate/blog.$slug'
@@ -214,6 +215,11 @@ const AdminGateFaqRoute = AdminGateFaqRouteImport.update({
   path: '/faq',
   getParentRoute: () => AdminGateRoute,
 } as any)
+const AdminGateMensagensRoute = AdminGateMensagensRouteImport.update({
+  id: '/mensagens',
+  path: '/mensagens',
+  getParentRoute: () => AdminGateRoute,
+} as any)
 const AdminGateSeoRoute = AdminGateSeoRouteImport.update({
   id: '/seo',
   path: '/seo',
@@ -310,6 +316,7 @@ export interface FileRoutesByFullPath {
   '/marcas/': typeof MarcasIndexRoute
   '/podcast/': typeof PodcastIndexRoute
   '/admin/faq': typeof AdminGateFaqRoute
+  '/admin/mensagens': typeof AdminGateMensagensRoute
   '/admin/seo': typeof AdminGateSeoRoute
   '/admin/': typeof AdminGateIndexRoute
   '/admin/blog/$slug': typeof AdminGateBlogSlugRoute
@@ -355,6 +362,7 @@ export interface FileRoutesByTo {
   '/marcas': typeof MarcasIndexRoute
   '/podcast': typeof PodcastIndexRoute
   '/admin/faq': typeof AdminGateFaqRoute
+  '/admin/mensagens': typeof AdminGateMensagensRoute
   '/admin/seo': typeof AdminGateSeoRoute
   '/admin': typeof AdminGateIndexRoute
   '/admin/blog/$slug': typeof AdminGateBlogSlugRoute
@@ -402,6 +410,7 @@ export interface FileRoutesById {
   '/marcas/': typeof MarcasIndexRoute
   '/podcast/': typeof PodcastIndexRoute
   '/admin/_gate/faq': typeof AdminGateFaqRoute
+  '/admin/_gate/mensagens': typeof AdminGateMensagensRoute
   '/admin/_gate/seo': typeof AdminGateSeoRoute
   '/admin/_gate/': typeof AdminGateIndexRoute
   '/admin/_gate/blog/$slug': typeof AdminGateBlogSlugRoute
@@ -450,6 +459,7 @@ export interface FileRouteTypes {
     | '/marcas/'
     | '/podcast/'
     | '/admin/faq'
+    | '/admin/mensagens'
     | '/admin/seo'
     | '/admin/'
     | '/admin/blog/$slug'
@@ -495,6 +505,7 @@ export interface FileRouteTypes {
     | '/marcas'
     | '/podcast'
     | '/admin/faq'
+    | '/admin/mensagens'
     | '/admin/seo'
     | '/admin'
     | '/admin/blog/$slug'
@@ -541,6 +552,7 @@ export interface FileRouteTypes {
     | '/marcas/'
     | '/podcast/'
     | '/admin/_gate/faq'
+    | '/admin/_gate/mensagens'
     | '/admin/_gate/seo'
     | '/admin/_gate/'
     | '/admin/_gate/blog/$slug'
@@ -815,6 +827,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminGateFaqRouteImport
       parentRoute: typeof AdminGateRoute
     }
+    '/admin/_gate/mensagens': {
+      id: '/admin/_gate/mensagens'
+      path: '/mensagens'
+      fullPath: '/admin/mensagens'
+      preLoaderRoute: typeof AdminGateMensagensRouteImport
+      parentRoute: typeof AdminGateRoute
+    }
     '/admin/_gate/seo': {
       id: '/admin/_gate/seo'
       path: '/seo'
@@ -904,6 +923,7 @@ declare module '@tanstack/react-router' {
 
 interface AdminGateRouteChildren {
   AdminGateFaqRoute: typeof AdminGateFaqRoute
+  AdminGateMensagensRoute: typeof AdminGateMensagensRoute
   AdminGateSeoRoute: typeof AdminGateSeoRoute
   AdminGateIndexRoute: typeof AdminGateIndexRoute
   AdminGateBlogSlugRoute: typeof AdminGateBlogSlugRoute
@@ -921,6 +941,7 @@ interface AdminGateRouteChildren {
 
 const AdminGateRouteChildren: AdminGateRouteChildren = {
   AdminGateFaqRoute: AdminGateFaqRoute,
+  AdminGateMensagensRoute: AdminGateMensagensRoute,
   AdminGateSeoRoute: AdminGateSeoRoute,
   AdminGateIndexRoute: AdminGateIndexRoute,
   AdminGateBlogSlugRoute: AdminGateBlogSlugRoute,
