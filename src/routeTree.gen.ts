@@ -42,6 +42,7 @@ import { Route as ProdutoSlugRouteImport } from './routes/produto.$slug'
 import { Route as AdminGateIndexRouteImport } from './routes/admin/_gate/index'
 import { Route as AdminGateConfiguracoesRouteImport } from './routes/admin/_gate/configuracoes'
 import { Route as AdminGateFaqRouteImport } from './routes/admin/_gate/faq'
+import { Route as AdminGateLegalRouteImport } from './routes/admin/_gate/legal'
 import { Route as AdminGateMensagensRouteImport } from './routes/admin/_gate/mensagens'
 import { Route as AdminGateSeoRouteImport } from './routes/admin/_gate/seo'
 import { Route as AdminGateBlogIndexRouteImport } from './routes/admin/_gate/blog.index'
@@ -221,6 +222,11 @@ const AdminGateFaqRoute = AdminGateFaqRouteImport.update({
   path: '/faq',
   getParentRoute: () => AdminGateRoute,
 } as any)
+const AdminGateLegalRoute = AdminGateLegalRouteImport.update({
+  id: '/legal',
+  path: '/legal',
+  getParentRoute: () => AdminGateRoute,
+} as any)
 const AdminGateMensagensRoute = AdminGateMensagensRouteImport.update({
   id: '/mensagens',
   path: '/mensagens',
@@ -323,6 +329,7 @@ export interface FileRoutesByFullPath {
   '/podcast/': typeof PodcastIndexRoute
   '/admin/configuracoes': typeof AdminGateConfiguracoesRoute
   '/admin/faq': typeof AdminGateFaqRoute
+  '/admin/legal': typeof AdminGateLegalRoute
   '/admin/mensagens': typeof AdminGateMensagensRoute
   '/admin/seo': typeof AdminGateSeoRoute
   '/admin/': typeof AdminGateIndexRoute
@@ -370,6 +377,7 @@ export interface FileRoutesByTo {
   '/podcast': typeof PodcastIndexRoute
   '/admin/configuracoes': typeof AdminGateConfiguracoesRoute
   '/admin/faq': typeof AdminGateFaqRoute
+  '/admin/legal': typeof AdminGateLegalRoute
   '/admin/mensagens': typeof AdminGateMensagensRoute
   '/admin/seo': typeof AdminGateSeoRoute
   '/admin': typeof AdminGateIndexRoute
@@ -419,6 +427,7 @@ export interface FileRoutesById {
   '/podcast/': typeof PodcastIndexRoute
   '/admin/_gate/configuracoes': typeof AdminGateConfiguracoesRoute
   '/admin/_gate/faq': typeof AdminGateFaqRoute
+  '/admin/_gate/legal': typeof AdminGateLegalRoute
   '/admin/_gate/mensagens': typeof AdminGateMensagensRoute
   '/admin/_gate/seo': typeof AdminGateSeoRoute
   '/admin/_gate/': typeof AdminGateIndexRoute
@@ -469,6 +478,7 @@ export interface FileRouteTypes {
     | '/podcast/'
     | '/admin/configuracoes'
     | '/admin/faq'
+    | '/admin/legal'
     | '/admin/mensagens'
     | '/admin/seo'
     | '/admin/'
@@ -516,6 +526,7 @@ export interface FileRouteTypes {
     | '/podcast'
     | '/admin/configuracoes'
     | '/admin/faq'
+    | '/admin/legal'
     | '/admin/mensagens'
     | '/admin/seo'
     | '/admin'
@@ -564,6 +575,7 @@ export interface FileRouteTypes {
     | '/podcast/'
     | '/admin/_gate/configuracoes'
     | '/admin/_gate/faq'
+    | '/admin/_gate/legal'
     | '/admin/_gate/mensagens'
     | '/admin/_gate/seo'
     | '/admin/_gate/'
@@ -846,6 +858,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminGateFaqRouteImport
       parentRoute: typeof AdminGateRoute
     }
+    '/admin/_gate/legal': {
+      id: '/admin/_gate/legal'
+      path: '/legal'
+      fullPath: '/admin/legal'
+      preLoaderRoute: typeof AdminGateLegalRouteImport
+      parentRoute: typeof AdminGateRoute
+    }
     '/admin/_gate/mensagens': {
       id: '/admin/_gate/mensagens'
       path: '/mensagens'
@@ -943,6 +962,7 @@ declare module '@tanstack/react-router' {
 interface AdminGateRouteChildren {
   AdminGateConfiguracoesRoute: typeof AdminGateConfiguracoesRoute
   AdminGateFaqRoute: typeof AdminGateFaqRoute
+  AdminGateLegalRoute: typeof AdminGateLegalRoute
   AdminGateMensagensRoute: typeof AdminGateMensagensRoute
   AdminGateSeoRoute: typeof AdminGateSeoRoute
   AdminGateIndexRoute: typeof AdminGateIndexRoute
@@ -962,6 +982,7 @@ interface AdminGateRouteChildren {
 const AdminGateRouteChildren: AdminGateRouteChildren = {
   AdminGateConfiguracoesRoute: AdminGateConfiguracoesRoute,
   AdminGateFaqRoute: AdminGateFaqRoute,
+  AdminGateLegalRoute: AdminGateLegalRoute,
   AdminGateMensagensRoute: AdminGateMensagensRoute,
   AdminGateSeoRoute: AdminGateSeoRoute,
   AdminGateIndexRoute: AdminGateIndexRoute,
