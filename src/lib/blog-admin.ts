@@ -18,6 +18,11 @@ export type PostAdmin = {
   seo_titulo: string | null;
   seo_descricao: string | null;
   seo_keywords?: string | null;
+  og_titulo?: string | null;
+  og_descricao?: string | null;
+  og_imagem_url?: string | null;
+  og_imagem_alt?: string | null;
+  twitter_card?: string;
   created_at?: string;
   updated_at?: string;
 };
@@ -59,6 +64,11 @@ export function postJsonParaAdmin(p: (typeof postsJson)[number]): PostAdmin {
     seo_titulo: null,
     seo_descricao: null,
     seo_keywords: null,
+    og_titulo: null,
+    og_descricao: null,
+    og_imagem_url: null,
+    og_imagem_alt: null,
+    twitter_card: "summary_large_image",
   };
 }
 

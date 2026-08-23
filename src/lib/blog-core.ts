@@ -23,6 +23,11 @@ export type PostPublico = {
   seoTitulo: string | null;
   seoDescricao: string | null;
   seoKeywords: string | null;
+  ogTitulo: string | null;
+  ogDescricao: string | null;
+  ogImagemUrl: string | null;
+  ogImagemAlt: string | null;
+  twitterCard: string;
 };
 
 /** Converte o markdown simples dos posts legados em HTML. */
@@ -49,6 +54,11 @@ type LinhaPost = {
   seo_titulo?: string | null;
   seo_descricao?: string | null;
   seo_keywords?: string | null;
+  og_titulo?: string | null;
+  og_descricao?: string | null;
+  og_imagem_url?: string | null;
+  og_imagem_alt?: string | null;
+  twitter_card?: string | null;
 };
 
 export function mapearPost(linha: LinhaPost): PostPublico {
@@ -65,6 +75,11 @@ export function mapearPost(linha: LinhaPost): PostPublico {
     seoTitulo: linha.seo_titulo ?? null,
     seoDescricao: linha.seo_descricao ?? null,
     seoKeywords: linha.seo_keywords ?? null,
+    ogTitulo: linha.og_titulo ?? null,
+    ogDescricao: linha.og_descricao ?? null,
+    ogImagemUrl: linha.og_imagem_url ?? null,
+    ogImagemAlt: linha.og_imagem_alt ?? null,
+    twitterCard: linha.twitter_card ?? "summary_large_image",
   };
 }
 
@@ -83,11 +98,16 @@ export function postsFallback(): PostPublico[] {
     seoTitulo: null,
     seoDescricao: null,
     seoKeywords: null,
+    ogTitulo: null,
+    ogDescricao: null,
+    ogImagemUrl: null,
+    ogImagemAlt: null,
+    twitterCard: "summary_large_image",
   }));
 }
 
 export const CAMPOS_POST =
-  "slug, titulo, resumo, conteudo_html, capa_url, capa_alt, categoria, autor, publicado_em, created_at, seo_titulo, seo_descricao, seo_keywords";
+  "slug, titulo, resumo, conteudo_html, capa_url, capa_alt, categoria, autor, publicado_em, created_at, seo_titulo, seo_descricao, seo_keywords, og_titulo, og_descricao, og_imagem_url, og_imagem_alt, twitter_card";
 
 /** Resolve a capa: "asset:chave" usa as imagens locais; o resto é URL direta. */
 export function resolverCapa(capaUrl: string | null | undefined, chaveFallback = "sedas") {

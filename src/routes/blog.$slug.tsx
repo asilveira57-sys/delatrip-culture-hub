@@ -31,16 +31,37 @@ export const Route = createFileRoute("/blog/$slug")({
     const descricao = post
       ? (post.seoDescricao ?? post.resumo)
       : "Este conteúdo não está disponível.";
+    const ogTitulo = post?.ogTitulo?.trim() || titulo;
+    const ogDescricao = post?.ogDescricao?.trim() || descricao;
+    const imagemSocial = post
+      ? post.ogImagemUrl?.startsWith("http")
+        ? post.ogImagemUrl
+        : post.capaUrl?.startsWith("http")
+          ? post.capaUrl
+          : absoluteUrl(resolverCapa(post.capaUrl))
+      : null;
+    const twitterCard = post?.twitterCard || "summary_large_image";
     return {
       meta: [
         { title: titulo },
         { name: "description", content: descricao },
         ...(post?.seoKeywords ? [{ name: "keywords", content: post.seoKeywords }] : []),
         ...(post ? [] : [{ name: "robots", content: "noindex" }]),
-        { property: "og:title", content: titulo },
-        { property: "og:description", content: descricao },
+        { property: "og:title", content: ogTitulo },
+        { property: "og:description", content: ogDescricao },
         { property: "og:type", content: "article" },
         { property: "og:url", content: absoluteUrl(`/blog/${params.slug}`) },
+        { property: "og:site_name", content: "DeLaTrip" },
+        ...(imagemSocial
+          ? [
+              { property: "og:image", content: imagemSocial },
+              { property: "og:image:alt", content: post?.ogImagemAlt || post?.capaAlt || ogTitulo },
+              { name: "twitter:image", content: imagemSocial },
+            ]
+          : []),
+        { name: "twitter:card", content: twitterCard },
+        { name: "twitter:title", content: ogTitulo },
+        { name: "twitter:description", content: ogDescricao },
       ],
       links: [canonical(`/blog/${params.slug}`)],
       scripts: post
@@ -48,7 +69,9 @@ export const Route = createFileRoute("/blog/$slug")({
             jsonLd(
               artigoLd(post, {
                 url: absoluteUrl(`/blog/${post.slug}`),
-                imagem: post.capaUrl?.startsWith("http")
+                imagem: post.ogImagemUrl?.startsWith("http")
+                  ? post.ogImagemUrl
+                  : post.capaUrl?.startsWith("http")
                   ? post.capaUrl
                   : absoluteUrl(resolverCapa(post.capaUrl)),
               }),

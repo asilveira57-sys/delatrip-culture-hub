@@ -420,6 +420,10 @@ export type Database = {
           categoria: string | null
           conteudo_html: string | null
           created_at: string
+          og_descricao: string | null
+          og_imagem_alt: string | null
+          og_imagem_url: string | null
+          og_titulo: string | null
           publicado: boolean
           publicado_em: string | null
           resumo: string | null
@@ -428,6 +432,7 @@ export type Database = {
           seo_titulo: string | null
           slug: string
           titulo: string
+          twitter_card: string
           updated_at: string
         }
         Insert: {
@@ -437,6 +442,10 @@ export type Database = {
           categoria?: string | null
           conteudo_html?: string | null
           created_at?: string
+          og_descricao?: string | null
+          og_imagem_alt?: string | null
+          og_imagem_url?: string | null
+          og_titulo?: string | null
           publicado?: boolean
           publicado_em?: string | null
           resumo?: string | null
@@ -445,6 +454,7 @@ export type Database = {
           seo_titulo?: string | null
           slug: string
           titulo: string
+          twitter_card?: string
           updated_at?: string
         }
         Update: {
@@ -454,6 +464,10 @@ export type Database = {
           categoria?: string | null
           conteudo_html?: string | null
           created_at?: string
+          og_descricao?: string | null
+          og_imagem_alt?: string | null
+          og_imagem_url?: string | null
+          og_titulo?: string | null
           publicado?: boolean
           publicado_em?: string | null
           resumo?: string | null
@@ -462,6 +476,7 @@ export type Database = {
           seo_titulo?: string | null
           slug?: string
           titulo?: string
+          twitter_card?: string
           updated_at?: string
         }
         Relationships: []
