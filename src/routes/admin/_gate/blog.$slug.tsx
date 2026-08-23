@@ -369,6 +369,11 @@ function EditorPostPage() {
                   {post.seo_descricao || post.resumo || "Descrição do post."}
                 </p>
               </div>
+              <p className="text-xs text-muted-foreground">
+                Dados estruturados gerados automaticamente na publicação:{" "}
+                <strong>{tipoSchemaDoPost(post.categoria)}</strong> (título, descrição,
+                palavras-chave, data, capa e autor).
+              </p>
             </div>
           </section>
         </div>
