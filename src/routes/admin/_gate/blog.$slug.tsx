@@ -6,6 +6,7 @@ import { toast } from "sonner";
 
 import { BotaoSeoIa } from "@/components/admin/BotaoSeoIa";
 import { FaqEditor } from "@/components/admin/FaqEditor";
+import { SocialCardsEditor } from "@/components/admin/SocialCardsEditor";
 import { RichTextEditor } from "@/components/editor/RichTextEditor";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -298,6 +299,25 @@ function EditorPostPage() {
             contexto={`${post.resumo ?? ""}\n${post.conteudo_html ?? ""}`}
             extra={post.categoria ? `Categoria: ${post.categoria}` : null}
             habilitado={!!slugOriginal}
+          />
+
+          <SocialCardsEditor
+            valores={{
+              og_titulo: post.og_titulo ?? "",
+              og_descricao: post.og_descricao ?? "",
+              og_imagem_url: post.og_imagem_url ?? null,
+              og_imagem_alt: post.og_imagem_alt ?? "",
+              twitter_card: post.twitter_card ?? "summary_large_image",
+            }}
+            onChange={(parcial) => {
+              setPost((atual) => ({ ...atual, ...parcial }));
+              setSujo(true);
+            }}
+            tituloFallback={post.seo_titulo?.trim() || post.titulo}
+            descricaoFallback={post.seo_descricao?.trim() || post.resumo || ""}
+            imagemFallback={post.capa_url}
+            caminho={`/blog/${post.slug || "…"}`}
+            baseArquivo={post.slug || post.titulo || "post"}
           />
 
           <section className="rounded-lg border border-border bg-card p-4">

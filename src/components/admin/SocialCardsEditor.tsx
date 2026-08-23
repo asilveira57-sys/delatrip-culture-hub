@@ -20,7 +20,7 @@ export type ValoresSociais = {
   og_descricao?: string | null;
   og_imagem_url?: string | null;
   og_imagem_alt?: string | null;
-  twitter_card?: string | null;
+  twitter_card?: string;
 };
 
 type Props = {
