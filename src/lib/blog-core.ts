@@ -94,3 +94,38 @@ export function resolverCapa(capaUrl: string | null | undefined, chaveFallback =
   if (!capaUrl) return imageForKey(chaveFallback);
   return capaUrl.startsWith("asset:") ? imageForKey(capaUrl.slice(6)) : capaUrl;
 }
+
+/** Categorias tratadas como notícia (geram NewsArticle em vez de Article). */
+const CATEGORIAS_NOTICIA = ["novidades", "noticias", "notícias", "marcas", "legislação", "legislacao"];
+
+export function tipoSchemaDoPost(categoria: string | null | undefined) {
+  return CATEGORIAS_NOTICIA.includes((categoria ?? "").trim().toLowerCase())
+    ? "NewsArticle"
+    : "Article";
+}
+
+/** Dados estruturados Article/NewsArticle gerados a partir do post. */
+export function artigoLd(
+  post: PostPublico,
+  opcoes: { url: string; imagem?: string | null },
+) {
+  const keywords = (post.seoKeywords ?? "")
+    .split(",")
+    .map((k) => k.trim())
+    .filter(Boolean);
+  return {
+    "@context": "https://schema.org",
+    "@type": tipoSchemaDoPost(post.categoria),
+    headline: (post.seoTitulo ?? post.titulo).slice(0, 110),
+    description: post.seoDescricao ?? post.resumo,
+    ...(opcoes.imagem ? { image: [opcoes.imagem] } : {}),
+    ...(post.data ? { datePublished: post.data, dateModified: post.data } : {}),
+    ...(keywords.length ? { keywords } : {}),
+    articleSection: post.categoria,
+    inLanguage: "pt-BR",
+    author: { "@type": "Organization", name: post.autor ?? "DeLaTrip" },
+    publisher: { "@type": "Organization", name: "DeLaTrip" },
+    mainEntityOfPage: { "@type": "WebPage", "@id": opcoes.url },
+    isAccessibleForFree: true,
+  };
+}
