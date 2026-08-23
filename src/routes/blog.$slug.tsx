@@ -7,7 +7,7 @@ import { Breadcrumb } from "@/components/Breadcrumb";
 import { Curtir } from "@/components/Curtir";
 import { EmptyState } from "@/components/EmptyState";
 import { Button } from "@/components/ui/button";
-import { resolverCapa } from "@/lib/blog-core";
+import { artigoLd, resolverCapa } from "@/lib/blog-core";
 import { obterPostPublico } from "@/lib/blog.functions";
 import { FaqSecao } from "@/components/FaqSecao";
 import { faqLd } from "@/lib/faq-core";
