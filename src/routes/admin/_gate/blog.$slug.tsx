@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
-import { CATEGORIAS_POST } from "@/lib/blog-core";
+import { CATEGORIAS_POST, tipoSchemaDoPost } from "@/lib/blog-core";
 import {
   gerarSlug,
   obterPostAdmin,
