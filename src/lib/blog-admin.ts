@@ -22,7 +22,7 @@ export type PostAdmin = {
   og_descricao?: string | null;
   og_imagem_url?: string | null;
   og_imagem_alt?: string | null;
-  twitter_card?: string | null;
+  twitter_card?: string;
   created_at?: string;
   updated_at?: string;
 };
