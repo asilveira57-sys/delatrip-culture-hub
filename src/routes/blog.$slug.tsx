@@ -45,17 +45,14 @@ export const Route = createFileRoute("/blog/$slug")({
       links: [canonical(`/blog/${params.slug}`)],
       scripts: post
         ? [
-            jsonLd({
-              "@context": "https://schema.org",
-              "@type": "Article",
-              headline: post.titulo,
-              description: post.resumo,
-              datePublished: post.data,
-              articleSection: post.categoria,
-              author: { "@type": "Organization", name: post.autor ?? "DeLaTrip" },
-              publisher: { "@type": "Organization", name: "DeLaTrip" },
-              mainEntityOfPage: absoluteUrl(`/blog/${post.slug}`),
-            }),
+            jsonLd(
+              artigoLd(post, {
+                url: absoluteUrl(`/blog/${post.slug}`),
+                imagem: post.capaUrl?.startsWith("http")
+                  ? post.capaUrl
+                  : absoluteUrl(resolverCapa(post.capaUrl)),
+              }),
+            ),
             jsonLd(
               breadcrumbLd([
                 { name: "Início", path: "/" },
