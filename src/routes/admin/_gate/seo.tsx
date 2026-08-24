@@ -215,6 +215,9 @@ function SeoPage() {
   const [gtm, setGtm] = useState<Tracking>({ id: "", ativo: false });
   const [modo, setModo] = useState(true);
   const [rotas, setRotas] = useState<RotaSeo[]>([]);
+  const [gerando, setGerando] = useState<string[]>([]);
+  const [lote, setLote] = useState(false);
+  const gerarSeo = useServerFn(gerarSeoIa);
   const [sitemapEm, setSitemapEm] = useState<string | null>(null);
 
   useEffect(() => {
