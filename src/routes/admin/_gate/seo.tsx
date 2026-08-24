@@ -264,6 +264,65 @@ function SeoPage() {
     }
   }
 
+  /** Gera título, descrição e keywords de uma rota a partir do resumo dela. */
+  async function gerarRota(indice: number, silencioso = false) {
+    const meta = ROTAS[indice];
+    if (!meta) return false;
+    setGerando((s) => [...s, meta.caminho]);
+    try {
+      const r = await gerarSeo({
+        data: {
+          tipo: "pagina",
+          titulo: `${meta.nome} — DeLaTrip`,
+          contexto: meta.contexto,
+          extra: `Rota do site: ${meta.caminho}`,
+        },
+      });
+      if (!r.ok) {
+        if (!silencioso) toast.error(r.erro ?? "Falha ao gerar o SEO.");
+        return false;
+      }
+      setRotas((lista) =>
+        lista.map((item, j) =>
+          j === indice
+            ? {
+                ...item,
+                titulo: r.titulo,
+                descricao: r.descricao,
+                keywords: r.keywords,
+              }
+            : item,
+        ),
+      );
+      if (!silencioso) toast.success("SEO gerado. Revise e salve.");
+      return true;
+    } finally {
+      setGerando((s) => s.filter((c) => c !== meta.caminho));
+    }
+  }
+
+  /** Preenche todas as rotas ainda sem título/descrição, uma por vez. */
+  async function gerarVazias() {
+    const pendentes = rotas
+      .map((r, i) => ({ r, i }))
+      .filter(({ r }) => !r.titulo.trim() || !r.descricao.trim());
+    if (pendentes.length === 0) {
+      toast.info("Todas as páginas já têm título e descrição.");
+      return;
+    }
+    setLote(true);
+    let feitas = 0;
+    try {
+      for (const { i } of pendentes) {
+        if (await gerarRota(i, true)) feitas += 1;
+      }
+      if (feitas === 0) toast.error("Não foi possível gerar as metas.");
+      else toast.success(`${feitas} página(s) preenchida(s) pela IA. Revise e salve.`);
+    } finally {
+      setLote(false);
+    }
+  }
+
   async function salvarRotas() {
     try {
       const { error } = await supabase.from("seo_rota").upsert(
@@ -271,12 +330,14 @@ function SeoPage() {
           caminho: r.caminho,
           titulo: r.titulo || null,
           descricao: r.descricao || null,
+          seo_keywords: r.keywords || null,
           noindex: r.noindex,
         })),
         { onConflict: "caminho" },
       );
       if (error) throw error;
       toast.success("Metas das páginas salvas.");
+
     } catch {
       toast.error("Não foi possível salvar.");
     }
