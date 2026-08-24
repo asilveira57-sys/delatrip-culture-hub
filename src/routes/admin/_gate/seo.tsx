@@ -405,24 +405,55 @@ function SeoPage() {
         </p>
       </Bloco>
 
-      <Bloco titulo="C · Meta das páginas">
+      <Bloco
+        titulo="C · Meta das páginas"
+        descricao="A IA escreve título, descrição e palavras-chave a partir do conteúdo de cada página. Revise antes de salvar."
+      >
+        <div className="mb-4 flex flex-wrap items-center gap-3">
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={() => void gerarVazias()}
+            disabled={lote}
+          >
+            <Sparkles className="size-4" />
+            {lote ? "Gerando…" : "Gerar com IA as páginas vazias"}
+          </Button>
+          <span className="text-xs text-muted-foreground">
+            Só preenche páginas sem título ou sem descrição.
+          </span>
+        </div>
         <div className="space-y-4">
           {rotas.map((rota, i) => (
             <div key={rota.caminho} className="rounded-md border border-border p-3">
-              <div className="flex items-center justify-between gap-3">
+              <div className="flex flex-wrap items-center justify-between gap-3">
                 <code className="text-sm font-medium">{rota.caminho}</code>
-                <label className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <Switch
-                    checked={rota.noindex}
-                    onCheckedChange={(v) =>
-                      setRotas((lista) =>
-                        lista.map((r, j) => (i === j ? { ...r, noindex: v } : r)),
-                      )
-                    }
-                  />
-                  noindex
-                </label>
+                <div className="flex items-center gap-3">
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => void gerarRota(i)}
+                    disabled={lote || gerando.includes(rota.caminho)}
+                  >
+                    <Sparkles className="size-4" />
+                    {gerando.includes(rota.caminho) ? "Gerando…" : "Gerar com IA"}
+                  </Button>
+                  <label className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <Switch
+                      checked={rota.noindex}
+                      onCheckedChange={(v) =>
+                        setRotas((lista) =>
+                          lista.map((r, j) => (i === j ? { ...r, noindex: v } : r)),
+                        )
+                      }
+                    />
+                    noindex
+                  </label>
+                </div>
               </div>
+
 
               <div className="mt-3 grid gap-3 lg:grid-cols-2">
                 <div className="space-y-1">
