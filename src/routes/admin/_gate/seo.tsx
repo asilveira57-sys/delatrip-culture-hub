@@ -486,7 +486,20 @@ function SeoPage() {
                       )
                     }
                   />
+                  <Label className="text-xs">Palavras-chave</Label>
+                  <Input
+                    value={rota.keywords}
+                    placeholder="termo, outro termo"
+                    onChange={(e) =>
+                      setRotas((lista) =>
+                        lista.map((r, j) =>
+                          i === j ? { ...r, keywords: e.target.value } : r,
+                        ),
+                      )
+                    }
+                  />
                 </div>
+
 
                 <div className="rounded-md bg-muted/60 p-3">
                   <p className="text-xs uppercase tracking-wide text-muted-foreground">
