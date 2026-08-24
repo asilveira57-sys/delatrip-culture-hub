@@ -22,15 +22,59 @@ export const Route = createFileRoute("/admin/_gate/seo")({
   component: SeoPage,
 });
 
+/**
+ * Rotas institucionais com um resumo do que cada página mostra. O resumo é o
+ * contexto enviado à IA — ela só reescreve o que está aqui, sem inventar fato.
+ */
 const ROTAS = [
-  "/",
-  "/catalogo",
-  "/marcas",
-  "/acessorios",
-  "/blog",
-  "/sobre",
-  "/contato",
-  "/faq",
+  {
+    caminho: "/",
+    nome: "Home",
+    contexto:
+      "Página inicial do portal institucional DeLaTrip, head shop brasileira do Rio de Janeiro. Apresenta a marca, as categorias do catálogo de acessórios, as marcas parceiras e os conteúdos editoriais do blog. Não é loja: não há carrinho nem checkout.",
+  },
+  {
+    caminho: "/catalogo",
+    nome: "Catálogo",
+    contexto:
+      "Catálogo de acessórios da DeLaTrip organizado por categorias e marcas, com busca e filtros. Cada produto tem página própria com ficha técnica e imagens. Vitrine institucional, sem venda direta no site.",
+  },
+  {
+    caminho: "/marcas",
+    nome: "Marcas",
+    contexto:
+      "Lista das marcas de acessórios representadas pela DeLaTrip, cada uma com página institucional própria e os produtos relacionados do catálogo.",
+  },
+  {
+    caminho: "/acessorios",
+    nome: "Acessórios",
+    contexto:
+      "Seleção de acessórios do catálogo DeLaTrip: bandejas, dichavadores, sedas, pipas de vidro e utensílios de coleção, agrupados por categoria.",
+  },
+  {
+    caminho: "/blog",
+    nome: "Blog",
+    contexto:
+      "Blog editorial da DeLaTrip com notícias, novidades de marcas, cultura, curadoria e conteúdos sobre legislação do setor de acessórios no Brasil.",
+  },
+  {
+    caminho: "/sobre",
+    nome: "Sobre",
+    contexto:
+      "Página institucional sobre a DeLaTrip: história, curadoria de marcas, atuação a partir do Rio de Janeiro (RJ) e proposta de portal de conteúdo e catálogo.",
+  },
+  {
+    caminho: "/contato",
+    nome: "Contato",
+    contexto:
+      "Página de contato da DeLaTrip com formulário, telefone, e-mail e dados da empresa no Rio de Janeiro (RJ), para dúvidas sobre marcas, catálogo e imprensa.",
+  },
+  {
+    caminho: "/faq",
+    nome: "FAQ",
+    contexto:
+      "Perguntas frequentes da DeLaTrip sobre o catálogo, marcas, atendimento, política de privacidade e o fato de o site ser institucional e não uma loja online.",
+  },
 ] as const;
 
 type Tracking = { id: string; ativo: boolean };
@@ -38,6 +82,7 @@ type RotaSeo = {
   caminho: string;
   titulo: string;
   descricao: string;
+  keywords: string;
   noindex: boolean;
 };
 
@@ -52,7 +97,9 @@ function trackingDe(valor: unknown): Tracking {
 async function carregar() {
   const [config, rotas, overlays] = await Promise.all([
     supabase.from("config_site").select("chave, valor"),
-    supabase.from("seo_rota").select("caminho, titulo, descricao, noindex"),
+    supabase
+      .from("seo_rota")
+      .select("caminho, titulo, descricao, seo_keywords, noindex"),
     supabase.from("produto_overlay").select("slug, oculto"),
   ]);
   const mapa = new Map((config.data ?? []).map((r) => [r.chave, r.valor as unknown]));
@@ -63,15 +110,17 @@ async function carregar() {
     gtm: trackingDe(mapa.get("gtm_id")),
     modoConstrucao: mapa.get("modo_construcao") !== false,
     sitemapGeradoEm: (mapa.get("sitemap_gerado_em") as string | null) ?? null,
-    rotas: ROTAS.map<RotaSeo>((caminho) => {
+    rotas: ROTAS.map<RotaSeo>(({ caminho }) => {
       const r = rotasMapa.get(caminho);
       return {
         caminho,
         titulo: r?.titulo ?? "",
         descricao: r?.descricao ?? "",
+        keywords: r?.seo_keywords ?? "",
         noindex: r?.noindex ?? false,
       };
     }),
+
     ocultos: new Set(
       (overlays.data ?? []).filter((o) => o.oculto).map((o) => o.slug as string),
     ),
