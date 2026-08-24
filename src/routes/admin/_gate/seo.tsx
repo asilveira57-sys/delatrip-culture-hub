@@ -13,6 +13,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { supabase } from "@/integrations/supabase/client";
 import { brands, categories, posts, products } from "@/lib/catalog";
 import { SITE_URL } from "@/lib/seo";
+import { gerarSeoIa } from "@/lib/seo-ia.functions";
 
 export const Route = createFileRoute("/admin/_gate/seo")({
   head: () => ({
