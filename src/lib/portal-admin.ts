@@ -1,6 +1,6 @@
 import { supabase } from "@/integrations/supabase/client";
 
-import type { EpisodioPodcast, PortalConfig } from "@/lib/portal-core";
+import type { PortalConfig } from "@/lib/portal-core";
 import { mesclarConfig } from "@/lib/portal-core";
 import { PORTAL_CONFIG_PADRAO } from "@/lib/portal-defaults";
 
@@ -139,36 +139,6 @@ export async function listarVersoesDocumento(chave: string) {
     .order("created_at", { ascending: false })
     .limit(20);
   return data ?? [];
-}
-
-export async function listarEpisodiosAdmin(): Promise<EpisodioPodcast[]> {
-  const { data, error } = await supabase
-    .from("podcast_episodio")
-    .select("*")
-    .order("data_publicacao", { ascending: false });
-  if (error) throw error;
-  return (data ?? []) as EpisodioPodcast[];
-}
-
-export async function carregarEpisodioAdmin(slug: string): Promise<EpisodioPodcast | null> {
-  const { data } = await supabase
-    .from("podcast_episodio")
-    .select("*")
-    .eq("slug", slug)
-    .maybeSingle();
-  return (data as EpisodioPodcast | null) ?? null;
-}
-
-export async function salvarEpisodioAdmin(ep: EpisodioPodcast) {
-  const { error } = await supabase
-    .from("podcast_episodio")
-    .upsert({ ...ep, updated_at: new Date().toISOString() } as never, { onConflict: "slug" });
-  if (error) throw error;
-}
-
-export async function excluirEpisodioAdmin(slug: string) {
-  const { error } = await supabase.from("podcast_episodio").delete().eq("slug", slug);
-  if (error) throw error;
 }
 
 export function gerarSlug(texto: string) {
