@@ -59,7 +59,6 @@ export function Footer() {
               <li><Link to="/quem-somos" className="text-sm text-ink-muted hover:text-gold">Quem somos</Link></li>
               <li><Link to="/marcas" className="text-sm text-ink-muted hover:text-gold">Marcas</Link></li>
               <li><Link to="/blog" className="text-sm text-ink-muted hover:text-gold">Blog</Link></li>
-              <li><Link to="/podcast" className="text-sm text-ink-muted hover:text-gold">Podcast</Link></li>
               <li><Link to="/conteudo/tabaco" className="text-sm text-ink-muted hover:text-gold">Conteúdo: tabaco</Link></li>
               <li><Link to="/faq" className="text-sm text-ink-muted hover:text-gold">Perguntas frequentes</Link></li>
               <li><Link to="/contato" className="text-sm text-ink-muted hover:text-gold">Contato</Link></li>

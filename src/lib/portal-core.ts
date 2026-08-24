@@ -7,7 +7,6 @@ export const CATEGORIAS_CONTATO = [
   { valor: "geral", label: "Contato geral" },
   { valor: "imprensa", label: "Imprensa" },
   { valor: "parcerias", label: "Parcerias" },
-  { valor: "podcast", label: "Podcast" },
   { valor: "comercial", label: "Comercial" },
   { valor: "lgpd", label: "Privacidade e LGPD" },
   { valor: "outros", label: "Outros" },
@@ -92,28 +91,6 @@ export type Consentimento = {
   versao: string;
   data: string;
   categorias: CategoriasConsentimento;
-};
-
-export type EpisodioPodcast = {
-  slug: string;
-  titulo: string;
-  descricao: string | null;
-  resumo: string | null;
-  conteudo_html: string | null;
-  capa_url: string | null;
-  capa_alt: string | null;
-  data_publicacao: string | null;
-  participantes: string | null;
-  spotify_url: string | null;
-  youtube_url: string | null;
-  outro_url: string | null;
-  transcricao: string | null;
-  duracao: string | null;
-  publicado: boolean;
-  seo_titulo: string | null;
-  seo_descricao: string | null;
-  seo_keywords: string | null;
-  og_imagem: string | null;
 };
 
 export type DocumentoLegal = {

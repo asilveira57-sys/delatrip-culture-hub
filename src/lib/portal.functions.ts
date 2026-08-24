@@ -3,7 +3,6 @@ import { getRequest } from "@tanstack/react-start/server";
 
 import type {
   DocumentoLegal,
-  EpisodioPodcast,
   PortalConfig,
 } from "@/lib/portal-core";
 import {
@@ -14,8 +13,6 @@ import {
   ipDaRequisicao,
   lerConfigPortal,
   lerDocumento,
-  lerEpisodio,
-  listarEpisodiosPublicos,
 } from "@/lib/portal.server";
 
 export const carregarConfigPortal = createServerFn({ method: "GET" }).handler(
@@ -25,14 +22,6 @@ export const carregarConfigPortal = createServerFn({ method: "GET" }).handler(
 export const carregarDocumentoLegal = createServerFn({ method: "GET" })
   .inputValidator((entrada: { chave: string }) => entrada)
   .handler(async ({ data }): Promise<DocumentoLegal | null> => lerDocumento(data.chave));
-
-export const listarEpisodios = createServerFn({ method: "GET" }).handler(
-  async (): Promise<EpisodioPodcast[]> => listarEpisodiosPublicos(),
-);
-
-export const carregarEpisodio = createServerFn({ method: "GET" })
-  .inputValidator((entrada: { slug: string }) => entrada)
-  .handler(async ({ data }): Promise<EpisodioPodcast | null> => lerEpisodio(data.slug));
 
 export const enviarContato = createServerFn({ method: "POST" })
   .inputValidator((entrada: unknown) => entrada)

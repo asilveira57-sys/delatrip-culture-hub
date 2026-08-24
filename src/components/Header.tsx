@@ -15,7 +15,6 @@ const nav = [
   { label: "Marcas", to: "/marcas" },
   { label: "Acessórios", to: "/acessorios" },
   { label: "Blog", to: "/blog" },
-  { label: "Podcast", to: "/podcast" },
   { label: "Quem somos", to: "/quem-somos" },
   { label: "Contato", to: "/contato" },
 ] as const;
