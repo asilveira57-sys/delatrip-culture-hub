@@ -4,7 +4,6 @@ import {
   lgpdSchema,
   mesclarConfig,
   type DocumentoLegal,
-  type EpisodioPodcast,
   type PortalConfig,
 } from "@/lib/portal-core";
 import { PORTAL_CONFIG_PADRAO } from "@/lib/portal-defaults";
@@ -56,37 +55,6 @@ export async function lerDocumento(chave: string): Promise<DocumentoLegal | null
       .eq("status", "publicado")
       .maybeSingle();
     return (data as DocumentoLegal | null) ?? null;
-  } catch {
-    return null;
-  }
-}
-
-export async function listarEpisodiosPublicos(): Promise<EpisodioPodcast[]> {
-  const supabase = clientePublico();
-  if (!supabase) return [];
-  try {
-    const { data } = await supabase
-      .from("podcast_episodio")
-      .select("*")
-      .eq("publicado", true)
-      .order("data_publicacao", { ascending: false });
-    return (data ?? []) as EpisodioPodcast[];
-  } catch {
-    return [];
-  }
-}
-
-export async function lerEpisodio(slug: string): Promise<EpisodioPodcast | null> {
-  const supabase = clientePublico();
-  if (!supabase) return null;
-  try {
-    const { data } = await supabase
-      .from("podcast_episodio")
-      .select("*")
-      .eq("slug", slug)
-      .eq("publicado", true)
-      .maybeSingle();
-    return (data as EpisodioPodcast | null) ?? null;
   } catch {
     return null;
   }

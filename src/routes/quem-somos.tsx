@@ -136,9 +136,6 @@ function QuemSomos() {
             <Button asChild>
               <Link to="/contato">Falar com a DelaTrip</Link>
             </Button>
-            <Button asChild variant="outline">
-              <Link to="/podcast">Ouvir o podcast</Link>
-            </Button>
           </div>
         </section>
       </div>
