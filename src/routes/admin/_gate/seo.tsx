@@ -502,21 +502,11 @@ function SeoPage() {
                 </div>
 
 
-                <div className="rounded-md bg-muted/60 p-3">
-                  <p className="text-xs uppercase tracking-wide text-muted-foreground">
-                    Prévia no Google
-                  </p>
-                  <p className="mt-2 truncate text-xs text-emerald-700">
-                    {SITE_URL}
-                    {rota.caminho === "/" ? "" : rota.caminho}
-                  </p>
-                  <p className="truncate text-base text-blue-700">
-                    {rota.titulo || "Título da página"}
-                  </p>
-                  <p className="line-clamp-2 text-sm text-muted-foreground">
-                    {rota.descricao || "Descrição que aparece no resultado de busca."}
-                  </p>
-                </div>
+                <GoogleSnippetPreview
+                  url={`${SITE_URL}${rota.caminho === "/" ? "" : rota.caminho}`}
+                  titulo={rota.titulo}
+                  descricao={rota.descricao}
+                />
               </div>
             </div>
           ))}

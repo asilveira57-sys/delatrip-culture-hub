@@ -203,6 +203,12 @@ function EditarMarcaPage() {
                 placeholder="termo um, termo dois, termo três"
               />
             </div>
+            <GoogleSnippetPreview
+              url={`${SITE_URL}${caminho}`}
+              titulo={seo.titulo}
+              descricao={seo.descricao}
+              fallbackTitulo={marca.nome}
+            />
             <label className="flex items-center justify-between text-sm">
               Não indexar esta página (noindex)
               <Switch

@@ -355,6 +355,13 @@ function ProdutoAdminPage() {
                 placeholder="termo um, termo dois, termo três"
               />
             </div>
+            <GoogleSnippetPreview
+              url={`${SITE_URL}/produto/${slug}`}
+              titulo={form.seo_titulo ?? ""}
+              descricao={form.seo_descricao ?? ""}
+              fallbackTitulo={produto?.nome}
+              fallbackDescricao={produto?.resumo ?? ""}
+            />
           </div>
         </section>
 
