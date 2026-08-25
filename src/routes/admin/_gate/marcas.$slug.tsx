@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import { BotaoSeoIa } from "@/components/admin/BotaoSeoIa";
 import { CamposBlocos } from "@/components/admin/CamposBlocos";
 import { FaqEditor } from "@/components/admin/FaqEditor";
+import { GoogleSnippetPreview } from "@/components/admin/GoogleSnippetPreview";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -19,6 +20,7 @@ import {
   salvarPaginaAdmin,
   type SeoRotaAdmin,
 } from "@/lib/paginas-admin";
+import { SITE_URL } from "@/lib/seo";
 import type { Blocos, JsonValor } from "@/lib/paginas-core";
 
 type MarcaJson = { nome: string; slug: string; totalProdutos: number };

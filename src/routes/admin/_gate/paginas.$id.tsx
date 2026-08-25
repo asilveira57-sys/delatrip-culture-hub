@@ -5,6 +5,7 @@ import { Save } from "lucide-react";
 import { toast } from "sonner";
 
 import { BotaoSeoIa } from "@/components/admin/BotaoSeoIa";
+import { GoogleSnippetPreview } from "@/components/admin/GoogleSnippetPreview";
 import { RichTextEditor } from "@/components/editor/RichTextEditor";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -17,6 +18,7 @@ import {
   salvarPaginaAdmin,
   type SeoRotaAdmin,
 } from "@/lib/paginas-admin";
+import { SITE_URL } from "@/lib/seo";
 import type { Blocos, JsonValor } from "@/lib/paginas-core";
 
 export const Route = createFileRoute("/admin/_gate/paginas/$id")({
