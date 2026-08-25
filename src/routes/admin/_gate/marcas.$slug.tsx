@@ -207,6 +207,7 @@ function EditarMarcaPage() {
               url={`${SITE_URL}${caminho}`}
               titulo={seo.titulo}
               descricao={seo.descricao}
+              keywords={seo.keywords}
               fallbackTitulo={marca.nome}
             />
             <label className="flex items-center justify-between text-sm">
