@@ -359,6 +359,7 @@ function ProdutoAdminPage() {
               url={`${SITE_URL}/produto/${slug}`}
               titulo={form.seo_titulo ?? ""}
               descricao={form.seo_descricao ?? ""}
+              keywords={form.seo_keywords ?? ""}
               fallbackTitulo={produto?.nome}
             />
           </div>

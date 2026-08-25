@@ -506,6 +506,7 @@ function SeoPage() {
                   url={`${SITE_URL}${rota.caminho === "/" ? "" : rota.caminho}`}
                   titulo={rota.titulo}
                   descricao={rota.descricao}
+                  keywords={rota.keywords}
                 />
               </div>
             </div>

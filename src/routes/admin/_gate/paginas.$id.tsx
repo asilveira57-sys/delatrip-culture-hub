@@ -258,6 +258,7 @@ function EditarPaginaPage() {
               url={`${SITE_URL}${pagina.caminho}`}
               titulo={seo.titulo}
               descricao={seo.descricao}
+              keywords={seo.keywords}
               fallbackTitulo={pagina.nome}
             />
             <label className="flex items-center justify-between text-sm">
