@@ -6,6 +6,7 @@ import { toast } from "sonner";
 
 import { BotaoSeoIa } from "@/components/admin/BotaoSeoIa";
 import { FaqEditor } from "@/components/admin/FaqEditor";
+import { GoogleSnippetPreview } from "@/components/admin/GoogleSnippetPreview";
 import { SocialCardsEditor } from "@/components/admin/SocialCardsEditor";
 import { RichTextEditor } from "@/components/editor/RichTextEditor";
 import { Button } from "@/components/ui/button";
@@ -377,18 +378,13 @@ function EditorPostPage() {
                   placeholder="termo um, termo dois, termo três"
                 />
               </div>
-              <div className="rounded border border-border bg-background p-3">
-                <p className="text-xs text-muted-foreground">Pré-visualização no Google</p>
-                <p className="mt-2 truncate text-xs text-muted-foreground">
-                  {SITE_URL}/blog/{post.slug || "…"}
-                </p>
-                <p className="truncate text-base text-primary">
-                  {post.seo_titulo || post.titulo || "Título do post"}
-                </p>
-                <p className="line-clamp-2 text-sm text-muted-foreground">
-                  {post.seo_descricao || post.resumo || "Descrição do post."}
-                </p>
-              </div>
+              <GoogleSnippetPreview
+                url={`${SITE_URL}/blog/${post.slug || "…"}`}
+                titulo={post.seo_titulo ?? ""}
+                descricao={post.seo_descricao ?? ""}
+                fallbackTitulo={post.titulo || "Título do post"}
+                fallbackDescricao={post.resumo || "Descrição do post."}
+              />
               <p className="text-xs text-muted-foreground">
                 Dados estruturados gerados automaticamente na publicação:{" "}
                 <strong>{tipoSchemaDoPost(post.categoria)}</strong> (título, descrição,

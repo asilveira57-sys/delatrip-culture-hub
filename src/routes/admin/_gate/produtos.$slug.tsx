@@ -7,6 +7,7 @@ import { toast } from "sonner";
 
 import { BotaoSeoIa } from "@/components/admin/BotaoSeoIa";
 import { FaqEditor } from "@/components/admin/FaqEditor";
+import { GoogleSnippetPreview } from "@/components/admin/GoogleSnippetPreview";
 import { RichTextEditor } from "@/components/editor/RichTextEditor";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -34,6 +35,7 @@ import {
   variantesDe,
   type OverlayAdmin,
 } from "@/lib/produtos-admin";
+import { SITE_URL } from "@/lib/seo";
 
 export const Route = createFileRoute("/admin/_gate/produtos/$slug")({
   loader: ({ params }) => getProductDetail(params.slug),
@@ -353,6 +355,12 @@ function ProdutoAdminPage() {
                 placeholder="termo um, termo dois, termo três"
               />
             </div>
+            <GoogleSnippetPreview
+              url={`${SITE_URL}/produto/${slug}`}
+              titulo={form.seo_titulo ?? ""}
+              descricao={form.seo_descricao ?? ""}
+              fallbackTitulo={produto?.nome}
+            />
           </div>
         </section>
 
