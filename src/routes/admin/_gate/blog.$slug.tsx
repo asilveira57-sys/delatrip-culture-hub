@@ -382,6 +382,7 @@ function EditorPostPage() {
                 url={`${SITE_URL}/blog/${post.slug || "…"}`}
                 titulo={post.seo_titulo ?? ""}
                 descricao={post.seo_descricao ?? ""}
+                keywords={post.seo_keywords ?? ""}
                 fallbackTitulo={post.titulo || "Título do post"}
                 fallbackDescricao={post.resumo || "Descrição do post."}
               />
