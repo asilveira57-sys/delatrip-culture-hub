@@ -360,7 +360,6 @@ function ProdutoAdminPage() {
               titulo={form.seo_titulo ?? ""}
               descricao={form.seo_descricao ?? ""}
               fallbackTitulo={produto?.nome}
-              fallbackDescricao={produto?.resumo ?? ""}
             />
           </div>
         </section>
