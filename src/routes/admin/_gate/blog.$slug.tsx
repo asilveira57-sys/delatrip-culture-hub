@@ -6,6 +6,7 @@ import { toast } from "sonner";
 
 import { BotaoSeoIa } from "@/components/admin/BotaoSeoIa";
 import { FaqEditor } from "@/components/admin/FaqEditor";
+import { GoogleSnippetPreview } from "@/components/admin/GoogleSnippetPreview";
 import { SocialCardsEditor } from "@/components/admin/SocialCardsEditor";
 import { RichTextEditor } from "@/components/editor/RichTextEditor";
 import { Button } from "@/components/ui/button";
