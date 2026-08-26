@@ -20,6 +20,10 @@ import { absoluteUrl, breadcrumbLd, canonical, jsonLd } from "@/lib/seo";
 import { mergeList, useOverlays } from "@/lib/overlay";
 
 export const Route = createFileRoute("/$brandSlug")({
+  // Conteúdo vem do admin: sempre recarrega para refletir o que acabou de ser salvo.
+  staleTime: 0,
+  gcTime: 0,
+  shouldReload: true,
   loader: async ({ params }) => {
     const [pagina, faq] = await Promise.all([
       carregarPagina({ data: { caminho: caminhoMarca(params.brandSlug) } }),
@@ -27,6 +31,7 @@ export const Route = createFileRoute("/$brandSlug")({
     ]);
     return { ...pagina, faq };
   },
+
   head: ({ params, loaderData }) => {
     const marca = getBrand(params.brandSlug);
     if (!marca) {
