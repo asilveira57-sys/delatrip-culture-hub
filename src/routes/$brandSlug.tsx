@@ -145,6 +145,7 @@ function BrandContent({ slug }: { slug: string }) {
   const [categoria, setCategoria] = useState("");
   const [ordem, setOrdem] = useState<SortKey>(ORDENS[0]!);
   const [visiveis, setVisiveis] = useState(PAGINA);
+  const [erroCapa, setErroCapa] = useState(false);
 
   const lista = useMemo(() => {
     const q = termo.trim().toLowerCase();
