@@ -166,6 +166,20 @@ function BrandContent({ slug }: { slug: string }) {
         crumbs={[{ label: "Marcas", to: "/marcas" }, { label: marca.nome }]}
       />
 
+      {conteudo.capa ? (
+        <section className="mx-auto max-w-6xl px-4 pt-8">
+          <img
+            src={conteudo.capa}
+            alt={`Imagem de capa da marca ${marca.nome}`}
+            width={1600}
+            height={900}
+            loading="lazy"
+            className="aspect-[16/9] w-full rounded-lg border border-border bg-card object-cover"
+          />
+        </section>
+      ) : null}
+
+
       <section className="mx-auto max-w-6xl px-4 py-12">
         <div className="grid gap-10 lg:grid-cols-[1fr_300px]">
           <div className="space-y-4">
