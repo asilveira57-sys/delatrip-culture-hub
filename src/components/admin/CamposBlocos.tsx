@@ -59,9 +59,10 @@ function CampoImagem({
         <img
           src={valor}
           alt="Pré-visualização da imagem de capa"
-          className="mt-2 h-40 w-full rounded-md border border-border object-cover"
+          className="mt-2 aspect-[16/9] w-full rounded-md border border-border object-cover"
         />
       ) : null}
+
       <input
         ref={inputRef}
         type="file"
