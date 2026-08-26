@@ -59,9 +59,10 @@ function CampoImagem({
         <img
           src={valor}
           alt="Pré-visualização da imagem de capa"
-          className="mt-2 h-40 w-full rounded-md border border-border object-cover"
+          className="mt-2 aspect-[16/9] w-full rounded-md border border-border object-cover"
         />
       ) : null}
+
       <input
         ref={inputRef}
         type="file"
@@ -91,8 +92,9 @@ function CampoImagem({
         </p>
       ) : (
         <p className="mt-2 text-xs text-muted-foreground">
-          Formatos aceitos: JPG, PNG, WebP, GIF ou AVIF. Tamanho máximo: 8MB.
+          Medida ideal: 1600 × 900 px (16:9). Formatos: JPG, PNG, WebP, GIF ou AVIF. Máximo 8MB.
         </p>
+
       )}
     </div>
   );

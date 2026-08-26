@@ -34,8 +34,10 @@ export const CAMPOS_MARCA: CampoEditavel[] = [
     chave: "capa",
     label: "Imagem de capa",
     tipo: "imagem",
-    ajuda: "Envie um arquivo (JPG, PNG ou WebP) de até 8MB.",
+    ajuda:
+      "Medida ideal: 1600 × 900 px (proporção 16:9, horizontal). JPG, PNG ou WebP de até 8MB. A imagem aparece no topo da página da marca e também nas prévias de redes sociais.",
   },
+
 ];
 
 export type ConteudoMarca = BrandPageContent & { sobreHtml: string | null };
