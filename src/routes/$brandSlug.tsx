@@ -146,6 +146,7 @@ function BrandContent({ slug }: { slug: string }) {
   const [ordem, setOrdem] = useState<SortKey>(ORDENS[0]!);
   const [visiveis, setVisiveis] = useState(PAGINA);
   const [erroCapa, setErroCapa] = useState(false);
+  const [carregandoCapa, setCarregandoCapa] = useState(true);
 
   const lista = useMemo(() => {
     const q = termo.trim().toLowerCase();
@@ -174,16 +175,29 @@ function BrandContent({ slug }: { slug: string }) {
 
       {conteudo.capa && !erroCapa ? (
         <section className="mx-auto max-w-6xl px-4 pt-8">
-          <img
-            src={conteudo.capa}
-            alt={`Imagem de capa da marca ${marca.nome}`}
-            width={1600}
-            height={900}
-            loading="eager"
-            fetchPriority="high"
-            onError={() => setErroCapa(true)}
-            className="aspect-[16/9] w-full rounded-lg border border-border bg-card object-cover"
-          />
+          <div className="relative aspect-[16/9] w-full overflow-hidden rounded-lg border border-border bg-card">
+            {carregandoCapa && (
+              <div className="absolute inset-0 animate-pulse bg-muted">
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/10 to-transparent" />
+              </div>
+            )}
+            <img
+              src={conteudo.capa}
+              alt={`Imagem de capa da marca ${marca.nome}`}
+              width={1600}
+              height={900}
+              loading="eager"
+              fetchPriority="high"
+              onLoad={() => setCarregandoCapa(false)}
+              onError={() => {
+                setCarregandoCapa(false);
+                setErroCapa(true);
+              }}
+              className={`aspect-[16/9] w-full object-cover transition-opacity duration-500 ${
+                carregandoCapa ? "opacity-0" : "opacity-100"
+              }`}
+            />
+          </div>
         </section>
       ) : (
         <section className="mx-auto max-w-6xl px-4 pt-8">
