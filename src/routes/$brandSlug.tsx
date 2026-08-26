@@ -178,7 +178,9 @@ function BrandContent({ slug }: { slug: string }) {
             alt={`Imagem de capa da marca ${marca.nome}`}
             width={1600}
             height={900}
-            loading="lazy"
+            loading="eager"
+            fetchPriority="high"
+
             className="aspect-[16/9] w-full rounded-lg border border-border bg-card object-cover"
           />
         </section>
