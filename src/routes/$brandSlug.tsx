@@ -68,7 +68,20 @@ export const Route = createFileRoute("/$brandSlug")({
             ]
           : []),
       ],
-      links: [canonical(`/${marca.slug}`)],
+      links: [
+        canonical(`/${marca.slug}`),
+        // Pré-carrega o banner: na navegação SPA a imagem já chega quente ao renderizar.
+        ...(conteudo.capa
+          ? [
+              {
+                rel: "preload",
+                as: "image",
+                href: conteudo.capa,
+                fetchPriority: "high",
+              } as const,
+            ]
+          : []),
+      ],
       scripts: [
         jsonLd({
           "@context": "https://schema.org",
@@ -159,6 +172,7 @@ function BrandContent({ slug }: { slug: string }) {
   const [visiveis, setVisiveis] = useState(PAGINA);
   const [erroCapa, setErroCapa] = useState(false);
   const [carregandoCapa, setCarregandoCapa] = useState(true);
+  const reduzMovimento = usePrefersReducedMotion();
 
   const lista = useMemo(() => {
     const q = termo.trim().toLowerCase();
