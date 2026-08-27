@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ImageOff, Search } from "lucide-react";
 
@@ -95,6 +95,18 @@ export const Route = createFileRoute("/$brandSlug")({
 
 const ORDENS: SortKey[] = ["relevancia", "nome-az", "nome-za", "novidades"];
 const PAGINA = 24;
+
+function usePrefersReducedMotion() {
+  const [reduz, setReduz] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const atualizar = () => setReduz(mq.matches);
+    atualizar();
+    mq.addEventListener("change", atualizar);
+    return () => mq.removeEventListener("change", atualizar);
+  }, []);
+  return reduz;
+}
 
 function BrandPage() {
   const { brandSlug } = Route.useParams();
