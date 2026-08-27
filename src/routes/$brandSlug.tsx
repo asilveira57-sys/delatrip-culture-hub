@@ -18,6 +18,7 @@ import { carregarFaq } from "@/lib/faq.functions";
 import { getBrand, productsByBrand, sortProducts, type SortKey } from "@/lib/catalog";
 import { absoluteUrl, breadcrumbLd, canonical, jsonLd } from "@/lib/seo";
 import { mergeList, useOverlays } from "@/lib/overlay";
+import { buildSrcSet } from "@/lib/media";
 
 export const Route = createFileRoute("/$brandSlug")({
   // Conteúdo vem do admin: sempre recarrega para refletir o que acabou de ser salvo.
