@@ -186,8 +186,10 @@ function BrandContent({ slug }: { slug: string }) {
               alt={`Imagem de capa da marca ${marca.nome}`}
               width={1600}
               height={900}
-              loading="eager"
+              loading="lazy"
               fetchPriority="high"
+              decoding="async"
+              sizes="(max-width: 768px) 100vw, 1200px"
               onLoad={() => setCarregandoCapa(false)}
               onError={() => {
                 setCarregandoCapa(false);
