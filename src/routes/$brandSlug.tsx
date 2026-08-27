@@ -202,8 +202,8 @@ function BrandContent({ slug }: { slug: string }) {
       {conteudo.capa && !erroCapa ? (
         <section className="mx-auto max-w-6xl px-4 pt-8">
           <div className="relative aspect-[16/9] w-full overflow-hidden rounded-lg border border-border bg-card">
-            {carregandoCapa && (
-              <div className="absolute inset-0 animate-pulse bg-muted">
+            {carregandoCapa && !reduzMovimento && (
+              <div className="absolute inset-0 animate-pulse bg-muted motion-reduce:animate-none">
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/10 to-transparent" />
               </div>
             )}
@@ -221,8 +221,10 @@ function BrandContent({ slug }: { slug: string }) {
                 setCarregandoCapa(false);
                 setErroCapa(true);
               }}
-              className={`aspect-[16/9] w-full object-cover transition-opacity duration-500 ${
-                carregandoCapa ? "opacity-0" : "opacity-100"
+              className={`aspect-[16/9] w-full object-cover ${
+                reduzMovimento
+                  ? ""
+                  : `transition-opacity duration-500 ${carregandoCapa ? "opacity-0" : "opacity-100"}`
               }`}
             />
           </div>
