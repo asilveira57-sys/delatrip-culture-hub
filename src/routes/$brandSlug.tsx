@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ImageOff, Search } from "lucide-react";
 
@@ -68,7 +68,20 @@ export const Route = createFileRoute("/$brandSlug")({
             ]
           : []),
       ],
-      links: [canonical(`/${marca.slug}`)],
+      links: [
+        canonical(`/${marca.slug}`),
+        // Pré-carrega o banner: na navegação SPA a imagem já chega quente ao renderizar.
+        ...(conteudo.capa
+          ? [
+              {
+                rel: "preload",
+                as: "image",
+                href: conteudo.capa,
+                fetchPriority: "high",
+              } as const,
+            ]
+          : []),
+      ],
       scripts: [
         jsonLd({
           "@context": "https://schema.org",
@@ -95,6 +108,18 @@ export const Route = createFileRoute("/$brandSlug")({
 
 const ORDENS: SortKey[] = ["relevancia", "nome-az", "nome-za", "novidades"];
 const PAGINA = 24;
+
+function usePrefersReducedMotion() {
+  const [reduz, setReduz] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const atualizar = () => setReduz(mq.matches);
+    atualizar();
+    mq.addEventListener("change", atualizar);
+    return () => mq.removeEventListener("change", atualizar);
+  }, []);
+  return reduz;
+}
 
 function BrandPage() {
   const { brandSlug } = Route.useParams();
@@ -147,6 +172,7 @@ function BrandContent({ slug }: { slug: string }) {
   const [visiveis, setVisiveis] = useState(PAGINA);
   const [erroCapa, setErroCapa] = useState(false);
   const [carregandoCapa, setCarregandoCapa] = useState(true);
+  const reduzMovimento = usePrefersReducedMotion();
 
   const lista = useMemo(() => {
     const q = termo.trim().toLowerCase();
@@ -176,8 +202,8 @@ function BrandContent({ slug }: { slug: string }) {
       {conteudo.capa && !erroCapa ? (
         <section className="mx-auto max-w-6xl px-4 pt-8">
           <div className="relative aspect-[16/9] w-full overflow-hidden rounded-lg border border-border bg-card">
-            {carregandoCapa && (
-              <div className="absolute inset-0 animate-pulse bg-muted">
+            {carregandoCapa && !reduzMovimento && (
+              <div className="absolute inset-0 animate-pulse bg-muted motion-reduce:animate-none">
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/10 to-transparent" />
               </div>
             )}
@@ -195,8 +221,10 @@ function BrandContent({ slug }: { slug: string }) {
                 setCarregandoCapa(false);
                 setErroCapa(true);
               }}
-              className={`aspect-[16/9] w-full object-cover transition-opacity duration-500 ${
-                carregandoCapa ? "opacity-0" : "opacity-100"
+              className={`aspect-[16/9] w-full object-cover ${
+                reduzMovimento
+                  ? ""
+                  : `transition-opacity duration-500 ${carregandoCapa ? "opacity-0" : "opacity-100"}`
               }`}
             />
           </div>
