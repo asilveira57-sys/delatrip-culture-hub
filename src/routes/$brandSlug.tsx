@@ -18,6 +18,7 @@ import { carregarFaq } from "@/lib/faq.functions";
 import { getBrand, productsByBrand, sortProducts, type SortKey } from "@/lib/catalog";
 import { absoluteUrl, breadcrumbLd, canonical, jsonLd } from "@/lib/seo";
 import { mergeList, useOverlays } from "@/lib/overlay";
+import { buildSrcSet } from "@/lib/media";
 
 export const Route = createFileRoute("/$brandSlug")({
   // Conteúdo vem do admin: sempre recarrega para refletir o que acabou de ser salvo.
@@ -78,6 +79,14 @@ export const Route = createFileRoute("/$brandSlug")({
                 as: "image",
                 href: conteudo.capa,
                 fetchPriority: "high",
+                // Alinha o preload ao srcSet do <img>: o navegador baixa a
+                // variante certa para o viewport (mobile mais leve).
+                ...(buildSrcSet(conteudo.capa)
+                  ? {
+                      imagesrcset: buildSrcSet(conteudo.capa),
+                      imagesizes: "(max-width: 768px) 100vw, 1200px",
+                    }
+                  : {}),
               } as const,
             ]
           : []),
@@ -201,14 +210,21 @@ function BrandContent({ slug }: { slug: string }) {
 
       {conteudo.capa && !erroCapa ? (
         <section className="mx-auto max-w-6xl px-4 pt-8">
-          <div className="relative aspect-[16/9] w-full overflow-hidden rounded-lg border border-border bg-card">
+          <div
+            className="relative aspect-[16/9] w-full overflow-hidden rounded-lg border border-border bg-card"
+            aria-busy={carregandoCapa || undefined}
+          >
             {carregandoCapa && !reduzMovimento && (
-              <div className="absolute inset-0 animate-pulse bg-muted motion-reduce:animate-none">
+              <div
+                aria-hidden="true"
+                className="absolute inset-0 animate-pulse bg-muted motion-reduce:animate-none"
+              >
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/10 to-transparent" />
               </div>
             )}
             <img
               src={conteudo.capa}
+              srcSet={buildSrcSet(conteudo.capa)}
               alt={`Imagem de capa da marca ${marca.nome}`}
               width={1600}
               height={900}

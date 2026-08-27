@@ -98,3 +98,25 @@ export async function enviarImagem(file: File, base: string): Promise<ImagemEnvi
 
   return { url: data.signedUrl, tamanho: blob.size, caminho };
 }
+
+/** Larguras servidas no srcSet dos banners (mobile → desktop). */
+const LARGURAS_SRCSET = [640, 1024, 1600] as const;
+
+/**
+ * Gera `srcSet` com variantes redimensionadas para URLs do Storage
+ * (assinadas `/object/sign/` ou públicas `/object/public/`), usando o
+ * endpoint de transformação `render/image` com o mesmo token.
+ * Retorna `undefined` para URLs externas — o navegador usa só o `src`.
+ */
+export function buildSrcSet(url: string): string | undefined {
+  const match = url.match(/\/storage\/v1\/object\/(sign|public)\//);
+  if (!match) return undefined;
+  const base = url.replace(
+    /\/storage\/v1\/object\/(sign|public)\//,
+    "/storage/v1/render/image/$1/",
+  );
+  const separador = base.includes("?") ? "&" : "?";
+  return LARGURAS_SRCSET.map(
+    (w) => `${base}${separador}width=${w}&quality=80&resize=contain ${w}w`,
+  ).join(", ");
+}
