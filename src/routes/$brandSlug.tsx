@@ -210,14 +210,21 @@ function BrandContent({ slug }: { slug: string }) {
 
       {conteudo.capa && !erroCapa ? (
         <section className="mx-auto max-w-6xl px-4 pt-8">
-          <div className="relative aspect-[16/9] w-full overflow-hidden rounded-lg border border-border bg-card">
+          <div
+            className="relative aspect-[16/9] w-full overflow-hidden rounded-lg border border-border bg-card"
+            aria-busy={carregandoCapa || undefined}
+          >
             {carregandoCapa && !reduzMovimento && (
-              <div className="absolute inset-0 animate-pulse bg-muted motion-reduce:animate-none">
+              <div
+                aria-hidden="true"
+                className="absolute inset-0 animate-pulse bg-muted motion-reduce:animate-none"
+              >
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/10 to-transparent" />
               </div>
             )}
             <img
               src={conteudo.capa}
+              srcSet={buildSrcSet(conteudo.capa)}
               alt={`Imagem de capa da marca ${marca.nome}`}
               width={1600}
               height={900}
