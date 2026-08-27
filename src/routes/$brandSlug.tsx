@@ -79,6 +79,14 @@ export const Route = createFileRoute("/$brandSlug")({
                 as: "image",
                 href: conteudo.capa,
                 fetchPriority: "high",
+                // Alinha o preload ao srcSet do <img>: o navegador baixa a
+                // variante certa para o viewport (mobile mais leve).
+                ...(buildSrcSet(conteudo.capa)
+                  ? {
+                      imagesrcset: buildSrcSet(conteudo.capa),
+                      imagesizes: "(max-width: 768px) 100vw, 1200px",
+                    }
+                  : {}),
               } as const,
             ]
           : []),
