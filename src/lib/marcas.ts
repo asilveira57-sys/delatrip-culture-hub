@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import { supabase } from "@/integrations/supabase/client";
 import { brands as brandsJson, productsByBrand, type Brand, type Product } from "@/lib/catalog";
+import { produtosPorMarca, type MarcaDeProdutos } from "@/lib/marcas-produtos";
 
 /**
  * Camada de gestão de marcas.
