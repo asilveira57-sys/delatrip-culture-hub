@@ -83,8 +83,9 @@ export const Route = createFileRoute("/$brandSlug")({
                 // variante certa para o viewport (mobile mais leve).
                 ...(buildSrcSet(conteudo.capa)
                   ? {
-                      imagesrcset: buildSrcSet(conteudo.capa),
-                      imagesizes: "(max-width: 768px) 100vw, 1200px",
+                      imageSrcSet: buildSrcSet(conteudo.capa),
+                      imageSizes: "(max-width: 768px) 100vw, 1200px",
+
                     }
                   : {}),
               } as const,
