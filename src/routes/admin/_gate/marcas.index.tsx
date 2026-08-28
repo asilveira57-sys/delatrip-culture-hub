@@ -16,6 +16,8 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { listarCaminhosEditados } from "@/lib/paginas-admin";
+import { produtosDaMarca, useMarcaOverlays } from "@/lib/marcas";
+import { transferirProdutos, useMarcaDeProdutos } from "@/lib/marcas-produtos";
 import { caminhoMarca } from "@/lib/marcas-core";
 import {
   criarMarcaAdmin,
@@ -45,7 +47,13 @@ function MarcasAdminPage() {
   const [novoNome, setNovoNome] = useState("");
   const [criando, setCriando] = useState(false);
   const [excluir, setExcluir] = useState<MarcaAdmin | null>(null);
+  const [destino, setDestino] = useState("");
   const qc = useQueryClient();
+  const marcasOv = useMarcaOverlays();
+  const produtoMarcas = useMarcaDeProdutos();
+  const produtosDoExcluir = excluir
+    ? produtosDaMarca(excluir.slug, marcasOv, produtoMarcas)
+    : [];
 
   const { data: editadas } = useQuery({
     queryKey: ["admin", "paginas", "caminhos"],
@@ -62,6 +70,8 @@ function MarcasAdminPage() {
   function invalidar() {
     void qc.invalidateQueries({ queryKey: ["admin", "marcas"] });
     void qc.invalidateQueries({ queryKey: ["marca_overlay"] });
+    void qc.invalidateQueries({ queryKey: ["produto_marca"] });
+    void qc.invalidateQueries({ queryKey: ["produto_overlay"] });
   }
 
   const criar = useMutation({
@@ -92,10 +102,15 @@ function MarcasAdminPage() {
   });
 
   const remover = useMutation({
-    mutationFn: (m: MarcaAdmin) => excluirMarcaAdmin(m),
+    mutationFn: async (m: MarcaAdmin) => {
+      const slugs = produtosDaMarca(m.slug, marcasOv, produtoMarcas).map((p) => p.slug);
+      if (slugs.length) await transferirProdutos(slugs, destino.trim() || null);
+      await excluirMarcaAdmin(m);
+    },
     onSuccess: (_d, m) => {
       toast.success(m.manual ? "Marca excluída." : "Marca removida do site.");
       setExcluir(null);
+      setDestino("");
       invalidar();
     },
     onError: (e: Error) => toast.error(e.message),
@@ -296,7 +311,15 @@ function MarcasAdminPage() {
         </DialogContent>
       </Dialog>
 
-      <Dialog open={!!excluir} onOpenChange={(v) => !v && setExcluir(null)}>
+      <Dialog
+        open={!!excluir}
+        onOpenChange={(v) => {
+          if (!v) {
+            setExcluir(null);
+            setDestino("");
+          }
+        }}
+      >
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Excluir {excluir?.nome}?</DialogTitle>
@@ -306,6 +329,32 @@ function MarcasAdminPage() {
                 : "Marcas vindas do catálogo da loja não podem ser apagadas do arquivo de origem — ela será removida do site (oculta) e deixará de aparecer nas listagens e na busca."}
             </DialogDescription>
           </DialogHeader>
+          {produtosDoExcluir.length > 0 && (
+            <div className="space-y-2">
+              <Label htmlFor="destino-produtos">
+                {produtosDoExcluir.length} produto(s) nesta marca — transferir para
+              </Label>
+              <Input
+                id="destino-produtos"
+                list="marcas-destino-exclusao"
+                value={destino}
+                onChange={(e) => setDestino(e.target.value.trim())}
+                placeholder="slug da marca de destino (vazio = sem marca)"
+              />
+              <datalist id="marcas-destino-exclusao">
+                {marcas
+                  .filter((m) => m.slug !== excluir?.slug)
+                  .map((m) => (
+                    <option key={m.slug} value={m.slug}>
+                      {m.nome}
+                    </option>
+                  ))}
+              </datalist>
+              <p className="text-xs text-muted-foreground">
+                Se deixar em branco, os produtos continuam no catálogo, porém sem marca.
+              </p>
+            </div>
+          )}
           <DialogFooter>
             <Button variant="outline" onClick={() => setExcluir(null)}>
               Cancelar
