@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, Navigate } from "@tanstack/react-router";
 import { ImageOff, Search } from "lucide-react";
 
 import { EmptyState } from "@/components/EmptyState";
@@ -15,7 +15,13 @@ import { carregarPagina } from "@/lib/paginas.functions";
 import { FaqSecao } from "@/components/FaqSecao";
 import { faqLd } from "@/lib/faq-core";
 import { carregarFaq } from "@/lib/faq.functions";
-import { getBrand, productsByBrand, sortProducts, type SortKey } from "@/lib/catalog";
+import { getBrand, sortProducts, type Brand, type SortKey } from "@/lib/catalog";
+import {
+  marcaEfetiva,
+  produtosDaMarca,
+  slugCanonico,
+  useMarcaOverlays,
+} from "@/lib/marcas";
 import { absoluteUrl, breadcrumbLd, canonical, jsonLd } from "@/lib/seo";
 import { mergeList, useOverlays } from "@/lib/overlay";
 import { buildSrcSet } from "@/lib/media";
@@ -133,7 +139,14 @@ function usePrefersReducedMotion() {
 
 function BrandPage() {
   const { brandSlug } = Route.useParams();
-  const marca = getBrand(brandSlug);
+  const marcasOv = useMarcaOverlays();
+  const canonico = slugCanonico(brandSlug, marcasOv);
+  const marca = marcaEfetiva(canonico, marcasOv);
+
+  // Marca duplicada mesclada em outra: leva o visitante para a página principal.
+  if (canonico !== brandSlug && marca) {
+    return <Navigate to="/$brandSlug" params={{ brandSlug: canonico }} replace />;
+  }
 
   if (!marca) {
     return (
@@ -151,20 +164,20 @@ function BrandPage() {
     );
   }
 
-  return <BrandContent key={marca.slug} slug={marca.slug} />;
+  return <BrandContent key={marca.slug} marca={marca} />;
 }
 
-function BrandContent({ slug }: { slug: string }) {
-  const marca = getBrand(slug)!;
+function BrandContent({ marca }: { marca: Brand }) {
   const { blocos, faq } = Route.useLoaderData();
   const conteudo = conteudoMarca(
     getBrandPageContent(marca.slug, marca.nome, marca.totalProdutos),
     blocos,
   );
   const overlays = useOverlays();
+  const marcasOv = useMarcaOverlays();
   const produtos = useMemo(
-    () => mergeList(productsByBrand(marca.slug), overlays),
-    [marca.slug, overlays],
+    () => mergeList(produtosDaMarca(marca.slug, marcasOv), overlays),
+    [marca.slug, overlays, marcasOv],
   );
 
   const categorias = useMemo(() => {

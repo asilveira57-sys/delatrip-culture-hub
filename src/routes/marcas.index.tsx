@@ -4,7 +4,7 @@ import { absoluteUrl, canonical } from "@/lib/seo";
 
 import { BrandCard } from "@/components/BrandCard";
 import { PageHeader } from "@/components/PageHeader";
-import { brands } from "@/lib/catalog";
+import { marcasEfetivas, useMarcaOverlays } from "@/lib/marcas";
 
 export const Route = createFileRoute("/marcas/")({
   head: () => ({
@@ -28,6 +28,8 @@ export const Route = createFileRoute("/marcas/")({
 });
 
 function MarcasPage() {
+  const overlays = useMarcaOverlays();
+  const marcas = marcasEfetivas(overlays);
   return (
     <>
       <PageHeader
@@ -38,7 +40,7 @@ function MarcasPage() {
       />
       <div className="mx-auto max-w-6xl px-4 py-12">
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {brands.map((m) => (
+          {marcas.map((m) => (
             <BrandCard key={m.slug} marca={m} />
           ))}
         </div>

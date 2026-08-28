@@ -316,6 +316,36 @@ export type Database = {
         }
         Relationships: []
       }
+      marca_overlay: {
+        Row: {
+          created_at: string
+          manual: boolean
+          mesclar_em: string | null
+          nome: string | null
+          oculto: boolean
+          slug: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          manual?: boolean
+          mesclar_em?: string | null
+          nome?: string | null
+          oculto?: boolean
+          slug: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          manual?: boolean
+          mesclar_em?: string | null
+          nome?: string | null
+          oculto?: boolean
+          slug?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       pagina: {
         Row: {
           atualizado_em: string | null

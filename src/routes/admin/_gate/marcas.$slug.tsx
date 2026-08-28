@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { ExternalLink, Save } from "lucide-react";
 import { toast } from "sonner";
 
@@ -13,8 +13,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
-import brandsJson from "@/data/brands.json";
 import { CAMPOS_MARCA, caminhoMarca } from "@/lib/marcas-core";
+import { listarMarcasAdmin, salvarMarcaAdmin } from "@/lib/marcas-admin";
 import {
   carregarPaginaAdmin,
   salvarPaginaAdmin,
@@ -22,8 +22,6 @@ import {
 } from "@/lib/paginas-admin";
 import { SITE_URL } from "@/lib/seo";
 import type { Blocos, JsonValor } from "@/lib/paginas-core";
-
-type MarcaJson = { nome: string; slug: string; totalProdutos: number };
 
 export const Route = createFileRoute("/admin/_gate/marcas/$slug")({
   head: () => ({
@@ -52,9 +50,19 @@ function Contador({ texto, limite }: { texto: string; limite: number }) {
 function EditarMarcaPage() {
   const { slug } = Route.useParams();
   const navigate = useNavigate();
-  const marca = (brandsJson as MarcaJson[]).find((m) => m.slug === slug);
+  const qc = useQueryClient();
   const caminho = caminhoMarca(slug);
 
+  const { data: marcas, isLoading: carregandoMarcas } = useQuery({
+    queryKey: ["admin", "marcas"],
+    queryFn: listarMarcasAdmin,
+    retry: false,
+  });
+  const marca = marcas?.find((m) => m.slug === slug);
+
+  const [nome, setNome] = useState("");
+  const [mesclarEm, setMesclarEm] = useState("");
+  const [oculto, setOculto] = useState(false);
   const [blocos, setBlocos] = useState<Blocos>({});
   const [seo, setSeo] = useState<SeoRotaAdmin>({
     caminho,
@@ -68,7 +76,6 @@ function EditarMarcaPage() {
   const { data, isLoading } = useQuery({
     queryKey: ["admin", "pagina", caminho],
     queryFn: () => carregarPaginaAdmin(caminho),
-    enabled: !!marca,
     retry: false,
   });
 
@@ -79,11 +86,19 @@ function EditarMarcaPage() {
     }
   }, [data]);
 
+  useEffect(() => {
+    if (marca) {
+      setNome(marca.nome);
+      setMesclarEm(marca.mesclarEm ?? "");
+      setOculto(marca.oculto);
+    }
+  }, [marca]);
+
+  if (isLoading || carregandoMarcas) {
+    return <p className="text-sm text-muted-foreground">Carregando…</p>;
+  }
   if (!marca) {
     return <p className="text-sm text-muted-foreground">Marca não encontrada.</p>;
-  }
-  if (isLoading) {
-    return <p className="text-sm text-muted-foreground">Carregando…</p>;
   }
 
   function definir(chave: string, valor: JsonValor) {
@@ -91,9 +106,19 @@ function EditarMarcaPage() {
   }
 
   async function salvar() {
+    if (!marca) return;
     setSalvando(true);
     try {
+      await salvarMarcaAdmin({
+        slug,
+        nome: nome.trim() && nome.trim() !== marca.nomeOriginal ? nome.trim() : null,
+        mesclarEm: mesclarEm === slug ? null : mesclarEm,
+        oculto,
+        manual: marca.manual,
+      });
       await salvarPaginaAdmin(caminho, blocos, seo);
+      void qc.invalidateQueries({ queryKey: ["admin", "marcas"] });
+      void qc.invalidateQueries({ queryKey: ["marca_overlay"] });
       toast.success("Marca salva.");
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Falha ao salvar.");
@@ -127,6 +152,55 @@ function EditarMarcaPage() {
       </div>
 
       <div className="mt-6 space-y-5">
+        <section className="rounded-lg border border-border bg-card p-4">
+          <h2 className="text-sm font-semibold uppercase">Dados da marca</h2>
+          <div className="mt-3 space-y-3">
+            <div>
+              <Label htmlFor="marca-nome">Nome exibido</Label>
+              <Input
+                id="marca-nome"
+                value={nome}
+                onChange={(e) => setNome(e.target.value)}
+                placeholder={marca.nomeOriginal ?? marca.slug}
+              />
+              {marca.nomeOriginal && marca.nomeOriginal !== nome.trim() && (
+                <p className="mt-1 text-xs text-muted-foreground">
+                  Nome original do catálogo: {marca.nomeOriginal}
+                </p>
+              )}
+            </div>
+
+            <div>
+              <Label htmlFor="marca-mesclar">Mesclar em (marca duplicada)</Label>
+              <Input
+                id="marca-mesclar"
+                list="marcas-disponiveis"
+                value={mesclarEm}
+                onChange={(e) => setMesclarEm(e.target.value.trim())}
+                placeholder="slug da marca principal — ex.: hippie-bong"
+              />
+              <datalist id="marcas-disponiveis">
+                {(marcas ?? [])
+                  .filter((m) => m.slug !== slug)
+                  .map((m) => (
+                    <option key={m.slug} value={m.slug}>
+                      {m.nome}
+                    </option>
+                  ))}
+              </datalist>
+              <p className="mt-1 text-xs text-muted-foreground">
+                Ao mesclar, esta marca some das listagens e seus produtos passam a aparecer na
+                marca principal. Deixe em branco para não mesclar.
+              </p>
+            </div>
+
+            <label className="flex items-center justify-between text-sm">
+              Ocultar esta marca do site
+              <Switch checked={oculto} onCheckedChange={setOculto} />
+            </label>
+          </div>
+        </section>
+
         <CamposBlocos
           campos={CAMPOS_MARCA}
           blocos={blocos}
