@@ -1,0 +1,2 @@
+ALTER TABLE public.produto_overlay ADD COLUMN IF NOT EXISTS marca_slug text;
+CREATE INDEX IF NOT EXISTS produto_overlay_marca_slug_idx ON public.produto_overlay (marca_slug) WHERE marca_slug IS NOT NULL;

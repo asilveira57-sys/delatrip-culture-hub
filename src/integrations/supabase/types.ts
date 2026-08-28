@@ -519,6 +519,7 @@ export type Database = {
           destaque: boolean | null
           enriquecido_em: string | null
           enriquecido_modelo: string | null
+          marca_slug: string | null
           observacao: string | null
           oculto: boolean
           seo_descricao: string | null
@@ -535,6 +536,7 @@ export type Database = {
           destaque?: boolean | null
           enriquecido_em?: string | null
           enriquecido_modelo?: string | null
+          marca_slug?: string | null
           observacao?: string | null
           oculto?: boolean
           seo_descricao?: string | null
@@ -551,6 +553,7 @@ export type Database = {
           destaque?: boolean | null
           enriquecido_em?: string | null
           enriquecido_modelo?: string | null
+          marca_slug?: string | null
           observacao?: string | null
           oculto?: boolean
           seo_descricao?: string | null
