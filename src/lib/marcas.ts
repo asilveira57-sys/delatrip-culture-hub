@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import { supabase } from "@/integrations/supabase/client";
 import { brands as brandsJson, productsByBrand, type Brand, type Product } from "@/lib/catalog";
+import { produtosPorMarca, type MarcaDeProdutos } from "@/lib/marcas-produtos";
 
 /**
  * Camada de gestão de marcas.
@@ -68,9 +69,15 @@ export function slugsDaMarca(slug: string, mapa: MarcaMapa): string[] {
   return [...slugs];
 }
 
-/** Produtos da marca, somando os das duplicadas mescladas nela. */
-export function produtosDaMarca(slug: string, mapa: MarcaMapa): Product[] {
-  return slugsDaMarca(slug, mapa).flatMap((s) => productsByBrand(s));
+/** Produtos da marca, somando duplicadas mescladas e transferências do admin. */
+export function produtosDaMarca(
+  slug: string,
+  mapa: MarcaMapa,
+  produtoMarcas?: MarcaDeProdutos,
+): Product[] {
+  const slugs = slugsDaMarca(slug, mapa);
+  if (produtoMarcas && produtoMarcas.size > 0) return produtosPorMarca(slugs, produtoMarcas);
+  return slugs.flatMap((s) => productsByBrand(s));
 }
 
 function brandBase(slug: string): Brand | undefined {

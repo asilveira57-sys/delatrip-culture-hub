@@ -6,6 +6,7 @@ import { toast } from "sonner";
 
 import { BotaoSeoIa } from "@/components/admin/BotaoSeoIa";
 import { CamposBlocos } from "@/components/admin/CamposBlocos";
+import { ProdutosDaMarca } from "@/components/admin/ProdutosDaMarca";
 import { FaqEditor } from "@/components/admin/FaqEditor";
 import { GoogleSnippetPreview } from "@/components/admin/GoogleSnippetPreview";
 import { Button } from "@/components/ui/button";
@@ -200,6 +201,8 @@ function EditarMarcaPage() {
             </label>
           </div>
         </section>
+
+        <ProdutosDaMarca slug={slug} marcas={marcas ?? []} />
 
         <CamposBlocos
           campos={CAMPOS_MARCA}

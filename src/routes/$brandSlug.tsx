@@ -24,6 +24,7 @@ import {
 } from "@/lib/marcas";
 import { absoluteUrl, breadcrumbLd, canonical, jsonLd } from "@/lib/seo";
 import { mergeList, useOverlays } from "@/lib/overlay";
+import { useMarcaDeProdutos } from "@/lib/marcas-produtos";
 import { buildSrcSet } from "@/lib/media";
 
 export const Route = createFileRoute("/$brandSlug")({
@@ -175,9 +176,10 @@ function BrandContent({ marca }: { marca: Brand }) {
   );
   const overlays = useOverlays();
   const marcasOv = useMarcaOverlays();
+  const produtoMarcas = useMarcaDeProdutos();
   const produtos = useMemo(
-    () => mergeList(produtosDaMarca(marca.slug, marcasOv), overlays),
-    [marca.slug, overlays, marcasOv],
+    () => mergeList(produtosDaMarca(marca.slug, marcasOv, produtoMarcas), overlays),
+    [marca.slug, overlays, marcasOv, produtoMarcas],
   );
 
   const categorias = useMemo(() => {
