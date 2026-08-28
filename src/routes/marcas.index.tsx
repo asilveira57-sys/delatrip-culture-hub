@@ -4,7 +4,7 @@ import { absoluteUrl, canonical } from "@/lib/seo";
 
 import { BrandCard } from "@/components/BrandCard";
 import { PageHeader } from "@/components/PageHeader";
-import { brands } from "@/lib/catalog";
+import { marcasEfetivas, useMarcaOverlays } from "@/lib/marcas";
 
 export const Route = createFileRoute("/marcas/")({
   head: () => ({
