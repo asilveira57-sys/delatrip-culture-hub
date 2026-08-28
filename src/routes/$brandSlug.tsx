@@ -181,7 +181,20 @@ function BrandContent({ slug }: { slug: string }) {
   const [visiveis, setVisiveis] = useState(PAGINA);
   const [erroCapa, setErroCapa] = useState(false);
   const [carregandoCapa, setCarregandoCapa] = useState(true);
+  const capaRef = useRef<HTMLImageElement | null>(null);
   const reduzMovimento = usePrefersReducedMotion();
+
+  // A capa vem pré-carregada (preload) e costuma terminar antes da hidratação:
+  // nesse caso o onLoad nunca dispara e a imagem ficaria presa em opacity-0.
+  useEffect(() => {
+    const img = capaRef.current;
+    if (!img) return;
+    if (img.complete) {
+      setCarregandoCapa(false);
+      if (img.naturalWidth === 0) setErroCapa(true);
+    }
+  }, [conteudo.capa]);
+
 
   const lista = useMemo(() => {
     const q = termo.trim().toLowerCase();
