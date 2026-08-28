@@ -133,7 +133,14 @@ function usePrefersReducedMotion() {
 
 function BrandPage() {
   const { brandSlug } = Route.useParams();
-  const marca = getBrand(brandSlug);
+  const marcasOv = useMarcaOverlays();
+  const canonico = slugCanonico(brandSlug, marcasOv);
+  const marca = marcaEfetiva(canonico, marcasOv);
+
+  // Marca duplicada mesclada em outra: leva o visitante para a página principal.
+  if (canonico !== brandSlug && marca) {
+    return <Navigate to="/$brandSlug" params={{ brandSlug: canonico }} replace />;
+  }
 
   if (!marca) {
     return (
@@ -151,20 +158,20 @@ function BrandPage() {
     );
   }
 
-  return <BrandContent key={marca.slug} slug={marca.slug} />;
+  return <BrandContent key={marca.slug} marca={marca} />;
 }
 
-function BrandContent({ slug }: { slug: string }) {
-  const marca = getBrand(slug)!;
+function BrandContent({ marca }: { marca: Brand }) {
   const { blocos, faq } = Route.useLoaderData();
   const conteudo = conteudoMarca(
     getBrandPageContent(marca.slug, marca.nome, marca.totalProdutos),
     blocos,
   );
   const overlays = useOverlays();
+  const marcasOv = useMarcaOverlays();
   const produtos = useMemo(
-    () => mergeList(productsByBrand(marca.slug), overlays),
-    [marca.slug, overlays],
+    () => mergeList(produtosDaMarca(marca.slug, marcasOv), overlays),
+    [marca.slug, overlays, marcasOv],
   );
 
   const categorias = useMemo(() => {
