@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ImageOff, Search } from "lucide-react";
 
@@ -83,8 +83,9 @@ export const Route = createFileRoute("/$brandSlug")({
                 // variante certa para o viewport (mobile mais leve).
                 ...(buildSrcSet(conteudo.capa)
                   ? {
-                      imagesrcset: buildSrcSet(conteudo.capa),
-                      imagesizes: "(max-width: 768px) 100vw, 1200px",
+                      imageSrcSet: buildSrcSet(conteudo.capa),
+                      imageSizes: "(max-width: 768px) 100vw, 1200px",
+
                     }
                   : {}),
               } as const,
@@ -181,7 +182,20 @@ function BrandContent({ slug }: { slug: string }) {
   const [visiveis, setVisiveis] = useState(PAGINA);
   const [erroCapa, setErroCapa] = useState(false);
   const [carregandoCapa, setCarregandoCapa] = useState(true);
+  const capaRef = useRef<HTMLImageElement | null>(null);
   const reduzMovimento = usePrefersReducedMotion();
+
+  // A capa vem pré-carregada (preload) e costuma terminar antes da hidratação:
+  // nesse caso o onLoad nunca dispara e a imagem ficaria presa em opacity-0.
+  useEffect(() => {
+    const img = capaRef.current;
+    if (!img) return;
+    if (img.complete) {
+      setCarregandoCapa(false);
+      if (img.naturalWidth === 0) setErroCapa(true);
+    }
+  }, [conteudo.capa]);
+
 
   const lista = useMemo(() => {
     const q = termo.trim().toLowerCase();
@@ -223,7 +237,9 @@ function BrandContent({ slug }: { slug: string }) {
               </div>
             )}
             <img
+              ref={capaRef}
               src={conteudo.capa}
+
               srcSet={buildSrcSet(conteudo.capa)}
               alt={`Imagem de capa da marca ${marca.nome}`}
               width={1600}
