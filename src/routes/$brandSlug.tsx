@@ -236,7 +236,9 @@ function BrandContent({ slug }: { slug: string }) {
               </div>
             )}
             <img
+              ref={capaRef}
               src={conteudo.capa}
+
               srcSet={buildSrcSet(conteudo.capa)}
               alt={`Imagem de capa da marca ${marca.nome}`}
               width={1600}
