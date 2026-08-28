@@ -61,6 +61,7 @@ const VAZIO: OverlayAdmin = {
   enriquecido_modelo: null,
   status_revisao: null,
   observacao: null,
+  marca_slug: null,
 };
 
 function Contador({ texto, limite }: { texto: string; limite: number }) {
@@ -142,6 +143,7 @@ function ProdutoAdminPage() {
         destaque: form.destaque,
         status_revisao: form.status_revisao,
         observacao: form.observacao,
+        marca_slug: form.marca_slug,
       });
       await salvarRelacionadosAdmin(slug, prodRel, postRel);
     },
@@ -407,6 +409,45 @@ function ProdutoAdminPage() {
             {form.observacao && (
               <p className="mt-3 text-xs text-muted-foreground">{form.observacao}</p>
             )}
+          </div>
+
+          <div className="rounded-lg border border-border bg-card p-4 text-sm">
+            <h2 className="text-sm font-semibold">Marca</h2>
+            <p className="mt-1 text-xs text-muted-foreground">
+              Catálogo: {produto?.marca ?? "sem marca"}. Informe outro slug para transferir este
+              produto de marca; deixe em branco para manter o catálogo.
+            </p>
+            <Input
+              className="mt-2"
+              list="marcas-admin"
+              value={form.marca_slug ?? ""}
+              onChange={(e) => setForm((f) => ({ ...f, marca_slug: e.target.value.trim() }))}
+              placeholder="slug da marca — ex.: raw"
+              aria-label="Marca do produto"
+            />
+            <datalist id="marcas-admin">
+              {brands.map((b) => (
+                <option key={b.slug} value={b.slug}>
+                  {b.nome}
+                </option>
+              ))}
+            </datalist>
+            <div className="mt-2 flex gap-2">
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => setForm((f) => ({ ...f, marca_slug: "" }))}
+              >
+                Sem marca
+              </Button>
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={() => setForm((f) => ({ ...f, marca_slug: null }))}
+              >
+                Usar catálogo
+              </Button>
+            </div>
           </div>
 
           <div className="rounded-lg border border-border bg-card p-4 text-sm">
