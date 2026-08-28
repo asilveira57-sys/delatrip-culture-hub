@@ -15,7 +15,13 @@ import { carregarPagina } from "@/lib/paginas.functions";
 import { FaqSecao } from "@/components/FaqSecao";
 import { faqLd } from "@/lib/faq-core";
 import { carregarFaq } from "@/lib/faq.functions";
-import { getBrand, productsByBrand, sortProducts, type SortKey } from "@/lib/catalog";
+import { getBrand, sortProducts, type Brand, type SortKey } from "@/lib/catalog";
+import {
+  marcaEfetiva,
+  produtosDaMarca,
+  slugCanonico,
+  useMarcaOverlays,
+} from "@/lib/marcas";
 import { absoluteUrl, breadcrumbLd, canonical, jsonLd } from "@/lib/seo";
 import { mergeList, useOverlays } from "@/lib/overlay";
 import { buildSrcSet } from "@/lib/media";
