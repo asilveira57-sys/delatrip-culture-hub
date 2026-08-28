@@ -17,10 +17,11 @@ export type OverlayAdmin = {
   enriquecido_modelo: string | null;
   status_revisao: string | null;
   observacao: string | null;
+  marca_slug: string | null;
 };
 
 export const CAMPOS_OVERLAY =
-  "slug, descricao_html, descricao_original, seo_titulo, seo_descricao, seo_keywords, oculto, destaque, enriquecido_em, enriquecido_modelo, status_revisao, observacao";
+  "slug, descricao_html, descricao_original, seo_titulo, seo_descricao, seo_keywords, oculto, destaque, enriquecido_em, enriquecido_modelo, status_revisao, observacao, marca_slug";
 
 export type StatusEnriquecimento =
   | "original"

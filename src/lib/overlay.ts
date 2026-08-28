@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 
 import { supabase } from "@/integrations/supabase/client";
-import type { Product } from "@/lib/catalog";
+import { brandName, type Product } from "@/lib/catalog";
 
 /**
  * Camada de sobreposição editorial.
@@ -20,6 +20,8 @@ export type Overlay = {
   oculto: boolean;
   destaque: boolean | null;
   status_revisao: string | null;
+  /** Marca definida no admin: slug de outra marca, "" para sem marca, null = catálogo. */
+  marca_slug: string | null;
 };
 
 export type OverlayMap = Map<string, Overlay>;
@@ -32,7 +34,7 @@ export async function fetchOverlays(): Promise<OverlayMap> {
     const { data, error } = await supabase
       .from("produto_overlay")
       .select(
-        "slug, descricao_html, seo_titulo, seo_descricao, oculto, destaque, status_revisao",
+        "slug, descricao_html, seo_titulo, seo_descricao, oculto, destaque, status_revisao, marca_slug",
       )
       .limit(5000);
     if (error || !data) return VAZIO;
@@ -60,10 +62,16 @@ export function isHidden(slug: string, overlays: OverlayMap) {
 export function mergeProduct(produto: Product, overlays: OverlayMap): Product {
   const ov = overlays.get(produto.slug);
   if (!ov) return produto;
-  return {
-    ...produto,
-    destaque: ov.destaque ?? produto.destaque,
-  };
+  return aplicar(produto, ov);
+}
+
+/** Aplica destaque e a marca transferida no admin. */
+function aplicar(p: Product, ov: Overlay): Product {
+  const base = { ...p, destaque: ov.destaque ?? p.destaque };
+  if (ov.marca_slug === null || ov.marca_slug === undefined) return base;
+  const slug = ov.marca_slug.trim();
+  if (!slug) return { ...base, marca: null, marcaSlug: null };
+  return { ...base, marca: brandName(slug) ?? slug, marcaSlug: slug };
 }
 
 /** Remove ocultos e aplica sobreposições de uma lista de produtos. */
@@ -73,7 +81,7 @@ export function mergeList(lista: Product[], overlays: OverlayMap): Product[] {
   for (const p of lista) {
     const ov = overlays.get(p.slug);
     if (ov?.oculto) continue;
-    out.push(ov ? { ...p, destaque: ov.destaque ?? p.destaque } : p);
+    out.push(ov ? aplicar(p, ov) : p);
   }
   return out;
 }
