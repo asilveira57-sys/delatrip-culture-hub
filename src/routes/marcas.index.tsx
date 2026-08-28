@@ -28,6 +28,8 @@ export const Route = createFileRoute("/marcas/")({
 });
 
 function MarcasPage() {
+  const overlays = useMarcaOverlays();
+  const marcas = marcasEfetivas(overlays);
   return (
     <>
       <PageHeader
