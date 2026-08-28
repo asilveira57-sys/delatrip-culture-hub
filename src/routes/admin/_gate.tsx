@@ -108,14 +108,19 @@ function AdminLayout() {
 
       <div className="flex min-w-0 flex-1 flex-col">
         <header className="flex items-center justify-between border-b border-border bg-card px-4 py-3">
-          <div className="flex items-center gap-3 md:hidden">
-            <Link to="/admin" className="text-sm font-semibold">
-              Painel
-            </Link>
-            <Link to="/admin/seo" className="text-sm text-muted-foreground">
-              SEO
-            </Link>
-          </div>
+          <nav className="-mx-1 flex max-w-full items-center gap-1 overflow-x-auto md:hidden">
+            {ITENS.filter((i) => i.ativo).map((item) => (
+              <Link
+                key={item.label}
+                to={item.to}
+                activeOptions={{ exact: item.to === "/admin" }}
+                className="shrink-0 rounded-md px-2.5 py-1.5 text-sm text-muted-foreground"
+                activeProps={{ className: "bg-muted font-medium text-foreground" }}
+              >
+                {item.label}
+              </Link>
+            ))}
+          </nav>
           <p className="hidden text-sm text-muted-foreground md:block">
             Área privada — não indexada
           </p>
