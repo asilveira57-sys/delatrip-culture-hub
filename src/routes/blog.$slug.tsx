@@ -101,7 +101,7 @@ export const Route = createFileRoute("/blog/$slug")({
 });
 
 function PostPage() {
-  const { post, faq } = Route.useLoaderData();
+  const { post, faq, relacionados } = Route.useLoaderData();
 
   if (!post) {
     return (
@@ -119,32 +119,47 @@ function PostPage() {
   }
 
   return (
-    <article className="mx-auto max-w-3xl px-4 py-10">
-      <Breadcrumb items={[{ label: "Blog", to: "/blog" }, { label: post.titulo }]} />
-      <p className="eyebrow text-primary">{post.categoria}</p>
-      <h1 className="mt-2 text-3xl font-bold uppercase sm:text-4xl">{post.titulo}</h1>
-      <p className="mt-3 text-sm text-muted-foreground">
-        {formatDate(post.data)}
-        {post.autor ? ` · ${post.autor}` : ""}
-      </p>
-      <img
-        src={resolverCapa(post.capaUrl)}
-        alt={post.capaAlt ?? post.titulo}
-        loading="lazy"
-        width={1024}
-        height={1024}
-        className="mt-8 aspect-[16/9] w-full rounded-lg border border-border bg-ink object-cover"
-      />
-      {post.resumo ? (
-        <p className="mt-8 text-lg leading-relaxed text-muted-foreground">{post.resumo}</p>
-      ) : null}
-      <ArtigoConteudo html={post.conteudoHtml} className="mt-6" />
+    <>
+      <article className="mx-auto max-w-3xl px-4 py-10">
+        <Breadcrumb items={[{ label: "Blog", to: "/blog" }, { label: post.titulo }]} />
+        <p className="eyebrow text-primary">{post.categoria}</p>
+        <h1 className="mt-2 text-3xl font-bold uppercase sm:text-4xl">{post.titulo}</h1>
+        <p className="mt-3 text-sm text-muted-foreground">
+          {formatDate(post.data)}
+          {post.autor ? ` · ${post.autor}` : ""}
+        </p>
+        <img
+          src={resolverCapa(post.capaUrl)}
+          alt={post.capaAlt ?? post.titulo}
+          loading="lazy"
+          width={1024}
+          height={1024}
+          className="mt-8 aspect-[16/9] w-full rounded-lg border border-border bg-ink object-cover"
+        />
+        {post.resumo ? (
+          <p className="mt-8 text-lg leading-relaxed text-muted-foreground">{post.resumo}</p>
+        ) : null}
+        <ArtigoConteudo html={post.conteudoHtml} className="mt-6" />
 
-      <FaqSecao itens={faq} className="mt-12 border-t border-border pt-8" />
+        <FaqSecao itens={faq} className="mt-12 border-t border-border pt-8" />
 
-      <div className="mt-10 border-t border-border pt-6">
-        <Curtir tipo="post" alvo={post.slug} />
+        <div className="mt-10 border-t border-border pt-6">
+          <Curtir tipo="post" alvo={post.slug} />
+        </div>
+      </article>
+
+      <div className="mx-auto max-w-6xl px-4 pb-16">
+        <ProdutosRelacionados
+          slugPost={post.slug}
+          produtos={relacionados?.produtos ?? []}
+          className="border-t border-border pt-8"
+        />
+        <ConteudosRelacionados
+          slugPost={post.slug}
+          posts={relacionados?.posts ?? []}
+          className="mt-12 border-t border-border pt-8"
+        />
       </div>
-    </article>
+    </>
   );
 }
