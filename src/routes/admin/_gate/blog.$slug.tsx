@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import { BotaoSeoIa } from "@/components/admin/BotaoSeoIa";
 import { FaqEditor } from "@/components/admin/FaqEditor";
 import { GoogleSnippetPreview } from "@/components/admin/GoogleSnippetPreview";
+import { RelacionamentosEditor } from "@/components/admin/RelacionamentosEditor";
 import { SocialCardsEditor } from "@/components/admin/SocialCardsEditor";
 import { RichTextEditor } from "@/components/editor/RichTextEditor";
 import { Button } from "@/components/ui/button";
@@ -301,6 +302,26 @@ function EditorPostPage() {
             extra={post.categoria ? `Categoria: ${post.categoria}` : null}
             habilitado={!!slugOriginal}
           />
+
+          <RelacionamentosEditor
+            slug={slugOriginal ?? post.slug}
+            habilitado={!!slugOriginal}
+            conteudoHtml={post.conteudo_html ?? ""}
+            onConteudoHtml={(html) => alterar("conteudo_html", html)}
+            doc={{
+              slug: slugOriginal ?? post.slug,
+              titulo: post.titulo,
+              resumo: post.resumo,
+              conteudoHtml: post.conteudo_html,
+              categoria: post.categoria,
+              seoTitulo: post.seo_titulo,
+              seoDescricao: post.seo_descricao,
+              keywords: post.seo_keywords ?? null,
+              data: post.publicado_em,
+            }}
+          />
+
+
 
           <SocialCardsEditor
             valores={{
