@@ -9,6 +9,9 @@ import { EmptyState } from "@/components/EmptyState";
 import { Button } from "@/components/ui/button";
 import { artigoLd, resolverCapa } from "@/lib/blog-core";
 import { obterPostPublico } from "@/lib/blog.functions";
+import { ConteudosRelacionados } from "@/components/ConteudosRelacionados";
+import { ProdutosRelacionados } from "@/components/ProdutosRelacionados";
+import { carregarRelacionados } from "@/lib/relacionamentos.functions";
 import { FaqSecao } from "@/components/FaqSecao";
 import { faqLd } from "@/lib/faq-core";
 import { carregarFaq } from "@/lib/faq.functions";
@@ -16,11 +19,12 @@ import { formatDate } from "@/lib/editorial";
 
 export const Route = createFileRoute("/blog/$slug")({
   loader: async ({ params }) => {
-    const [post, faq] = await Promise.all([
+    const [post, faq, relacionados] = await Promise.all([
       obterPostPublico({ data: { slug: params.slug } }),
       carregarFaq({ data: { tipo: "post", alvo: params.slug } }),
+      carregarRelacionados({ data: { slug: params.slug } }),
     ]);
-    return { post, faq };
+    return { post, faq, relacionados };
   },
   head: ({ params, loaderData }) => {
     const post = loaderData?.post ?? null;
