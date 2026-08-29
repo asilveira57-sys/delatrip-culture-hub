@@ -14,6 +14,30 @@ export type Database = {
   }
   public: {
     Tables: {
+      cluster_seo: {
+        Row: {
+          created_at: string
+          descricao: string | null
+          nome: string
+          slug: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          descricao?: string | null
+          nome: string
+          slug: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          descricao?: string | null
+          nome?: string
+          slug?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       config_site: {
         Row: {
           chave: string
@@ -507,6 +531,215 @@ export type Database = {
           slug?: string
           titulo?: string
           twitter_card?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      post_cluster: {
+        Row: {
+          cluster_slug: string
+          created_at: string
+          principal: boolean
+          slug_post: string
+          updated_at: string
+        }
+        Insert: {
+          cluster_slug: string
+          created_at?: string
+          principal?: boolean
+          slug_post: string
+          updated_at?: string
+        }
+        Update: {
+          cluster_slug?: string
+          created_at?: string
+          principal?: boolean
+          slug_post?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "post_cluster_cluster_slug_fkey"
+            columns: ["cluster_slug"]
+            isOneToOne: false
+            referencedRelation: "cluster_seo"
+            referencedColumns: ["slug"]
+          },
+        ]
+      }
+      post_link_interno: {
+        Row: {
+          ancora: string
+          created_at: string
+          id: string
+          score: number
+          slug_destino: string
+          slug_post: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          ancora: string
+          created_at?: string
+          id?: string
+          score?: number
+          slug_destino: string
+          slug_post: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          ancora?: string
+          created_at?: string
+          id?: string
+          score?: number
+          slug_destino?: string
+          slug_post?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      post_post_relacao: {
+        Row: {
+          created_at: string
+          excluido: boolean
+          fixado: boolean
+          manual: boolean
+          origem: string
+          posicao: number
+          score: number
+          slug_destino: string
+          slug_origem: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          excluido?: boolean
+          fixado?: boolean
+          manual?: boolean
+          origem?: string
+          posicao?: number
+          score?: number
+          slug_destino: string
+          slug_origem: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          excluido?: boolean
+          fixado?: boolean
+          manual?: boolean
+          origem?: string
+          posicao?: number
+          score?: number
+          slug_destino?: string
+          slug_origem?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      post_produto_relacao: {
+        Row: {
+          created_at: string
+          excluido: boolean
+          fixado: boolean
+          manual: boolean
+          origem: string
+          posicao: number
+          score: number
+          slug_post: string
+          slug_produto: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          excluido?: boolean
+          fixado?: boolean
+          manual?: boolean
+          origem?: string
+          posicao?: number
+          score?: number
+          slug_post: string
+          slug_produto: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          excluido?: boolean
+          fixado?: boolean
+          manual?: boolean
+          origem?: string
+          posicao?: number
+          score?: number
+          slug_post?: string
+          slug_produto?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      post_relacionamento_config: {
+        Row: {
+          categorias: Json
+          created_at: string
+          exibir_sem_estoque: boolean | null
+          modo_conteudos: string
+          modo_produtos: string
+          ordenacao_conteudos: string
+          ordenacao_produtos: string
+          quantidade_conteudos: number | null
+          quantidade_produtos: number | null
+          recalculado_em: string | null
+          slug_post: string
+          updated_at: string
+        }
+        Insert: {
+          categorias?: Json
+          created_at?: string
+          exibir_sem_estoque?: boolean | null
+          modo_conteudos?: string
+          modo_produtos?: string
+          ordenacao_conteudos?: string
+          ordenacao_produtos?: string
+          quantidade_conteudos?: number | null
+          quantidade_produtos?: number | null
+          recalculado_em?: string | null
+          slug_post: string
+          updated_at?: string
+        }
+        Update: {
+          categorias?: Json
+          created_at?: string
+          exibir_sem_estoque?: boolean | null
+          modo_conteudos?: string
+          modo_produtos?: string
+          ordenacao_conteudos?: string
+          ordenacao_produtos?: string
+          quantidade_conteudos?: number | null
+          quantidade_produtos?: number | null
+          recalculado_em?: string | null
+          slug_post?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      post_tag: {
+        Row: {
+          created_at: string
+          slug_post: string
+          tag: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          slug_post: string
+          tag: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          slug_post?: string
+          tag?: string
           updated_at?: string
         }
         Relationships: []
