@@ -207,7 +207,12 @@ function ConfiguracoesPage() {
             onChange={(v) => atualizar("lgpd", "atualizadoEm", v)}
           />
         </TabsContent>
+
+        <TabsContent value="relacionados" className="mt-4">
+          <RelacionadosGlobal />
+        </TabsContent>
       </Tabs>
+
     </div>
   );
 }
