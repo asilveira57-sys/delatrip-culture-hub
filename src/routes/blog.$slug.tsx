@@ -16,6 +16,8 @@ import { FaqSecao } from "@/components/FaqSecao";
 import { faqLd } from "@/lib/faq-core";
 import { carregarFaq } from "@/lib/faq.functions";
 import { formatDate } from "@/lib/editorial";
+import { dividirNoMarcador } from "@/lib/sanitize";
+
 
 export const Route = createFileRoute("/blog/$slug")({
   loader: async ({ params }) => {
