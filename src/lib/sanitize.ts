@@ -33,6 +33,7 @@ export const TAGS_PERMITIDAS = [
   "th",
   "td",
   "span",
+  "div",
 ];
 
 const ATRIBUTOS_PERMITIDOS = [
@@ -49,6 +50,7 @@ const ATRIBUTOS_PERMITIDOS = [
   "loading",
   "frameborder",
   "data-align",
+  "data-bloco",
   "style",
   "colspan",
   "rowspan",
@@ -165,4 +167,17 @@ export function htmlParaTexto(html: string | null | undefined) {
     .replace(/<[^>]+>/g, " ")
     .replace(/\s+/g, " ")
     .trim();
+}
+
+/** Marcador do bloco de produtos relacionados inserido no meio do texto. */
+export const MARCADOR_PRODUTOS = '<div data-bloco="produtos-relacionados"></div>';
+
+const RE_MARCADOR = /<div[^>]*data-bloco=["\']produtos-relacionados["\'][^>]*>\s*<\/div>/i;
+
+/** Divide o HTML no marcador: [antes, depois]. Sem marcador, depois é null. */
+export function dividirNoMarcador(html: string | null | undefined): [string, string | null] {
+  const texto = html ?? "";
+  const achado = RE_MARCADOR.exec(texto);
+  if (!achado) return [texto, null];
+  return [texto.slice(0, achado.index), texto.slice(achado.index + achado[0].length)];
 }
