@@ -102,7 +102,9 @@ function ConfiguracoesPage() {
           <TabsTrigger value="redes">Redes sociais</TabsTrigger>
           <TabsTrigger value="seo">SEO padrão</TabsTrigger>
           <TabsTrigger value="lgpd">LGPD</TabsTrigger>
+          <TabsTrigger value="relacionados">Relacionados</TabsTrigger>
         </TabsList>
+
 
         <TabsContent value="empresa" className="mt-4 space-y-4">
           <Campo
