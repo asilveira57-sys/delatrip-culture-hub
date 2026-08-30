@@ -16,6 +16,8 @@ import { FaqSecao } from "@/components/FaqSecao";
 import { faqLd } from "@/lib/faq-core";
 import { carregarFaq } from "@/lib/faq.functions";
 import { formatDate } from "@/lib/editorial";
+import { dividirNoMarcador } from "@/lib/sanitize";
+
 
 export const Route = createFileRoute("/blog/$slug")({
   loader: async ({ params }) => {
@@ -102,6 +104,8 @@ export const Route = createFileRoute("/blog/$slug")({
 
 function PostPage() {
   const { post, faq, relacionados } = Route.useLoaderData();
+  const [antes, depois] = dividirNoMarcador(post?.conteudoHtml);
+
 
   if (!post) {
     return (
@@ -139,7 +143,19 @@ function PostPage() {
         {post.resumo ? (
           <p className="mt-8 text-lg leading-relaxed text-muted-foreground">{post.resumo}</p>
         ) : null}
-        <ArtigoConteudo html={post.conteudoHtml} className="mt-6" />
+        <ArtigoConteudo html={antes} className="mt-6" />
+        {depois !== null ? (
+          <>
+            <ProdutosRelacionados
+              slugPost={post.slug}
+              produtos={relacionados?.produtos ?? []}
+              titulo="Produtos citados"
+              className="my-10 border-y border-border py-8"
+            />
+            <ArtigoConteudo html={depois} />
+          </>
+        ) : null}
+
 
         <FaqSecao itens={faq} className="mt-12 border-t border-border pt-8" />
 

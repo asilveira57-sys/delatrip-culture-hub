@@ -9,7 +9,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { RelacionadosGlobal } from "@/components/admin/RelacionadosGlobal";
 import { carregarConfigAdmin, salvarConfigAdmin } from "@/lib/portal-admin";
+
 import type { PortalConfig } from "@/lib/portal-core";
 import { PORTAL_CONFIG_PADRAO } from "@/lib/portal-defaults";
 
@@ -102,7 +104,9 @@ function ConfiguracoesPage() {
           <TabsTrigger value="redes">Redes sociais</TabsTrigger>
           <TabsTrigger value="seo">SEO padrão</TabsTrigger>
           <TabsTrigger value="lgpd">LGPD</TabsTrigger>
+          <TabsTrigger value="relacionados">Relacionados</TabsTrigger>
         </TabsList>
+
 
         <TabsContent value="empresa" className="mt-4 space-y-4">
           <Campo
@@ -205,7 +209,12 @@ function ConfiguracoesPage() {
             onChange={(v) => atualizar("lgpd", "atualizadoEm", v)}
           />
         </TabsContent>
+
+        <TabsContent value="relacionados" className="mt-4">
+          <RelacionadosGlobal />
+        </TabsContent>
       </Tabs>
+
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { Check, Link2, Pin, RefreshCw, Search, X } from "lucide-react";
+import { Boxes, Check, Link2, Pin, RefreshCw, Search, Sparkles, X } from "lucide-react";
 import { toast } from "sonner";
 
 import { Badge } from "@/components/ui/badge";
@@ -54,6 +54,8 @@ import {
   type Ordenacao,
 } from "@/lib/relacionamentos-core";
 import { gerarSlug } from "@/lib/blog-admin";
+import { gerarTaxonomiaIa } from "@/lib/taxonomia-ia.functions";
+import { MARCADOR_PRODUTOS, dividirNoMarcador } from "@/lib/sanitize";
 
 type Props = {
   slug: string;
@@ -146,6 +148,67 @@ export function RelacionamentosEditor({
     if (!data) return [];
     return pontuarPosts(docCompleto, candidatos, data.global);
   }, [data, docCompleto, candidatos]);
+
+  const temBloco = dividirNoMarcador(conteudoHtml)[1] !== null;
+
+  /** Insere (no meio do texto) ou remove o bloco de produtos relacionados. */
+  function alternarBloco() {
+    if (temBloco) {
+      const [antes, depois] = dividirNoMarcador(conteudoHtml);
+      onConteudoHtml(`${antes}${depois ?? ""}`);
+      toast.success("Bloco removido do texto.");
+      return;
+    }
+    const partes = conteudoHtml.split(/(?<=<\/p>)/i).filter((p) => p.trim());
+    if (partes.length < 2) {
+      onConteudoHtml(`${conteudoHtml}${MARCADOR_PRODUTOS}`);
+    } else {
+      const meio = Math.ceil(partes.length / 2);
+      onConteudoHtml(
+        `${partes.slice(0, meio).join("")}${MARCADOR_PRODUTOS}${partes.slice(meio).join("")}`,
+      );
+    }
+    toast.success("Bloco inserido. Salve o post para publicar.");
+  }
+
+  /** Pede tags e cluster à IA e grava as sugestões aceitas de uma vez. */
+  async function sugerirTaxonomia() {
+    if (!data) return;
+    setOcupado(true);
+    try {
+      const resultado = await gerarTaxonomiaIa({
+        data: {
+          titulo: doc.titulo,
+          contexto: [doc.resumo ?? "", conteudoHtml].join("\n"),
+          clustersExistentes: data.clusters.map((c) => c.nome),
+        },
+      });
+      if (!resultado.ok) {
+        toast.error(resultado.erro ?? "Falha ao sugerir taxonomia.");
+        return;
+      }
+      const tags = [...new Set([...data.tags, ...resultado.tags])];
+      await salvarTagsDoPost(slug, tags);
+      if (resultado.cluster) {
+        const slugCluster = gerarSlug(resultado.cluster);
+        const existente = data.clusters.find((c) => c.slug === slugCluster);
+        if (!existente) {
+          await salvarCluster({ slug: slugCluster, nome: resultado.cluster, descricao: null });
+        }
+        const outros = data.meusClusters.filter((m) => m.cluster_slug !== slugCluster);
+        await salvarClustersDoPost(slug, [
+          ...outros,
+          { cluster_slug: slugCluster, principal: outros.length === 0 },
+        ]);
+      }
+      await recarregar();
+      toast.success("Tags e cluster sugeridos pela IA.");
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Falha ao chamar a IA.");
+    } finally {
+      setOcupado(false);
+    }
+  }
 
   async function recarregar() {
     await queryClient.invalidateQueries({ queryKey: chave });
@@ -310,6 +373,23 @@ export function RelacionamentosEditor({
 
         {/* ---------------- Produtos ---------------- */}
         <TabsContent value="produtos" className="space-y-4">
+          <div className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-border p-3">
+            <p className="text-xs text-muted-foreground">
+              {temBloco
+                ? "O bloco de produtos está inserido no meio do texto."
+                : "Insira o bloco de produtos no meio do texto do post."}
+            </p>
+            <Button
+              variant="outline"
+              size="sm"
+              disabled={ocupado}
+              onClick={() => alternarBloco()}
+            >
+              <Boxes className="size-4" />
+              {temBloco ? "Remover bloco do texto" : "Inserir bloco no texto"}
+            </Button>
+          </div>
+
           <div className="grid gap-3 sm:grid-cols-3">
             <div>
               <Label>Modo</Label>
@@ -725,6 +805,14 @@ export function RelacionamentosEditor({
 
         {/* ---------------- Cluster e tags ---------------- */}
         <TabsContent value="cluster" className="space-y-4">
+          <div className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-border p-3">
+            <p className="text-xs text-muted-foreground">
+              A IA lê o texto e sugere tags e um cluster temático.
+            </p>
+            <Button variant="outline" size="sm" disabled={ocupado} onClick={() => void sugerirTaxonomia()}>
+              <Sparkles className="size-4" /> Sugerir com IA
+            </Button>
+          </div>
           <div>
             <Label>Cluster SEO</Label>
             <div className="mt-2 flex flex-wrap gap-2">
