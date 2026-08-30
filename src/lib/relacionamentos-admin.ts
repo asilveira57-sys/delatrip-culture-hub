@@ -349,6 +349,70 @@ export async function recalcularPost(
   return { produtos: produtosCalc.length, posts: postsCalc.length };
 }
 
+/* ---------------- recálculo em lote ---------------- */
+
+/** Monta o documento de todos os posts (com tags e clusters) numa só ida ao banco. */
+export async function documentosDeTodosPosts(): Promise<DocumentoPost[]> {
+  const { listarPostsAdmin } = await import("@/lib/blog-admin");
+  const [posts, tags, clusters, nomes] = await Promise.all([
+    listarPostsAdmin(),
+    supabase.from("post_tag").select("slug_post, tag").limit(20000),
+    supabase.from("post_cluster").select("slug_post, cluster_slug").limit(20000),
+    listarClusters(),
+  ]);
+  const nomePorSlug = new Map(nomes.map((c) => [c.slug, c.nome]));
+  const tagsPorPost = new Map<string, string[]>();
+  for (const linha of tags.data ?? []) {
+    const lista = tagsPorPost.get(linha.slug_post as string) ?? [];
+    lista.push(linha.tag as string);
+    tagsPorPost.set(linha.slug_post as string, lista);
+  }
+  const clustersPorPost = new Map<string, string[]>();
+  for (const linha of clusters.data ?? []) {
+    const slugCluster = linha.cluster_slug as string;
+    const lista = clustersPorPost.get(linha.slug_post as string) ?? [];
+    lista.push(nomePorSlug.get(slugCluster) ?? slugCluster);
+    clustersPorPost.set(linha.slug_post as string, lista);
+  }
+  return posts.map((p) => ({
+    slug: p.slug,
+    titulo: p.titulo,
+    resumo: p.resumo,
+    conteudoHtml: p.conteudo_html,
+    categoria: p.categoria,
+    seoTitulo: p.seo_titulo,
+    seoDescricao: p.seo_descricao,
+    keywords: p.seo_keywords ?? null,
+    tags: tagsPorPost.get(p.slug) ?? [],
+    clusters: clustersPorPost.get(p.slug) ?? [],
+    data: p.publicado_em,
+  }));
+}
+
+/**
+ * Recalcula as relações de todas as postagens. Preserva decisões manuais e
+ * reporta o progresso para a interface não parecer travada.
+ */
+export async function recalcularTodos(
+  onProgresso?: (feitos: number, total: number, slug: string) => void,
+): Promise<{ posts: number; falhas: string[] }> {
+  const global = await carregarConfigGlobal();
+  const docs = await documentosDeTodosPosts();
+  const falhas: string[] = [];
+  let feitos = 0;
+  for (const doc of docs) {
+    try {
+      await recalcularPost(doc, docs, { global });
+    } catch {
+      falhas.push(doc.slug);
+    }
+    feitos += 1;
+    onProgresso?.(feitos, docs.length, doc.slug);
+  }
+  return { posts: docs.length, falhas };
+}
+
+
 /* ---------------- links internos ---------------- */
 
 export async function listarLinksInternos(slugPost: string): Promise<LinkInterno[]> {
