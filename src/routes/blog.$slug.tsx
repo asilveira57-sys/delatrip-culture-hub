@@ -102,6 +102,8 @@ export const Route = createFileRoute("/blog/$slug")({
 
 function PostPage() {
   const { post, faq, relacionados } = Route.useLoaderData();
+  const [antes, depois] = dividirNoMarcador(post?.conteudoHtml);
+
 
   if (!post) {
     return (
