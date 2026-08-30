@@ -310,6 +310,23 @@ export function RelacionamentosEditor({
 
         {/* ---------------- Produtos ---------------- */}
         <TabsContent value="produtos" className="space-y-4">
+          <div className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-border p-3">
+            <p className="text-xs text-muted-foreground">
+              {temBloco
+                ? "O bloco de produtos está inserido no meio do texto."
+                : "Insira o bloco de produtos no meio do texto do post."}
+            </p>
+            <Button
+              variant="outline"
+              size="sm"
+              disabled={ocupado}
+              onClick={() => alternarBloco()}
+            >
+              <Boxes className="size-4" />
+              {temBloco ? "Remover bloco do texto" : "Inserir bloco no texto"}
+            </Button>
+          </div>
+
           <div className="grid gap-3 sm:grid-cols-3">
             <div>
               <Label>Modo</Label>
