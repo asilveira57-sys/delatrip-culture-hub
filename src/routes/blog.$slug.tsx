@@ -139,7 +139,19 @@ function PostPage() {
         {post.resumo ? (
           <p className="mt-8 text-lg leading-relaxed text-muted-foreground">{post.resumo}</p>
         ) : null}
-        <ArtigoConteudo html={post.conteudoHtml} className="mt-6" />
+        <ArtigoConteudo html={antes} className="mt-6" />
+        {depois !== null ? (
+          <>
+            <ProdutosRelacionados
+              slugPost={post.slug}
+              produtos={relacionados?.produtos ?? []}
+              titulo="Produtos citados"
+              className="my-10 border-y border-border py-8"
+            />
+            <ArtigoConteudo html={depois} />
+          </>
+        ) : null}
+
 
         <FaqSecao itens={faq} className="mt-12 border-t border-border pt-8" />
 
