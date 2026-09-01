@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { RefreshCw } from "lucide-react";
+import { Download, RefreshCw } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -88,6 +88,42 @@ function Tabela({
   );
 }
 
+function escaparCsv(valor: string): string {
+  return `"${valor.replaceAll('"', '""')}"`;
+}
+
+function paraCsv(linhas: LinhaMetrica[], incluirOrigem: boolean, incluirAlvo: boolean): string {
+  const cabecalho = [
+    ...(incluirOrigem ? ["post_origem"] : []),
+    ...(incluirAlvo ? ["item_relacionado"] : []),
+    "bloco",
+    "views",
+    "cliques",
+    "ctr_percentual",
+  ];
+  const corpo = linhas.map((l) =>
+    [
+      ...(incluirOrigem ? [escaparCsv(l.slugOrigem)] : []),
+      ...(incluirAlvo ? [escaparCsv(l.slugAlvo)] : []),
+      escaparCsv(ROTULO_BLOCO[l.bloco] ?? l.bloco),
+      l.views,
+      l.cliques,
+      l.ctr.toFixed(2).replace(".", ","),
+    ].join(";"),
+  );
+  return [cabecalho.join(";"), ...corpo].join("\r\n");
+}
+
+function baixarCsv(nome: string, conteudo: string) {
+  const blob = new Blob(["\uFEFF" + conteudo], { type: "text/csv;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = nome;
+  link.click();
+  URL.revokeObjectURL(url);
+}
+
 function RelacionadosMetricasPage() {
   const [periodo, setPeriodo] = useState<Periodo>("30");
   const [bloco, setBloco] = useState<Bloco>("todos");
@@ -98,6 +134,36 @@ function RelacionadosMetricasPage() {
     queryFn: () => carregarMetricas({ periodo, bloco, busca }),
     retry: false,
   });
+
+  const sufixoArquivo = `${periodo}dias-${bloco}${busca.trim() ? "-busca" : ""}`;
+
+  function BotaoExportar({
+    nome,
+    linhas,
+    incluirOrigem,
+    incluirAlvo,
+  }: {
+    nome: string;
+    linhas: LinhaMetrica[];
+    incluirOrigem: boolean;
+    incluirAlvo: boolean;
+  }) {
+    return (
+      <Button
+        variant="outline"
+        size="sm"
+        disabled={linhas.length === 0}
+        onClick={() =>
+          baixarCsv(
+            `relacionados-${nome}-${sufixoArquivo}.csv`,
+            paraCsv(linhas, incluirOrigem, incluirAlvo),
+          )
+        }
+      >
+        <Download className="size-4" /> Exportar CSV
+      </Button>
+    );
+  }
 
   return (
     <div className="pb-16">
@@ -164,13 +230,22 @@ function RelacionadosMetricasPage() {
           <TabsTrigger value="itens">Por item relacionado</TabsTrigger>
           <TabsTrigger value="pares">Post → item</TabsTrigger>
         </TabsList>
-        <TabsContent value="posts" className="mt-4">
+        <TabsContent value="posts" className="mt-4 space-y-3">
+          <div className="flex justify-end">
+            <BotaoExportar nome="por-post" linhas={data?.porPost ?? []} incluirOrigem incluirAlvo={false} />
+          </div>
           <Tabela linhas={data?.porPost ?? []} colunaOrigem="Post de origem" />
         </TabsContent>
-        <TabsContent value="itens" className="mt-4">
+        <TabsContent value="itens" className="mt-4 space-y-3">
+          <div className="flex justify-end">
+            <BotaoExportar nome="por-item" linhas={data?.porAlvo ?? []} incluirOrigem={false} incluirAlvo />
+          </div>
           <Tabela linhas={data?.porAlvo ?? []} colunaAlvo="Item relacionado" />
         </TabsContent>
-        <TabsContent value="pares" className="mt-4">
+        <TabsContent value="pares" className="mt-4 space-y-3">
+          <div className="flex justify-end">
+            <BotaoExportar nome="post-item" linhas={data?.pares ?? []} incluirOrigem incluirAlvo />
+          </div>
           <Tabela
             linhas={data?.pares ?? []}
             colunaOrigem="Post de origem"
