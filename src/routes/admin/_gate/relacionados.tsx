@@ -124,6 +124,38 @@ function baixarCsv(nome: string, conteudo: string) {
   URL.revokeObjectURL(url);
 }
 
+async function baixarXlsx(
+  nome: string,
+  linhas: LinhaMetrica[],
+  incluirOrigem: boolean,
+  incluirAlvo: boolean,
+) {
+  const XLSX = await import("xlsx");
+  const cabecalho = [
+    ...(incluirOrigem ? ["post_origem"] : []),
+    ...(incluirAlvo ? ["item_relacionado"] : []),
+    "bloco",
+    "views",
+    "cliques",
+    "ctr_percentual",
+  ];
+  const corpo = linhas.map((l) => [
+    ...(incluirOrigem ? [l.slugOrigem] : []),
+    ...(incluirAlvo ? [l.slugAlvo] : []),
+    ROTULO_BLOCO[l.bloco] ?? l.bloco,
+    l.views,
+    l.cliques,
+    Number(l.ctr.toFixed(2)),
+  ]);
+  const planilha = XLSX.utils.aoa_to_sheet([cabecalho, ...corpo]);
+  planilha["!cols"] = cabecalho.map((_, i) => ({
+    wch: Math.max(14, ...corpo.map((r) => String(r[i] ?? "").length + 2), 40 * 0 + 14),
+  }));
+  const livro = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(livro, planilha, "Métricas");
+  XLSX.writeFile(livro, nome);
+}
+
 function RelacionadosMetricasPage() {
   const [periodo, setPeriodo] = useState<Periodo>("30");
   const [bloco, setBloco] = useState<Bloco>("todos");
