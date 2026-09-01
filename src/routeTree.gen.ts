@@ -42,6 +42,7 @@ import { Route as AdminGateConfiguracoesRouteImport } from './routes/admin/_gate
 import { Route as AdminGateFaqRouteImport } from './routes/admin/_gate/faq'
 import { Route as AdminGateLegalRouteImport } from './routes/admin/_gate/legal'
 import { Route as AdminGateMensagensRouteImport } from './routes/admin/_gate/mensagens'
+import { Route as AdminGateRelacionadosRouteImport } from './routes/admin/_gate/relacionados'
 import { Route as AdminGateSeoRouteImport } from './routes/admin/_gate/seo'
 import { Route as AdminGateBlogIndexRouteImport } from './routes/admin/_gate/blog.index'
 import { Route as AdminGateBlogSlugRouteImport } from './routes/admin/_gate/blog.$slug'
@@ -220,6 +221,11 @@ const AdminGateMensagensRoute = AdminGateMensagensRouteImport.update({
   path: '/mensagens',
   getParentRoute: () => AdminGateRoute,
 } as any)
+const AdminGateRelacionadosRoute = AdminGateRelacionadosRouteImport.update({
+  id: '/relacionados',
+  path: '/relacionados',
+  getParentRoute: () => AdminGateRoute,
+} as any)
 const AdminGateSeoRoute = AdminGateSeoRouteImport.update({
   id: '/seo',
   path: '/seo',
@@ -317,6 +323,7 @@ export interface FileRoutesByFullPath {
   '/admin/faq': typeof AdminGateFaqRoute
   '/admin/legal': typeof AdminGateLegalRoute
   '/admin/mensagens': typeof AdminGateMensagensRoute
+  '/admin/relacionados': typeof AdminGateRelacionadosRoute
   '/admin/seo': typeof AdminGateSeoRoute
   '/admin/': typeof AdminGateIndexRoute
   '/admin/blog/$slug': typeof AdminGateBlogSlugRoute
@@ -363,6 +370,7 @@ export interface FileRoutesByTo {
   '/admin/faq': typeof AdminGateFaqRoute
   '/admin/legal': typeof AdminGateLegalRoute
   '/admin/mensagens': typeof AdminGateMensagensRoute
+  '/admin/relacionados': typeof AdminGateRelacionadosRoute
   '/admin/seo': typeof AdminGateSeoRoute
   '/admin': typeof AdminGateIndexRoute
   '/admin/blog/$slug': typeof AdminGateBlogSlugRoute
@@ -411,6 +419,7 @@ export interface FileRoutesById {
   '/admin/_gate/faq': typeof AdminGateFaqRoute
   '/admin/_gate/legal': typeof AdminGateLegalRoute
   '/admin/_gate/mensagens': typeof AdminGateMensagensRoute
+  '/admin/_gate/relacionados': typeof AdminGateRelacionadosRoute
   '/admin/_gate/seo': typeof AdminGateSeoRoute
   '/admin/_gate/': typeof AdminGateIndexRoute
   '/admin/_gate/blog/$slug': typeof AdminGateBlogSlugRoute
@@ -460,6 +469,7 @@ export interface FileRouteTypes {
     | '/admin/faq'
     | '/admin/legal'
     | '/admin/mensagens'
+    | '/admin/relacionados'
     | '/admin/seo'
     | '/admin/'
     | '/admin/blog/$slug'
@@ -506,6 +516,7 @@ export interface FileRouteTypes {
     | '/admin/faq'
     | '/admin/legal'
     | '/admin/mensagens'
+    | '/admin/relacionados'
     | '/admin/seo'
     | '/admin'
     | '/admin/blog/$slug'
@@ -553,6 +564,7 @@ export interface FileRouteTypes {
     | '/admin/_gate/faq'
     | '/admin/_gate/legal'
     | '/admin/_gate/mensagens'
+    | '/admin/_gate/relacionados'
     | '/admin/_gate/seo'
     | '/admin/_gate/'
     | '/admin/_gate/blog/$slug'
@@ -832,6 +844,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminGateMensagensRouteImport
       parentRoute: typeof AdminGateRoute
     }
+    '/admin/_gate/relacionados': {
+      id: '/admin/_gate/relacionados'
+      path: '/relacionados'
+      fullPath: '/admin/relacionados'
+      preLoaderRoute: typeof AdminGateRelacionadosRouteImport
+      parentRoute: typeof AdminGateRoute
+    }
     '/admin/_gate/seo': {
       id: '/admin/_gate/seo'
       path: '/seo'
@@ -924,6 +943,7 @@ interface AdminGateRouteChildren {
   AdminGateFaqRoute: typeof AdminGateFaqRoute
   AdminGateLegalRoute: typeof AdminGateLegalRoute
   AdminGateMensagensRoute: typeof AdminGateMensagensRoute
+  AdminGateRelacionadosRoute: typeof AdminGateRelacionadosRoute
   AdminGateSeoRoute: typeof AdminGateSeoRoute
   AdminGateIndexRoute: typeof AdminGateIndexRoute
   AdminGateBlogSlugRoute: typeof AdminGateBlogSlugRoute
@@ -944,6 +964,7 @@ const AdminGateRouteChildren: AdminGateRouteChildren = {
   AdminGateFaqRoute: AdminGateFaqRoute,
   AdminGateLegalRoute: AdminGateLegalRoute,
   AdminGateMensagensRoute: AdminGateMensagensRoute,
+  AdminGateRelacionadosRoute: AdminGateRelacionadosRoute,
   AdminGateSeoRoute: AdminGateSeoRoute,
   AdminGateIndexRoute: AdminGateIndexRoute,
   AdminGateBlogSlugRoute: AdminGateBlogSlugRoute,

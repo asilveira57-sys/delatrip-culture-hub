@@ -11,6 +11,7 @@ import {
   Scale,
   Search,
   Settings,
+  Share2,
   Tag,
 } from "lucide-react";
 
