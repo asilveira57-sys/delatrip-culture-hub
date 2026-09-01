@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { RefreshCw } from "lucide-react";
+import { Download, RefreshCw } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -86,6 +86,42 @@ function Tabela({
       </table>
     </div>
   );
+}
+
+function escaparCsv(valor: string): string {
+  return `"${valor.replaceAll('"', '""')}"`;
+}
+
+function paraCsv(linhas: LinhaMetrica[], incluirOrigem: boolean, incluirAlvo: boolean): string {
+  const cabecalho = [
+    ...(incluirOrigem ? ["post_origem"] : []),
+    ...(incluirAlvo ? ["item_relacionado"] : []),
+    "bloco",
+    "views",
+    "cliques",
+    "ctr_percentual",
+  ];
+  const corpo = linhas.map((l) =>
+    [
+      ...(incluirOrigem ? [escaparCsv(l.slugOrigem)] : []),
+      ...(incluirAlvo ? [escaparCsv(l.slugAlvo)] : []),
+      escaparCsv(ROTULO_BLOCO[l.bloco] ?? l.bloco),
+      l.views,
+      l.cliques,
+      l.ctr.toFixed(2).replace(".", ","),
+    ].join(";"),
+  );
+  return [cabecalho.join(";"), ...corpo].join("\r\n");
+}
+
+function baixarCsv(nome: string, conteudo: string) {
+  const blob = new Blob(["\uFEFF" + conteudo], { type: "text/csv;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = nome;
+  link.click();
+  URL.revokeObjectURL(url);
 }
 
 function RelacionadosMetricasPage() {
