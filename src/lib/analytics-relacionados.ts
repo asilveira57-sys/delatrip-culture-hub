@@ -57,6 +57,6 @@ export function registrarEvento(evento: EventoRelacionado, payload: Payload) {
     p_slug_origem: origem,
     p_slug_alvo: alvo,
     p_posicao: payload.position ?? 0,
-    p_anon_id: getAnonId(),
+    p_anon_id: getAnonId() ?? "",
   });
 }
