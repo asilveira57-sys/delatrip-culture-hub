@@ -135,6 +135,36 @@ function RelacionadosMetricasPage() {
     retry: false,
   });
 
+  const sufixoArquivo = `${periodo}dias-${bloco}${busca.trim() ? "-busca" : ""}`;
+
+  function BotaoExportar({
+    nome,
+    linhas,
+    incluirOrigem,
+    incluirAlvo,
+  }: {
+    nome: string;
+    linhas: LinhaMetrica[];
+    incluirOrigem: boolean;
+    incluirAlvo: boolean;
+  }) {
+    return (
+      <Button
+        variant="outline"
+        size="sm"
+        disabled={linhas.length === 0}
+        onClick={() =>
+          baixarCsv(
+            `relacionados-${nome}-${sufixoArquivo}.csv`,
+            paraCsv(linhas, incluirOrigem, incluirAlvo),
+          )
+        }
+      >
+        <Download className="size-4" /> Exportar CSV
+      </Button>
+    );
+  }
+
   return (
     <div className="pb-16">
       <div className="flex flex-wrap items-center justify-between gap-3">
