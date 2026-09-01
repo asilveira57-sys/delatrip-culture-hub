@@ -230,13 +230,22 @@ function RelacionadosMetricasPage() {
           <TabsTrigger value="itens">Por item relacionado</TabsTrigger>
           <TabsTrigger value="pares">Post → item</TabsTrigger>
         </TabsList>
-        <TabsContent value="posts" className="mt-4">
+        <TabsContent value="posts" className="mt-4 space-y-3">
+          <div className="flex justify-end">
+            <BotaoExportar nome="por-post" linhas={data?.porPost ?? []} incluirOrigem incluirAlvo={false} />
+          </div>
           <Tabela linhas={data?.porPost ?? []} colunaOrigem="Post de origem" />
         </TabsContent>
-        <TabsContent value="itens" className="mt-4">
+        <TabsContent value="itens" className="mt-4 space-y-3">
+          <div className="flex justify-end">
+            <BotaoExportar nome="por-item" linhas={data?.porAlvo ?? []} incluirOrigem={false} incluirAlvo />
+          </div>
           <Tabela linhas={data?.porAlvo ?? []} colunaAlvo="Item relacionado" />
         </TabsContent>
-        <TabsContent value="pares" className="mt-4">
+        <TabsContent value="pares" className="mt-4 space-y-3">
+          <div className="flex justify-end">
+            <BotaoExportar nome="post-item" linhas={data?.pares ?? []} incluirOrigem incluirAlvo />
+          </div>
           <Tabela
             linhas={data?.pares ?? []}
             colunaOrigem="Post de origem"
