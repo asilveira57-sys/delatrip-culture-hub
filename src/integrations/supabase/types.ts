@@ -846,6 +846,42 @@ export type Database = {
         }
         Relationships: []
       }
+      relacionado_evento: {
+        Row: {
+          anon_id: string | null
+          bloco: string
+          created_at: string
+          evento: string
+          id: string
+          posicao: number
+          slug_alvo: string
+          slug_origem: string
+          updated_at: string
+        }
+        Insert: {
+          anon_id?: string | null
+          bloco: string
+          created_at?: string
+          evento: string
+          id?: string
+          posicao?: number
+          slug_alvo: string
+          slug_origem: string
+          updated_at?: string
+        }
+        Update: {
+          anon_id?: string | null
+          bloco?: string
+          created_at?: string
+          evento?: string
+          id?: string
+          posicao?: number
+          slug_alvo?: string
+          slug_origem?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       seo_rota: {
         Row: {
           caminho: string
@@ -925,6 +961,17 @@ export type Database = {
           p_utm: Json
         }
         Returns: string
+      }
+      registrar_evento_relacionado: {
+        Args: {
+          p_anon_id: string
+          p_bloco: string
+          p_evento: string
+          p_posicao: number
+          p_slug_alvo: string
+          p_slug_origem: string
+        }
+        Returns: undefined
       }
       registrar_lgpd: {
         Args: {
