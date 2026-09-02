@@ -17,6 +17,8 @@ export type PaginaEditavel = {
   id: string;
   caminho: string;
   nome: string;
+  /** Observação exibida no admin. */
+  ajuda?: string;
   campos: CampoEditavel[];
 };
 
@@ -47,13 +49,63 @@ export const PAGINAS_EDITAVEIS: PaginaEditavel[] = [
     ],
   },
   {
-    id: "sobre",
-    caminho: "/sobre",
-    nome: "Sobre",
+    id: "quem-somos",
+    caminho: "/quem-somos",
+    nome: "Quem somos",
     campos: [
       { chave: "titulo", label: "Título", tipo: "texto" },
+      { chave: "subtitulo", label: "Subtítulo", tipo: "textarea" },
       { chave: "corpo", label: "Corpo", tipo: "rich" },
     ],
+  },
+  {
+    id: "marcas",
+    caminho: "/marcas",
+    nome: "Marcas (listagem)",
+    campos: [
+      { chave: "titulo", label: "Título", tipo: "texto" },
+      { chave: "subtitulo", label: "Subtítulo", tipo: "textarea" },
+      { chave: "intro", label: "Introdução", tipo: "rich" },
+    ],
+  },
+  {
+    id: "blog",
+    caminho: "/blog",
+    nome: "Blog (listagem)",
+    campos: [
+      { chave: "titulo", label: "Título", tipo: "texto" },
+      { chave: "subtitulo", label: "Subtítulo", tipo: "textarea" },
+      { chave: "intro", label: "Introdução", tipo: "rich" },
+    ],
+  },
+  {
+    id: "catalogo",
+    caminho: "/catalogo",
+    nome: "Catálogo (listagem)",
+    campos: [
+      { chave: "titulo", label: "Título", tipo: "texto" },
+      { chave: "subtitulo", label: "Subtítulo", tipo: "textarea" },
+    ],
+  },
+  {
+    id: "faq",
+    caminho: "/faq",
+    nome: "Perguntas frequentes",
+    campos: [
+      { chave: "titulo", label: "Título", tipo: "texto" },
+      { chave: "subtitulo", label: "Subtítulo", tipo: "textarea" },
+    ],
+    ajuda: "As perguntas em si são editadas no menu FAQ.",
+  },
+  {
+    id: "lgpd",
+    caminho: "/lgpd",
+    nome: "LGPD e seus direitos",
+    campos: [
+      { chave: "titulo", label: "Título", tipo: "texto" },
+      { chave: "subtitulo", label: "Subtítulo", tipo: "textarea" },
+    ],
+    ajuda: "O texto legal completo é editado no menu Legal.",
   },
   {
     id: "acessorios",

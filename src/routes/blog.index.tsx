@@ -1,27 +1,32 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { absoluteUrl, canonical } from "@/lib/seo";
+import { canonical, metaDaRota } from "@/lib/seo";
 
 import { PageHeader } from "@/components/PageHeader";
 import { PostCard } from "@/components/PostCard";
+import { ArtigoConteudo } from "@/components/ArtigoConteudo";
 import { listarPostsPublicos } from "@/lib/blog.functions";
+import { rich, texto } from "@/lib/paginas-core";
+import { carregarPagina } from "@/lib/paginas.functions";
 
 export const Route = createFileRoute("/blog/")({
-  loader: () => listarPostsPublicos(),
-  head: () => ({
+  loader: async () => {
+    const [posts, pagina] = await Promise.all([
+      listarPostsPublicos(),
+      carregarPagina({ data: { caminho: "/blog" } }),
+    ]);
+    return { posts, pagina };
+  },
+  head: ({ loaderData }) => ({
     meta: [
-      { title: "Blog — guias e conteúdo da tabacaria | DeLaTrip" },
-      {
-        name: "description",
-        content:
+      ...metaDaRota(loaderData?.pagina?.seo, {
+        titulo: "Blog — guias e conteúdo da tabacaria | DeLaTrip",
+        descricao:
           "Guias, comparativos e manutenção: conteúdo prático sobre sedas, dichavadores, vidros e tabacos.",
-      },
-      { property: "og:title", content: "Blog — guias e conteúdo da tabacaria | DeLaTrip" },
-      {
-        property: "og:description",
-        content: "Conteúdo prático sobre sedas, dichavadores, vidros e tabacos.",
-      },
-      { property: "og:url", content: absoluteUrl("/blog") },
+        ogDescricao: "Conteúdo prático sobre sedas, dichavadores, vidros e tabacos.",
+        caminho: "/blog",
+      }),
+      { property: "og:type", content: "website" },
     ],
     links: [canonical("/blog")],
   }),
@@ -34,17 +39,24 @@ export const Route = createFileRoute("/blog/")({
 });
 
 function BlogPage() {
-  const posts = Route.useLoaderData();
+  const { posts, pagina } = Route.useLoaderData();
+  const blocos = pagina?.blocos ?? null;
+  const intro = rich(blocos, "intro");
 
   return (
     <>
       <PageHeader
         eyebrow="Conteúdo"
-        titulo="Blog"
-        descricao="O que a gente aprende no balcão, escrito para quem quer entender o segmento."
+        titulo={texto(blocos, "titulo", "Blog")}
+        descricao={texto(
+          blocos,
+          "subtitulo",
+          "O que a gente aprende no balcão, escrito para quem quer entender o segmento.",
+        )}
         crumbs={[{ label: "Blog" }]}
       />
       <div className="mx-auto max-w-6xl px-4 py-12">
+        {intro ? <ArtigoConteudo html={intro} className="mb-10 max-w-3xl" /> : null}
         <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
           {posts.map((p) => (
             <PostCard key={p.slug} post={p} />

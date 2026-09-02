@@ -1,6 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 
-import { absoluteUrl, canonical } from "@/lib/seo";
+import { canonical, metaDaRota } from "@/lib/seo";
 import { useEffect, useMemo, useState } from "react";
 import { Search, SlidersHorizontal } from "lucide-react";
 
@@ -28,6 +28,8 @@ import {
   type SortKey,
 } from "@/lib/catalog";
 import { mergeList, useOverlays } from "@/lib/overlay";
+import { texto } from "@/lib/paginas-core";
+import { carregarPagina } from "@/lib/paginas.functions";
 
 
 type CatalogoSearch = {
@@ -49,21 +51,18 @@ export const Route = createFileRoute("/catalogo/")({
       ordem: ORDENS.includes(ordem) ? ordem : "relevancia",
     };
   },
-  head: () => ({
+  loader: () => carregarPagina({ data: { caminho: "/catalogo" } }),
+  head: ({ loaderData }) => ({
     meta: [
-      { title: "Catálogo de produtos — DeLaTrip" },
-      {
-        name: "description",
-        content:
+      ...metaDaRota(loaderData?.seo, {
+        titulo: "Catálogo de produtos — DeLaTrip",
+        descricao:
           "Explore o catálogo DeLaTrip: sedas, piteiras, dichavadores, bongs, bandejas, isqueiros e tabacos, com filtros por categoria, marca e ordenação.",
-      },
-      { property: "og:title", content: "Catálogo de produtos — DeLaTrip" },
-      {
-        property: "og:description",
-        content:
+        ogDescricao:
           "Sedas, dichavadores, vidros, bandejas e acessórios com filtros por categoria e marca.",
-      },
-      { property: "og:url", content: absoluteUrl("/catalogo") },
+        caminho: "/catalogo",
+      }),
+      { property: "og:type", content: "website" },
     ],
     links: [canonical("/catalogo")],
   }),
@@ -77,6 +76,7 @@ function Catalogo() {
     marca = "",
     ordem = "relevancia",
   } = Route.useSearch();
+  const { blocos } = Route.useLoaderData();
   const navigate = useNavigate({ from: "/catalogo/" });
 
   const setSearch = (patch: Partial<CatalogoSearch>) =>
@@ -124,8 +124,12 @@ function Catalogo() {
     <>
       <PageHeader
         eyebrow="Catálogo"
-        titulo="Todos os produtos"
-        descricao="Preços e disponibilidade são consultados na loja oficial e no marketplace."
+        titulo={texto(blocos, "titulo", "Todos os produtos")}
+        descricao={texto(
+          blocos,
+          "subtitulo",
+          "Preços e disponibilidade são consultados na loja oficial e no marketplace.",
+        )}
         crumbs={[{ label: "Catálogo" }]}
       />
 
