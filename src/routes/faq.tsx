@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { SITE } from "@/config/site";
-import { itensFaq, type FaqItem } from "@/lib/paginas-core";
+import { itensFaq, texto, type FaqItem } from "@/lib/paginas-core";
 import { carregarPagina } from "@/lib/paginas.functions";
 
 const PADRAO: FaqItem[] = [

@@ -9,26 +9,34 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { TIPOS_LGPD, lgpdSchema } from "@/lib/portal-core";
-import { carregarConfigPortal, enviarSolicitacaoLgpd } from "@/lib/portal.functions";
-import { absoluteUrl, breadcrumbLd, canonical, jsonLd } from "@/lib/seo";
+import { texto } from "@/lib/paginas-core";
+import { carregarPagina } from "@/lib/paginas.functions";
+import {
+  carregarConfigPortal,
+  carregarDocumentoLegal,
+  enviarSolicitacaoLgpd,
+} from "@/lib/portal.functions";
+import { absoluteUrl, breadcrumbLd, canonical, jsonLd, metaDaRota } from "@/lib/seo";
 
 export const Route = createFileRoute("/lgpd")({
-  loader: async () => ({ config: await carregarConfigPortal() }),
-  head: () => ({
+  loader: async () => {
+    const [config, pagina, documento] = await Promise.all([
+      carregarConfigPortal(),
+      carregarPagina({ data: { caminho: "/lgpd" } }),
+      carregarDocumentoLegal({ data: { chave: "lgpd" } }),
+    ]);
+    return { config, pagina, documento };
+  },
+  head: ({ loaderData }) => ({
     meta: [
-      { title: "LGPD e seus direitos | DelaTrip" },
-      {
-        name: "description",
-        content:
+      ...metaDaRota(loaderData?.pagina?.seo, {
+        titulo: "LGPD e seus direitos | DelaTrip",
+        descricao:
           "Exerça seus direitos como titular de dados pessoais na DelaTrip: acesso, correção, eliminação e revogação de consentimento.",
-      },
-      { property: "og:title", content: "LGPD e seus direitos | DelaTrip" },
-      {
-        property: "og:description",
-        content: "Canal oficial para solicitações de titulares de dados pessoais.",
-      },
+        ogDescricao: "Canal oficial para solicitações de titulares de dados pessoais.",
+        caminho: "/lgpd",
+      }),
       { property: "og:type", content: "website" },
-      { property: "og:url", content: absoluteUrl("/lgpd") },
     ],
     links: [canonical("/lgpd")],
     scripts: [
@@ -54,7 +62,9 @@ const DIREITOS = [
 ];
 
 function LgpdPage() {
-  const { config } = Route.useLoaderData();
+  const { config, pagina, documento } = Route.useLoaderData();
+  const blocos = pagina?.blocos ?? null;
+  const textoLegal = documento?.conteudo_html?.trim() ?? "";
   const desafio = useDesafio();
   const [armadilha, setArmadilha] = useState("");
   const [enviando, setEnviando] = useState(false);
@@ -103,14 +113,24 @@ function LgpdPage() {
     <>
       <PageHeader
         eyebrow="Privacidade"
-        titulo="LGPD e seus direitos"
-        descricao="Canal oficial para solicitações relacionadas a dados pessoais."
+        titulo={texto(blocos, "titulo", "LGPD e seus direitos")}
+        descricao={texto(
+          blocos,
+          "subtitulo",
+          "Canal oficial para solicitações relacionadas a dados pessoais.",
+        )}
         crumbs={[{ label: "LGPD" }]}
       />
 
       <div className="mx-auto grid max-w-5xl gap-12 px-4 py-14 lg:grid-cols-[1fr_1.1fr]">
         <div>
           <h2 className="text-xl font-semibold uppercase">Seus direitos</h2>
+          {textoLegal ? (
+            <div
+              className="prose-editor mt-4 max-w-none text-sm"
+              dangerouslySetInnerHTML={{ __html: textoLegal }}
+            />
+          ) : null}
           <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
             {DIREITOS.map((d) => (
               <li key={d} className="border-b border-border/60 pb-2">
