@@ -50,7 +50,7 @@ export const Route = createFileRoute("/faq")({
   loader: async () => {
     const { blocos, seo } = await carregarPagina({ data: { caminho: "/faq" } });
     const itens = itensFaq(blocos);
-    return { itens: itens.length > 0 ? itens : PADRAO, seo };
+    return { itens: itens.length > 0 ? itens : PADRAO, seo, blocos };
   },
   head: ({ loaderData }) => ({
     meta: [
@@ -86,14 +86,18 @@ export const Route = createFileRoute("/faq")({
 });
 
 function FaqPage() {
-  const { itens } = Route.useLoaderData();
+  const { itens, blocos } = Route.useLoaderData();
 
   return (
     <>
       <PageHeader
         eyebrow="Ajuda"
-        titulo="Perguntas frequentes"
-        descricao="As dúvidas que mais chegam ao nosso atendimento, respondidas de forma direta."
+        titulo={texto(blocos, "titulo", "Perguntas frequentes")}
+        descricao={texto(
+          blocos,
+          "subtitulo",
+          "As dúvidas que mais chegam ao nosso atendimento, respondidas de forma direta.",
+        )}
         crumbs={[{ label: "FAQ" }]}
       />
       <div className="mx-auto max-w-3xl px-4 py-12">
