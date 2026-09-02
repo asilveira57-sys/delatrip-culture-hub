@@ -148,8 +148,11 @@ async function baixarXlsx(
     Number(l.ctr.toFixed(2)),
   ]);
   const planilha = XLSX.utils.aoa_to_sheet([cabecalho, ...corpo]);
-  planilha["!cols"] = cabecalho.map((_, i) => ({
-    wch: Math.max(14, ...corpo.map((r) => String(r[i] ?? "").length + 2), 40 * 0 + 14),
+  planilha["!cols"] = cabecalho.map((rotulo, i) => ({
+    wch: Math.min(
+      60,
+      Math.max(rotulo.length + 2, 14, ...corpo.map((r) => String(r[i] ?? "").length + 2)),
+    ),
   }));
   const livro = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(livro, planilha, "Métricas");
