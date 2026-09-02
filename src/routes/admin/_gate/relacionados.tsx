@@ -184,19 +184,36 @@ function RelacionadosMetricasPage() {
     incluirAlvo: boolean;
   }) {
     return (
-      <Button
-        variant="outline"
-        size="sm"
-        disabled={linhas.length === 0}
-        onClick={() =>
-          baixarCsv(
-            `relacionados-${nome}-${sufixoArquivo}.csv`,
-            paraCsv(linhas, incluirOrigem, incluirAlvo),
-          )
-        }
-      >
-        <Download className="size-4" /> Exportar CSV
-      </Button>
+      <div className="flex gap-2">
+        <Button
+          variant="outline"
+          size="sm"
+          disabled={linhas.length === 0}
+          onClick={() =>
+            baixarCsv(
+              `relacionados-${nome}-${sufixoArquivo}.csv`,
+              paraCsv(linhas, incluirOrigem, incluirAlvo),
+            )
+          }
+        >
+          <Download className="size-4" /> Exportar CSV
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          disabled={linhas.length === 0}
+          onClick={() =>
+            void baixarXlsx(
+              `relacionados-${nome}-${sufixoArquivo}.xlsx`,
+              linhas,
+              incluirOrigem,
+              incluirAlvo,
+            )
+          }
+        >
+          <Download className="size-4" /> Exportar XLSX
+        </Button>
+      </div>
     );
   }
 
