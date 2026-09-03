@@ -23,7 +23,6 @@ import { carregarPagina } from "@/lib/paginas.functions";
 import { lista, texto as campoTexto } from "@/lib/paginas-core";
 import { brands, destaques, rootCategories } from "@/lib/catalog";
 import heroImg from "@/assets/hero.jpg";
-import mark from "@/assets/delatrip-mark.png";
 import { mergeList, useOverlays } from "@/lib/overlay";
 
 export const Route = createFileRoute("/")({
@@ -117,15 +116,7 @@ function Home() {
         <div className="absolute inset-0 -z-10 bg-gradient-to-t from-ink via-ink/80 to-ink/40" />
 
         <div className="mx-auto w-full max-w-6xl px-4 py-24">
-          <img
-            src={mark}
-            alt="DeLaTrip"
-            loading="lazy"
-            width={512}
-            height={512}
-            className="h-16 w-16 sm:h-20 sm:w-20"
-          />
-          <h1 className="mt-8 max-w-3xl text-4xl font-bold uppercase leading-[1.05] text-ink-foreground sm:text-6xl lg:text-7xl">
+          <h1 className="max-w-3xl text-4xl font-bold uppercase leading-[1.05] text-ink-foreground sm:text-6xl lg:text-7xl">
             {campoTexto(blocos, "hero_titulo", "A cultura, os produtos e o conhecimento da tabacaria brasileira")}
           </h1>
           <p className="mt-6 max-w-xl text-base leading-relaxed text-ink-muted">
