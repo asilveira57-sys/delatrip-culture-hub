@@ -176,7 +176,7 @@ function Home() {
           />
         </div>
         <div className="flex gap-4 overflow-x-auto px-4 pb-4 [scrollbar-width:thin] sm:px-[max(1rem,calc((100%-72rem)/2))]">
-          {brands.map((b) => (
+          {marcas.map((b) => (
             <BrandChip key={b.slug} marca={b} />
           ))}
         </div>
