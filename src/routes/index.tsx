@@ -92,6 +92,7 @@ const confianca = [
 function Home() {
   const overlaysHome = useOverlays();
   const { blocos, posts } = Route.useLoaderData();
+  const marcas = marcasEfetivas(useMarcaOverlays());
 
   const faixa = lista<{ icone?: string; titulo?: string }>(blocos, "faixa_confianca", []);
   const blocosConfianca = confianca.map((item, i) => {
