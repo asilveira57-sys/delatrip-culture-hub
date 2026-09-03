@@ -21,7 +21,8 @@ import { SITE } from "@/config/site";
 import { listarPostsPublicos } from "@/lib/blog.functions";
 import { carregarPagina } from "@/lib/paginas.functions";
 import { lista, texto as campoTexto } from "@/lib/paginas-core";
-import { brands, destaques, rootCategories } from "@/lib/catalog";
+import { destaques, rootCategories } from "@/lib/catalog";
+import { marcasEfetivas, useMarcaOverlays } from "@/lib/marcas";
 import heroImg from "@/assets/hero.jpg";
 import { mergeList, useOverlays } from "@/lib/overlay";
 
