@@ -47,7 +47,7 @@ export function Header() {
 
 
   return (
-    <header className="sticky top-0 z-50 border-b border-ink-border surface-ink">
+    <header className="sticky top-0 z-50 border-b border-border bg-card">
       <div className="mx-auto flex h-16 max-w-6xl items-center gap-4 px-4">
         <Link
           to="/"
@@ -61,7 +61,7 @@ export function Header() {
             height={512}
             className="h-8 w-8"
           />
-          <span className="font-display text-xl uppercase tracking-wide text-ink-foreground">
+          <span className="font-display text-xl uppercase tracking-wide text-primary">
             DeLaTrip
           </span>
         </Link>
@@ -73,8 +73,8 @@ export function Header() {
               <li key={item.to}>
                 <Link
                   to={item.to}
-                  className="text-sm font-medium text-ink-muted transition-colors hover:text-gold"
-                  activeProps={{ className: "text-gold" }}
+                  className="text-sm font-medium text-primary/80 transition-colors hover:text-primary"
+                  activeProps={{ className: "text-primary font-semibold" }}
                 >
                   {item.label}
                 </Link>
@@ -85,7 +85,7 @@ export function Header() {
 
         <div className="ml-auto flex items-center gap-2">
           <Button
-            variant="onInk"
+            variant="ghost"
             size="icon"
             aria-label="Abrir busca"
             onClick={() => setBuscaAberta(true)}
@@ -101,20 +101,20 @@ export function Header() {
 
           <Sheet open={menuAberto} onOpenChange={setMenuAberto}>
             <SheetTrigger asChild>
-              <Button variant="onInk" size="icon" aria-label="Abrir menu" className="lg:hidden">
+              <Button variant="ghost" size="icon" aria-label="Abrir menu" className="lg:hidden">
                 <Menu aria-hidden="true" />
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-[85vw] max-w-sm surface-ink border-ink-border">
-              <SheetTitle className="text-ink-foreground">Menu</SheetTitle>
+            <SheetContent side="right" className="w-[85vw] max-w-sm bg-card border-border">
+              <SheetTitle className="text-primary">Menu</SheetTitle>
               <nav aria-label="Navegação mobile" className="mt-6">
                 <ul className="flex flex-col gap-1">
                   {nav.map((item) => (
                     <li key={item.to}>
                       <Link
                         to={item.to}
-                        className="block rounded-md px-3 py-3 text-base font-medium text-ink-muted hover:bg-ink-foreground/10 hover:text-gold"
-                        activeProps={{ className: "text-gold" }}
+                        className="block rounded-md px-3 py-3 text-base font-medium text-primary/80 hover:bg-accent hover:text-primary"
+                        activeProps={{ className: "text-primary font-semibold" }}
                       >
                         {item.label}
                       </Link>
