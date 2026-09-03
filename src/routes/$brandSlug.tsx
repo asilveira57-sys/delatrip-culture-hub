@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { createFileRoute, Link, Navigate } from "@tanstack/react-router";
-import { ImageOff, Search } from "lucide-react";
+import { Search } from "lucide-react";
 
 import { EmptyState } from "@/components/EmptyState";
 import { PageHeader } from "@/components/PageHeader";
@@ -276,23 +276,7 @@ function BrandContent({ marca }: { marca: Brand }) {
             />
           </div>
         </section>
-      ) : (
-        <section className="mx-auto max-w-6xl px-4 pt-8">
-          <div
-            role="img"
-            aria-label={`Banner de placeholder da marca ${marca.nome}`}
-            className="flex aspect-[16/9] w-full flex-col items-center justify-center gap-3 rounded-lg border border-border bg-gradient-to-br from-primary/20 to-background px-6 text-center"
-          >
-            <ImageOff className="size-12 text-primary/60" aria-hidden="true" />
-            <span className="font-display text-lg font-semibold uppercase tracking-wide text-primary">
-              {marca.nome}
-            </span>
-            <span className="text-xs text-muted-foreground">
-              Banner indisponível
-            </span>
-          </div>
-        </section>
-      )}
+      ) : null}
 
 
       <section className="mx-auto max-w-6xl px-4 py-12">
