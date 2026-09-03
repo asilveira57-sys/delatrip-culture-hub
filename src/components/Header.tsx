@@ -93,7 +93,7 @@ export function Header() {
             <Search aria-hidden="true" />
           </Button>
 
-          <Button asChild variant="gold" className="hidden sm:inline-flex">
+          <Button asChild className="hidden sm:inline-flex">
             <a href={SITE.lojaOficial} target="_blank" rel="noopener noreferrer">
               Comprar na loja oficial
             </a>
