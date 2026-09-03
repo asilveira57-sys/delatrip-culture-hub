@@ -122,7 +122,7 @@ export function Header() {
                   ))}
                 </ul>
               </nav>
-              <Button asChild variant="gold" className="mt-6 w-full">
+              <Button asChild className="mt-6 w-full">
                 <a href={SITE.lojaOficial} target="_blank" rel="noopener noreferrer">
                   Comprar na loja oficial
                 </a>
