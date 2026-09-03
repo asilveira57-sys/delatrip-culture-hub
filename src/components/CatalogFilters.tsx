@@ -2,7 +2,8 @@ import { useMemo, useState } from "react";
 import { Link } from "@tanstack/react-router";
 
 import { Input } from "@/components/ui/input";
-import { brands, rootCategories, SORT_OPTIONS, type SortKey } from "@/lib/catalog";
+import { rootCategories, SORT_OPTIONS, type SortKey } from "@/lib/catalog";
+import { marcasEfetivas, useMarcaOverlays } from "@/lib/marcas";
 
 export type FiltroValores = {
   q: string;
@@ -98,10 +99,12 @@ export function FiltersPanel({
   const [termoMarca, setTermoMarca] = useState("");
   const [verTodas, setVerTodas] = useState(false);
 
+  const marcas = marcasEfetivas(useMarcaOverlays());
+
   const filtradas = useMemo(() => {
     const t = termoMarca.trim().toLowerCase();
-    return t ? brands.filter((b) => b.nome.toLowerCase().includes(t)) : brands;
-  }, [termoMarca]);
+    return t ? marcas.filter((b) => b.nome.toLowerCase().includes(t)) : marcas;
+  }, [termoMarca, marcas]);
 
   const visiveis = verTodas || termoMarca ? filtradas : filtradas.slice(0, 12);
 
