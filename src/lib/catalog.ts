@@ -190,16 +190,18 @@ const brandById = new Map(brands.map((b) => [b.slug, b]));
 const haystack = new WeakMap<Product, string>();
 
 function hydrate(r: SlimProduct): Product {
-  const categoria = r.c ? byId.get(r.c) : undefined;
+  const descontinuada = !!r.c && idsDescontinuados.has(r.c);
+  const categoria = r.c && !descontinuada ? byId.get(r.c) : undefined;
   const flags = r.f ?? 0;
   const produto: Product = {
     id: r.d ?? r.s,
     slug: r.s,
     nome: r.n,
     imagem: r.i ? (r.i.startsWith("http") ? r.i : IMG_PREFIX + r.i) : null,
-    categoriaId: r.c ?? null,
-    categoriaNome: categoria?.nome ?? r.cn ?? null,
-    categoriaSlug: categoria?.slug ?? null,
+    categoriaId: descontinuada ? null : (r.c ?? null),
+    categoriaNome: descontinuada ? null : (categoria?.nome ?? r.cn ?? null),
+    categoriaSlug: descontinuada ? null : (categoria?.slug ?? null),
+
     marca: (r.m ? brandById.get(r.m)?.nome : undefined) ?? r.mn ?? null,
     marcaSlug: r.m ?? null,
     referencia: r.r ?? null,
