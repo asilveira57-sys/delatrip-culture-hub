@@ -157,14 +157,29 @@ const idsRestritos = new Set(
   rawCategories.filter(categoriaRestrita).map((c) => c.id),
 );
 
+/** Categorias descontinuadas: somem do site; produtos ficam sem categoria. */
+const SLUGS_DESCONTINUADOS = new Set(["promocao"]);
+const idsDescontinuados = new Set(
+  rawCategories
+    .filter((c) => SLUGS_DESCONTINUADOS.has(c.slug))
+    .map((c) => c.id),
+);
+// inclui subcategorias (até 5 níveis)
+for (let i = 0; i < 5; i++) {
+  for (const c of rawCategories) {
+    if (c.paiId && idsDescontinuados.has(c.paiId)) idsDescontinuados.add(c.id);
+  }
+}
+
 export const categories = rawCategories
-  .filter((c) => !idsRestritos.has(c.id))
+  .filter((c) => !idsRestritos.has(c.id) && !idsDescontinuados.has(c.id))
   // Reparenta as liberadas (hoje filhas de "tabaco") sob "acessorios".
   .map((c) =>
     CATEGORIAS_LIBERADAS.has(c.slug) && acessoriosId
       ? { ...c, paiId: acessoriosId, nivel: 2 }
       : c,
   );
+
 
 export const brands = brandsData as Brand[];
 
