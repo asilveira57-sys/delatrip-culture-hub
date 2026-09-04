@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { Sparkles } from "lucide-react";
+import { Copy, Download, ExternalLink, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 
 import { GoogleSnippetPreview } from "@/components/admin/GoogleSnippetPreview";
