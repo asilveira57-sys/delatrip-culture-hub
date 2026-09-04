@@ -527,6 +527,28 @@ function SeoPage() {
           O sitemap é montado a partir do catálogo mesclado, ignorando produtos ocultos,
           rotas com noindex e posts não publicados.
         </p>
+
+        <div className="mt-4 space-y-1.5">
+          <Label>Endereço do sitemap (use no Google Search Console)</Label>
+          <div className="flex flex-wrap gap-2">
+            <Input readOnly value={sitemapUrl} className="min-w-[16rem] flex-1" />
+            <Button variant="outline" onClick={() => void copiarSitemap()}>
+              <Copy className="size-4" /> Copiar
+            </Button>
+            <Button variant="outline" asChild>
+              <a href={sitemapUrl} target="_blank" rel="noreferrer">
+                <ExternalLink className="size-4" /> Abrir
+              </a>
+            </Button>
+            <Button variant="outline" onClick={() => void baixarSitemap()}>
+              <Download className="size-4" /> Baixar XML
+            </Button>
+          </div>
+          <p className="text-xs text-muted-foreground">
+            No Search Console, em “Sitemaps”, informe apenas <code>sitemap.xml</code>.
+          </p>
+        </div>
+
         <Button className="mt-4" onClick={regerarSitemap} disabled={modo}>
           Regerar agora
         </Button>
@@ -537,6 +559,7 @@ function SeoPage() {
           </p>
         ) : null}
       </Bloco>
+
     </div>
   );
 }
