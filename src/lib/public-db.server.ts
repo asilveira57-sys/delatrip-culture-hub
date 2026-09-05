@@ -32,6 +32,27 @@ const PADRAO: ConfigServidor = {
   produtosOcultos: new Set(),
 };
 
+/**
+ * Slugs dos posts publicados no banco (não agendados). Tolerante a falhas:
+ * sem banco ou erro, devolve conjunto vazio e o sitemap usa só o JSON.
+ */
+export async function slugsPostsPublicados(): Promise<Set<string>> {
+  const supabase = clientePublico();
+  if (!supabase) return new Set();
+  try {
+    const { data, error } = await supabase
+      .from("post")
+      .select("slug")
+      .eq("publicado", true)
+      .lte("publicado_em", new Date().toISOString())
+      .limit(5000);
+    if (error || !data) return new Set();
+    return new Set(data.map((p) => p.slug as string));
+  } catch {
+    return new Set();
+  }
+}
+
 /** Uma leitura só, tolerante a falhas: sem banco, o site segue com o JSON. */
 export async function lerConfigServidor(): Promise<ConfigServidor> {
   const supabase = clientePublico();
