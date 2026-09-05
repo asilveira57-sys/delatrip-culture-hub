@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 
 import { SITE_URL } from "@/lib/seo";
-import { lerConfigServidor } from "@/lib/public-db.server";
+import { lerConfigServidor, slugsPostsPublicados } from "@/lib/public-db.server";
 import { brands, categories, categoryPath, posts, products } from "@/lib/catalog";
 
 const ROTAS_FIXAS: [string, number][] = [
