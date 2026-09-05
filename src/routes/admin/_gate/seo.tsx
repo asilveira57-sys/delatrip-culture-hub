@@ -231,6 +231,16 @@ function SeoPage() {
   };
   const [validacao, setValidacao] = useState<Validacao | null>(null);
   const [validando, setValidando] = useState(false);
+  type ValidacaoRobots = {
+    status: number;
+    temSitemap: boolean;
+    linhaSitemap: string | null;
+    combina: boolean;
+    quando: string;
+  };
+  const [robots, setRobots] = useState<ValidacaoRobots | null>(null);
+  const [validandoRobots, setValidandoRobots] = useState(false);
+
 
   useEffect(() => {
     if (!data) return;
