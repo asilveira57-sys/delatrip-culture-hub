@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 
 import { SITE_URL } from "@/lib/seo";
-import { lerConfigServidor } from "@/lib/public-db.server";
+import { lerConfigServidor, slugsPostsPublicados } from "@/lib/public-db.server";
 import { brands, categories, categoryPath, posts, products } from "@/lib/catalog";
 
 const ROTAS_FIXAS: [string, number][] = [
@@ -25,8 +25,8 @@ export const Route = createFileRoute("/sitemap.xml")({
   server: {
     handlers: {
       GET: async () => {
-        const { modoConstrucao, rotasNoindex, produtosOcultos } =
-          await lerConfigServidor();
+        const [{ modoConstrucao, rotasNoindex, produtosOcultos }, slugsBanco] =
+          await Promise.all([lerConfigServidor(), slugsPostsPublicados()]);
 
         if (modoConstrucao) {
           return new Response(
@@ -34,6 +34,12 @@ export const Route = createFileRoute("/sitemap.xml")({
             { headers: { "content-type": "application/xml; charset=utf-8" } },
           );
         }
+
+        // Posts do banco + posts legados do JSON, sem duplicar slugs.
+        const slugsPosts = new Set<string>([
+          ...slugsBanco,
+          ...posts.map((p) => p.slug),
+        ]);
 
         const urls: [string, number][] = [
           ...ROTAS_FIXAS.filter(([u]) => !rotasNoindex.has(u)),
@@ -45,7 +51,9 @@ export const Route = createFileRoute("/sitemap.xml")({
           ...products
             .filter((p) => !produtosOcultos.has(p.slug))
             .map<[string, number]>((p) => [`/produto/${p.slug}`, 0.6]),
-          ...posts.map<[string, number]>((p) => [`/blog/${p.slug}`, 0.5]),
+          ...[...slugsPosts]
+            .filter((s) => !rotasNoindex.has(`/blog/${s}`))
+            .map<[string, number]>((s) => [`/blog/${s}`, 0.5]),
         ];
 
         const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls

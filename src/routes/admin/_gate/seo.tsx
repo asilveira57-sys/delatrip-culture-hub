@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { Copy, Download, ExternalLink, Sparkles } from "lucide-react";
+import { Copy, Download, ExternalLink, ShieldCheck, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 
 import { GoogleSnippetPreview } from "@/components/admin/GoogleSnippetPreview";
@@ -223,6 +223,14 @@ function SeoPage() {
   const [lote, setLote] = useState(false);
   const gerarSeo = useServerFn(gerarSeoIa);
   const [sitemapEm, setSitemapEm] = useState<string | null>(null);
+  type Validacao = {
+    status: number;
+    urls: number;
+    xmlOk: boolean;
+    quando: string;
+  };
+  const [validacao, setValidacao] = useState<Validacao | null>(null);
+  const [validando, setValidando] = useState(false);
 
   useEffect(() => {
     if (!data) return;
@@ -392,6 +400,30 @@ function SeoPage() {
       toast.success(`Sitemap regerado com ${urlsSitemap} URLs.`);
     } catch {
       toast.error("Não foi possível regerar.");
+    }
+  }
+
+  /** Busca o sitemap real e valida status HTTP, formato XML e nº de URLs. */
+  async function validarSitemap() {
+    setValidando(true);
+    try {
+      const resposta = await fetch("/sitemap.xml", { cache: "reload" });
+      const texto = await resposta.text();
+      const xmlOk = texto.includes("<urlset");
+      const urls = (texto.match(/<url>/g) ?? []).length;
+      setValidacao({
+        status: resposta.status,
+        urls,
+        xmlOk,
+        quando: new Date().toLocaleString("pt-BR"),
+      });
+      if (resposta.ok && xmlOk) toast.success(`Sitemap válido com ${urls} URLs.`);
+      else toast.error("Sitemap com problema — veja o resultado abaixo.");
+    } catch {
+      setValidacao(null);
+      toast.error("Não foi possível acessar o sitemap.");
+    } finally {
+      setValidando(false);
     }
   }
 
@@ -583,9 +615,61 @@ function SeoPage() {
           </p>
         </div>
 
-        <Button className="mt-4" onClick={regerarSitemap} disabled={modo}>
-          Regerar agora
-        </Button>
+        <div className="mt-4 flex flex-wrap gap-2">
+          <Button onClick={regerarSitemap} disabled={modo}>
+            Regerar agora
+          </Button>
+          <Button
+            variant="outline"
+            onClick={() => void validarSitemap()}
+            disabled={validando}
+          >
+            <ShieldCheck className="size-4" />
+            {validando ? "Validando…" : "Validar sitemap"}
+          </Button>
+        </div>
+
+        {validacao ? (
+          <div className="mt-3 rounded-md border border-border p-3 text-sm">
+            <p className="font-medium">
+              {validacao.status === 200 && validacao.xmlOk
+                ? "Sitemap pronto para envio"
+                : "Sitemap com problema"}
+            </p>
+            <ul className="mt-2 space-y-1 text-muted-foreground">
+              <li>
+                Status HTTP:{" "}
+                <strong
+                  className={
+                    validacao.status === 200 ? "text-emerald-600" : "text-destructive"
+                  }
+                >
+                  {validacao.status}
+                </strong>
+              </li>
+              <li>
+                Formato XML:{" "}
+                <strong
+                  className={validacao.xmlOk ? "text-emerald-600" : "text-destructive"}
+                >
+                  {validacao.xmlOk ? "válido" : "inválido"}
+                </strong>
+              </li>
+              <li>
+                URLs encontradas:{" "}
+                <strong className="tabular-nums text-foreground">{validacao.urls}</strong>{" "}
+                (previstas: <span className="tabular-nums">{urlsSitemap}</span>)
+              </li>
+              <li>Verificado em {validacao.quando}</li>
+            </ul>
+            {validacao.urls === 0 ? (
+              <p className="mt-2 text-xs text-amber-600">
+                Nenhuma URL no arquivo. Com o modo construção ligado o sitemap sai vazio
+                de propósito.
+              </p>
+            ) : null}
+          </div>
+        ) : null}
         {modo ? (
           <p className="mt-2 text-xs text-amber-600">
             Desabilitado enquanto o modo construção estiver ligado — o site inteiro está
