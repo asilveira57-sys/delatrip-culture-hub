@@ -350,6 +350,39 @@ function SeoPage() {
     }
   }
 
+  /** URL pública do sitemap, baseada na origem em que o admin está aberto. */
+  const sitemapUrl =
+    typeof window !== "undefined"
+      ? `${window.location.origin}/sitemap.xml`
+      : `${SITE_URL}/sitemap.xml`;
+
+  async function copiarSitemap() {
+    try {
+      await navigator.clipboard.writeText(sitemapUrl);
+      toast.success("Endereço do sitemap copiado.");
+    } catch {
+      toast.error("Não foi possível copiar.");
+    }
+  }
+
+  async function baixarSitemap() {
+    try {
+      const resposta = await fetch("/sitemap.xml", { cache: "reload" });
+      if (!resposta.ok) throw new Error();
+      const blob = new Blob([await resposta.text()], {
+        type: "application/xml",
+      });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "sitemap.xml";
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch {
+      toast.error("Não foi possível baixar o sitemap.");
+    }
+  }
+
   async function regerarSitemap() {
     try {
       const agora = new Date().toISOString();
@@ -361,6 +394,7 @@ function SeoPage() {
       toast.error("Não foi possível regerar.");
     }
   }
+
 
   if (isLoading) {
     return <p className="text-sm text-muted-foreground">Carregando…</p>;
