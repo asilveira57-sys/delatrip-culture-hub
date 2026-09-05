@@ -437,6 +437,33 @@ function SeoPage() {
     }
   }
 
+  /** Busca o robots.txt e confere se ele aponta para o sitemap correto. */
+  async function validarRobots() {
+    setValidandoRobots(true);
+    try {
+      const resposta = await fetch("/robots.txt", { cache: "reload" });
+      const texto = await resposta.text();
+      const linha =
+        texto.split(/\r?\n/).find((l) => l.toLowerCase().startsWith("sitemap:")) ?? null;
+      const alvo = linha?.slice(linha.indexOf(":") + 1).trim() ?? "";
+      const combina = alvo === sitemapUrl;
+      setRobots({
+        status: resposta.status,
+        temSitemap: Boolean(linha),
+        linhaSitemap: alvo || null,
+        combina,
+        quando: new Date().toLocaleString("pt-BR"),
+      });
+      if (resposta.ok && combina) toast.success("robots.txt aponta para o sitemap.");
+      else toast.error("robots.txt com problema — veja o resultado abaixo.");
+    } catch {
+      setRobots(null);
+      toast.error("Não foi possível acessar o robots.txt.");
+    } finally {
+      setValidandoRobots(false);
+    }
+  }
+
 
   if (isLoading) {
     return <p className="text-sm text-muted-foreground">Carregando…</p>;
