@@ -223,6 +223,14 @@ function SeoPage() {
   const [lote, setLote] = useState(false);
   const gerarSeo = useServerFn(gerarSeoIa);
   const [sitemapEm, setSitemapEm] = useState<string | null>(null);
+  type Validacao = {
+    status: number;
+    urls: number;
+    xmlOk: boolean;
+    quando: string;
+  };
+  const [validacao, setValidacao] = useState<Validacao | null>(null);
+  const [validando, setValidando] = useState(false);
 
   useEffect(() => {
     if (!data) return;
