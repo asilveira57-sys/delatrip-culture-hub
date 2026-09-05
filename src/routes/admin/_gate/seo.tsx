@@ -231,6 +231,16 @@ function SeoPage() {
   };
   const [validacao, setValidacao] = useState<Validacao | null>(null);
   const [validando, setValidando] = useState(false);
+  type ValidacaoRobots = {
+    status: number;
+    temSitemap: boolean;
+    linhaSitemap: string | null;
+    combina: boolean;
+    quando: string;
+  };
+  const [robots, setRobots] = useState<ValidacaoRobots | null>(null);
+  const [validandoRobots, setValidandoRobots] = useState(false);
+
 
   useEffect(() => {
     if (!data) return;
@@ -424,6 +434,33 @@ function SeoPage() {
       toast.error("Não foi possível acessar o sitemap.");
     } finally {
       setValidando(false);
+    }
+  }
+
+  /** Busca o robots.txt e confere se ele aponta para o sitemap correto. */
+  async function validarRobots() {
+    setValidandoRobots(true);
+    try {
+      const resposta = await fetch("/robots.txt", { cache: "reload" });
+      const texto = await resposta.text();
+      const linha =
+        texto.split(/\r?\n/).find((l) => l.toLowerCase().startsWith("sitemap:")) ?? null;
+      const alvo = linha?.slice(linha.indexOf(":") + 1).trim() ?? "";
+      const combina = alvo === sitemapUrl;
+      setRobots({
+        status: resposta.status,
+        temSitemap: Boolean(linha),
+        linhaSitemap: alvo || null,
+        combina,
+        quando: new Date().toLocaleString("pt-BR"),
+      });
+      if (resposta.ok && combina) toast.success("robots.txt aponta para o sitemap.");
+      else toast.error("robots.txt com problema — veja o resultado abaixo.");
+    } catch {
+      setRobots(null);
+      toast.error("Não foi possível acessar o robots.txt.");
+    } finally {
+      setValidandoRobots(false);
     }
   }
 
@@ -670,6 +707,70 @@ function SeoPage() {
             ) : null}
           </div>
         ) : null}
+        <div className="mt-6 border-t border-border pt-4">
+          <Label>robots.txt</Label>
+          <p className="mt-1 text-xs text-muted-foreground">
+            O robots.txt aponta automaticamente para o sitemap do endereço em que o site
+            está sendo acessado.
+          </p>
+          <div className="mt-2 flex flex-wrap gap-2">
+            <Button variant="outline" asChild>
+              <a href="/robots.txt" target="_blank" rel="noreferrer">
+                <ExternalLink className="size-4" /> Abrir robots.txt
+              </a>
+            </Button>
+            <Button
+              variant="outline"
+              onClick={() => void validarRobots()}
+              disabled={validandoRobots}
+            >
+              <ShieldCheck className="size-4" />
+              {validandoRobots ? "Validando…" : "Validar robots.txt"}
+            </Button>
+          </div>
+
+          {robots ? (
+            <div className="mt-3 rounded-md border border-border p-3 text-sm">
+              <p className="font-medium">
+                {robots.status === 200 && robots.combina
+                  ? "robots.txt correto"
+                  : "robots.txt com problema"}
+              </p>
+              <ul className="mt-2 space-y-1 text-muted-foreground">
+                <li>
+                  Status HTTP:{" "}
+                  <strong
+                    className={
+                      robots.status === 200 ? "text-emerald-600" : "text-destructive"
+                    }
+                  >
+                    {robots.status}
+                  </strong>
+                </li>
+                <li>
+                  Linha do sitemap:{" "}
+                  <strong
+                    className={
+                      robots.temSitemap ? "text-emerald-600" : "text-destructive"
+                    }
+                  >
+                    {robots.linhaSitemap ?? "ausente"}
+                  </strong>
+                </li>
+                <li>
+                  Confere com o endereço acima:{" "}
+                  <strong
+                    className={robots.combina ? "text-emerald-600" : "text-destructive"}
+                  >
+                    {robots.combina ? "sim" : "não"}
+                  </strong>
+                </li>
+                <li>Verificado em {robots.quando}</li>
+              </ul>
+            </div>
+          ) : null}
+        </div>
+
         {modo ? (
           <p className="mt-2 text-xs text-amber-600">
             Desabilitado enquanto o modo construção estiver ligado — o site inteiro está
@@ -677,6 +778,7 @@ function SeoPage() {
           </p>
         ) : null}
       </Bloco>
+
 
     </div>
   );
