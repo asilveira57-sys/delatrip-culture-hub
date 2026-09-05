@@ -403,6 +403,30 @@ function SeoPage() {
     }
   }
 
+  /** Busca o sitemap real e valida status HTTP, formato XML e nº de URLs. */
+  async function validarSitemap() {
+    setValidando(true);
+    try {
+      const resposta = await fetch("/sitemap.xml", { cache: "reload" });
+      const texto = await resposta.text();
+      const xmlOk = texto.includes("<urlset");
+      const urls = (texto.match(/<url>/g) ?? []).length;
+      setValidacao({
+        status: resposta.status,
+        urls,
+        xmlOk,
+        quando: new Date().toLocaleString("pt-BR"),
+      });
+      if (resposta.ok && xmlOk) toast.success(`Sitemap válido com ${urls} URLs.`);
+      else toast.error("Sitemap com problema — veja o resultado abaixo.");
+    } catch {
+      setValidacao(null);
+      toast.error("Não foi possível acessar o sitemap.");
+    } finally {
+      setValidando(false);
+    }
+  }
+
 
   if (isLoading) {
     return <p className="text-sm text-muted-foreground">Carregando…</p>;
