@@ -131,6 +131,11 @@ export async function salvarPost(post: PostAdmin, slugOriginal?: string) {
 export async function excluirPost(slug: string) {
   const { error } = await supabase.from("post").delete().eq("slug", slug);
   if (error) throw error;
+  // Marca o slug como excluído para que posts legados do JSON não reapareçam.
+  const { error: erroTombstone } = await supabase
+    .from("post_excluido")
+    .upsert({ slug }, { onConflict: "slug" });
+  if (erroTombstone) throw erroTombstone;
 }
 
 export async function duplicarPost(post: PostAdmin) {
