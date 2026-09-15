@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Copy, Heart, Pencil, Plus, Search, Trash2, X } from "lucide-react";
+import { Copy, Heart, Pencil, Plus, RotateCcw, Search, Trash2, X } from "lucide-react";
 import { toast } from "sonner";
 
 import {
@@ -26,9 +26,12 @@ import {
 import {
   contarCurtidasPorPost,
   duplicarPost,
+  excluirDefinitivo,
   excluirPost,
   importarPostsDoJson,
   listarPostsAdmin,
+  listarPostsExcluidos,
+  restaurarPost,
   statusDoPost,
   type PostAdmin,
   type StatusPost,
@@ -50,6 +53,7 @@ const FILTROS = [
   { id: "publicado", label: "Publicados" },
   { id: "rascunho", label: "Rascunhos" },
   { id: "agendado", label: "Agendados" },
+  { id: "lixeira", label: "Lixeira" },
 ] as const;
 
 const CORES: Record<StatusPost, string> = {
@@ -107,12 +111,46 @@ function BlogAdminPage() {
     onError: () => toast.error("Não foi possível duplicar."),
   });
 
+  const { data: excluidos, isLoading: carregandoLixeira } = useQuery({
+    queryKey: ["admin", "posts-excluidos"],
+    queryFn: listarPostsExcluidos,
+    retry: false,
+  });
+
+  const atualizarTudo = () => {
+    void atualizar();
+    void queryClient.invalidateQueries({ queryKey: ["admin", "posts-excluidos"] });
+  };
+
+  const restaurar = useMutation({
+    mutationFn: restaurarPost,
+    onSuccess: () => {
+      toast.success("Post restaurado.");
+      atualizarTudo();
+    },
+    onError: () => toast.error("Não foi possível restaurar."),
+  });
+
+  const apagarDeVez = useMutation({
+    mutationFn: excluirDefinitivo,
+    onSuccess: () => {
+      toast.success("Post apagado definitivamente.");
+      atualizarTudo();
+    },
+    onError: () => toast.error("Não foi possível apagar."),
+  });
+
   const remover = useMutation({
     mutationFn: excluirPost,
-    onSuccess: () => {
-      toast.success("Post excluído.");
+    onSuccess: (_d, slug) => {
+      toast.success("Post enviado para a lixeira.", {
+        action: {
+          label: "Desfazer",
+          onClick: () => restaurar.mutate(slug),
+        },
+      });
       setParaExcluir(null);
-      void atualizar();
+      atualizarTudo();
     },
     onError: () => toast.error("Não foi possível excluir."),
   });
@@ -222,11 +260,82 @@ function BlogAdminPage() {
         </div>
       </div>
 
+      {filtro === "lixeira" ? (
+        <>
+          <p className="mt-2 text-xs text-muted-foreground">
+            {carregandoLixeira
+              ? "Carregando…"
+              : `${excluidos?.length ?? 0} post(s) na lixeira`}
+          </p>
+          <div className="mt-3 overflow-x-auto rounded-lg border border-border bg-card">
+            <table className="w-full text-sm">
+              <thead className="border-b border-border text-left text-xs uppercase text-muted-foreground">
+                <tr>
+                  <th className="px-3 py-2">Título</th>
+                  <th className="px-3 py-2">Excluído em</th>
+                  <th className="px-3 py-2 text-right">Ações</th>
+                </tr>
+              </thead>
+              <tbody>
+                {carregandoLixeira ? (
+                  <tr>
+                    <td colSpan={3} className="px-3 py-6 text-center text-muted-foreground">
+                      Carregando…
+                    </td>
+                  </tr>
+                ) : (excluidos ?? []).length === 0 ? (
+                  <tr>
+                    <td colSpan={3} className="px-3 py-6 text-center text-muted-foreground">
+                      A lixeira está vazia.
+                    </td>
+                  </tr>
+                ) : (
+                  (excluidos ?? []).map((p) => (
+                    <tr key={p.slug} className="border-b border-border last:border-0">
+                      <td className="px-3 py-2">
+                        <span className="font-medium">{p.titulo}</span>
+                        <p className="text-xs text-muted-foreground">/blog/{p.slug}</p>
+                      </td>
+                      <td className="px-3 py-2 tabular-nums text-muted-foreground">
+                        {formatar(p.excluido_em ?? null)}
+                      </td>
+                      <td className="px-3 py-2">
+                        <div className="flex justify-end gap-2">
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="gap-1"
+                            onClick={() => restaurar.mutate(p.slug)}
+                            disabled={restaurar.isPending}
+                          >
+                            <RotateCcw className="size-3.5" /> Restaurar
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            className="gap-1 text-destructive"
+                            onClick={() => apagarDeVez.mutate(p.slug)}
+                            disabled={apagarDeVez.isPending}
+                          >
+                            <Trash2 className="size-3.5" /> Apagar de vez
+                          </Button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+        </>
+      ) : (
+      <>
       <p className="mt-2 text-xs text-muted-foreground">
         {isLoading ? "Carregando…" : `${lista.length} ${lista.length === 1 ? "post" : "posts"} encontrado${lista.length === 1 ? "" : "s"}`}
       </p>
 
       <div className="mt-3 overflow-x-auto rounded-lg border border-border bg-card">
+
 
         <table className="w-full text-sm">
           <thead className="border-b border-border text-left text-xs uppercase text-muted-foreground">
@@ -314,14 +423,17 @@ function BlogAdminPage() {
           </tbody>
         </table>
       </div>
+      </>
+      )}
+
 
       <AlertDialog open={!!paraExcluir} onOpenChange={(v) => !v && setParaExcluir(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Excluir post</AlertDialogTitle>
             <AlertDialogDescription>
-              “{paraExcluir?.titulo}” será removido definitivamente. Links existentes para
-              este endereço deixarão de funcionar.
+              “{paraExcluir?.titulo}” sai do site e vai para a Lixeira. Você pode restaurá-lo
+              depois na aba Lixeira.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
