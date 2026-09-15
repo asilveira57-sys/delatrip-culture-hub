@@ -130,14 +130,55 @@ export async function salvarPost(post: PostAdmin, slugOriginal?: string) {
   if (error) throw error;
 }
 
+/**
+ * Exclusão reversível: o post sai do admin e do site, mas o conteúdo fica
+ * guardado na lixeira para poder ser restaurado.
+ */
 export async function excluirPost(slug: string) {
-  const { error } = await supabase.from("post").delete().eq("slug", slug);
-  if (error) throw error;
-  // Marca o slug como excluído para que posts legados do JSON não reapareçam.
-  const { error: erroTombstone } = await supabase
+  const { error } = await supabase
     .from("post_excluido")
     .upsert({ slug }, { onConflict: "slug" });
-  if (erroTombstone) throw erroTombstone;
+  if (error) throw error;
+}
+
+/** Devolve o post da lixeira para a lista normal. */
+export async function restaurarPost(slug: string) {
+  const { error } = await supabase.from("post_excluido").delete().eq("slug", slug);
+  if (error) throw error;
+}
+
+/** Posts na lixeira, com título e dados para exibição. */
+export async function listarPostsExcluidos(): Promise<
+  (PostAdmin & { excluido_em?: string })[]
+> {
+  const { data: tumbas } = await supabase
+    .from("post_excluido")
+    .select("slug, created_at")
+    .order("created_at", { ascending: false });
+  const lista = tumbas ?? [];
+  if (lista.length === 0) return [];
+  const slugs = lista.map((t) => t.slug as string);
+  const { data: doBanco } = await supabase.from("post").select("*").in("slug", slugs);
+  const porSlug = new Map<string, PostAdmin>();
+  for (const p of (doBanco ?? []) as PostAdmin[]) porSlug.set(p.slug, p);
+  for (const p of postsJson) {
+    if (!porSlug.has(p.slug) && slugs.includes(p.slug)) {
+      porSlug.set(p.slug, postJsonParaAdmin(p));
+    }
+  }
+  return lista
+    .map((t) => {
+      const post = porSlug.get(t.slug as string);
+      if (!post) return null;
+      return { ...post, excluido_em: t.created_at as string };
+    })
+    .filter((p): p is PostAdmin & { excluido_em: string } => p !== null);
+}
+
+/** Remove de vez o registro do banco (posts legados só somem da listagem). */
+export async function excluirDefinitivo(slug: string) {
+  const { error } = await supabase.from("post").delete().eq("slug", slug);
+  if (error) throw error;
 }
 
 export async function duplicarPost(post: PostAdmin) {
