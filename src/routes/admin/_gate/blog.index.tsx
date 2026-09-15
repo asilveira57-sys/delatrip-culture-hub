@@ -53,6 +53,7 @@ const FILTROS = [
   { id: "publicado", label: "Publicados" },
   { id: "rascunho", label: "Rascunhos" },
   { id: "agendado", label: "Agendados" },
+  { id: "lixeira", label: "Lixeira" },
 ] as const;
 
 const CORES: Record<StatusPost, string> = {
