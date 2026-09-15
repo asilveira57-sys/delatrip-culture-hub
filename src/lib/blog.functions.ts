@@ -9,17 +9,25 @@ export const listarPostsPublicos = createServerFn({ method: "GET" }).handler(
     const supabase = clientePublico();
     if (!supabase) return postsFallback();
     try {
-      const { data, error } = await supabase
-        .from("post")
-        .select(CAMPOS_POST)
-        .eq("publicado", true)
-        .lte("publicado_em", new Date().toISOString())
-        .order("publicado_em", { ascending: false });
+      const [{ data, error }, excluidos] = await Promise.all([
+        supabase
+          .from("post")
+          .select(CAMPOS_POST)
+          .eq("publicado", true)
+          .lte("publicado_em", new Date().toISOString())
+          .order("publicado_em", { ascending: false }),
+        supabase.from("post_excluido").select("slug"),
+      ]);
       if (error || !data) return postsFallback();
-      const doBanco = data.map((linha) => mapearPost(linha as never));
+      const removidos = new Set((excluidos.data ?? []).map((l) => l.slug as string));
+      const doBanco = data
+        .map((linha) => mapearPost(linha as never))
+        .filter((p) => !removidos.has(p.slug));
       // Posts legados do JSON continuam na vitrine enquanto não forem importados.
       const slugs = new Set(doBanco.map((p) => p.slug));
-      const legados = postsFallback().filter((p) => !slugs.has(p.slug));
+      const legados = postsFallback().filter(
+        (p) => !slugs.has(p.slug) && !removidos.has(p.slug),
+      );
       return [...doBanco, ...legados].sort((a, b) => b.data.localeCompare(a.data));
     } catch {
       return postsFallback();
