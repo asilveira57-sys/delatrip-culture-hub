@@ -567,6 +567,24 @@ export type Database = {
           },
         ]
       }
+      post_excluido: {
+        Row: {
+          created_at: string
+          slug: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          slug: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          slug?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       post_link_interno: {
         Row: {
           ancora: string

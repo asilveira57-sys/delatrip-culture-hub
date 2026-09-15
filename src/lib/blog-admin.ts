@@ -72,15 +72,23 @@ export function postJsonParaAdmin(p: (typeof postsJson)[number]): PostAdmin {
   };
 }
 
+/** Slugs marcados como excluídos (inclusive posts legados do JSON). */
+export async function slugsExcluidos(): Promise<Set<string>> {
+  const { data } = await supabase.from("post_excluido").select("slug");
+  return new Set((data ?? []).map((l) => l.slug as string));
+}
+
 export async function listarPostsAdmin(): Promise<PostAdmin[]> {
-  const { data, error } = await supabase
-    .from("post")
-    .select("*")
-    .order("publicado_em", { ascending: false, nullsFirst: false });
+  const [{ data, error }, excluidos] = await Promise.all([
+    supabase.from("post").select("*").order("publicado_em", { ascending: false, nullsFirst: false }),
+    slugsExcluidos(),
+  ]);
   if (error) throw error;
-  const doBanco = (data ?? []) as PostAdmin[];
+  const doBanco = ((data ?? []) as PostAdmin[]).filter((p) => !excluidos.has(p.slug));
   const slugs = new Set(doBanco.map((p) => p.slug));
-  const legados = postsJson.filter((p) => !slugs.has(p.slug)).map(postJsonParaAdmin);
+  const legados = postsJson
+    .filter((p) => !slugs.has(p.slug) && !excluidos.has(p.slug))
+    .map(postJsonParaAdmin);
   return [...doBanco, ...legados].sort((a, b) =>
     (b.publicado_em ?? "").localeCompare(a.publicado_em ?? ""),
   );
@@ -111,6 +119,8 @@ export async function obterPostAdmin(slug: string): Promise<PostAdmin | null> {
 /** Grava o post; quando o slug mudou, renomeia o registro existente. */
 export async function salvarPost(post: PostAdmin, slugOriginal?: string) {
   const registro = { ...post, conteudo_html: sanitizarHtml(post.conteudo_html) };
+  // Se o slug já tinha sido excluído, reativa-o ao salvar de novo.
+  await supabase.from("post_excluido").delete().eq("slug", post.slug);
   if (slugOriginal && slugOriginal !== post.slug) {
     const { error } = await supabase.from("post").update(registro).eq("slug", slugOriginal);
     if (error) throw error;
@@ -123,6 +133,11 @@ export async function salvarPost(post: PostAdmin, slugOriginal?: string) {
 export async function excluirPost(slug: string) {
   const { error } = await supabase.from("post").delete().eq("slug", slug);
   if (error) throw error;
+  // Marca o slug como excluído para que posts legados do JSON não reapareçam.
+  const { error: erroTombstone } = await supabase
+    .from("post_excluido")
+    .upsert({ slug }, { onConflict: "slug" });
+  if (erroTombstone) throw erroTombstone;
 }
 
 export async function duplicarPost(post: PostAdmin) {
