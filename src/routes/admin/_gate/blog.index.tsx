@@ -26,9 +26,12 @@ import {
 import {
   contarCurtidasPorPost,
   duplicarPost,
+  excluirDefinitivo,
   excluirPost,
   importarPostsDoJson,
   listarPostsAdmin,
+  listarPostsExcluidos,
+  restaurarPost,
   statusDoPost,
   type PostAdmin,
   type StatusPost,
