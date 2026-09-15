@@ -323,8 +323,8 @@ function BlogAdminPage() {
           <AlertDialogHeader>
             <AlertDialogTitle>Excluir post</AlertDialogTitle>
             <AlertDialogDescription>
-              “{paraExcluir?.titulo}” será removido definitivamente. Links existentes para
-              este endereço deixarão de funcionar.
+              “{paraExcluir?.titulo}” sai do site e vai para a Lixeira. Você pode restaurá-lo
+              depois na aba Lixeira.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
