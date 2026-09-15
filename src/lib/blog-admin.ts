@@ -72,15 +72,23 @@ export function postJsonParaAdmin(p: (typeof postsJson)[number]): PostAdmin {
   };
 }
 
+/** Slugs marcados como excluídos (inclusive posts legados do JSON). */
+export async function slugsExcluidos(): Promise<Set<string>> {
+  const { data } = await supabase.from("post_excluido").select("slug");
+  return new Set((data ?? []).map((l) => l.slug as string));
+}
+
 export async function listarPostsAdmin(): Promise<PostAdmin[]> {
-  const { data, error } = await supabase
-    .from("post")
-    .select("*")
-    .order("publicado_em", { ascending: false, nullsFirst: false });
+  const [{ data, error }, excluidos] = await Promise.all([
+    supabase.from("post").select("*").order("publicado_em", { ascending: false, nullsFirst: false }),
+    slugsExcluidos(),
+  ]);
   if (error) throw error;
-  const doBanco = (data ?? []) as PostAdmin[];
+  const doBanco = ((data ?? []) as PostAdmin[]).filter((p) => !excluidos.has(p.slug));
   const slugs = new Set(doBanco.map((p) => p.slug));
-  const legados = postsJson.filter((p) => !slugs.has(p.slug)).map(postJsonParaAdmin);
+  const legados = postsJson
+    .filter((p) => !slugs.has(p.slug) && !excluidos.has(p.slug))
+    .map(postJsonParaAdmin);
   return [...doBanco, ...legados].sort((a, b) =>
     (b.publicado_em ?? "").localeCompare(a.publicado_em ?? ""),
   );
