@@ -42,6 +42,12 @@ export const obterPostPublico = createServerFn({ method: "GET" })
     const fallback = () => postsFallback().find((p) => p.slug === entrada.slug) ?? null;
     if (!supabase) return fallback();
     try {
+      const { data: removido } = await supabase
+        .from("post_excluido")
+        .select("slug")
+        .eq("slug", entrada.slug)
+        .maybeSingle();
+      if (removido) return null;
       const { data, error } = await supabase
         .from("post")
         .select(CAMPOS_POST)
