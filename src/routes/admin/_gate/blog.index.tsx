@@ -225,11 +225,82 @@ function BlogAdminPage() {
         </div>
       </div>
 
+      {filtro === "lixeira" ? (
+        <>
+          <p className="mt-2 text-xs text-muted-foreground">
+            {carregandoLixeira
+              ? "Carregando…"
+              : `${excluidos?.length ?? 0} post(s) na lixeira`}
+          </p>
+          <div className="mt-3 overflow-x-auto rounded-lg border border-border bg-card">
+            <table className="w-full text-sm">
+              <thead className="border-b border-border text-left text-xs uppercase text-muted-foreground">
+                <tr>
+                  <th className="px-3 py-2">Título</th>
+                  <th className="px-3 py-2">Excluído em</th>
+                  <th className="px-3 py-2 text-right">Ações</th>
+                </tr>
+              </thead>
+              <tbody>
+                {carregandoLixeira ? (
+                  <tr>
+                    <td colSpan={3} className="px-3 py-6 text-center text-muted-foreground">
+                      Carregando…
+                    </td>
+                  </tr>
+                ) : (excluidos ?? []).length === 0 ? (
+                  <tr>
+                    <td colSpan={3} className="px-3 py-6 text-center text-muted-foreground">
+                      A lixeira está vazia.
+                    </td>
+                  </tr>
+                ) : (
+                  (excluidos ?? []).map((p) => (
+                    <tr key={p.slug} className="border-b border-border last:border-0">
+                      <td className="px-3 py-2">
+                        <span className="font-medium">{p.titulo}</span>
+                        <p className="text-xs text-muted-foreground">/blog/{p.slug}</p>
+                      </td>
+                      <td className="px-3 py-2 tabular-nums text-muted-foreground">
+                        {formatar(p.excluido_em ?? null)}
+                      </td>
+                      <td className="px-3 py-2">
+                        <div className="flex justify-end gap-2">
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="gap-1"
+                            onClick={() => restaurar.mutate(p.slug)}
+                            disabled={restaurar.isPending}
+                          >
+                            <RotateCcw className="size-3.5" /> Restaurar
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            className="gap-1 text-destructive"
+                            onClick={() => apagarDeVez.mutate(p.slug)}
+                            disabled={apagarDeVez.isPending}
+                          >
+                            <Trash2 className="size-3.5" /> Apagar de vez
+                          </Button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+        </>
+      ) : (
+      <>
       <p className="mt-2 text-xs text-muted-foreground">
         {isLoading ? "Carregando…" : `${lista.length} ${lista.length === 1 ? "post" : "posts"} encontrado${lista.length === 1 ? "" : "s"}`}
       </p>
 
       <div className="mt-3 overflow-x-auto rounded-lg border border-border bg-card">
+
 
         <table className="w-full text-sm">
           <thead className="border-b border-border text-left text-xs uppercase text-muted-foreground">
