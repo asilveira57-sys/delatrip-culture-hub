@@ -119,6 +119,8 @@ export async function obterPostAdmin(slug: string): Promise<PostAdmin | null> {
 /** Grava o post; quando o slug mudou, renomeia o registro existente. */
 export async function salvarPost(post: PostAdmin, slugOriginal?: string) {
   const registro = { ...post, conteudo_html: sanitizarHtml(post.conteudo_html) };
+  // Se o slug já tinha sido excluído, reativa-o ao salvar de novo.
+  await supabase.from("post_excluido").delete().eq("slug", post.slug);
   if (slugOriginal && slugOriginal !== post.slug) {
     const { error } = await supabase.from("post").update(registro).eq("slug", slugOriginal);
     if (error) throw error;
