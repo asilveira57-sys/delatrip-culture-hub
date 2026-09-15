@@ -111,12 +111,46 @@ function BlogAdminPage() {
     onError: () => toast.error("Não foi possível duplicar."),
   });
 
+  const { data: excluidos, isLoading: carregandoLixeira } = useQuery({
+    queryKey: ["admin", "posts-excluidos"],
+    queryFn: listarPostsExcluidos,
+    retry: false,
+  });
+
+  const atualizarTudo = () => {
+    void atualizar();
+    void queryClient.invalidateQueries({ queryKey: ["admin", "posts-excluidos"] });
+  };
+
+  const restaurar = useMutation({
+    mutationFn: restaurarPost,
+    onSuccess: () => {
+      toast.success("Post restaurado.");
+      atualizarTudo();
+    },
+    onError: () => toast.error("Não foi possível restaurar."),
+  });
+
+  const apagarDeVez = useMutation({
+    mutationFn: excluirDefinitivo,
+    onSuccess: () => {
+      toast.success("Post apagado definitivamente.");
+      atualizarTudo();
+    },
+    onError: () => toast.error("Não foi possível apagar."),
+  });
+
   const remover = useMutation({
     mutationFn: excluirPost,
-    onSuccess: () => {
-      toast.success("Post excluído.");
+    onSuccess: (_d, slug) => {
+      toast.success("Post enviado para a lixeira.", {
+        action: {
+          label: "Desfazer",
+          onClick: () => restaurar.mutate(slug),
+        },
+      });
       setParaExcluir(null);
-      void atualizar();
+      atualizarTudo();
     },
     onError: () => toast.error("Não foi possível excluir."),
   });
