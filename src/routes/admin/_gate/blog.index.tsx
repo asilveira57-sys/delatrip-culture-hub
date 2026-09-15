@@ -388,6 +388,9 @@ function BlogAdminPage() {
           </tbody>
         </table>
       </div>
+      </>
+      )}
+
 
       <AlertDialog open={!!paraExcluir} onOpenChange={(v) => !v && setParaExcluir(null)}>
         <AlertDialogContent>
