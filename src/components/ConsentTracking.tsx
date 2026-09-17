@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { Link } from "@tanstack/react-router";
+import { Link, useRouterState } from "@tanstack/react-router";
 
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
@@ -29,11 +29,16 @@ function injetar(id: string, src: string, inline?: string) {
 
 type Janela = Window & { dataLayer?: unknown[] };
 
-function gtag(...args: unknown[]) {
+/**
+ * O gtag precisa receber o objeto `arguments` (não um array) — é assim que o
+ * Google lê os comandos. Empurrar um array faz o consent/update ser ignorado.
+ */
+const gtag: (...args: unknown[]) => void = function () {
   const w = window as Janela;
   w.dataLayer = w.dataLayer ?? [];
-  w.dataLayer.push(args);
-}
+  // eslint-disable-next-line prefer-rest-params
+  w.dataLayer.push(arguments);
+} as (...args: unknown[]) => void;
 
 /** Consent Mode v2: tudo negado até a pessoa escolher. */
 function consentModePadrao() {
@@ -110,6 +115,19 @@ export function ConsentTracking({ seo }: { seo: SeoPublico }) {
   const [visivel, setVisivel] = useState(false);
   const [detalhes, setDetalhes] = useState(false);
   const [escolha, setEscolha] = useState<CategoriasConsentimento>(CONSENTIMENTO_VAZIO);
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+
+  /** Navegação interna (SPA) não recarrega a página: enviamos o page_view. */
+  useEffect(() => {
+    if (!seo.ga4.ativo || !seo.ga4.id) return;
+    if (!lerConsentimento()?.categorias.analise) return;
+    if (!document.getElementById("ga4-loader")) return;
+    gtag("event", "page_view", {
+      page_path: pathname,
+      page_location: window.location.href,
+      page_title: document.title,
+    });
+  }, [pathname, seo]);
 
   useEffect(() => {
     consentModePadrao();
