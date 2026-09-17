@@ -33,12 +33,12 @@ type Janela = Window & { dataLayer?: unknown[] };
  * O gtag precisa receber o objeto `arguments` (não um array) — é assim que o
  * Google lê os comandos. Empurrar um array faz o consent/update ser ignorado.
  */
-function gtag() {
+const gtag: (...args: unknown[]) => void = function () {
   const w = window as Janela;
   w.dataLayer = w.dataLayer ?? [];
   // eslint-disable-next-line prefer-rest-params
   w.dataLayer.push(arguments);
-}
+} as (...args: unknown[]) => void;
 
 /** Consent Mode v2: tudo negado até a pessoa escolher. */
 function consentModePadrao() {
