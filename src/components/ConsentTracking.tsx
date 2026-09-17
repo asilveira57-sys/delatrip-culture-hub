@@ -119,14 +119,18 @@ export function ConsentTracking({ seo }: { seo: SeoPublico }) {
 
   /** Navegação interna (SPA) não recarrega a página: enviamos o page_view. */
   useEffect(() => {
-    if (!seo.ga4.ativo || !seo.ga4.id) return;
-    if (!lerConsentimento()?.categorias.analise) return;
-    if (!document.getElementById("ga4-loader")) return;
-    gtag("event", "page_view", {
-      page_path: pathname,
-      page_location: window.location.href,
-      page_title: document.title,
-    });
+    const c = lerConsentimento()?.categorias;
+    if (c?.analise && seo.ga4.ativo && seo.ga4.id && document.getElementById("ga4-loader")) {
+      gtag("event", "page_view", {
+        page_path: pathname,
+        page_location: window.location.href,
+        page_title: document.title,
+      });
+    }
+    const fbq = (window as unknown as { fbq?: (...a: unknown[]) => void }).fbq;
+    if (c?.marketing && seo.metaPixel.ativo && seo.metaPixel.id && typeof fbq === "function") {
+      fbq("track", "PageView");
+    }
   }, [pathname, seo]);
 
   useEffect(() => {
