@@ -29,10 +29,15 @@ function injetar(id: string, src: string, inline?: string) {
 
 type Janela = Window & { dataLayer?: unknown[] };
 
-function gtag(...args: unknown[]) {
+/**
+ * O gtag precisa receber o objeto `arguments` (não um array) — é assim que o
+ * Google lê os comandos. Empurrar um array faz o consent/update ser ignorado.
+ */
+function gtag() {
   const w = window as Janela;
   w.dataLayer = w.dataLayer ?? [];
-  w.dataLayer.push(args);
+  // eslint-disable-next-line prefer-rest-params
+  w.dataLayer.push(arguments);
 }
 
 /** Consent Mode v2: tudo negado até a pessoa escolher. */
