@@ -337,7 +337,7 @@ export function RelacionamentosEditor({
       : products.map(
           (p) => scorePorSlug.get(p.slug) ?? { produto: p, score: 0, origens: [] as string[] },
         );
-  const listaProdutos = base.filter((s) => {
+  const listaFiltrada = base.filter((s) => {
     const p = s.produto;
     if (filtroCategoria && p.categoriaSlug !== filtroCategoria) return false;
     if (slugsMarca && !(p.marcaSlug && slugsMarca.has(p.marcaSlug))) return false;
@@ -348,6 +348,7 @@ export function RelacionamentosEditor({
     }
     return true;
   });
+  const listaProdutos = ordenarLista(listaFiltrada, ordenacaoLista);
   const selecionadosNaLista = listaProdutos.filter(
     (s) => relProduto.get(s.produto.slug)?.manual,
   ).length;
@@ -639,8 +640,8 @@ export function RelacionamentosEditor({
                 {listaProdutos.length} produto(s) · {selecionadosNaLista} selecionado(s)
               </span>
             </div>
-            <div className="mt-2 grid gap-2 sm:grid-cols-3">
-              <div className="relative sm:col-span-3">
+            <div className="mt-2 grid gap-2 sm:grid-cols-4">
+              <div className="relative sm:col-span-4">
                 <Search className="pointer-events-none absolute left-2 top-2.5 size-4 text-muted-foreground" />
                 <Input
                   className="pl-8"
@@ -672,6 +673,18 @@ export function RelacionamentosEditor({
                 {marcasDisponiveis.map((m) => (
                   <option key={m.slug} value={m.slug}>
                     {m.nome}
+                  </option>
+                ))}
+              </select>
+              <select
+                className="h-9 rounded-md border border-input bg-background px-2 text-sm"
+                value={ordenacaoLista}
+                onChange={(e) => setOrdenacaoLista(e.target.value)}
+                aria-label="Ordenar produtos"
+              >
+                {ORDENACOES_LISTA.map((o) => (
+                  <option key={o.valor} value={o.valor}>
+                    {o.label}
                   </option>
                 ))}
               </select>
