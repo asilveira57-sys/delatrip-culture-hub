@@ -16,10 +16,60 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { categories, imageFor, getProduct, products } from "@/lib/catalog";
+import {
+  categories,
+  imageFor,
+  getProduct,
+  products,
+  type Product,
+} from "@/lib/catalog";
 import { marcasEfetivas, slugsDaMarca, useMarcaOverlays } from "@/lib/marcas";
 
 const LIMITE_LOTE = 200;
+
+const collatorLista = new Intl.Collator("pt-BR");
+
+type ItemLista = { produto: Product; score: number; origens: string[] };
+
+/** Ordenações da lista de seleção de produtos. */
+const ORDENACOES_LISTA = [
+  { valor: "relevancia", label: "Ordem padrão (relevância)" },
+  { valor: "nome", label: "Nome (A–Z)" },
+  { valor: "marca", label: "Marca (A–Z)" },
+  { valor: "categoria", label: "Categoria (A–Z)" },
+  { valor: "cadastro", label: "Data de cadastro (recentes)" },
+] as const;
+
+function ordenarLista(lista: ItemLista[], ordem: string): ItemLista[] {
+  if (ordem === "relevancia") return lista;
+  const porNome = (a: ItemLista, b: ItemLista) =>
+    collatorLista.compare(a.produto.nome, b.produto.nome);
+  const semValor = "\uffff";
+  const ordenada = [...lista];
+  if (ordem === "nome") {
+    ordenada.sort(porNome);
+  } else if (ordem === "marca") {
+    ordenada.sort(
+      (a, b) =>
+        collatorLista.compare(a.produto.marca ?? semValor, b.produto.marca ?? semValor) ||
+        porNome(a, b),
+    );
+  } else if (ordem === "categoria") {
+    ordenada.sort(
+      (a, b) =>
+        collatorLista.compare(
+          a.produto.categoriaNome ?? semValor,
+          b.produto.categoriaNome ?? semValor,
+        ) || porNome(a, b),
+    );
+  } else if (ordem === "cadastro") {
+    // O ID de cadastro original é sequencial: maior = cadastrado depois.
+    ordenada.sort(
+      (a, b) => (Number(b.produto.id) || 0) - (Number(a.produto.id) || 0) || porNome(a, b),
+    );
+  }
+  return ordenada;
+}
 import { listarPostsAdmin } from "@/lib/blog-admin";
 import {
   atualizarStatusLink,
@@ -96,6 +146,7 @@ export function RelacionamentosEditor({
   const [filtroCategoria, setFiltroCategoria] = useState("");
   const [filtroMarca, setFiltroMarca] = useState("");
   const [somenteEstoque, setSomenteEstoque] = useState(false);
+  const [ordenacaoLista, setOrdenacaoLista] = useState<string>("relevancia");
   const [limiteLista, setLimiteLista] = useState(60);
   const mapaMarcas = useMarcaOverlays();
   const marcasDisponiveis = useMemo(
