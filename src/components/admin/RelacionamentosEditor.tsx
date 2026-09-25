@@ -29,6 +29,7 @@ import {
   gerarLinksInternos,
   gravarRelacaoPost,
   gravarRelacaoProduto,
+  removerRelacaoProduto,
   listarClusters,
   listarTodasTags,
   clustersDoPost,
