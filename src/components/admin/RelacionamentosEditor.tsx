@@ -16,7 +16,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { categories, imageFor, getProduct } from "@/lib/catalog";
+import { categories, imageFor, getProduct, products } from "@/lib/catalog";
+import { marcasEfetivas, slugsDaMarca, useMarcaOverlays } from "@/lib/marcas";
+
+const LIMITE_LOTE = 200;
 import { listarPostsAdmin } from "@/lib/blog-admin";
 import {
   atualizarStatusLink,
@@ -26,6 +29,7 @@ import {
   gerarLinksInternos,
   gravarRelacaoPost,
   gravarRelacaoProduto,
+  removerRelacaoProduto,
   listarClusters,
   listarTodasTags,
   clustersDoPost,
@@ -88,6 +92,22 @@ export function RelacionamentosEditor({
   const [novaTag, setNovaTag] = useState("");
   const [novoCluster, setNovoCluster] = useState("");
   const [ocupado, setOcupado] = useState(false);
+  const [fonteProdutos, setFonteProdutos] = useState<"sugeridos" | "todos">("sugeridos");
+  const [filtroCategoria, setFiltroCategoria] = useState("");
+  const [filtroMarca, setFiltroMarca] = useState("");
+  const [somenteEstoque, setSomenteEstoque] = useState(false);
+  const [limiteLista, setLimiteLista] = useState(60);
+  const mapaMarcas = useMarcaOverlays();
+  const marcasDisponiveis = useMemo(
+    () => [...marcasEfetivas(mapaMarcas)].sort((a, b) => a.nome.localeCompare(b.nome)),
+    [mapaMarcas],
+  );
+  const categoriasDisponiveis = useMemo(() => {
+    const usadas = new Set(products.map((p) => p.categoriaSlug).filter(Boolean));
+    return categories
+      .filter((c) => usadas.has(c.slug))
+      .sort((a, b) => a.nome.localeCompare(b.nome));
+  }, []);
 
   const chave = ["admin", "relacionamentos", slug];
   const { data, isLoading } = useQuery({
@@ -255,9 +275,56 @@ export function RelacionamentosEditor({
     .filter((c) => c.nome.toLowerCase().includes(buscaCategoria.toLowerCase()))
     .slice(0, 200);
 
-  const produtosVisiveis = sugestoesProduto.filter((s) =>
-    s.produto.nome.toLowerCase().includes(buscaProduto.toLowerCase()),
-  );
+  const normalizar = (t: string) =>
+    t.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  const termo = normalizar(buscaProduto.trim());
+  const slugsMarca = filtroMarca ? new Set(slugsDaMarca(filtroMarca, mapaMarcas)) : null;
+  const scorePorSlug = new Map(sugestoesProduto.map((s) => [s.produto.slug, s]));
+  const base =
+    fonteProdutos === "sugeridos"
+      ? sugestoesProduto
+      : products.map(
+          (p) => scorePorSlug.get(p.slug) ?? { produto: p, score: 0, origens: [] as string[] },
+        );
+  const listaProdutos = base.filter((s) => {
+    const p = s.produto;
+    if (filtroCategoria && p.categoriaSlug !== filtroCategoria) return false;
+    if (slugsMarca && !(p.marcaSlug && slugsMarca.has(p.marcaSlug))) return false;
+    if (somenteEstoque && p.estoque <= 0) return false;
+    if (termo) {
+      const alvo = normalizar(`${p.nome} ${p.marca ?? ""} ${p.referencia ?? ""}`);
+      if (!alvo.includes(termo)) return false;
+    }
+    return true;
+  });
+  const selecionadosNaLista = listaProdutos.filter(
+    (s) => relProduto.get(s.produto.slug)?.manual,
+  ).length;
+
+  function selecionarEmLote(marcar: boolean) {
+    const alvo = listaProdutos
+      .filter((s) => (relProduto.get(s.produto.slug)?.manual ?? false) !== marcar)
+      .slice(0, LIMITE_LOTE);
+    if (alvo.length === 0) return;
+    void executar(
+      () =>
+        Promise.all(
+          alvo.map((s) => {
+            const atual = relProduto.get(s.produto.slug);
+            return gravarRelacaoProduto(slug, {
+              slug: s.produto.slug,
+              origem: s.origens.join(" + ") || "manual",
+              score: s.score,
+              manual: marcar,
+              excluido: false,
+              fixado: marcar ? (atual?.fixado ?? false) : false,
+              posicao: atual?.posicao ?? 0,
+            });
+          }),
+        ),
+      marcar ? `${alvo.length} produto(s) selecionado(s).` : `${alvo.length} produto(s) desmarcado(s).`,
+    );
+  }
   const postsVisiveis = sugestoesPost.filter((s) =>
     s.post.titulo.toLowerCase().includes(buscaPost.toLowerCase()),
   );
@@ -500,24 +567,107 @@ export function RelacionamentosEditor({
           </div>
 
           <div>
-            <div className="flex items-center justify-between gap-2">
-              <Label>Produtos sugeridos</Label>
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <div className="inline-flex rounded-md border border-border p-0.5">
+                <Button
+                  size="sm"
+                  variant={fonteProdutos === "sugeridos" ? "default" : "ghost"}
+                  onClick={() => setFonteProdutos("sugeridos")}
+                >
+                  Sugeridos
+                </Button>
+                <Button
+                  size="sm"
+                  variant={fonteProdutos === "todos" ? "default" : "ghost"}
+                  onClick={() => setFonteProdutos("todos")}
+                >
+                  Todos os produtos
+                </Button>
+              </div>
               <span className="text-xs text-muted-foreground">
-                {produtosVisiveis.length} elegíveis
+                {listaProdutos.length} produto(s) · {selecionadosNaLista} selecionado(s)
               </span>
             </div>
-            <div className="relative mt-2">
-              <Search className="pointer-events-none absolute left-2 top-2.5 size-4 text-muted-foreground" />
-              <Input
-                className="pl-8"
-                placeholder="Pesquisar produto por nome"
-                value={buscaProduto}
-                onChange={(e) => setBuscaProduto(e.target.value)}
-              />
+            <div className="mt-2 grid gap-2 sm:grid-cols-3">
+              <div className="relative sm:col-span-3">
+                <Search className="pointer-events-none absolute left-2 top-2.5 size-4 text-muted-foreground" />
+                <Input
+                  className="pl-8"
+                  placeholder="Pesquisar produto por nome, marca ou referência"
+                  value={buscaProduto}
+                  onChange={(e) => setBuscaProduto(e.target.value)}
+                />
+              </div>
+              <select
+                className="h-9 rounded-md border border-input bg-background px-2 text-sm"
+                value={filtroCategoria}
+                onChange={(e) => setFiltroCategoria(e.target.value)}
+                aria-label="Filtrar por categoria"
+              >
+                <option value="">Todas as categorias</option>
+                {categoriasDisponiveis.map((c) => (
+                  <option key={c.slug} value={c.slug}>
+                    {c.nome}
+                  </option>
+                ))}
+              </select>
+              <select
+                className="h-9 rounded-md border border-input bg-background px-2 text-sm"
+                value={filtroMarca}
+                onChange={(e) => setFiltroMarca(e.target.value)}
+                aria-label="Filtrar por marca"
+              >
+                <option value="">Todas as marcas</option>
+                {marcasDisponiveis.map((m) => (
+                  <option key={m.slug} value={m.slug}>
+                    {m.nome}
+                  </option>
+                ))}
+              </select>
+              <label className="flex items-center gap-2 text-sm">
+                <Checkbox
+                  checked={somenteEstoque}
+                  onCheckedChange={(v) => setSomenteEstoque(v === true)}
+                />
+                Só em estoque
+              </label>
             </div>
-            <ul className="mt-2 max-h-96 space-y-2 overflow-y-auto rounded border border-border p-2">
-              {produtosVisiveis.slice(0, 40).map((s) => {
+            <div className="mt-2 flex flex-wrap items-center gap-2">
+              <Button
+                size="sm"
+                variant="outline"
+                disabled={ocupado || listaProdutos.length === 0}
+                onClick={() => selecionarEmLote(true)}
+              >
+                <Check className="mr-1 size-4" /> Selecionar todos ({Math.min(listaProdutos.length, LIMITE_LOTE)})
+              </Button>
+              <Button
+                size="sm"
+                variant="ghost"
+                disabled={ocupado || selecionadosNaLista === 0}
+                onClick={() => selecionarEmLote(false)}
+              >
+                Desmarcar todos
+              </Button>
+              {filtroCategoria || filtroMarca || buscaProduto || somenteEstoque ? (
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={() => {
+                    setFiltroCategoria("");
+                    setFiltroMarca("");
+                    setBuscaProduto("");
+                    setSomenteEstoque(false);
+                  }}
+                >
+                  Limpar filtros
+                </Button>
+              ) : null}
+            </div>
+            <ul className="mt-2 max-h-[28rem] space-y-2 overflow-y-auto rounded border border-border p-2">
+              {listaProdutos.slice(0, limiteLista).map((s) => {
                 const rel = relProduto.get(s.produto.slug);
+                const origem = s.origens.join(" + ") || "manual";
                 return (
                   <li
                     key={s.produto.slug}
@@ -526,9 +676,7 @@ export function RelacionamentosEditor({
                     <Checkbox
                       checked={rel?.manual ?? false}
                       disabled={ocupado}
-                      onCheckedChange={() =>
-                        alternarProduto(s.produto.slug, s.score, s.origens.join(" + "))
-                      }
+                      onCheckedChange={() => alternarProduto(s.produto.slug, s.score, origem)}
                     />
                     <img
                       src={imageFor(s.produto)}
@@ -539,20 +687,18 @@ export function RelacionamentosEditor({
                     <div className="min-w-0 flex-1">
                       <p className="truncate text-sm font-medium">{s.produto.nome}</p>
                       <p className="truncate text-xs text-muted-foreground">
-                        {s.produto.categoriaNome ?? "sem categoria"} ·{" "}
-                        {s.produto.estoque > 0 ? "em estoque" : "sem estoque"} · origem:{" "}
-                        {s.origens.join(" + ") || "conteúdo"}
+                        {s.produto.marca ?? "sem marca"} · {s.produto.categoriaNome ?? "sem categoria"} ·{" "}
+                        {s.produto.estoque > 0 ? "em estoque" : "sem estoque"}
+                        {s.score > 0 ? ` · origem: ${s.origens.join(" + ") || "conteúdo"}` : ""}
                       </p>
-                      <Relevancia score={s.score} />
+                      {s.score > 0 ? <Relevancia score={s.score} /> : null}
                     </div>
                     <div className="flex shrink-0 gap-1">
                       <Button
                         size="icon"
                         variant={rel?.fixado ? "default" : "ghost"}
                         title="Fixar nas primeiras posições"
-                        onClick={() =>
-                          fixarProduto(s.produto.slug, s.score, s.origens.join(" + "))
-                        }
+                        onClick={() => fixarProduto(s.produto.slug, s.score, origem)}
                       >
                         <Pin className="size-4" />
                       </Button>
@@ -560,9 +706,7 @@ export function RelacionamentosEditor({
                         size="icon"
                         variant={rel?.excluido ? "destructive" : "ghost"}
                         title="Excluir deste post"
-                        onClick={() =>
-                          excluirProduto(s.produto.slug, s.score, s.origens.join(" + "))
-                        }
+                        onClick={() => excluirProduto(s.produto.slug, s.score, origem)}
                       >
                         <X className="size-4" />
                       </Button>
@@ -570,9 +714,18 @@ export function RelacionamentosEditor({
                   </li>
                 );
               })}
-              {produtosVisiveis.length === 0 ? (
+              {listaProdutos.length > limiteLista ? (
+                <li className="text-center">
+                  <Button size="sm" variant="ghost" onClick={() => setLimiteLista((n) => n + 60)}>
+                    Mostrar mais ({listaProdutos.length - limiteLista} restantes)
+                  </Button>
+                </li>
+              ) : null}
+              {listaProdutos.length === 0 ? (
                 <li className="p-2 text-sm text-muted-foreground">
-                  Nenhum produto suficientemente relacionado. O bloco não será exibido.
+                  {fonteProdutos === "sugeridos"
+                    ? "Nenhuma sugestão automática. Use “Todos os produtos” para escolher livremente."
+                    : "Nenhum produto encontrado com esses filtros."}
                 </li>
               ) : null}
             </ul>
@@ -581,13 +734,30 @@ export function RelacionamentosEditor({
           <div className="rounded border border-border p-3">
             <p className="text-sm font-medium">Selecionados e excluídos</p>
             <div className="mt-2 flex flex-wrap gap-2">
-              {data.produtos.map((r) => (
-                <Badge key={r.slug} variant={r.excluido ? "destructive" : "secondary"}>
-                  {getProduct(r.slug)?.nome ?? r.slug}
-                  {r.fixado ? " · fixado" : r.manual ? " · manual" : ""}
-                </Badge>
-              ))}
-              {data.produtos.length === 0 ? (
+              {data.produtos
+                .filter((r) => r.manual || r.fixado || r.excluido)
+                .map((r) => (
+                  <Badge
+                    key={r.slug}
+                    variant={r.excluido ? "destructive" : "secondary"}
+                    className="gap-1"
+                  >
+                    {getProduct(r.slug)?.nome ?? r.slug}
+                    {r.fixado ? " · fixado" : r.excluido ? " · excluído" : ""}
+                    <button
+                      type="button"
+                      className="ml-1 rounded hover:opacity-70"
+                      title="Remover"
+                      disabled={ocupado}
+                      onClick={() =>
+                        void executar(() => removerRelacaoProduto(slug, r.slug))
+                      }
+                    >
+                      <X className="size-3" />
+                    </button>
+                  </Badge>
+                ))}
+              {data.produtos.every((r) => !r.manual && !r.fixado && !r.excluido) ? (
                 <span className="text-xs text-muted-foreground">Nada definido manualmente.</span>
               ) : null}
             </div>
