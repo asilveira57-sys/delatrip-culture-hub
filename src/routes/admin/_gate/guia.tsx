@@ -198,7 +198,7 @@ function ListaKits({
 }: {
   kits: Kit[];
   carregando: boolean;
-  overlays?: Overlays;
+  overlays?: Overlays | undefined;
   onEditar: (k: Kit) => void;
 }) {
   const qc = useQueryClient();
@@ -329,7 +329,7 @@ function EditorKit({
 }: {
   kit: Kit;
   total: number;
-  overlays?: Overlays;
+  overlays?: Overlays | undefined;
   onFechar: () => void;
 }) {
   const qc = useQueryClient();
@@ -494,7 +494,7 @@ function Sugestao({
   overlays,
   onRevisar,
 }: {
-  overlays?: Overlays;
+  overlays?: Overlays | undefined;
   onRevisar: (k: Kit) => void;
 }) {
   const [nivel, setNivel] = useState<string>("explorador");

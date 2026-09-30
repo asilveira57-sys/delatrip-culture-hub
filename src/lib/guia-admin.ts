@@ -39,7 +39,7 @@ export async function salvarKit(kit: Kit): Promise<string> {
   const { itens, id, ...campos } = kit;
   const { data, error } = await supabase
     .from("guia_kit")
-    .upsert(id ? { id, ...campos } : campos, { onConflict: id ? "id" : "slug" })
+    .upsert((id ? { id, ...campos } : campos) as never, { onConflict: id ? "id" : "slug" })
     .select("id")
     .single();
   if (error) throw error;
