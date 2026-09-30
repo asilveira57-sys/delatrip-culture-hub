@@ -3,6 +3,8 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Eye, EyeOff, MoreHorizontal, Pencil, RotateCcw, Sparkles } from "lucide-react";
 import { toast } from "sonner";
+import { useServerFn } from "@tanstack/react-start";
+import { classificarPerfis, type ResumoGuia } from "@/lib/guia.functions";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -67,6 +69,17 @@ function ProdutosAdminPage() {
   const [visibilidade, setVisibilidade] = useState("todos");
   const [pagina, setPagina] = useState(0);
   const [selecionados, setSelecionados] = useState<Set<string>>(new Set());
+  const [resumoGuia, setResumoGuia] = useState<ResumoGuia | null>(null);
+  const classificarFn = useServerFn(classificarPerfis);
+  const classificar = useMutation({
+    mutationFn: () => classificarFn(),
+    onSuccess: (r) => {
+      setResumoGuia(r);
+      toast.success("Perfis classificados.");
+      void queryClient.invalidateQueries({ queryKey: ["admin", "overlays"] });
+    },
+    onError: () => toast.error("Não foi possível classificar os perfis."),
+  });
 
   const { data: overlays, isLoading } = useQuery({
     queryKey: ["admin", "overlays"],
@@ -158,6 +171,13 @@ function ProdutosAdminPage() {
           </p>
         </div>
         <div className="flex gap-2">
+          <Button
+            variant="outline"
+            onClick={() => classificar.mutate()}
+            disabled={classificar.isPending}
+          >
+            {classificar.isPending ? "Classificando…" : "Classificar perfis"}
+          </Button>
           <Button asChild variant="outline">
             <Link to="/admin/produtos/revisar">Revisar textos de IA</Link>
           </Button>
@@ -170,6 +190,47 @@ function ProdutosAdminPage() {
         </div>
 
       </div>
+
+      {resumoGuia && (
+        <div className="mt-4 rounded-md border border-border bg-card p-4 text-sm">
+          <div className="flex items-center justify-between">
+            <p className="font-medium">
+              Guia para iniciantes — {resumoGuia.total} produto(s) analisados
+            </p>
+            <button
+              className="text-xs text-muted-foreground underline"
+              onClick={() => setResumoGuia(null)}
+            >
+              fechar
+            </button>
+          </div>
+          <div className="mt-3 grid gap-3 sm:grid-cols-3">
+            {(
+              [
+                ["Linha", resumoGuia.porLinha],
+                ["Etapa", resumoGuia.porEtapa],
+                ["Nível", resumoGuia.porNivel],
+              ] as const
+            ).map(([titulo, mapa]) => (
+              <div key={titulo}>
+                <p className="text-xs uppercase text-muted-foreground">{titulo}</p>
+                <ul className="mt-1 space-y-0.5">
+                  {Object.entries(mapa as Record<string, number>).map(([k, v]) => (
+                    <li key={k} className="flex justify-between">
+                      <span className="capitalize">{k}</span>
+                      <span className="tabular-nums">{v}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+          <p className="mt-3 text-xs text-muted-foreground">
+            Fora do guia: {resumoGuia.foraDoGuia} · Sem classificação:{" "}
+            {resumoGuia.semClassificacao}
+          </p>
+        </div>
+      )}
 
       <div className="mt-6 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
         <Input

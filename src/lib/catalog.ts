@@ -38,6 +38,10 @@ export type Product = {
   lancamento: boolean;
   urlLoja: string | null;
   urlMercadoLivre: string | null;
+  /** Guia para iniciantes (vem da sobreposição). */
+  nivel?: string | null;
+  linha?: string | null;
+  etapa?: string | null;
 };
 
 /** Campos pesados carregados sob demanda na página do produto. */

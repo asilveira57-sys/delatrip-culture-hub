@@ -22,6 +22,10 @@ export type Overlay = {
   status_revisao: string | null;
   /** Marca definida no admin: slug de outra marca, "" para sem marca, null = catálogo. */
   marca_slug: string | null;
+  nivel: string | null;
+  linha: string | null;
+  etapa: string | null;
+  fora_do_guia: boolean;
 };
 
 export type OverlayMap = Map<string, Overlay>;
@@ -34,7 +38,7 @@ export async function fetchOverlays(): Promise<OverlayMap> {
     const { data, error } = await supabase
       .from("produto_overlay")
       .select(
-        "slug, descricao_html, seo_titulo, seo_descricao, oculto, destaque, status_revisao, marca_slug",
+        "slug, descricao_html, seo_titulo, seo_descricao, oculto, destaque, status_revisao, marca_slug, nivel, linha, etapa, fora_do_guia",
       )
       .limit(5000);
     if (error || !data) return VAZIO;
@@ -67,7 +71,13 @@ export function mergeProduct(produto: Product, overlays: OverlayMap): Product {
 
 /** Aplica destaque e a marca transferida no admin. */
 function aplicar(p: Product, ov: Overlay): Product {
-  const base = { ...p, destaque: ov.destaque ?? p.destaque };
+  const base = {
+    ...p,
+    destaque: ov.destaque ?? p.destaque,
+    nivel: ov.nivel ?? null,
+    linha: ov.linha ?? null,
+    etapa: ov.etapa ?? null,
+  };
   if (ov.marca_slug === null || ov.marca_slug === undefined) return base;
   const slug = ov.marca_slug.trim();
   if (!slug) return { ...base, marca: null, marcaSlug: null };
