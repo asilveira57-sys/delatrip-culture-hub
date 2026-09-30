@@ -72,7 +72,7 @@ function ProdutosAdminPage() {
   const [resumoGuia, setResumoGuia] = useState<ResumoGuia | null>(null);
   const classificarFn = useServerFn(classificarPerfis);
   const classificar = useMutation({
-    mutationFn: () => classificarFn(),
+    mutationFn: () => classificarFn({ data: {} }),
     onSuccess: (r) => {
       setResumoGuia(r);
       toast.success("Perfis classificados.");
