@@ -770,9 +770,15 @@ export type Database = {
           destaque: boolean | null
           enriquecido_em: string | null
           enriquecido_modelo: string | null
+          etapa: string | null
+          fora_do_guia: boolean
+          linha: string | null
+          linha_manual: boolean
           marca_slug: string | null
+          nivel: string | null
           observacao: string | null
           oculto: boolean
+          perfil_manual: boolean
           seo_descricao: string | null
           seo_keywords: string | null
           seo_titulo: string | null
@@ -787,9 +793,15 @@ export type Database = {
           destaque?: boolean | null
           enriquecido_em?: string | null
           enriquecido_modelo?: string | null
+          etapa?: string | null
+          fora_do_guia?: boolean
+          linha?: string | null
+          linha_manual?: boolean
           marca_slug?: string | null
+          nivel?: string | null
           observacao?: string | null
           oculto?: boolean
+          perfil_manual?: boolean
           seo_descricao?: string | null
           seo_keywords?: string | null
           seo_titulo?: string | null
@@ -804,9 +816,15 @@ export type Database = {
           destaque?: boolean | null
           enriquecido_em?: string | null
           enriquecido_modelo?: string | null
+          etapa?: string | null
+          fora_do_guia?: boolean
+          linha?: string | null
+          linha_manual?: boolean
           marca_slug?: string | null
+          nivel?: string | null
           observacao?: string | null
           oculto?: boolean
+          perfil_manual?: boolean
           seo_descricao?: string | null
           seo_keywords?: string | null
           seo_titulo?: string | null
