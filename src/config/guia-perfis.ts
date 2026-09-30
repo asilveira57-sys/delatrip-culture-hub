@@ -77,3 +77,19 @@ export const GUIA_PERFIS: Record<string, Etapa> = {
 
 /** Raízes que ficam fora do guia. Categorias restritas também ficam fora. */
 export const RAIZES_FORA_DO_GUIA = new Set(["vestuario"]);
+
+export const LINHAS: Linha[] = ["entrada", "normal", "premium"];
+export const ETAPAS: Etapa[] = ["essencial", "conveniencia", "personalizacao", "premium"];
+
+export const ROTULO: Record<string, string> = {
+  explorador: "Explorador",
+  familiarizado: "Familiarizado",
+  entusiasta: "Entusiasta",
+  especialista: "Especialista",
+  entrada: "Entrada",
+  normal: "Normal",
+  premium: "Premium",
+  essencial: "Essencial",
+  conveniencia: "Conveniência",
+  personalizacao: "Personalização",
+};
