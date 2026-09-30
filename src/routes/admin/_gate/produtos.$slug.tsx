@@ -64,6 +64,12 @@ const VAZIO: OverlayAdmin = {
   status_revisao: null,
   observacao: null,
   marca_slug: null,
+  nivel: null,
+  linha: null,
+  etapa: null,
+  linha_manual: false,
+  perfil_manual: false,
+  fora_do_guia: false,
 };
 
 function Contador({ texto, limite }: { texto: string; limite: number }) {
