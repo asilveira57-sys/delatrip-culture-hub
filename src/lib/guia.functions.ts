@@ -34,7 +34,7 @@ const precoDe = (p: Product) =>
 
 function tercis(valores: number[]) {
   const v = [...valores].sort((a, b) => a - b);
-  const q = (f: number) => v[Math.min(v.length - 1, Math.floor(f * (v.length - 1)))];
+  const q = (f: number) => v[Math.min(v.length - 1, Math.floor(f * (v.length - 1)))] ?? 0;
   return [q(0.33), q(0.66)] as const;
 }
 
@@ -115,13 +115,13 @@ export const classificarPerfis = createServerFn({ method: "POST" })
         etapa = fora ? null : etapaDe(cat);
         nivel = etapa ? NIVEL_DA_ETAPA[etapa] : null;
         if (nivel && linha === "premium" && (etapa === "essencial" || etapa === "conveniencia")) {
-          nivel = NIVEIS[NIVEIS.indexOf(nivel) + 1];
+          nivel = NIVEIS[NIVEIS.indexOf(nivel) + 1] ?? nivel;
         }
       }
 
-      if (linha) resumo.porLinha[linha]++;
-      if (etapa) resumo.porEtapa[etapa]++;
-      if (nivel) resumo.porNivel[nivel]++;
+      if (linha) resumo.porLinha[linha] = (resumo.porLinha[linha] ?? 0) + 1;
+      if (etapa) resumo.porEtapa[etapa] = (resumo.porEtapa[etapa] ?? 0) + 1;
+      if (nivel) resumo.porNivel[nivel] = (resumo.porNivel[nivel] ?? 0) + 1;
       if (fora) resumo.foraDoGuia++;
       else if (!etapa || !nivel) resumo.semClassificacao++;
 
