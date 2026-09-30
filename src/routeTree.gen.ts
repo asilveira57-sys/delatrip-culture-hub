@@ -40,6 +40,7 @@ import { Route as ProdutoSlugRouteImport } from './routes/produto.$slug'
 import { Route as AdminGateIndexRouteImport } from './routes/admin/_gate/index'
 import { Route as AdminGateConfiguracoesRouteImport } from './routes/admin/_gate/configuracoes'
 import { Route as AdminGateFaqRouteImport } from './routes/admin/_gate/faq'
+import { Route as AdminGateGuiaRouteImport } from './routes/admin/_gate/guia'
 import { Route as AdminGateLegalRouteImport } from './routes/admin/_gate/legal'
 import { Route as AdminGateMensagensRouteImport } from './routes/admin/_gate/mensagens'
 import { Route as AdminGateRelacionadosRouteImport } from './routes/admin/_gate/relacionados'
@@ -211,6 +212,11 @@ const AdminGateFaqRoute = AdminGateFaqRouteImport.update({
   path: '/faq',
   getParentRoute: () => AdminGateRoute,
 } as any)
+const AdminGateGuiaRoute = AdminGateGuiaRouteImport.update({
+  id: '/guia',
+  path: '/guia',
+  getParentRoute: () => AdminGateRoute,
+} as any)
 const AdminGateLegalRoute = AdminGateLegalRouteImport.update({
   id: '/legal',
   path: '/legal',
@@ -321,6 +327,7 @@ export interface FileRoutesByFullPath {
   '/marcas/': typeof MarcasIndexRoute
   '/admin/configuracoes': typeof AdminGateConfiguracoesRoute
   '/admin/faq': typeof AdminGateFaqRoute
+  '/admin/guia': typeof AdminGateGuiaRoute
   '/admin/legal': typeof AdminGateLegalRoute
   '/admin/mensagens': typeof AdminGateMensagensRoute
   '/admin/relacionados': typeof AdminGateRelacionadosRoute
@@ -368,6 +375,7 @@ export interface FileRoutesByTo {
   '/marcas': typeof MarcasIndexRoute
   '/admin/configuracoes': typeof AdminGateConfiguracoesRoute
   '/admin/faq': typeof AdminGateFaqRoute
+  '/admin/guia': typeof AdminGateGuiaRoute
   '/admin/legal': typeof AdminGateLegalRoute
   '/admin/mensagens': typeof AdminGateMensagensRoute
   '/admin/relacionados': typeof AdminGateRelacionadosRoute
@@ -417,6 +425,7 @@ export interface FileRoutesById {
   '/marcas/': typeof MarcasIndexRoute
   '/admin/_gate/configuracoes': typeof AdminGateConfiguracoesRoute
   '/admin/_gate/faq': typeof AdminGateFaqRoute
+  '/admin/_gate/guia': typeof AdminGateGuiaRoute
   '/admin/_gate/legal': typeof AdminGateLegalRoute
   '/admin/_gate/mensagens': typeof AdminGateMensagensRoute
   '/admin/_gate/relacionados': typeof AdminGateRelacionadosRoute
@@ -467,6 +476,7 @@ export interface FileRouteTypes {
     | '/marcas/'
     | '/admin/configuracoes'
     | '/admin/faq'
+    | '/admin/guia'
     | '/admin/legal'
     | '/admin/mensagens'
     | '/admin/relacionados'
@@ -514,6 +524,7 @@ export interface FileRouteTypes {
     | '/marcas'
     | '/admin/configuracoes'
     | '/admin/faq'
+    | '/admin/guia'
     | '/admin/legal'
     | '/admin/mensagens'
     | '/admin/relacionados'
@@ -562,6 +573,7 @@ export interface FileRouteTypes {
     | '/marcas/'
     | '/admin/_gate/configuracoes'
     | '/admin/_gate/faq'
+    | '/admin/_gate/guia'
     | '/admin/_gate/legal'
     | '/admin/_gate/mensagens'
     | '/admin/_gate/relacionados'
@@ -830,6 +842,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminGateFaqRouteImport
       parentRoute: typeof AdminGateRoute
     }
+    '/admin/_gate/guia': {
+      id: '/admin/_gate/guia'
+      path: '/guia'
+      fullPath: '/admin/guia'
+      preLoaderRoute: typeof AdminGateGuiaRouteImport
+      parentRoute: typeof AdminGateRoute
+    }
     '/admin/_gate/legal': {
       id: '/admin/_gate/legal'
       path: '/legal'
@@ -941,6 +960,7 @@ declare module '@tanstack/react-router' {
 interface AdminGateRouteChildren {
   AdminGateConfiguracoesRoute: typeof AdminGateConfiguracoesRoute
   AdminGateFaqRoute: typeof AdminGateFaqRoute
+  AdminGateGuiaRoute: typeof AdminGateGuiaRoute
   AdminGateLegalRoute: typeof AdminGateLegalRoute
   AdminGateMensagensRoute: typeof AdminGateMensagensRoute
   AdminGateRelacionadosRoute: typeof AdminGateRelacionadosRoute
@@ -962,6 +982,7 @@ interface AdminGateRouteChildren {
 const AdminGateRouteChildren: AdminGateRouteChildren = {
   AdminGateConfiguracoesRoute: AdminGateConfiguracoesRoute,
   AdminGateFaqRoute: AdminGateFaqRoute,
+  AdminGateGuiaRoute: AdminGateGuiaRoute,
   AdminGateLegalRoute: AdminGateLegalRoute,
   AdminGateMensagensRoute: AdminGateMensagensRoute,
   AdminGateRelacionadosRoute: AdminGateRelacionadosRoute,

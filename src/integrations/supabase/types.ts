@@ -304,6 +304,80 @@ export type Database = {
         }
         Relationships: []
       }
+      guia_kit: {
+        Row: {
+          ativo: boolean
+          created_at: string
+          descricao: string | null
+          id: string
+          linha: string | null
+          nivel: string | null
+          nome: string
+          ordem: number
+          slug: string
+          updated_at: string
+        }
+        Insert: {
+          ativo?: boolean
+          created_at?: string
+          descricao?: string | null
+          id?: string
+          linha?: string | null
+          nivel?: string | null
+          nome: string
+          ordem?: number
+          slug: string
+          updated_at?: string
+        }
+        Update: {
+          ativo?: boolean
+          created_at?: string
+          descricao?: string | null
+          id?: string
+          linha?: string | null
+          nivel?: string | null
+          nome?: string
+          ordem?: number
+          slug?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      guia_kit_item: {
+        Row: {
+          created_at: string
+          kit_id: string
+          ordem: number
+          papel: string
+          produto_slug: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          kit_id: string
+          ordem?: number
+          papel: string
+          produto_slug: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          kit_id?: string
+          ordem?: number
+          papel?: string
+          produto_slug?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "guia_kit_item_kit_id_fkey"
+            columns: ["kit_id"]
+            isOneToOne: false
+            referencedRelation: "guia_kit"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       lgpd_solicitacao: {
         Row: {
           created_at: string

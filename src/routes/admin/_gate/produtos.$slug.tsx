@@ -7,6 +7,7 @@ import { toast } from "sonner";
 
 import { BotaoSeoIa } from "@/components/admin/BotaoSeoIa";
 import { FaqEditor } from "@/components/admin/FaqEditor";
+import { GuiaPerfilEditor } from "@/components/admin/GuiaPerfilEditor";
 import { GoogleSnippetPreview } from "@/components/admin/GoogleSnippetPreview";
 import { RichTextEditor } from "@/components/editor/RichTextEditor";
 import { Button } from "@/components/ui/button";
@@ -63,6 +64,12 @@ const VAZIO: OverlayAdmin = {
   status_revisao: null,
   observacao: null,
   marca_slug: null,
+  nivel: null,
+  linha: null,
+  etapa: null,
+  linha_manual: false,
+  perfil_manual: false,
+  fora_do_guia: false,
 };
 
 function Contador({ texto, limite }: { texto: string; limite: number }) {
@@ -386,6 +393,7 @@ function ProdutoAdminPage() {
 
         {/* Coluna 3 — ações */}
         <aside className="space-y-4">
+          <GuiaPerfilEditor slug={slug} />
           <div className="rounded-lg border border-border bg-card p-4 text-sm">
             <h2 className="text-sm font-semibold">Revisão</h2>
             <p className="mt-1 text-xs text-muted-foreground">

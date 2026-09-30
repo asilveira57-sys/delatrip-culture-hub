@@ -18,10 +18,16 @@ export type OverlayAdmin = {
   status_revisao: string | null;
   observacao: string | null;
   marca_slug: string | null;
+  nivel: string | null;
+  linha: string | null;
+  etapa: string | null;
+  linha_manual: boolean;
+  perfil_manual: boolean;
+  fora_do_guia: boolean;
 };
 
 export const CAMPOS_OVERLAY =
-  "slug, descricao_html, descricao_original, seo_titulo, seo_descricao, seo_keywords, oculto, destaque, enriquecido_em, enriquecido_modelo, status_revisao, observacao, marca_slug";
+  "slug, descricao_html, descricao_original, seo_titulo, seo_descricao, seo_keywords, oculto, destaque, enriquecido_em, enriquecido_modelo, status_revisao, observacao, marca_slug, nivel, linha, etapa, linha_manual, perfil_manual, fora_do_guia";
 
 export type StatusEnriquecimento =
   | "original"
@@ -259,4 +265,24 @@ export function formatarUsd(valor: number) {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   });
+}
+
+/* ---------------- guia para iniciantes ---------------- */
+
+export type PatchGuia = Partial<
+  Pick<OverlayAdmin, "nivel" | "linha" | "etapa" | "fora_do_guia" | "linha_manual" | "perfil_manual">
+>;
+
+/** Aplica nível/linha/etapa em lote, marcando os flags manuais. */
+export async function definirGuiaEmLote(slugs: string[], patch: PatchGuia) {
+  if (slugs.length === 0) return;
+  const extra: PatchGuia = { ...patch };
+  if ("linha" in patch) extra.linha_manual = true;
+  if ("nivel" in patch || "etapa" in patch) extra.perfil_manual = true;
+  for (let i = 0; i < slugs.length; i += 500) {
+    const { error } = await supabase
+      .from("produto_overlay")
+      .upsert(slugs.slice(i, i + 500).map((slug) => ({ slug, ...extra })), { onConflict: "slug" });
+    if (error) throw error;
+  }
 }

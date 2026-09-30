@@ -4,6 +4,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Eye, EyeOff, MoreHorizontal, Pencil, RotateCcw, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 import { useServerFn } from "@tanstack/react-start";
+import { ETAPAS, LINHAS, NIVEIS, ROTULO } from "@/config/guia-perfis";
 import { classificarPerfis, type ResumoGuia } from "@/lib/guia.functions";
 
 import { Button } from "@/components/ui/button";
@@ -24,6 +25,7 @@ import {
 } from "@/components/ui/select";
 import { products, rootCategories, getCategoryById, rootOf } from "@/lib/catalog";
 import {
+  definirGuiaEmLote,
   definirOcultoEmLote,
   definirRevisaoEmLote,
   listarOverlaysAdmin,
@@ -67,12 +69,15 @@ function ProdutosAdminPage() {
   const [categoria, setCategoria] = useState("todas");
   const [status, setStatus] = useState<StatusEnriquecimento | "todos">("todos");
   const [visibilidade, setVisibilidade] = useState("todos");
+  const [fNivel, setFNivel] = useState("todos");
+  const [fLinha, setFLinha] = useState("todos");
+  const [fEtapa, setFEtapa] = useState("todos");
   const [pagina, setPagina] = useState(0);
   const [selecionados, setSelecionados] = useState<Set<string>>(new Set());
   const [resumoGuia, setResumoGuia] = useState<ResumoGuia | null>(null);
   const classificarFn = useServerFn(classificarPerfis);
   const classificar = useMutation({
-    mutationFn: () => classificarFn(),
+    mutationFn: () => classificarFn({ data: {} }),
     onSuccess: (r) => {
       setResumoGuia(r);
       toast.success("Perfis classificados.");
@@ -138,9 +143,27 @@ function ProdutosAdminPage() {
       if (status !== "todos" && statusOverlay(ov) !== status) return false;
       if (visibilidade === "ocultos" && !ov?.oculto) return false;
       if (visibilidade === "visiveis" && ov?.oculto) return false;
+      if (fNivel === "sem") {
+        if (ov?.fora_do_guia || (ov?.nivel && ov?.linha && ov?.etapa)) return false;
+      } else if (fNivel !== "todos" && ov?.nivel !== fNivel) return false;
+      if (fLinha !== "todos" && ov?.linha !== fLinha) return false;
+      if (fEtapa !== "todos" && ov?.etapa !== fEtapa) return false;
       return true;
     });
-  }, [busca, categoria, status, visibilidade, overlays]);
+  }, [busca, categoria, status, visibilidade, overlays, fNivel, fLinha, fEtapa]);
+
+  const loteGuia = useMutation({
+    mutationFn: async (patch: Record<string, string>) => {
+      const slugs = [...selecionados];
+      await definirGuiaEmLote(slugs, patch);
+      return slugs.length;
+    },
+    onSuccess: (n) => {
+      toast.success(`Perfil aplicado a ${n} produto(s).`);
+      void atualizar();
+    },
+    onError: () => toast.error("Não foi possível aplicar o perfil em lote."),
+  });
 
   const totalPaginas = Math.max(1, Math.ceil(filtrados.length / POR_PAGINA));
   const paginaAtual = Math.min(pagina, totalPaginas - 1);
@@ -296,6 +319,38 @@ function ProdutosAdminPage() {
         </Select>
       </div>
 
+      <div className="mt-2 grid gap-2 sm:grid-cols-3">
+        {(
+          [
+            ["Nível", fNivel, setFNivel, NIVEIS, true],
+            ["Linha", fLinha, setFLinha, LINHAS, false],
+            ["Etapa", fEtapa, setFEtapa, ETAPAS, false],
+          ] as const
+        ).map(([rot, val, set, ops, sem]) => (
+          <Select
+            key={rot}
+            value={val}
+            onValueChange={(v) => {
+              set(v);
+              setPagina(0);
+            }}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder={rot} />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="todos">{rot}: todos</SelectItem>
+              {sem && <SelectItem value="sem">Sem classificação</SelectItem>}
+              {ops.map((o) => (
+                <SelectItem key={o} value={o}>
+                  {rot}: {ROTULO[o]}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        ))}
+      </div>
+
       {selecionados.size > 0 && (
         <div className="mt-4 flex flex-wrap items-center gap-2 rounded-md border border-border bg-card p-3 text-sm">
           <span className="font-medium">{selecionados.size} selecionado(s)</span>
@@ -313,6 +368,26 @@ function ProdutosAdminPage() {
           <Button size="sm" variant="outline" onClick={() => lote.mutate("reprovar")}>
             Reprovar textos
           </Button>
+          {(
+            [
+              ["nivel", "Nível", NIVEIS],
+              ["linha", "Linha", LINHAS],
+              ["etapa", "Etapa", ETAPAS],
+            ] as const
+          ).map(([k, rot, ops]) => (
+            <Select key={k} value="" onValueChange={(v) => loteGuia.mutate({ [k]: v })}>
+              <SelectTrigger className="h-8 w-40">
+                <SelectValue placeholder={`Aplicar ${rot.toLowerCase()}`} />
+              </SelectTrigger>
+              <SelectContent>
+                {ops.map((o) => (
+                  <SelectItem key={o} value={o}>
+                    {ROTULO[o]}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          ))}
           <Button
             size="sm"
             onClick={() =>
@@ -360,6 +435,7 @@ function ProdutosAdminPage() {
               </th>
               <th className="p-3">Produto</th>
               <th className="p-3">Marca</th>
+              <th className="p-3">Guia</th>
               <th className="p-3">Texto</th>
               <th className="p-3">Site</th>
               <th className="p-3" />
@@ -389,6 +465,22 @@ function ProdutosAdminPage() {
                     <p className="text-xs text-muted-foreground">{p.slug}</p>
                   </td>
                   <td className="p-3 text-muted-foreground">{p.marca ?? "—"}</td>
+                  <td className="p-3">
+                    {ov?.fora_do_guia ? (
+                      <span className="text-xs text-muted-foreground">Fora do guia</span>
+                    ) : (
+                      <div className="flex flex-wrap gap-1">
+                        {[ov?.nivel, ov?.linha, ov?.etapa].map((v, i) => (
+                          <span
+                            key={i}
+                            className={`rounded px-1.5 py-0.5 text-[11px] ${v ? "bg-secondary text-secondary-foreground" : "bg-muted text-muted-foreground"}`}
+                          >
+                            {v ? ROTULO[v] : "—"}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </td>
                   <td className="p-3">
                     <span className={`rounded px-2 py-0.5 text-xs ${CORES[st]}`}>
                       {STATUS.find((s) => s.id === st)?.label ?? st}

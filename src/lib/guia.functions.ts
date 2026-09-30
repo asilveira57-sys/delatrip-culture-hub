@@ -1,4 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
+import { z } from "zod";
 
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import {
@@ -52,7 +53,11 @@ function etapaDe(cat: Category | undefined): Etapa | null {
 /** Classifica linha, etapa e nível de todos os produtos e grava na sobreposição. */
 export const classificarPerfis = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .handler(async ({ context }): Promise<ResumoGuia> => {
+  .inputValidator((d: unknown) =>
+    z.object({ slugs: z.array(z.string().max(200)).max(5000).optional() }).parse(d ?? {}),
+  )
+  .handler(async ({ data, context }): Promise<ResumoGuia> => {
+    const alvo = data.slugs?.length ? new Set(data.slugs) : null;
     const { supabase } = context;
 
     const { data: existentes, error } = await supabase
@@ -96,6 +101,7 @@ export const classificarPerfis = createServerFn({ method: "POST" })
     const linhas: Record<string, unknown>[] = [];
 
     for (const p of products) {
+      if (alvo && !alvo.has(p.slug)) continue;
       resumo.total++;
       const cat = getCategoryById(p.categoriaId);
       const ov = ovs.get(p.slug);
