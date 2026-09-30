@@ -215,7 +215,7 @@ function ProdutosAdminPage() {
               <div key={titulo}>
                 <p className="text-xs uppercase text-muted-foreground">{titulo}</p>
                 <ul className="mt-1 space-y-0.5">
-                  {Object.entries(mapa).map(([k, v]) => (
+                  {Object.entries(mapa as Record<string, number>).map(([k, v]) => (
                     <li key={k} className="flex justify-between">
                       <span className="capitalize">{k}</span>
                       <span className="tabular-nums">{v}</span>

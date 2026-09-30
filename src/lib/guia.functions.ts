@@ -41,7 +41,7 @@ function tercis(valores: number[]) {
 function etapaDe(cat: Category | undefined): Etapa | null {
   if (!cat) return null;
   const raiz = rootOf(cat);
-  const cadeia = [cat, ...[...ancestorsOf(cat)].reverse()].filter((c) => c.id !== raiz.id);
+  const cadeia = [...ancestorsOf(cat)].reverse().filter((c) => c.id !== raiz.id);
   for (const c of cadeia) {
     const e = GUIA_PERFIS[`${raiz.slug}/${c.slug}`];
     if (e) return e;
