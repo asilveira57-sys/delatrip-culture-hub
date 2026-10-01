@@ -11,6 +11,7 @@ import { searchAll } from "@/lib/catalog";
 import mark from "@/assets/delatrip-mark.png";
 
 const nav = [
+  { label: "Comece aqui", to: "/comece-aqui" },
   { label: "Catálogo", to: "/catalogo" },
   { label: "Marcas", to: "/marcas" },
   { label: "Acessórios", to: "/acessorios" },
