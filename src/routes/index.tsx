@@ -158,6 +158,20 @@ function Home() {
         </div>
       </section>
 
+      {/* Guia para iniciantes */}
+      <section className="mx-auto max-w-6xl px-4 pb-4">
+        <div className="surface-ink flex flex-col items-start gap-4 rounded-lg p-8 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <p className="eyebrow text-gold">Comece aqui</p>
+            <h2 className="mt-1 text-2xl font-bold uppercase text-ink-foreground">Guia de acessórios para iniciantes</h2>
+            <p className="mt-2 max-w-xl text-sm text-ink-muted">Entenda os itens, descubra seu perfil em 5 perguntas e monte o seu kit.</p>
+          </div>
+          <Button asChild size="lg">
+            <Link to="/comece-aqui">Descobrir meu perfil</Link>
+          </Button>
+        </div>
+      </section>
+
       {/* Marcas */}
       <section className="surface-ink py-20">
         <div className="mx-auto max-w-6xl px-4">

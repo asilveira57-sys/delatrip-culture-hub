@@ -30,6 +30,8 @@ import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as CatalogoIndexRouteImport } from './routes/catalogo.index'
 import { Route as CatalogoSplatRouteImport } from './routes/catalogo.$'
+import { Route as ComeceAquiIndexRouteImport } from './routes/comece-aqui.index'
+import { Route as ComeceAquiNivelRouteImport } from './routes/comece-aqui.$nivel'
 import { Route as ConteudoTabacoRouteImport } from './routes/conteudo.tabaco'
 import { Route as LegalAvisoLegalRouteImport } from './routes/legal.aviso-legal'
 import { Route as LegalPrivacidadeRouteImport } from './routes/legal.privacidade'
@@ -160,6 +162,16 @@ const CatalogoIndexRoute = CatalogoIndexRouteImport.update({
 const CatalogoSplatRoute = CatalogoSplatRouteImport.update({
   id: '/catalogo/$',
   path: '/catalogo/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ComeceAquiIndexRoute = ComeceAquiIndexRouteImport.update({
+  id: '/comece-aqui/',
+  path: '/comece-aqui/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ComeceAquiNivelRoute = ComeceAquiNivelRouteImport.update({
+  id: '/comece-aqui/$nivel',
+  path: '/comece-aqui/$nivel',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ConteudoTabacoRoute = ConteudoTabacoRouteImport.update({
@@ -316,6 +328,7 @@ export interface FileRoutesByFullPath {
   '/admin/login': typeof AdminLoginRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/catalogo/$': typeof CatalogoSplatRoute
+  '/comece-aqui/$nivel': typeof ComeceAquiNivelRoute
   '/conteudo/tabaco': typeof ConteudoTabacoRoute
   '/legal/aviso-legal': typeof LegalAvisoLegalRoute
   '/legal/privacidade': typeof LegalPrivacidadeRoute
@@ -324,6 +337,7 @@ export interface FileRoutesByFullPath {
   '/produto/$slug': typeof ProdutoSlugRoute
   '/blog/': typeof BlogIndexRoute
   '/catalogo/': typeof CatalogoIndexRoute
+  '/comece-aqui/': typeof ComeceAquiIndexRoute
   '/marcas/': typeof MarcasIndexRoute
   '/admin/configuracoes': typeof AdminGateConfiguracoesRoute
   '/admin/faq': typeof AdminGateFaqRoute
@@ -364,6 +378,7 @@ export interface FileRoutesByTo {
   '/admin/login': typeof AdminLoginRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/catalogo/$': typeof CatalogoSplatRoute
+  '/comece-aqui/$nivel': typeof ComeceAquiNivelRoute
   '/conteudo/tabaco': typeof ConteudoTabacoRoute
   '/legal/aviso-legal': typeof LegalAvisoLegalRoute
   '/legal/privacidade': typeof LegalPrivacidadeRoute
@@ -372,6 +387,7 @@ export interface FileRoutesByTo {
   '/produto/$slug': typeof ProdutoSlugRoute
   '/blog': typeof BlogIndexRoute
   '/catalogo': typeof CatalogoIndexRoute
+  '/comece-aqui': typeof ComeceAquiIndexRoute
   '/marcas': typeof MarcasIndexRoute
   '/admin/configuracoes': typeof AdminGateConfiguracoesRoute
   '/admin/faq': typeof AdminGateFaqRoute
@@ -414,6 +430,7 @@ export interface FileRoutesById {
   '/admin/login': typeof AdminLoginRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/catalogo/$': typeof CatalogoSplatRoute
+  '/comece-aqui/$nivel': typeof ComeceAquiNivelRoute
   '/conteudo/tabaco': typeof ConteudoTabacoRoute
   '/legal/aviso-legal': typeof LegalAvisoLegalRoute
   '/legal/privacidade': typeof LegalPrivacidadeRoute
@@ -422,6 +439,7 @@ export interface FileRoutesById {
   '/produto/$slug': typeof ProdutoSlugRoute
   '/blog/': typeof BlogIndexRoute
   '/catalogo/': typeof CatalogoIndexRoute
+  '/comece-aqui/': typeof ComeceAquiIndexRoute
   '/marcas/': typeof MarcasIndexRoute
   '/admin/_gate/configuracoes': typeof AdminGateConfiguracoesRoute
   '/admin/_gate/faq': typeof AdminGateFaqRoute
@@ -465,6 +483,7 @@ export interface FileRouteTypes {
     | '/admin/login'
     | '/blog/$slug'
     | '/catalogo/$'
+    | '/comece-aqui/$nivel'
     | '/conteudo/tabaco'
     | '/legal/aviso-legal'
     | '/legal/privacidade'
@@ -473,6 +492,7 @@ export interface FileRouteTypes {
     | '/produto/$slug'
     | '/blog/'
     | '/catalogo/'
+    | '/comece-aqui/'
     | '/marcas/'
     | '/admin/configuracoes'
     | '/admin/faq'
@@ -513,6 +533,7 @@ export interface FileRouteTypes {
     | '/admin/login'
     | '/blog/$slug'
     | '/catalogo/$'
+    | '/comece-aqui/$nivel'
     | '/conteudo/tabaco'
     | '/legal/aviso-legal'
     | '/legal/privacidade'
@@ -521,6 +542,7 @@ export interface FileRouteTypes {
     | '/produto/$slug'
     | '/blog'
     | '/catalogo'
+    | '/comece-aqui'
     | '/marcas'
     | '/admin/configuracoes'
     | '/admin/faq'
@@ -562,6 +584,7 @@ export interface FileRouteTypes {
     | '/admin/login'
     | '/blog/$slug'
     | '/catalogo/$'
+    | '/comece-aqui/$nivel'
     | '/conteudo/tabaco'
     | '/legal/aviso-legal'
     | '/legal/privacidade'
@@ -570,6 +593,7 @@ export interface FileRouteTypes {
     | '/produto/$slug'
     | '/blog/'
     | '/catalogo/'
+    | '/comece-aqui/'
     | '/marcas/'
     | '/admin/_gate/configuracoes'
     | '/admin/_gate/faq'
@@ -612,6 +636,7 @@ export interface RootRouteChildren {
   AdminLoginRoute: typeof AdminLoginRoute
   BlogSlugRoute: typeof BlogSlugRoute
   CatalogoSplatRoute: typeof CatalogoSplatRoute
+  ComeceAquiNivelRoute: typeof ComeceAquiNivelRoute
   ConteudoTabacoRoute: typeof ConteudoTabacoRoute
   LegalAvisoLegalRoute: typeof LegalAvisoLegalRoute
   LegalPrivacidadeRoute: typeof LegalPrivacidadeRoute
@@ -620,6 +645,7 @@ export interface RootRouteChildren {
   ProdutoSlugRoute: typeof ProdutoSlugRoute
   BlogIndexRoute: typeof BlogIndexRoute
   CatalogoIndexRoute: typeof CatalogoIndexRoute
+  ComeceAquiIndexRoute: typeof ComeceAquiIndexRoute
   MarcasIndexRoute: typeof MarcasIndexRoute
 }
 
@@ -770,6 +796,20 @@ declare module '@tanstack/react-router' {
       path: '/catalogo/$'
       fullPath: '/catalogo/$'
       preLoaderRoute: typeof CatalogoSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/comece-aqui/': {
+      id: '/comece-aqui/'
+      path: '/comece-aqui'
+      fullPath: '/comece-aqui/'
+      preLoaderRoute: typeof ComeceAquiIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/comece-aqui/$nivel': {
+      id: '/comece-aqui/$nivel'
+      path: '/comece-aqui/$nivel'
+      fullPath: '/comece-aqui/$nivel'
+      preLoaderRoute: typeof ComeceAquiNivelRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/conteudo/tabaco': {
@@ -1025,6 +1065,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminLoginRoute: AdminLoginRoute,
   BlogSlugRoute: BlogSlugRoute,
   CatalogoSplatRoute: CatalogoSplatRoute,
+  ComeceAquiNivelRoute: ComeceAquiNivelRoute,
   ConteudoTabacoRoute: ConteudoTabacoRoute,
   LegalAvisoLegalRoute: LegalAvisoLegalRoute,
   LegalPrivacidadeRoute: LegalPrivacidadeRoute,
@@ -1033,6 +1074,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProdutoSlugRoute: ProdutoSlugRoute,
   BlogIndexRoute: BlogIndexRoute,
   CatalogoIndexRoute: CatalogoIndexRoute,
+  ComeceAquiIndexRoute: ComeceAquiIndexRoute,
   MarcasIndexRoute: MarcasIndexRoute,
 }
 export const routeTree = rootRouteImport

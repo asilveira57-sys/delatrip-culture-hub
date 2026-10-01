@@ -117,6 +117,68 @@ export const PAGINAS_EDITAVEIS: PaginaEditavel[] = [
     ],
   },
   {
+    id: "comece-aqui",
+    caminho: "/comece-aqui",
+    nome: "Comece aqui (Guia para iniciantes)",
+    campos: [
+      { chave: "titulo", label: "Título do hero", tipo: "texto" },
+      { chave: "subtitulo", label: "Subtítulo do hero", tipo: "textarea" },
+      { chave: "cta", label: "Botão do hero", tipo: "texto" },
+      { chave: "intro", label: "Introdução", tipo: "rich" },
+      {
+        chave: "faq",
+        label: "Perguntas frequentes",
+        tipo: "lista",
+        quantidade: 5,
+        itens: [
+          { chave: "pergunta", label: "Pergunta" },
+          { chave: "resposta", label: "Resposta" },
+        ],
+        ajuda: "Deixe vazio para usar as perguntas padrão.",
+      },
+    ],
+  },
+  {
+    id: "comece-aqui-explorador",
+    caminho: "/comece-aqui/explorador",
+    nome: "Comece aqui — Explorador",
+    campos: [
+      { chave: "titulo", label: "Título", tipo: "texto" },
+      { chave: "subtitulo", label: "Subtítulo", tipo: "textarea" },
+      { chave: "corpo", label: "Texto do perfil", tipo: "rich" },
+    ],
+  },
+  {
+    id: "comece-aqui-familiarizado",
+    caminho: "/comece-aqui/familiarizado",
+    nome: "Comece aqui — Familiarizado",
+    campos: [
+      { chave: "titulo", label: "Título", tipo: "texto" },
+      { chave: "subtitulo", label: "Subtítulo", tipo: "textarea" },
+      { chave: "corpo", label: "Texto do perfil", tipo: "rich" },
+    ],
+  },
+  {
+    id: "comece-aqui-entusiasta",
+    caminho: "/comece-aqui/entusiasta",
+    nome: "Comece aqui — Entusiasta",
+    campos: [
+      { chave: "titulo", label: "Título", tipo: "texto" },
+      { chave: "subtitulo", label: "Subtítulo", tipo: "textarea" },
+      { chave: "corpo", label: "Texto do perfil", tipo: "rich" },
+    ],
+  },
+  {
+    id: "comece-aqui-especialista",
+    caminho: "/comece-aqui/especialista",
+    nome: "Comece aqui — Especialista",
+    campos: [
+      { chave: "titulo", label: "Título", tipo: "texto" },
+      { chave: "subtitulo", label: "Subtítulo", tipo: "textarea" },
+      { chave: "corpo", label: "Texto do perfil", tipo: "rich" },
+    ],
+  },
+  {
     id: "contato",
     caminho: "/contato",
     nome: "Contato",
