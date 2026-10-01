@@ -304,6 +304,36 @@ export type Database = {
         }
         Relationships: []
       }
+      guia_evento: {
+        Row: {
+          anon_id: string | null
+          created_at: string
+          evento: string
+          id: string
+          linha: string | null
+          nivel: string | null
+          produto_slug: string | null
+        }
+        Insert: {
+          anon_id?: string | null
+          created_at?: string
+          evento: string
+          id?: string
+          linha?: string | null
+          nivel?: string | null
+          produto_slug?: string | null
+        }
+        Update: {
+          anon_id?: string | null
+          created_at?: string
+          evento?: string
+          id?: string
+          linha?: string | null
+          nivel?: string | null
+          produto_slug?: string | null
+        }
+        Relationships: []
+      }
       guia_kit: {
         Row: {
           ativo: boolean
@@ -1071,6 +1101,16 @@ export type Database = {
           p_utm: Json
         }
         Returns: string
+      }
+      registrar_evento_guia: {
+        Args: {
+          p_anon_id: string
+          p_evento: string
+          p_linha: string
+          p_nivel: string
+          p_produto_slug: string
+        }
+        Returns: undefined
       }
       registrar_evento_relacionado: {
         Args: {
