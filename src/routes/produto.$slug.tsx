@@ -10,6 +10,7 @@ import { ProductGallery } from "@/components/ProductGallery";
 import { Curtir } from "@/components/Curtir";
 import { useQuery } from "@tanstack/react-query";
 
+import { statusSeoProduto } from "@/lib/produto-seo.functions";
 import { mergeList, overlayDescricao, useOverlays } from "@/lib/overlay";
 import { fetchPostsPorSlug, useRelacionados } from "@/lib/relacionados";
 import { PostCard } from "@/components/PostCard";
@@ -34,16 +35,21 @@ import {
 
 export const Route = createFileRoute("/produto/$slug")({
   loader: async ({ params }) => {
-    const [detalhe, faq] = await Promise.all([
+    const [detalhe, faq, seo] = await Promise.all([
       getProductDetail(params.slug),
       carregarFaq({ data: { tipo: "produto", alvo: params.slug } }),
+      statusSeoProduto({ data: { slug: params.slug } }),
     ]);
-    return { detalhe, faq };
+    return { detalhe, faq, seo };
   },
-  headers: ({ params }) => {
+  headers: ({ params, loaderData }) => {
     const produto = getProduct(params.slug);
     return {
-      "X-Robots-Tag": produto ? "index, follow" : "noindex, nofollow",
+      "X-Robots-Tag": !produto
+        ? "noindex, nofollow"
+        : loaderData?.seo?.indexavel
+          ? "index, follow"
+          : "noindex, follow",
     };
   },
   head: ({ params, loaderData }) => {
@@ -72,7 +78,14 @@ export const Route = createFileRoute("/produto/$slug")({
       meta: [
         { title: titulo },
         { name: "description", content: descricao },
-        { name: "robots", content: produto ? "index, follow" : "noindex, nofollow" },
+        {
+          name: "robots",
+          content: !produto
+            ? "noindex, nofollow"
+            : loaderData?.seo?.indexavel
+              ? "index, follow"
+              : "noindex, follow",
+        },
         { property: "og:site_name", content: SITE.nome },
         { property: "og:locale", content: "pt_BR" },
         { property: "og:title", content: titulo },
@@ -198,6 +211,7 @@ function ProdutoPage() {
   const descricaoHtml = overlayDescricao(ov) ?? detalhe?.descricaoHtml ?? "";
   const preco = produto.precoPromocional ?? produto.preco;
   const specs = productSpecs(produto, detalhe);
+  const kitsDoProduto = Route.useLoaderData().seo?.kits ?? [];
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10">
@@ -210,6 +224,23 @@ function ProdutoPage() {
           { label: produto.nome },
         ]}
       />
+
+      {kitsDoProduto.length > 0 ? (
+        <p className="mb-4 text-sm text-muted-foreground">
+          {kitsDoProduto.map((k, i) => (
+            <span key={k.nome}>
+              {i > 0 ? " · " : ""}Faz parte do kit{" "}
+              {k.nivel ? (
+                <Link to="/comece-aqui/$nivel" params={{ nivel: k.nivel }} className="font-semibold text-primary hover:underline">
+                  {k.nome}
+                </Link>
+              ) : (
+                <strong>{k.nome}</strong>
+              )}
+            </span>
+          ))}
+        </p>
+      ) : null}
 
       <div className="grid gap-10 lg:grid-cols-2">
         <ProductGallery
