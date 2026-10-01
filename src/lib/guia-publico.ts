@@ -104,9 +104,9 @@ function linhaProxima(alvo: Linha): Linha[] {
 export function montarConjunto(opts: {
   nivel: Nivel;
   linha: Linha;
-  foco?: Foco;
-  peso?: Peso;
-  formato?: Formato;
+  foco?: Foco | undefined;
+  peso?: Peso | undefined;
+  formato?: Formato | undefined;
   kits: KitBanco[];
   overlays: OverlayMap;
 }): { itens: ItemKit[]; kitNome: string | null } {
@@ -193,7 +193,7 @@ export type EventoGuia = "quiz_iniciado" | "quiz_concluido" | "clique_produto_ki
 /** Evento anônimo; só é enviado com consentimento de análise. */
 export function registrarEventoGuia(
   evento: EventoGuia,
-  dados: { nivel?: string; linha?: string; produto?: string } = {},
+  dados: { nivel?: string | undefined; linha?: string | undefined; produto?: string | undefined } = {},
 ) {
   if (typeof window === "undefined") return;
   if (!lerConsentimento()?.categorias.analise) return;
