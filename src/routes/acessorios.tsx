@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { Link, createFileRoute } from "@tanstack/react-router";
 
 import { rich, texto } from "@/lib/paginas-core";
 import { carregarPagina } from "@/lib/paginas.functions";
@@ -40,12 +40,12 @@ const blocos = [
   {
     titulo: "Piteiras e filtros",
     texto:
-      "Papel é descartável e prático; vidro é reutilizável e preserva melhor o sabor. Filtros de carvão reduzem alcatrão e resfriam a fumaça.",
+      "Papel é descartável e prático; vidro é reutilizável e preserva melhor o sabor. Filtros de carvão têm estrutura porosa e deixam a piteira mais firme.",
   },
   {
     titulo: "Isqueiros e maçaricos",
     texto:
-      "Recarregáveis reduzem descarte e custam menos no longo prazo. Maçaricos são obrigatórios para peças de vidro e concentrados.",
+      "Recarregáveis reduzem descarte e custam menos no longo prazo. Maçaricos têm chama mais concentrada e resistente ao vento.",
   },
 ];
 
@@ -62,6 +62,16 @@ function AcessoriosPage() {
         crumbs={[{ label: "Acessórios" }]}
       />
       <div className="mx-auto max-w-6xl px-4 py-12">
+        <Link
+          to="/comece-aqui"
+          className="card-lift mb-10 flex flex-col gap-1 rounded-lg border border-primary/40 bg-card p-6"
+        >
+          <span className="eyebrow text-primary">Comece aqui</span>
+          <span className="text-xl font-semibold uppercase">Guia de acessórios para iniciantes</span>
+          <span className="text-sm text-muted-foreground">
+            Entenda os itens, descubra seu perfil e monte o seu kit.
+          </span>
+        </Link>
         {intro ? <ArtigoConteudo html={intro} className="mb-10 max-w-3xl" /> : null}
         <div className="grid gap-6 md:grid-cols-2">
           {blocos.map((b) => (

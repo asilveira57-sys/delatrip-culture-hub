@@ -73,7 +73,8 @@ REGRAS ABSOLUTAS
 3. Todos os números (medidas, gramaturas, quantidades, unidades) devem aparecer exatamente como na origem. Não converta unidades.
 4. PROIBIDO citar tabaco, cigarro, charuto, fumo, nicotina, maconha, cannabis, THC ou qualquer substância ilícita, e proibido sugerir que o produto se destina a consumi-las.
 5. PROIBIDO alegação de saúde, terapêutica ou medicinal, superlativos publicitários ("melhor do mercado"), preço, frete, prazo ou chamada de compra.
-6. Português do Brasil, tom informativo e sóbrio, segunda pessoa evitada.
+6. Não mencionar redução de substâncias, efeitos no organismo nem compatibilidade com substâncias; descrever apenas material, dimensões, formato, acabamento e uso do acessório.
+7. Português do Brasil, tom informativo e sóbrio, segunda pessoa evitada.
 
 FORMATO DE SAÍDA
 HTML simples, sem markdown e sem <html>/<body>. Use apenas <p>, <h3>, <ul> e <li> e <strong>.

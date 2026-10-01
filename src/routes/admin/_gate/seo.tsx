@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { createFileRoute } from "@tanstack/react-router";
+import { Link, createFileRoute } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Copy, Download, ExternalLink, ShieldCheck, Sparkles } from "lucide-react";
@@ -620,6 +620,8 @@ function SeoPage() {
         </Button>
       </Bloco>
 
+      <ContadorIndexaveis />
+
       <Bloco titulo="D · Sitemap">
         <p className="text-sm text-muted-foreground">
           Última geração:{" "}
@@ -781,5 +783,43 @@ function SeoPage() {
 
 
     </div>
+  );
+}
+
+
+function ContadorIndexaveis() {
+  const { data } = useQuery({
+    queryKey: ["admin", "produtos-indexaveis"],
+    queryFn: async () => {
+      const { data: linhas } = await supabase
+        .from("produto_overlay")
+        .select("slug, oculto, status_revisao, descricao_html")
+        .limit(5000);
+      const ocultos = new Set((linhas ?? []).filter((l) => l.oculto).map((l) => l.slug));
+      const indexaveis = (linhas ?? []).filter(
+        (l) => !l.oculto && l.status_revisao === "aprovado" && String(l.descricao_html ?? "").trim(),
+      ).length;
+      const total = products.filter((p) => !ocultos.has(p.slug)).length;
+      return { indexaveis, total };
+    },
+  });
+  return (
+    <Bloco titulo="Produtos no Google">
+      <p className="text-sm">
+        Produtos indexáveis: <strong>{data ? data.indexaveis : "…"}</strong> de{" "}
+        <strong>{data ? data.total : "…"}</strong>
+      </p>
+      <p className="mt-1 text-xs text-muted-foreground">
+        Só entram no Google (e no sitemap) produtos com descrição própria aprovada. Os demais ficam
+        em noindex para evitar conteúdo duplicado da loja.
+      </p>
+      <Link
+        to="/admin/produtos/enriquecer"
+        search={{ slugs: "" }}
+        className="mt-3 inline-block text-sm font-semibold text-primary hover:underline"
+      >
+        Enriquecer produtos pendentes →
+      </Link>
+    </Bloco>
   );
 }

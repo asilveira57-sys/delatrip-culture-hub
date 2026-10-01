@@ -111,6 +111,15 @@ function CategoriaPage() {
       />
 
       <div className="mx-auto max-w-6xl px-4 py-12">
+        {!categoria.paiId &&
+        ["sedas", "piteirasfiltros", "dichavadores", "bandejas", "acessorios"].includes(categoria.slug) ? (
+          <p className="mb-6 text-sm text-muted-foreground">
+            Novo por aqui?{" "}
+            <Link to="/comece-aqui" className="font-semibold text-primary hover:underline">
+              Veja o guia para iniciantes
+            </Link>
+          </p>
+        ) : null}
         {subcategorias.length > 0 && (
           <div className="mb-8 flex flex-wrap gap-2">
             <span className="rounded-md border border-border bg-primary px-3 py-1.5 text-sm text-primary-foreground">

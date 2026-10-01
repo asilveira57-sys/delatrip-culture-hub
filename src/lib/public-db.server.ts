@@ -24,12 +24,15 @@ export type ConfigServidor = {
   modoConstrucao: boolean;
   rotasNoindex: Set<string>;
   produtosOcultos: Set<string>;
+  /** Produtos com descrição própria aprovada (os únicos indexáveis). */
+  produtosIndexaveis: Set<string>;
 };
 
 const PADRAO: ConfigServidor = {
   modoConstrucao: true,
   rotasNoindex: new Set(),
   produtosOcultos: new Set(),
+  produtosIndexaveis: new Set(),
 };
 
 /**
@@ -58,15 +61,27 @@ export async function lerConfigServidor(): Promise<ConfigServidor> {
   const supabase = clientePublico();
   if (!supabase) return PADRAO;
   try {
-    const [config, rotas, overlays] = await Promise.all([
+    const [config, rotas, overlays, aprovados] = await Promise.all([
       supabase.from("config_site").select("chave, valor").eq("chave", "modo_construcao"),
       supabase.from("seo_rota").select("caminho, noindex").eq("noindex", true),
       supabase.from("produto_overlay").select("slug").eq("oculto", true).limit(5000),
+      supabase
+        .from("produto_overlay")
+        .select("slug, descricao_html")
+        .eq("status_revisao", "aprovado")
+        .eq("oculto", false)
+        .not("descricao_html", "is", null)
+        .limit(5000),
     ]);
     return {
       modoConstrucao: (config.data?.[0]?.valor as unknown) !== false,
       rotasNoindex: new Set((rotas.data ?? []).map((r) => r.caminho as string)),
       produtosOcultos: new Set((overlays.data ?? []).map((o) => o.slug as string)),
+      produtosIndexaveis: new Set(
+        (aprovados.data ?? [])
+          .filter((o) => String(o.descricao_html ?? "").trim())
+          .map((o) => o.slug as string),
+      ),
     };
   } catch {
     return PADRAO;

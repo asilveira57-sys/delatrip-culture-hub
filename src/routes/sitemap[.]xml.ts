@@ -30,7 +30,7 @@ export const Route = createFileRoute("/sitemap.xml")({
   server: {
     handlers: {
       GET: async () => {
-        const [{ modoConstrucao, rotasNoindex, produtosOcultos }, slugsBanco] =
+        const [{ modoConstrucao, rotasNoindex, produtosOcultos, produtosIndexaveis }, slugsBanco] =
           await Promise.all([lerConfigServidor(), slugsPostsPublicados()]);
 
         if (modoConstrucao) {
@@ -54,7 +54,7 @@ export const Route = createFileRoute("/sitemap.xml")({
           ]),
           ...brands.map<[string, number]>((b) => [`/${b.slug}`, 0.6]),
           ...products
-            .filter((p) => !produtosOcultos.has(p.slug))
+            .filter((p) => !produtosOcultos.has(p.slug) && produtosIndexaveis.has(p.slug))
             .map<[string, number]>((p) => [`/produto/${p.slug}`, 0.6]),
           ...[...slugsPosts]
             .filter((s) => !rotasNoindex.has(`/blog/${s}`))
