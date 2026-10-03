@@ -1,0 +1,2 @@
+ALTER TABLE public.produto_overlay DROP CONSTRAINT produto_overlay_nivel_check;
+ALTER TABLE public.produto_overlay ADD CONSTRAINT produto_overlay_nivel_check CHECK (nivel IS NULL OR nivel = ANY (ARRAY['explorador','familiarizado','entusiasta','especialista','todos']));
