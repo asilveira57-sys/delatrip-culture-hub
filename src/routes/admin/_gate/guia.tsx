@@ -24,7 +24,7 @@ import {
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
-import { LINHAS, NIVEIS, ROTULO } from "@/config/guia-perfis";
+import { LINHAS, NIVEIS, ROTULO, nivelAtende } from "@/config/guia-perfis";
 import {
   formatPrice,
   getCategoryById,
@@ -532,7 +532,7 @@ function Sugestao({
         itens.push({ produto_slug: p.slug, papel, ordem: itens.length });
       };
       const essenciais = elegiveis.filter((p) => overlays?.get(p.slug)?.etapa === "essencial");
-      const doNivel = essenciais.filter((p) => overlays?.get(p.slug)?.nivel === nivel);
+      const doNivel = essenciais.filter((p) => nivelAtende(overlays?.get(p.slug)?.nivel, nivel));
       const principal = escolher(doNivel.length ? doNivel : essenciais, usados, n);
       add(principal, "principal");
 

@@ -13,7 +13,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import { ETAPAS, LINHAS, NIVEIS, ROTULO } from "@/config/guia-perfis";
+import { ETAPAS, LINHAS, NIVEIS_EDITAVEIS, ROTULO } from "@/config/guia-perfis";
 import { classificarPerfis } from "@/lib/guia.functions";
 import { definirGuiaEmLote, obterOverlayAdmin, type PatchGuia } from "@/lib/produtos-admin";
 
@@ -88,7 +88,7 @@ export function GuiaPerfilEditor({ slug }: { slug: string }) {
           : "Automático"}
       </p>
       <div className="mt-3 space-y-3">
-        {campo("Nível", "nivel", NIVEIS)}
+        {campo("Nível", "nivel", NIVEIS_EDITAVEIS)}
         {campo("Linha", "linha", LINHAS)}
         {campo("Etapa", "etapa", ETAPAS)}
         <div className="flex items-center justify-between">
