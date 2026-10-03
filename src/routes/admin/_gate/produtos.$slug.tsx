@@ -16,7 +16,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { listarPostsAdmin } from "@/lib/blog-admin";
+import { listarPostsAdmin, statusDoPost } from "@/lib/blog-admin";
+import { sugerirRelacionadosIa } from "@/lib/relacionados-ia.functions";
 import {
   brands,
   getCategoryById,
@@ -114,6 +115,76 @@ function ProdutoAdminPage() {
   const [prodRel, setProdRel] = useState<string[]>([]);
   const [postRel, setPostRel] = useState<string[]>([]);
   const [buscaRel, setBuscaRel] = useState("");
+  const [buscaPost, setBuscaPost] = useState("");
+  const [motivosPost, setMotivosPost] = useState<Record<string, string>>({});
+  const [sugerindoPosts, setSugerindoPosts] = useState(false);
+  const sugerirIa = useServerFn(sugerirRelacionadosIa);
+  const semAcento = (s: string) =>
+    s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+  const postsPublicados = useMemo(
+    () => (posts ?? []).filter((p) => statusDoPost(p) === "publicado"),
+    [posts],
+  );
+  const postsFiltrados = useMemo(() => {
+    const q = semAcento(buscaPost.trim());
+    const base = q
+      ? (posts ?? []).filter((p) => semAcento(p.titulo).includes(q))
+      : (posts ?? []);
+    // marcados primeiro
+    return [...base].sort(
+      (a, b) => Number(postRel.includes(b.slug)) - Number(postRel.includes(a.slug)),
+    );
+  }, [posts, buscaPost, postRel]);
+
+  async function sugerirPosts() {
+    if (!produto) return;
+    const palavras = semAcento(`${produto.nome} ${categoria?.nome ?? ""} ${produto.marca ?? ""}`)
+      .split(/[^a-z0-9]+/)
+      .filter((w) => w.length >= 4);
+    const pontuar = (p: (typeof postsPublicados)[number]) => {
+      const t = semAcento(`${p.titulo} ${p.resumo ?? ""} ${p.categoria ?? ""}`);
+      return palavras.reduce((n, w) => n + (t.includes(w) ? 1 : 0), 0);
+    };
+    const candidatos = [...postsPublicados]
+      .map((p) => ({ p, s: pontuar(p) }))
+      .sort((a, b) => b.s - a.s)
+      .slice(0, 150)
+      .map(({ p }) => ({
+        id: p.slug,
+        texto: `${p.titulo}${p.resumo ? ` — ${p.resumo.slice(0, 200)}` : ""}`,
+      }));
+    if (candidatos.length === 0) {
+      toast.info("Não há posts publicados para sugerir.");
+      return;
+    }
+    setSugerindoPosts(true);
+    try {
+      const r = await sugerirIa({
+        data: {
+          tipo: "posts",
+          produto: {
+            nome: produto.nome,
+            categoria: categoria?.nome ?? null,
+            marca: produto.marca ?? null,
+            descricao: (form.descricao_html || original).replace(/<[^>]+>/g, " ").slice(0, 3000),
+          },
+          candidatos,
+          maximo: MAX_POSTS_RELACIONADOS,
+        },
+      });
+      if (!r.ok) return void toast.error(r.erro ?? "Falha ao sugerir.");
+      if (r.itens.length === 0)
+        return void toast.info("A IA não encontrou posts com relação clara a este produto.");
+      setPostRel(r.itens.map((i) => i.id));
+      setMotivosPost(Object.fromEntries(r.itens.map((i) => [i.id, i.motivo])));
+      setBuscaPost("");
+      toast.success(`${r.itens.length} post(s) sugerido(s). Salve para gravar.`);
+    } catch {
+      toast.error("Falha ao chamar a IA.");
+    } finally {
+      setSugerindoPosts(false);
+    }
+  }
   const [variantesSel, setVariantesSel] = useState<Set<string>>(new Set());
 
   useEffect(() => {
@@ -617,12 +688,32 @@ function ProdutoAdminPage() {
         </div>
 
         <div className="rounded-lg border border-border bg-card p-4">
-          <h2 className="text-sm font-semibold">
-            Posts relacionados ({postRel.length}/{MAX_POSTS_RELACIONADOS})
-          </h2>
-          <ul className="mt-3 max-h-64 space-y-1 overflow-y-auto text-sm">
-            {(posts ?? []).map((p) => {
+          <div className="flex flex-wrap items-center gap-2">
+            <h2 className="text-sm font-semibold">
+              Posts relacionados ({postRel.length}/{MAX_POSTS_RELACIONADOS})
+            </h2>
+            <Button
+              size="sm"
+              variant="outline"
+              className="ml-auto h-7"
+              disabled={sugerindoPosts}
+              onClick={sugerirPosts}
+            >
+              <Sparkles className="size-3.5" aria-hidden="true" />
+              {sugerindoPosts ? "Sugerindo…" : "Sugerir com IA"}
+            </Button>
+          </div>
+          <Input
+            className="mt-3 h-8 text-xs"
+            placeholder="Pesquisar posts pelo título…"
+            value={buscaPost}
+            onChange={(e) => setBuscaPost(e.target.value)}
+            aria-label="Pesquisar posts"
+          />
+          <ul className="mt-2 max-h-64 space-y-1 overflow-y-auto text-sm">
+            {postsFiltrados.map((p) => {
               const marcado = postRel.includes(p.slug);
+              const motivo = motivosPost[p.slug];
               return (
                 <li key={p.slug} className="flex items-start gap-2 text-xs">
                   <Checkbox
@@ -635,10 +726,18 @@ function ProdutoAdminPage() {
                     }
                     aria-label={`Relacionar ${p.titulo}`}
                   />
-                  <span>{p.titulo}</span>
+                  <span>
+                    {p.titulo}
+                    {motivo && (
+                      <span className="block text-[11px] text-primary">IA: {motivo}</span>
+                    )}
+                  </span>
                 </li>
               );
             })}
+            {postsFiltrados.length === 0 && (
+              <li className="text-xs text-muted-foreground">Nenhum post encontrado.</li>
+            )}
           </ul>
         </div>
       </section>
