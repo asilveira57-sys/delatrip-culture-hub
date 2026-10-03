@@ -1,5 +1,5 @@
 import { supabase } from "@/integrations/supabase/client";
-import { ETAPAS, LINHAS, NIVEIS, type Etapa, type Linha, type Nivel } from "@/config/guia-perfis";
+import { ETAPAS, LINHAS, NIVEIS, NIVEL_TODOS, nivelAtende, type Etapa, type Linha, type Nivel } from "@/config/guia-perfis";
 import { getAnonId } from "@/lib/anon-id";
 import { lerConsentimento } from "@/lib/consentimento";
 import { getCategoryById, getProduct, products, rootOf, type Product } from "@/lib/catalog";
@@ -142,7 +142,7 @@ export function montarConjunto(opts: {
       return p;
     };
     const essenciais = base.filter((p) => ov.get(p.slug)?.etapa === "essencial");
-    const doNivel = essenciais.filter((p) => ov.get(p.slug)?.nivel === nivel);
+    const doNivel = essenciais.filter((p) => nivelAtende(ov.get(p.slug)?.nivel, nivel));
     let candidatos = doNivel.length ? doNivel : essenciais;
     if (formato && formato !== "nao-sei") {
       const f = candidatos.filter((p) => slugsDe(p).raiz === "sedas" && slugsDe(p).folha === formato);
@@ -183,7 +183,7 @@ export function depoisExplore(nivel: Nivel, linha: Linha, ov: OverlayMap, exclui
   const proxima = ETAPAS[Math.min(ETAPAS.indexOf(etapaAtual) + 1, ETAPAS.length - 1)];
   const lista = elegiveis(ov).filter((p) => {
     const o = ov.get(p.slug);
-    return !excluir.has(p.slug) && o?.etapa === proxima && niveis.has(o?.nivel as Nivel);
+    return !excluir.has(p.slug) && o?.etapa === proxima && (niveis.has(o?.nivel as Nivel) || o?.nivel === NIVEL_TODOS);
   });
   return ordenar(lista, linha, undefined, ov).slice(0, 6);
 }

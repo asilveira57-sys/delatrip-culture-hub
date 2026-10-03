@@ -9,6 +9,13 @@ export type Linha = "entrada" | "normal" | "premium";
 
 export const NIVEIS: Nivel[] = ["explorador", "familiarizado", "entusiasta", "especialista"];
 
+/** Valor especial do nível: o produto serve para qualquer perfil. */
+export const NIVEL_TODOS = "todos";
+export const NIVEIS_EDITAVEIS: string[] = [...NIVEIS, NIVEL_TODOS];
+/** Verdadeiro quando o nível do produto atende ao perfil pedido. */
+export const nivelAtende = (nivelProduto: string | null | undefined, alvo: string) =>
+  nivelProduto === alvo || nivelProduto === NIVEL_TODOS;
+
 export const NIVEL_DA_ETAPA: Record<Etapa, Nivel> = {
   essencial: "explorador",
   conveniencia: "familiarizado",
@@ -86,6 +93,7 @@ export const ROTULO: Record<string, string> = {
   familiarizado: "Familiarizado",
   entusiasta: "Entusiasta",
   especialista: "Especialista",
+  todos: "Todos os perfis",
   entrada: "Entrada",
   normal: "Normal",
   premium: "Premium",

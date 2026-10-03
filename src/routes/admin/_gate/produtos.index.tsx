@@ -4,7 +4,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Eye, EyeOff, MoreHorizontal, Pencil, RotateCcw, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 import { useServerFn } from "@tanstack/react-start";
-import { ETAPAS, LINHAS, NIVEIS, ROTULO } from "@/config/guia-perfis";
+import { ETAPAS, LINHAS, NIVEIS, NIVEIS_EDITAVEIS, ROTULO } from "@/config/guia-perfis";
 import { classificarPerfis, type ResumoGuia } from "@/lib/guia.functions";
 
 import { Button } from "@/components/ui/button";
@@ -145,7 +145,7 @@ function ProdutosAdminPage() {
       if (visibilidade === "visiveis" && ov?.oculto) return false;
       if (fNivel === "sem") {
         if (ov?.fora_do_guia || (ov?.nivel && ov?.linha && ov?.etapa)) return false;
-      } else if (fNivel !== "todos" && ov?.nivel !== fNivel) return false;
+      } else if (fNivel !== "todos" && ov?.nivel !== (fNivel === "todos-perfis" ? "todos" : fNivel)) return false;
       if (fLinha !== "todos" && ov?.linha !== fLinha) return false;
       if (fEtapa !== "todos" && ov?.etapa !== fEtapa) return false;
       return true;
@@ -346,6 +346,7 @@ function ProdutosAdminPage() {
                   {rot}: {ROTULO[o]}
                 </SelectItem>
               ))}
+              {sem && <SelectItem value="todos-perfis">Nível: Todos os perfis</SelectItem>}
             </SelectContent>
           </Select>
         ))}
@@ -370,7 +371,7 @@ function ProdutosAdminPage() {
           </Button>
           {(
             [
-              ["nivel", "Nível", NIVEIS],
+              ["nivel", "Nível", NIVEIS_EDITAVEIS],
               ["linha", "Linha", LINHAS],
               ["etapa", "Etapa", ETAPAS],
             ] as const

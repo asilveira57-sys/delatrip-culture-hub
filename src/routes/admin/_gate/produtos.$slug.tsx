@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { marcaEfetiva, marcasEfetivas, slugCanonico, useMarcaOverlays } from "@/lib/marcas";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
@@ -108,6 +109,8 @@ function ProdutoAdminPage() {
   });
 
   const [form, setForm] = useState<OverlayAdmin>({ ...VAZIO, slug });
+  const mapaMarcas = useMarcaOverlays();
+  const marcaSugerida = produto?.marcaSlug ? slugCanonico(produto.marcaSlug, mapaMarcas) : null;
   const [prodRel, setProdRel] = useState<string[]>([]);
   const [postRel, setPostRel] = useState<string[]>([]);
   const [buscaRel, setBuscaRel] = useState("");
@@ -429,13 +432,30 @@ function ProdutoAdminPage() {
             <Input
               className="mt-2"
               list="marcas-admin"
-              value={form.marca_slug ?? ""}
+              value={form.marca_slug ?? marcaSugerida ?? ""}
               onChange={(e) => setForm((f) => ({ ...f, marca_slug: e.target.value.trim() }))}
               placeholder="slug da marca — ex.: raw"
               aria-label="Marca do produto"
             />
+            {form.marca_slug === null && marcaSugerida ? (
+              <div className="mt-2 flex flex-wrap items-center gap-2 rounded-md border border-primary/30 bg-primary/5 p-2 text-xs">
+                <span>
+                  Sugerida pelo catálogo:{" "}
+                  <strong>{marcaEfetiva(marcaSugerida, mapaMarcas)?.nome ?? marcaSugerida}</strong>
+                </span>
+                <Button
+                  size="sm"
+                  className="ml-auto h-7"
+                  onClick={() => setForm((f) => ({ ...f, marca_slug: marcaSugerida }))}
+                >
+                  Aprovar marca
+                </Button>
+              </div>
+            ) : form.marca_slug && form.marca_slug === marcaSugerida ? (
+              <p className="mt-2 text-xs text-primary">Marca aprovada (salve o produto para gravar).</p>
+            ) : null}
             <datalist id="marcas-admin">
-              {brands.map((b) => (
+              {marcasEfetivas(mapaMarcas).map((b) => (
                 <option key={b.slug} value={b.slug}>
                   {b.nome}
                 </option>
