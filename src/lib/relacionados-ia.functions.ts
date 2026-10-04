@@ -29,7 +29,8 @@ const INSTRUCAO = `Você ajuda a curadoria de um catálogo de acessórios (porta
 Escolha itens da lista de candidatos que realmente tenham relação com o produto informado.
 Regras:
 - Use apenas IDs que estão na lista. Nunca invente IDs ou títulos.
-- Se nenhum candidato tiver relação clara, devolva lista vazia.
+- Posts: se nenhum candidato tiver relação clara, devolva lista vazia.
+- Produtos: sempre preencha a quantidade pedida com os candidatos mais úteis (complementares, de organização ou do mesmo universo de uso); só devolva menos se faltarem candidatos.
 - Motivo: uma frase curta em português (até 120 caracteres), falando só de formato, material, uso ou organização.
 - Não mencione substâncias, efeitos no organismo, saúde, tabaco, nicotina ou fumo.
 - Para produtos: prefira itens complementares (que se usam junto) em vez de variações do mesmo item.
@@ -92,7 +93,6 @@ export const sugerirRelacionadosIa = createServerFn({ method: "POST" })
         })
         .safeParse(JSON.parse(bruto || "{}"));
       if (!parsed.success) return { ...vazio, erro: "Resposta da IA inválida." };
-      console.log("IA relacionados bruto", data.tipo, parsed.data.itens.length, JSON.stringify(parsed.data.itens.slice(0,8).map((i) => i.id)));
       const validos = new Set(data.candidatos.map((c) => c.id));
       const vistos = new Set<string>();
       const itens = parsed.data.itens
