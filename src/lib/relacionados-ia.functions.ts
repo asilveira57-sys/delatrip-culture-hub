@@ -47,7 +47,9 @@ export const sugerirRelacionadosIa = createServerFn({ method: "POST" })
     const p = data.produto;
     const prompt = [
       `Tipo de sugestão: ${data.tipo === "posts" ? "posts do blog" : "produtos"}`,
-      `Escolha no máximo ${data.maximo}.`,
+      data.tipo === "produtos"
+        ? `Escolha exatamente ${data.maximo} produtos (ou o máximo possível), montando uma vitrine útil para quem vê este produto: itens que se usam junto, que guardam/organizam ou que completam o kit. Varie as categorias; no máximo 2 do mesmo tipo do produto.`
+        : `Escolha no máximo ${data.maximo}.`,
       `Produto: ${p.nome}`,
       p.categoria ? `Categoria: ${p.categoria}` : "",
       p.marca ? `Marca: ${p.marca}` : "",
