@@ -92,6 +92,7 @@ export const sugerirRelacionadosIa = createServerFn({ method: "POST" })
         })
         .safeParse(JSON.parse(bruto || "{}"));
       if (!parsed.success) return { ...vazio, erro: "Resposta da IA inválida." };
+      console.log("IA relacionados bruto", data.tipo, parsed.data.itens.length, JSON.stringify(parsed.data.itens.slice(0,8).map((i) => i.id)));
       const validos = new Set(data.candidatos.map((c) => c.id));
       const vistos = new Set<string>();
       const itens = parsed.data.itens
