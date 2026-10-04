@@ -361,3 +361,69 @@
   height: 0;
   pointer-events: none;
 }
+
+/* Fumacinha sutil saindo da logomarca do topo */
+@keyframes fumaca-subir {
+  0% {
+    opacity: 0;
+    transform: translate(0, 4px) scale(0.4);
+  }
+  25% {
+    opacity: 0.55;
+  }
+  70% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--fumaca-x, 3px), -20px) scale(1.7);
+  }
+}
+
+.fumaca-puff {
+  position: absolute;
+  bottom: 100%;
+  border-radius: 9999px;
+  background: radial-gradient(
+    circle,
+    color-mix(in oklab, var(--color-primary) 45%, transparent),
+    transparent 70%
+  );
+  filter: blur(2px);
+  pointer-events: none;
+  animation: fumaca-subir 3.4s ease-out infinite;
+  will-change: transform, opacity;
+}
+
+.fumaca-puff--1 {
+  left: 40%;
+  width: 7px;
+  height: 7px;
+  --fumaca-x: 4px;
+  animation-duration: 3s;
+}
+
+.fumaca-puff--2 {
+  left: 60%;
+  width: 10px;
+  height: 10px;
+  --fumaca-x: -5px;
+  animation-delay: 1s;
+  animation-duration: 3.6s;
+}
+
+.fumaca-puff--3 {
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  --fumaca-x: 7px;
+  animation-delay: 2s;
+  animation-duration: 4.2s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fumaca-puff {
+    animation: none;
+    opacity: 0;
+  }
+}

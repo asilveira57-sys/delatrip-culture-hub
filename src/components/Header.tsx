@@ -55,13 +55,20 @@ export function Header() {
           aria-label="DeLaTrip — página inicial"
           className="flex shrink-0 items-center gap-2"
         >
-          <img
-            src={mark}
-            alt="DeLaTrip"
-            width={512}
-            height={512}
-            className="h-8 w-8"
-          />
+          <span className="relative flex items-center">
+            <img
+              src={mark}
+              alt="DeLaTrip"
+              width={512}
+              height={512}
+              className="h-8 w-8"
+            />
+            <span aria-hidden="true" className="pointer-events-none absolute inset-0">
+              <span className="fumaca-puff fumaca-puff--1" />
+              <span className="fumaca-puff fumaca-puff--2" />
+              <span className="fumaca-puff fumaca-puff--3" />
+            </span>
+          </span>
           <span className="font-display text-xl uppercase tracking-wide text-primary">
             DeLaTrip
           </span>
