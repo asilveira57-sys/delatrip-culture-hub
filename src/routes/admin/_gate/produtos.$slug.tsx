@@ -31,6 +31,7 @@ import {
   MAX_POSTS_RELACIONADOS,
   MAX_PRODUTOS_RELACIONADOS,
   carregarRelacionadosAdmin,
+  listarOverlaysAdmin,
   copiarParaVariantes,
   obterOverlayAdmin,
   reverterOverlay,
