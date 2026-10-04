@@ -31,6 +31,7 @@ import {
   MAX_POSTS_RELACIONADOS,
   MAX_PRODUTOS_RELACIONADOS,
   carregarRelacionadosAdmin,
+  listarOverlaysAdmin,
   copiarParaVariantes,
   obterOverlayAdmin,
   reverterOverlay,
@@ -213,6 +214,69 @@ function ProdutoAdminPage() {
       .filter((p) => p.slug !== slug && p.nome.toLowerCase().includes(termo))
       .slice(0, 8);
   }, [buscaRel, slug]);
+
+  const [sugerindoProds, setSugerindoProds] = useState(false);
+  const [motivosProd, setMotivosProd] = useState<Record<string, string>>({});
+
+  async function sugerirProdutos() {
+    if (!produto) return;
+    setSugerindoProds(true);
+    try {
+      const overlays = await listarOverlaysAdmin().catch(() => new Map<string, OverlayAdmin>());
+      const visiveis = products.filter(
+        (p) => p.slug !== slug && !overlays.get(p.slug)?.oculto && !variantes.some((v) => v.slug === p.slug),
+      );
+      const escolhidos = new Map<string, (typeof products)[number]>();
+      const add = (p: (typeof products)[number]) => {
+        if (escolhidos.size < 60) escolhidos.set(p.slug, p);
+      };
+      // mesma categoria e mesma marca (poucos, para evitar 8 variações)
+      visiveis.filter((p) => p.categoriaId === produto.categoriaId).slice(0, 10).forEach(add);
+      visiveis
+        .filter((p) => produto.marcaSlug && p.marcaSlug === produto.marcaSlug)
+        .slice(0, 8)
+        .forEach(add);
+      // outras categorias: até 2 por categoria, priorizando destaques
+      const porCategoria = new Map<string, (typeof products)[number][]>();
+      for (const p of visiveis) {
+        if (!p.categoriaId || p.categoriaId === produto.categoriaId) continue;
+        const lista = porCategoria.get(p.categoriaId) ?? [];
+        lista.push(p);
+        porCategoria.set(p.categoriaId, lista);
+      }
+      for (const lista of porCategoria.values()) {
+        lista.sort((a, b) => Number(b.destaque) - Number(a.destaque) || b.estoque - a.estoque);
+        lista.slice(0, 2).forEach(add);
+      }
+      const candidatosIa = [...escolhidos.values()].map((p) => ({
+        id: p.slug,
+        texto: `${p.nome} — ${p.categoriaNome ?? "sem categoria"}${p.marca ? ` · ${p.marca}` : ""}`,
+      }));
+      if (candidatosIa.length === 0) return void toast.info("Sem candidatos para sugerir.");
+      const r = await sugerirIa({
+        data: {
+          tipo: "produtos",
+          produto: {
+            nome: produto.nome,
+            categoria: categoria?.nome ?? null,
+            marca: produto.marca ?? null,
+            descricao: (form.descricao_html || original).replace(/<[^>]+>/g, " ").slice(0, 3000),
+          },
+          candidatos: candidatosIa,
+          maximo: MAX_PRODUTOS_RELACIONADOS,
+        },
+      });
+      if (!r.ok) return void toast.error(r.erro ?? "Falha ao sugerir.");
+      if (r.itens.length === 0) return void toast.info("A IA não encontrou produtos com relação clara.");
+      setProdRel(r.itens.map((i) => i.id));
+      setMotivosProd(Object.fromEntries(r.itens.map((i) => [i.id, i.motivo])));
+      toast.success(`${r.itens.length} produto(s) sugerido(s). Salve para gravar.`);
+    } catch {
+      toast.error("Falha ao chamar a IA.");
+    } finally {
+      setSugerindoProds(false);
+    }
+  }
 
   const salvar = useMutation({
     mutationFn: async () => {
@@ -638,9 +702,21 @@ function ProdutoAdminPage() {
       {/* Relacionados */}
       <section className="mt-6 grid gap-5 lg:grid-cols-2">
         <div className="rounded-lg border border-border bg-card p-4">
-          <h2 className="text-sm font-semibold">
-            Produtos relacionados ({prodRel.length}/{MAX_PRODUTOS_RELACIONADOS})
-          </h2>
+          <div className="flex flex-wrap items-center gap-2">
+            <h2 className="text-sm font-semibold">
+              Produtos relacionados ({prodRel.length}/{MAX_PRODUTOS_RELACIONADOS})
+            </h2>
+            <Button
+              size="sm"
+              variant="outline"
+              className="ml-auto h-7"
+              disabled={sugerindoProds}
+              onClick={sugerirProdutos}
+            >
+              <Sparkles className="size-3.5" aria-hidden="true" />
+              {sugerindoProds ? "Sugerindo…" : "Sugerir com IA"}
+            </Button>
+          </div>
           <p className="mt-1 text-xs text-muted-foreground">
             Quando houver amarração manual, ela substitui a lista automática por
             categoria na página pública.
@@ -675,7 +751,12 @@ function ProdutoAdminPage() {
           <ul className="mt-3 space-y-1 text-sm">
             {prodRel.map((s) => (
               <li key={s} className="flex items-center justify-between gap-2">
-                <span className="truncate">{getProduct(s)?.nome ?? s}</span>
+                <span className="min-w-0">
+                  <span className="block truncate">{getProduct(s)?.nome ?? s}</span>
+                  {motivosProd[s] && (
+                    <span className="block text-[11px] text-primary">IA: {motivosProd[s]}</span>
+                  )}
+                </span>
                 <button
                   className="text-xs text-muted-foreground underline"
                   onClick={() => setProdRel((a) => a.filter((x) => x !== s))}

@@ -29,7 +29,8 @@ const INSTRUCAO = `Você ajuda a curadoria de um catálogo de acessórios (porta
 Escolha itens da lista de candidatos que realmente tenham relação com o produto informado.
 Regras:
 - Use apenas IDs que estão na lista. Nunca invente IDs ou títulos.
-- Se nenhum candidato tiver relação clara, devolva lista vazia.
+- Posts: se nenhum candidato tiver relação clara, devolva lista vazia.
+- Produtos: sempre preencha a quantidade pedida com os candidatos mais úteis (complementares, de organização ou do mesmo universo de uso); só devolva menos se faltarem candidatos.
 - Motivo: uma frase curta em português (até 120 caracteres), falando só de formato, material, uso ou organização.
 - Não mencione substâncias, efeitos no organismo, saúde, tabaco, nicotina ou fumo.
 - Para produtos: prefira itens complementares (que se usam junto) em vez de variações do mesmo item.
@@ -47,7 +48,9 @@ export const sugerirRelacionadosIa = createServerFn({ method: "POST" })
     const p = data.produto;
     const prompt = [
       `Tipo de sugestão: ${data.tipo === "posts" ? "posts do blog" : "produtos"}`,
-      `Escolha no máximo ${data.maximo}.`,
+      data.tipo === "produtos"
+        ? `Escolha exatamente ${data.maximo} produtos (ou o máximo possível), montando uma vitrine útil para quem vê este produto: itens que se usam junto, que guardam/organizam ou que completam o kit. Varie as categorias; no máximo 2 do mesmo tipo do produto.`
+        : `Escolha no máximo ${data.maximo}.`,
       `Produto: ${p.nome}`,
       p.categoria ? `Categoria: ${p.categoria}` : "",
       p.marca ? `Marca: ${p.marca}` : "",
