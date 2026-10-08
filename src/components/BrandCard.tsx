@@ -27,7 +27,7 @@ export function BrandChip({ marca }: { marca: Brand }) {
     <Link
       to="/$brandSlug"
       params={{ brandSlug: marca.slug }}
-      className="flex h-20 min-w-[168px] shrink-0 items-center justify-center rounded-lg border border-ink-border bg-ink px-6 font-display text-lg font-semibold uppercase tracking-wider text-ink-foreground transition-colors hover:border-gold hover:text-gold"
+      className="flex h-20 min-w-[168px] shrink-0 snap-start items-center justify-center rounded-lg border border-ink-border bg-ink px-6 text-center font-display text-lg font-semibold uppercase tracking-wider text-ink-foreground transition-colors hover:border-gold hover:text-gold"
     >
       {marca.nome}
     </Link>

@@ -33,7 +33,7 @@ export function ProductGallery({
       />
 
       {lista.length > 1 && (
-        <ul className="mt-3 grid grid-cols-5 gap-3" aria-label="Imagens do produto">
+        <ul className="mt-3 grid grid-cols-4 gap-2 sm:grid-cols-5 sm:gap-3" aria-label="Imagens do produto">
           {lista.map((url, i) => (
             <li key={url}>
               <button

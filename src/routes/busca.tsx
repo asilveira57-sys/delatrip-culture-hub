@@ -122,7 +122,7 @@ function BuscaPage() {
                 <h2 className="eyebrow text-primary">
                   Marcas ({marcas.length})
                 </h2>
-                <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+                <div className="mt-4 grid gap-4 min-[430px]:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4">
                   {marcas.map((m) => (
                     <BrandCard key={m.slug} marca={m} />
                   ))}
@@ -131,7 +131,7 @@ function BuscaPage() {
             )}
 
             <section className="mt-12">
-              <div className="flex flex-wrap items-center justify-between gap-3">
+              <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 sm:flex sm:flex-wrap sm:justify-between">
                 <h2 className="eyebrow text-primary">
                   Produtos ({produtos.length})
                 </h2>
@@ -144,7 +144,7 @@ function BuscaPage() {
                     type="button"
                     onClick={() => setSearch({ marca: "" })}
                     aria-pressed={!marca}
-                    className={`rounded-md border border-border px-3 py-1.5 text-sm ${
+                    className={`min-h-11 rounded-md border border-border px-3 py-2 text-sm ${
                       !marca
                         ? "bg-primary text-primary-foreground"
                         : "text-muted-foreground hover:bg-accent"
@@ -158,7 +158,7 @@ function BuscaPage() {
                       type="button"
                       onClick={() => setSearch({ marca: b.slug })}
                       aria-pressed={marca === b.slug}
-                      className={`rounded-md border border-border px-3 py-1.5 text-sm ${
+                      className={`min-h-11 rounded-md border border-border px-3 py-2 text-sm ${
                         marca === b.slug
                           ? "bg-primary text-primary-foreground"
                           : "text-muted-foreground hover:bg-accent"

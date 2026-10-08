@@ -21,14 +21,14 @@ export function Breadcrumb({ items }: { items: Crumb[] }) {
           </Link>
         </li>
         {items.map((item) => (
-          <li key={item.label} className="flex items-center gap-1">
+          <li key={item.label} className="flex min-w-0 items-center gap-1">
             <ChevronRight className="size-3" aria-hidden="true" />
             {item.to ? (
               <PlainLink to={item.to} className="hover:text-primary">
                 {item.label}
               </PlainLink>
             ) : (
-              <span className="text-foreground">{item.label}</span>
+              <span className="max-w-[65vw] truncate text-foreground sm:max-w-none">{item.label}</span>
             )}
           </li>
         ))}

@@ -11,7 +11,7 @@ import {
   Truck,
 } from "lucide-react";
 
-import { BrandChip } from "@/components/BrandCard";
+import { BrandCarousel } from "@/components/BrandCarousel";
 import { CategoryCard } from "@/components/CategoryCard";
 import { PostCard } from "@/components/PostCard";
 import { ProductCard } from "@/components/ProductCard";
@@ -107,7 +107,7 @@ function Home() {
   return (
     <>
       {/* Hero */}
-      <section className="relative isolate flex min-h-[88svh] items-center overflow-hidden surface-ink">
+      <section className="relative isolate flex min-h-[72svh] items-center overflow-hidden surface-ink sm:min-h-[88svh]">
         <img
           src={heroImg}
           alt="Balcão de tabacaria com sedas, piteiras de vidro e fumaça roxa"
@@ -117,7 +117,7 @@ function Home() {
         />
         <div className="absolute inset-0 -z-10 bg-gradient-to-t from-ink via-ink/80 to-ink/40" />
 
-        <div className="mx-auto w-full max-w-6xl px-4 py-24">
+        <div className="mx-auto w-full max-w-6xl px-4 py-16 sm:py-24">
           <h1 className="max-w-3xl text-4xl font-bold uppercase leading-[1.05] text-ink-foreground sm:text-6xl lg:text-7xl">
             {campoTexto(blocos, "hero_titulo", "A cultura, os produtos e o conhecimento da tabacaria brasileira")}
           </h1>
@@ -145,7 +145,7 @@ function Home() {
       </section>
 
       {/* Categorias */}
-      <section className="mx-auto max-w-6xl px-4 py-20">
+      <section className="mx-auto max-w-6xl px-4 py-14 sm:py-20">
         <SectionHeading
           eyebrow="Navegue por tipo"
           titulo={campoTexto(blocos, "secao_categorias_titulo", "Categorias")}
@@ -160,20 +160,20 @@ function Home() {
 
       {/* Guia para iniciantes */}
       <section className="mx-auto max-w-6xl px-4 pb-4">
-        <div className="surface-ink flex flex-col items-start gap-4 rounded-lg p-8 sm:flex-row sm:items-center sm:justify-between">
+        <div className="surface-ink flex flex-col items-start gap-4 rounded-lg p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
           <div>
             <p className="eyebrow text-gold">Comece aqui</p>
             <h2 className="mt-1 text-2xl font-bold uppercase text-ink-foreground">Guia de acessórios para iniciantes</h2>
             <p className="mt-2 max-w-xl text-sm text-ink-muted">Entenda os itens, descubra seu perfil em 5 perguntas e monte o seu kit.</p>
           </div>
-          <Button asChild size="lg">
+          <Button asChild size="lg" className="w-full sm:w-auto">
             <Link to="/comece-aqui">Descobrir meu perfil</Link>
           </Button>
         </div>
       </section>
 
       {/* Marcas */}
-      <section className="surface-ink py-20">
+      <section className="surface-ink py-14 sm:py-20">
         <div className="mx-auto max-w-6xl px-4">
           <SectionHeading
             onInk
@@ -190,15 +190,11 @@ function Home() {
             }
           />
         </div>
-        <div className="flex gap-4 overflow-x-auto px-4 pb-4 [scrollbar-width:thin] sm:px-[max(1rem,calc((100%-72rem)/2))]">
-          {marcas.map((b) => (
-            <BrandChip key={b.slug} marca={b} />
-          ))}
-        </div>
+        <BrandCarousel marcas={marcas} />
       </section>
 
       {/* Destaques */}
-      <section className="mx-auto max-w-6xl px-4 py-20">
+      <section className="mx-auto max-w-6xl px-4 py-14 sm:py-20">
         <SectionHeading
           eyebrow="Seleção da casa"
           titulo="Destaques do catálogo"
@@ -217,7 +213,7 @@ function Home() {
       </section>
 
       {/* Editorial */}
-      <section className="bg-secondary/50 py-20">
+      <section className="bg-secondary/50 py-14 sm:py-20">
         <div className="mx-auto max-w-6xl px-4">
           <SectionHeading
             eyebrow="Conteúdo"
@@ -238,7 +234,7 @@ function Home() {
       </section>
 
       {/* Confiança */}
-      <section className="mx-auto max-w-6xl px-4 py-20">
+      <section className="mx-auto max-w-6xl px-4 py-14 sm:py-20">
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {blocosConfianca.map(({ icone: Icone, titulo, texto }) => (
             <div key={titulo} className="rounded-lg border border-border bg-card p-5">
