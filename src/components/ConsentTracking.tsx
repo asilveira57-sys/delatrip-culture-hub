@@ -223,7 +223,7 @@ export function ConsentTracking({ seo }: { seo: SeoPublico }) {
                   aria-label={`Cookies de ${cat.titulo.toLowerCase()}`}
                   checked={escolha[cat.chave]}
                   onCheckedChange={(v) => setEscolha((e) => ({ ...e, [cat.chave]: v }))}
-                  className="before:absolute before:-inset-3"
+                  className="relative before:absolute before:-inset-3"
                 />
               </div>
             ))}

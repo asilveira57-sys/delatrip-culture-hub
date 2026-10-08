@@ -23,14 +23,14 @@ export function Footer() {
             <p className="mt-4 text-sm leading-relaxed text-ink-muted">
               Portal institucional e catálogo da tabacaria DeLaTrip.
             </p>
-            <div className="mt-5 flex gap-3">
-              <a href={SITE.redes.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram da DeLaTrip" className="text-ink-muted hover:text-gold">
+            <div className="mt-5 flex gap-1">
+              <a href={SITE.redes.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram da DeLaTrip" className="grid size-11 place-items-center text-ink-muted hover:text-gold">
                 <Instagram className="size-5" aria-hidden="true" />
               </a>
-              <a href={SITE.redes.facebook} target="_blank" rel="noopener noreferrer" aria-label="Facebook da DeLaTrip" className="text-ink-muted hover:text-gold">
+              <a href={SITE.redes.facebook} target="_blank" rel="noopener noreferrer" aria-label="Facebook da DeLaTrip" className="grid size-11 place-items-center text-ink-muted hover:text-gold">
                 <Facebook className="size-5" aria-hidden="true" />
               </a>
-              <a href={SITE.redes.youtube} target="_blank" rel="noopener noreferrer" aria-label="YouTube da DeLaTrip" className="text-ink-muted hover:text-gold">
+              <a href={SITE.redes.youtube} target="_blank" rel="noopener noreferrer" aria-label="YouTube da DeLaTrip" className="grid size-11 place-items-center text-ink-muted hover:text-gold">
                 <Youtube className="size-5" aria-hidden="true" />
               </a>
             </div>
@@ -44,7 +44,7 @@ export function Footer() {
                   <Link
                     to="/catalogo/$"
                     params={{ _splat: c.slug }}
-                    className="text-sm text-ink-muted hover:text-gold"
+                    className="flex min-h-11 items-center py-1 text-sm text-ink-muted hover:text-gold"
                   >
                     {c.nome}
                   </Link>
@@ -56,12 +56,12 @@ export function Footer() {
           <nav aria-label="Institucional e conteúdo">
             <h2 className="eyebrow text-gold">Institucional</h2>
             <ul className="mt-4 space-y-2">
-              <li><Link to="/quem-somos" className="text-sm text-ink-muted hover:text-gold">Quem somos</Link></li>
-              <li><Link to="/marcas" className="text-sm text-ink-muted hover:text-gold">Marcas</Link></li>
-              <li><Link to="/blog" className="text-sm text-ink-muted hover:text-gold">Blog</Link></li>
-              <li><Link to="/conteudo/tabaco" className="text-sm text-ink-muted hover:text-gold">Conteúdo: tabaco</Link></li>
-              <li><Link to="/faq" className="text-sm text-ink-muted hover:text-gold">Perguntas frequentes</Link></li>
-              <li><Link to="/contato" className="text-sm text-ink-muted hover:text-gold">Contato</Link></li>
+              <li><Link to="/quem-somos" className="flex min-h-11 items-center py-1 text-sm text-ink-muted hover:text-gold">Quem somos</Link></li>
+              <li><Link to="/marcas" className="flex min-h-11 items-center py-1 text-sm text-ink-muted hover:text-gold">Marcas</Link></li>
+              <li><Link to="/blog" className="flex min-h-11 items-center py-1 text-sm text-ink-muted hover:text-gold">Blog</Link></li>
+              <li><Link to="/conteudo/tabaco" className="flex min-h-11 items-center py-1 text-sm text-ink-muted hover:text-gold">Conteúdo: tabaco</Link></li>
+              <li><Link to="/faq" className="flex min-h-11 items-center py-1 text-sm text-ink-muted hover:text-gold">Perguntas frequentes</Link></li>
+              <li><Link to="/contato" className="flex min-h-11 items-center py-1 text-sm text-ink-muted hover:text-gold">Contato</Link></li>
             </ul>
           </nav>
 
@@ -69,16 +69,16 @@ export function Footer() {
             <nav aria-label="Legal e privacidade">
               <h2 className="eyebrow text-gold">Legal e privacidade</h2>
               <ul className="mt-4 space-y-2">
-                <li><Link to="/politica-de-privacidade" className="text-sm text-ink-muted hover:text-gold">Política de Privacidade</Link></li>
-                <li><Link to="/politica-de-cookies" className="text-sm text-ink-muted hover:text-gold">Política de Cookies</Link></li>
-                <li><Link to="/lgpd" className="text-sm text-ink-muted hover:text-gold">LGPD e seus direitos</Link></li>
-                <li><Link to="/termos-de-uso" className="text-sm text-ink-muted hover:text-gold">Termos de Uso</Link></li>
-                <li><Link to="/maiores-de-18" className="text-sm text-ink-muted hover:text-gold">Maiores de 18 anos</Link></li>
+                <li><Link to="/politica-de-privacidade" className="flex min-h-11 items-center py-1 text-sm text-ink-muted hover:text-gold">Política de Privacidade</Link></li>
+                <li><Link to="/politica-de-cookies" className="flex min-h-11 items-center py-1 text-sm text-ink-muted hover:text-gold">Política de Cookies</Link></li>
+                <li><Link to="/lgpd" className="flex min-h-11 items-center py-1 text-sm text-ink-muted hover:text-gold">LGPD e seus direitos</Link></li>
+                <li><Link to="/termos-de-uso" className="flex min-h-11 items-center py-1 text-sm text-ink-muted hover:text-gold">Termos de Uso</Link></li>
+                <li><Link to="/maiores-de-18" className="flex min-h-11 items-center py-1 text-sm text-ink-muted hover:text-gold">Maiores de 18 anos</Link></li>
                 <li>
                   <button
                     type="button"
                     onClick={() => abrirPreferenciasCookies()}
-                    className="text-sm text-ink-muted underline-offset-4 hover:text-gold hover:underline"
+                    className="min-h-11 py-1 text-left text-sm text-ink-muted underline-offset-4 hover:text-gold hover:underline"
                   >
                     Preferências de Cookies
                   </button>
