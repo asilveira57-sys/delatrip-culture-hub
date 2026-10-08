@@ -45,7 +45,7 @@ export function ProdutosRelacionados({
       <h2 id="produtos-relacionados" className="text-lg font-semibold uppercase">
         {titulo}
       </h2>
-      <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+      <div className="mt-4 grid gap-4 min-[430px]:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4">
         {itens.map((item, posicao) => (
           <div
             key={item.produto.slug}

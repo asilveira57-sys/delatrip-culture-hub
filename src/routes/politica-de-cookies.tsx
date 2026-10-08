@@ -121,6 +121,7 @@ function Cookies() {
       </p>
 
       <h2>Cookies e tecnologias em uso</h2>
+      <p className="text-xs text-muted-foreground sm:hidden">Arraste a tabela para o lado para ver todos os dados.</p>
       <div className="mt-4 overflow-x-auto">
         <table className="w-full border-collapse text-left text-sm">
           <thead>

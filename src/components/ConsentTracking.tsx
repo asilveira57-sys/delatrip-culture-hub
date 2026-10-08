@@ -185,10 +185,10 @@ export function ConsentTracking({ seo }: { seo: SeoPublico }) {
     <div
       role="dialog"
       aria-label="Preferências de cookies"
-      className="fixed inset-x-0 bottom-0 z-50 border-t border-border bg-card/98 p-4 shadow-lg backdrop-blur"
+      className="fixed inset-x-0 bottom-0 z-50 max-h-[85dvh] overflow-y-auto overscroll-contain border-t border-border bg-card/98 p-3 shadow-lg backdrop-blur sm:p-4"
     >
       <div className="mx-auto max-w-5xl">
-        <p className="text-sm text-muted-foreground">
+        <p className="text-xs leading-relaxed text-muted-foreground sm:text-sm">
           Usamos cookies necessários para o funcionamento do portal e, com sua
           autorização, cookies de análise e marketing para entender a utilização do site.{" "}
           <Link
@@ -200,7 +200,7 @@ export function ConsentTracking({ seo }: { seo: SeoPublico }) {
         </p>
 
         {detalhes ? (
-          <div className="mt-4 space-y-3">
+          <div className="mt-3 space-y-2 sm:mt-4 sm:space-y-3">
             <div className="flex items-start justify-between gap-4 rounded-md border border-border p-3">
               <div>
                 <p className="text-sm font-medium">Necessários</p>
@@ -213,7 +213,7 @@ export function ConsentTracking({ seo }: { seo: SeoPublico }) {
             {CATEGORIAS.map((cat) => (
               <div
                 key={cat.chave}
-                className="flex items-start justify-between gap-4 rounded-md border border-border p-3"
+              className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 rounded-md border border-border p-3"
               >
                 <div>
                   <p className="text-sm font-medium">{cat.titulo}</p>
@@ -223,29 +223,32 @@ export function ConsentTracking({ seo }: { seo: SeoPublico }) {
                   aria-label={`Cookies de ${cat.titulo.toLowerCase()}`}
                   checked={escolha[cat.chave]}
                   onCheckedChange={(v) => setEscolha((e) => ({ ...e, [cat.chave]: v }))}
+                  className="relative before:absolute before:-inset-3"
                 />
               </div>
             ))}
           </div>
         ) : null}
 
-        <div className="mt-4 flex flex-col gap-2 sm:flex-row sm:justify-end">
+        <div className="mt-3 grid gap-2 sm:mt-4 sm:flex sm:justify-end">
           {detalhes ? (
-            <Button variant="outline" onClick={() => decidir(escolha)}>
+            <Button variant="outline" onClick={() => decidir(escolha)} className="min-h-11">
               Salvar preferências
             </Button>
           ) : (
-            <Button variant="outline" onClick={() => setDetalhes(true)}>
+            <Button variant="outline" onClick={() => setDetalhes(true)} className="min-h-11">
               Personalizar
             </Button>
           )}
           <Button
             variant="outline"
+            className="min-h-11"
             onClick={() => decidir({ ...CONSENTIMENTO_VAZIO })}
           >
             Rejeitar não essenciais
           </Button>
           <Button
+            className="min-h-11"
             onClick={() =>
               decidir({
                 necessarios: true,

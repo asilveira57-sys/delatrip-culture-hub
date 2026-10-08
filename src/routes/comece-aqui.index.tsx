@@ -128,7 +128,7 @@ function ComeceAqui() {
   return (
     <>
       <section className="surface-ink">
-        <div className="mx-auto max-w-6xl px-4 py-20">
+        <div className="mx-auto max-w-6xl px-4 py-14 sm:py-20">
           <p className="eyebrow text-gold">Comece aqui</p>
           <h1 className="mt-2 max-w-3xl text-4xl font-bold uppercase text-ink-foreground sm:text-6xl">
             {texto(blocos, "titulo", "Guia de acessórios para iniciantes")}
@@ -142,7 +142,7 @@ function ComeceAqui() {
         </div>
       </section>
 
-      <div className="mx-auto max-w-6xl px-4 py-16">
+      <div className="mx-auto max-w-6xl px-4 py-12 sm:py-16">
         {intro ? <ArtigoConteudo html={intro} className="mb-12 max-w-3xl" /> : null}
 
         <SectionHeading eyebrow="Primeiros passos" titulo="O básico em 5 minutos" />
@@ -240,7 +240,7 @@ function Resultado() {
       {explorar.length > 0 && (
         <>
           <h3 className="mt-10 text-lg font-semibold uppercase">Depois, explore</h3>
-          <div className="mt-4 grid grid-cols-2 gap-4 lg:grid-cols-3">
+          <div className="mt-4 grid gap-4 min-[430px]:grid-cols-2 lg:grid-cols-3">
             {explorar.map((p) => (
               <ProductCard key={p.slug} produto={p} />
             ))}
@@ -248,7 +248,7 @@ function Resultado() {
         </>
       )}
 
-      <div className="mt-8 flex flex-wrap gap-3">
+      <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
         <Button
           variant="outline"
           onClick={() => {

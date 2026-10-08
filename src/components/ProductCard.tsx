@@ -61,7 +61,7 @@ export function ProductCard({ produto }: { produto: Product }) {
         ) : null}
 
         <div className="mt-4 flex flex-1 flex-col justify-end gap-2">
-          <Button asChild size="sm" className="w-full">
+          <Button asChild size="sm" className="min-h-11 w-full">
             <a
               href={produto.urlLoja ?? SITE.lojaOficial}
               target="_blank"
@@ -72,7 +72,7 @@ export function ProductCard({ produto }: { produto: Product }) {
             </a>
           </Button>
           {produto.urlMercadoLivre ? (
-            <Button asChild size="sm" variant="marketplace" className="w-full">
+            <Button asChild size="sm" variant="marketplace" className="min-h-11 w-full whitespace-normal py-2 text-center">
               <a
                 href={produto.urlMercadoLivre}
                 target="_blank"

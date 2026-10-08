@@ -91,12 +91,13 @@ export function Header() {
           </ul>
         </nav>
 
-        <div className="ml-auto flex items-center gap-2">
+        <div className="ml-auto flex shrink-0 items-center gap-1 sm:gap-2">
           <Button
             variant="ghost"
             size="icon"
             aria-label="Abrir busca"
             onClick={() => setBuscaAberta(true)}
+            className="size-11"
           >
             <Search aria-hidden="true" />
           </Button>
@@ -109,7 +110,7 @@ export function Header() {
 
           <Sheet open={menuAberto} onOpenChange={setMenuAberto}>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" aria-label="Abrir menu" className="lg:hidden">
+              <Button variant="ghost" size="icon" aria-label="Abrir menu" className="size-11 lg:hidden">
                 <Menu aria-hidden="true" />
               </Button>
             </SheetTrigger>
@@ -162,7 +163,7 @@ export function Header() {
                 type="button"
                 onClick={() => setTermo("")}
                 aria-label="Limpar busca"
-                className="text-muted-foreground hover:text-foreground"
+                className="grid size-11 shrink-0 place-items-center text-muted-foreground hover:text-foreground"
               >
                 <X className="size-4" aria-hidden="true" />
               </button>

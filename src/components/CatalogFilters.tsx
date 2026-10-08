@@ -26,7 +26,7 @@ export function FilterButton({
       type="button"
       onClick={onClick}
       aria-pressed={ativo}
-      className={`w-full rounded-md px-3 py-2 text-left text-sm transition-colors ${
+      className={`min-h-11 w-full rounded-md px-3 py-2 text-left text-sm transition-colors ${
         ativo
           ? "bg-primary text-primary-foreground"
           : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
@@ -51,7 +51,7 @@ export function SortSelect({
         value={valor}
         onChange={(e) => onChange(e.target.value as SortKey)}
         aria-label="Ordenar produtos"
-        className="rounded-md border border-border bg-card px-3 py-2 text-sm text-foreground"
+        className="min-h-11 min-w-0 rounded-md border border-border bg-card px-3 py-2 text-sm text-foreground"
       >
         {SORT_OPTIONS.map((o) => (
           <option key={o.value} value={o.value}>
@@ -76,7 +76,7 @@ export function ActiveChips({
           <button
             type="button"
             onClick={c.onRemove}
-            className="rounded-full border border-primary/40 bg-primary/10 px-3 py-1 text-xs text-primary hover:bg-primary/20"
+            className="min-h-11 rounded-full border border-primary/40 bg-primary/10 px-3 py-2 text-xs text-primary hover:bg-primary/20"
           >
             {c.label} <span aria-hidden="true">×</span>
             <span className="sr-only">Remover filtro</span>
@@ -138,7 +138,7 @@ export function FiltersPanel({
         onChange={(e) => setTermoMarca(e.target.value)}
         placeholder="Buscar marca"
         aria-label="Buscar marca"
-        className="mt-3 h-9"
+        className="mt-3 h-11"
       />
       <ul className="mt-2 space-y-1">
         {visiveis.map((b) => (
@@ -146,7 +146,7 @@ export function FiltersPanel({
             <Link
               to="/$brandSlug"
               params={{ brandSlug: b.slug }}
-              className="block rounded-md px-3 py-2 text-left text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+              className="flex min-h-11 items-center rounded-md px-3 py-2 text-left text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
               activeProps={{ className: "bg-primary text-primary-foreground" }}
             >
               {b.nome}
@@ -159,7 +159,7 @@ export function FiltersPanel({
         <button
           type="button"
           onClick={() => setVerTodas((v) => !v)}
-          className="mt-2 px-3 text-xs text-primary underline underline-offset-4"
+          className="mt-2 min-h-11 px-3 text-xs text-primary underline underline-offset-4"
         >
           {verTodas ? "Ver menos marcas" : `Ver todas as ${filtradas.length} marcas`}
         </button>

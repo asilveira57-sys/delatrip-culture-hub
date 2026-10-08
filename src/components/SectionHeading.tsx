@@ -12,7 +12,7 @@ export function SectionHeading({
   acao?: React.ReactNode;
 }) {
   return (
-    <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+    <div className="mb-6 flex flex-col gap-4 sm:mb-8 sm:flex-row sm:items-end sm:justify-between">
       <div className="max-w-2xl">
         {eyebrow ? (
           <p className={onInk ? "eyebrow text-gold" : "eyebrow text-primary"}>
@@ -20,7 +20,7 @@ export function SectionHeading({
           </p>
         ) : null}
         <h2
-          className={`mt-2 text-3xl font-semibold uppercase sm:text-4xl ${
+          className={`mt-2 text-2xl font-semibold uppercase sm:text-4xl ${
             onInk ? "text-ink-foreground" : "text-foreground"
           }`}
         >
@@ -36,7 +36,7 @@ export function SectionHeading({
           </p>
         ) : null}
       </div>
-      {acao ? <div className="shrink-0">{acao}</div> : null}
+      {acao ? <div className="shrink-0 [&_a]:min-h-11 [&_button]:min-h-11">{acao}</div> : null}
     </div>
   );
 }

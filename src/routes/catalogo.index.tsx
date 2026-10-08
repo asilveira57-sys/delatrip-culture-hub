@@ -133,7 +133,7 @@ function Catalogo() {
         crumbs={[{ label: "Catálogo" }]}
       />
 
-      <div className="mx-auto max-w-6xl px-4 py-12">
+      <div className="mx-auto max-w-6xl px-4 py-10 sm:py-12">
         <div className="grid gap-10 lg:grid-cols-[220px_1fr]">
           <aside aria-label="Filtros" className="hidden lg:block">
             <FiltersPanel categoria={categoria} onChange={setSearch} />
@@ -155,14 +155,14 @@ function Catalogo() {
                   className="pl-9"
                 />
               </div>
-              <div className="flex flex-wrap items-center justify-between gap-3">
+              <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 sm:flex sm:flex-wrap sm:justify-between">
                 <p className="text-sm text-muted-foreground">
                   {lista.length} {lista.length === 1 ? "produto" : "produtos"}
                 </p>
-                <div className="flex items-center gap-2">
+                <div className="flex min-w-0 items-center gap-2">
                   <Sheet open={filtrosAbertos} onOpenChange={setFiltrosAbertos}>
                     <SheetTrigger asChild>
-                      <Button variant="outline" size="sm" className="lg:hidden">
+                      <Button variant="outline" size="sm" className="min-h-11 lg:hidden">
                         <SlidersHorizontal className="size-4" aria-hidden="true" />
                         Filtros
                       </Button>
