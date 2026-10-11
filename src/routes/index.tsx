@@ -172,6 +172,20 @@ function Home() {
         </div>
       </section>
 
+      {/* Calculadora Boveda */}
+      <section className="mx-auto max-w-6xl px-4 pb-4 pt-4">
+        <div className="flex flex-col items-start gap-4 rounded-lg border border-primary/30 bg-primary/5 p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
+          <div>
+            <p className="eyebrow text-primary">Ferramenta</p>
+            <h2 className="mt-1 text-2xl font-bold uppercase">Calculadora Boveda</h2>
+            <p className="mt-2 max-w-xl text-sm text-muted-foreground">Descubra o tamanho, a quantidade e a % de umidade ideais para guardar ervas, flores ou charutos.</p>
+          </div>
+          <Button asChild size="lg" className="w-full sm:w-auto">
+            <Link to="/calculadora-boveda">Usar a calculadora <ArrowRight aria-hidden="true" /></Link>
+          </Button>
+        </div>
+      </section>
+
       {/* Marcas */}
       <section className="surface-ink py-14 sm:py-20">
         <div className="mx-auto max-w-6xl px-4">
