@@ -31,14 +31,14 @@ import { lerConsentimento } from "@/lib/consentimento";
 import { absoluteUrl, canonical, jsonLd } from "@/lib/seo";
 
 type Busca = {
-  tipo?: "flores" | "charutos";
-  g?: number;
-  consumo?: Consumo;
-  clima?: Clima;
-  local?: Local;
-  cap?: number;
-  novo?: "sim" | "nao";
-  pref?: Preferencia;
+  tipo?: "flores" | "charutos" | undefined;
+  g?: number | undefined;
+  consumo?: Consumo | undefined;
+  clima?: Clima | undefined;
+  local?: Local | undefined;
+  cap?: number | undefined;
+  novo?: "sim" | "nao" | undefined;
+  pref?: Preferencia | undefined;
 };
 
 const um = <T extends string>(v: unknown, ok: readonly T[]) => (ok.includes(v as T) ? (v as T) : undefined);
@@ -81,14 +81,14 @@ const DESCRICAO =
 
 export const Route = createFileRoute("/calculadora-boveda")({
   validateSearch: (s: Record<string, unknown>): Busca => ({
-    tipo: um(s.tipo, ["flores", "charutos"] as const),
-    g: num(s.g),
-    consumo: um(s.consumo, ["enrolo", "outro"] as const),
-    clima: um(s.clima, ["umido", "seco", "nao-sei"] as const),
-    local: um(s.local, ["tubo", "hermetica", "madeira", "cooler", "cachimbo"] as const),
-    cap: num(s.cap),
-    novo: um(s.novo, ["sim", "nao"] as const),
-    pref: um(s.pref, ["normal", "seco", "umido"] as const),
+    tipo: um(s["tipo"], ["flores", "charutos"] as const),
+    g: num(s["g"]),
+    consumo: um(s["consumo"], ["enrolo", "outro"] as const),
+    clima: um(s["clima"], ["umido", "seco", "nao-sei"] as const),
+    local: um(s["local"], ["tubo", "hermetica", "madeira", "cooler", "cachimbo"] as const),
+    cap: num(s["cap"]),
+    novo: um(s["novo"], ["sim", "nao"] as const),
+    pref: um(s["pref"], ["normal", "seco", "umido"] as const),
   }),
   head: () => ({
     meta: [

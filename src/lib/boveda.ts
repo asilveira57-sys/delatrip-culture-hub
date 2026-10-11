@@ -14,9 +14,9 @@ export type EntradaCharutos = {
   tipo: "charutos";
   local: Local;
   /** Nº de charutos que o recipiente comporta (humidor/caixa/cooler). */
-  capacidade?: number;
+  capacidade?: number | undefined;
   /** Gramas de tabaco de cachimbo. */
-  gramas?: number;
+  gramas?: number | undefined;
   /** Humidor de madeira nunca usado. */
   novo?: boolean;
   preferencia?: Preferencia;
