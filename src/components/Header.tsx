@@ -12,7 +12,7 @@ import mark from "@/assets/delatrip-mark.png";
 
 const nav = [
   { label: "Comece aqui", to: "/comece-aqui" },
-  { label: "Calculadora Boveda", to: "/calculadora-boveda" },
+  { label: "Calculadora Boveda", curto: "Boveda", to: "/calculadora-boveda" },
   { label: "Catálogo", to: "/catalogo" },
   { label: "Marcas", to: "/marcas" },
   { label: "Acessórios", to: "/acessorios" },
@@ -77,15 +77,22 @@ export function Header() {
 
 
         <nav aria-label="Navegação principal" className="ml-4 hidden lg:block">
-          <ul className="flex items-center gap-6">
+          <ul className="flex items-center gap-4 xl:gap-6">
             {nav.map((item) => (
               <li key={item.to}>
                 <Link
                   to={item.to}
-                  className="text-sm font-medium text-primary/80 transition-colors hover:text-primary"
+                  className="whitespace-nowrap text-sm font-medium text-primary/80 transition-colors hover:text-primary"
                   activeProps={{ className: "text-primary font-semibold" }}
                 >
-                  {item.label}
+                  {"curto" in item ? (
+                    <>
+                      <span className="xl:hidden">{item.curto}</span>
+                      <span className="hidden xl:inline">{item.label}</span>
+                    </>
+                  ) : (
+                    item.label
+                  )}
                 </Link>
               </li>
             ))}
