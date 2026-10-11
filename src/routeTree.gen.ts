@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as BrandSlugRouteImport } from './routes/$brandSlug'
 import { Route as AcessoriosRouteImport } from './routes/acessorios'
 import { Route as BuscaRouteImport } from './routes/busca'
+import { Route as CalculadoraBovedaRouteImport } from './routes/calculadora-boveda'
 import { Route as ContatoRouteImport } from './routes/contato'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as LgpdRouteImport } from './routes/lgpd'
@@ -77,6 +78,11 @@ const AcessoriosRoute = AcessoriosRouteImport.update({
 const BuscaRoute = BuscaRouteImport.update({
   id: '/busca',
   path: '/busca',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CalculadoraBovedaRoute = CalculadoraBovedaRouteImport.update({
+  id: '/calculadora-boveda',
+  path: '/calculadora-boveda',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContatoRoute = ContatoRouteImport.update({
@@ -313,6 +319,7 @@ export interface FileRoutesByFullPath {
   '/$brandSlug': typeof BrandSlugRoute
   '/acessorios': typeof AcessoriosRoute
   '/busca': typeof BuscaRoute
+  '/calculadora-boveda': typeof CalculadoraBovedaRoute
   '/contato': typeof ContatoRoute
   '/faq': typeof FaqRoute
   '/lgpd': typeof LgpdRoute
@@ -364,6 +371,7 @@ export interface FileRoutesByTo {
   '/$brandSlug': typeof BrandSlugRoute
   '/acessorios': typeof AcessoriosRoute
   '/busca': typeof BuscaRoute
+  '/calculadora-boveda': typeof CalculadoraBovedaRoute
   '/contato': typeof ContatoRoute
   '/faq': typeof FaqRoute
   '/lgpd': typeof LgpdRoute
@@ -415,6 +423,7 @@ export interface FileRoutesById {
   '/$brandSlug': typeof BrandSlugRoute
   '/acessorios': typeof AcessoriosRoute
   '/busca': typeof BuscaRoute
+  '/calculadora-boveda': typeof CalculadoraBovedaRoute
   '/contato': typeof ContatoRoute
   '/faq': typeof FaqRoute
   '/lgpd': typeof LgpdRoute
@@ -468,6 +477,7 @@ export interface FileRouteTypes {
     | '/$brandSlug'
     | '/acessorios'
     | '/busca'
+    | '/calculadora-boveda'
     | '/contato'
     | '/faq'
     | '/lgpd'
@@ -519,6 +529,7 @@ export interface FileRouteTypes {
     | '/$brandSlug'
     | '/acessorios'
     | '/busca'
+    | '/calculadora-boveda'
     | '/contato'
     | '/faq'
     | '/lgpd'
@@ -569,6 +580,7 @@ export interface FileRouteTypes {
     | '/$brandSlug'
     | '/acessorios'
     | '/busca'
+    | '/calculadora-boveda'
     | '/contato'
     | '/faq'
     | '/lgpd'
@@ -621,6 +633,7 @@ export interface RootRouteChildren {
   BrandSlugRoute: typeof BrandSlugRoute
   AcessoriosRoute: typeof AcessoriosRoute
   BuscaRoute: typeof BuscaRoute
+  CalculadoraBovedaRoute: typeof CalculadoraBovedaRoute
   ContatoRoute: typeof ContatoRoute
   FaqRoute: typeof FaqRoute
   LgpdRoute: typeof LgpdRoute
@@ -677,6 +690,13 @@ declare module '@tanstack/react-router' {
       path: '/busca'
       fullPath: '/busca'
       preLoaderRoute: typeof BuscaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/calculadora-boveda': {
+      id: '/calculadora-boveda'
+      path: '/calculadora-boveda'
+      fullPath: '/calculadora-boveda'
+      preLoaderRoute: typeof CalculadoraBovedaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contato': {
@@ -1050,6 +1070,7 @@ const rootRouteChildren: RootRouteChildren = {
   BrandSlugRoute: BrandSlugRoute,
   AcessoriosRoute: AcessoriosRoute,
   BuscaRoute: BuscaRoute,
+  CalculadoraBovedaRoute: CalculadoraBovedaRoute,
   ContatoRoute: ContatoRoute,
   FaqRoute: FaqRoute,
   LgpdRoute: LgpdRoute,

@@ -242,6 +242,15 @@ function ProdutoPage() {
         </p>
       ) : null}
 
+      {produto.marcaSlug === "boveda" ? (
+        <Link
+          to="/calculadora-boveda"
+          className="mb-4 flex min-h-11 items-center rounded-md border border-primary/40 bg-primary/5 px-4 py-2 text-sm font-semibold text-primary hover:bg-primary/10"
+        >
+          Qual Boveda eu preciso? Use a calculadora →
+        </Link>
+      ) : null}
+
       <div className="grid gap-10 lg:grid-cols-2">
         <ProductGallery
           nome={produto.nome}
