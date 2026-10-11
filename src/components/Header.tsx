@@ -12,6 +12,7 @@ import mark from "@/assets/delatrip-mark.png";
 
 const nav = [
   { label: "Comece aqui", to: "/comece-aqui" },
+  { label: "Calculadora Boveda", to: "/calculadora-boveda" },
   { label: "Catálogo", to: "/catalogo" },
   { label: "Marcas", to: "/marcas" },
   { label: "Acessórios", to: "/acessorios" },
