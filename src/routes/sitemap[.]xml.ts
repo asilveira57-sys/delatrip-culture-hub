@@ -11,6 +11,7 @@ const ROTAS_FIXAS: [string, number][] = [
   ["/blog", 0.7],
   ["/acessorios", 0.7],
   ["/comece-aqui", 0.8],
+  ["/calculadora-boveda", 0.7],
   ["/comece-aqui/explorador", 0.6],
   ["/comece-aqui/familiarizado", 0.6],
   ["/comece-aqui/entusiasta", 0.6],

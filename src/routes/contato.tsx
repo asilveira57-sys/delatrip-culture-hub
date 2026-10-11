@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Mail, MapPin, Phone, Store } from "lucide-react";
 import { toast } from "sonner";
@@ -81,6 +81,11 @@ function ContatoPage() {
 
   const desafio = useDesafio();
   const [valores, setValores] = useState<Campos>(VAZIO);
+  // Assunto pré-preenchido por links internos (?assunto=...).
+  useEffect(() => {
+    const a = new URLSearchParams(window.location.search).get("assunto");
+    if (a) setValores((v) => (v.assunto ? v : { ...v, assunto: a.slice(0, 150) }));
+  }, []);
   const [armadilha, setArmadilha] = useState("");
   const [consentimento, setConsentimento] = useState(false);
   const [erros, setErros] = useState<Record<string, string>>({});
