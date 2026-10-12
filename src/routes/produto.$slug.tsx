@@ -19,6 +19,7 @@ import { SectionHeading } from "@/components/SectionHeading";
 import { FaqSecao } from "@/components/FaqSecao";
 import { faqLd } from "@/lib/faq-core";
 import { carregarFaq } from "@/lib/faq.functions";
+import { extrairFaqDoHtml } from "@/lib/faq-html";
 import { Button } from "@/components/ui/button";
 import { SHOW_PRICES, SITE } from "@/config/site";
 import {
@@ -55,7 +56,8 @@ export const Route = createFileRoute("/produto/$slug")({
   head: ({ params, loaderData }) => {
     const produto = getProduct(params.slug);
     const detalhe = loaderData?.detalhe ?? null;
-    const faq = loaderData?.faq ?? [];
+    const faqBanco = loaderData?.faq ?? [];
+    const faq = faqBanco.length > 0 ? faqBanco : extrairFaqDoHtml(detalhe?.descricaoHtml ?? "").itens;
     const titulo = produto
       ? `${detalhe?.seoTitulo ?? produto.nome}${produto.marca ? ` — ${produto.marca}` : ""} | DeLaTrip`
       : "Produto não encontrado — DeLaTrip";
@@ -208,7 +210,10 @@ function ProdutoPage() {
   )
     .filter((p) => p.slug !== produto.slug)
     .slice(0, 8);
-  const descricaoHtml = overlayDescricao(ov) ?? detalhe?.descricaoHtml ?? "";
+  // FAQ da loja oficial vem em <details>; vira a FAQ padrão do site.
+  const extraida = extrairFaqDoHtml(overlayDescricao(ov) ?? detalhe?.descricaoHtml ?? "");
+  const descricaoHtml = extraida.html;
+  const faqFinal = faq.length > 0 ? faq : extraida.itens;
   const preco = produto.precoPromocional ?? produto.preco;
   const specs = productSpecs(produto, detalhe);
   const kitsDoProduto = Route.useLoaderData().seo?.kits ?? [];
@@ -366,7 +371,7 @@ function ProdutoPage() {
         </section>
       )}
 
-      <FaqSecao itens={faq} className="mt-16 border-t border-border pt-10" />
+      <FaqSecao itens={faqFinal} className="mt-16 border-t border-border pt-10" />
     </div>
   );
 }
