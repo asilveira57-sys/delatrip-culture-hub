@@ -8,7 +8,7 @@ describe("FAQ importada em <details>", () => {
   it("vira item de FAQ sem o ícone e sai da descrição", () => {
     const r = extrairFaqDoHtml(html);
     expect(r.itens).toEqual([
-      { pergunta: "Como identificar uma RAW original?", resposta: "Possui a <strong>marca d&rsquo;&aacute;gua</strong>." },
+      { pergunta: "Como identificar uma RAW original?", resposta: "<div>Possui a <strong>marca d&rsquo;&aacute;gua</strong>.</div>" },
     ]);
     expect(r.html).toBe("<p>Texto</p>");
   });
