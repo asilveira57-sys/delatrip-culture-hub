@@ -16,3 +16,13 @@ describe("FAQ importada em <details>", () => {
     expect(extrairFaqDoHtml("<p>Oi</p>")).toEqual({ html: "<p>Oi</p>", itens: [] });
   });
 });
+
+import { faqLd } from "./faq-core";
+
+describe("FAQ no JSON-LD", () => {
+  it("resposta sai como texto limpo, sem códigos HTML", () => {
+    const ld = faqLd([{ pergunta: "A RAW &eacute; boa?", resposta: "<div>Sim, <strong>n&atilde;o</strong> , tem cloro.</div>" }]);
+    expect(ld.mainEntity[0]!.name).toBe("A RAW é boa?");
+    expect(ld.mainEntity[0]!.acceptedAnswer.text).toBe("Sim, não, tem cloro.");
+  });
+});

@@ -1,3 +1,4 @@
+import { decodificarEntidades } from "@/lib/faq-html";
 /**
  * Núcleo da FAQ por conteúdo (post, produto e marca).
  *
@@ -120,10 +121,14 @@ export function faqLd(itens: { pergunta: string; resposta: string }[]) {
     "@type": "FAQPage",
     mainEntity: itens.map((item) => ({
       "@type": "Question",
-      name: item.pergunta,
+      name: decodificarEntidades(item.pergunta).trim(),
       acceptedAnswer: {
         "@type": "Answer",
-        text: limparConteudoFaq(item.resposta),
+        // Google exige texto limpo: sem códigos HTML (&atilde;) nem espaço antes de pontuação.
+        text: decodificarEntidades(limparConteudoFaq(item.resposta))
+          .replace(/\s+([,.;:!?])/g, "$1")
+          .replace(/\s+/g, " ")
+          .trim(),
       },
     })),
   };
