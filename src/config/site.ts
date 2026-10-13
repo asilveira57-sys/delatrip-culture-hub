@@ -6,7 +6,7 @@ export const SITE = {
     "Portal institucional e catálogo da DeLaTrip — tabacaria e head shop brasileira.",
   lojaOficial: "https://www.delatrip.com.br",
   mercadoLivre: "https://loja.mercadolivre.com.br/delatrip",
-  /** Slug da loja oficial usado no filtro _Tienda_ da busca do Mercado Livre. */
+  /** Slug da loja DeLaTrip no ML, usado em lista.mercadolivre.com.br/loja/<slug>/... (busca dentro da loja). */
   mercadoLivreLoja: "delatrip",
   email: "contato@delatrip.com.br",
   telefone: "(21) 97246-2459",
