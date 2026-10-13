@@ -104,11 +104,16 @@ type SlimProduct = {
 };
 
 const IMG_PREFIX = "https://images.tcdn.com.br/img/img_prod/";
+const ML_PREFIX = "https://lista.mercadolivre.com.br/loja/";
 const LOJA_PREFIX = "https://www.delatrip.com.br/";
 
 /**
- * Busca do Mercado Livre pelo título do produto dentro da loja oficial
- * DeLaTrip (URL de storefront).
+ * Busca do Mercado Livre pelo título do produto DENTRO da loja DeLaTrip
+ * (página da loja / storefront). Resultado: só anúncios da DeLaTrip.
+ *
+ * ATENÇÃO: NÃO trocar para o filtro `_Tienda_` nem para lista.mercadolivre.com.br/<termo>.
+ * Esses formatos são ignorados para a DeLaTrip e abrem a busca geral do ML,
+ * mandando o cliente para outros vendedores. (Já quebrou assim em 16/08 e em 11/10/2026.)
  */
 export function mercadoLivreSearchUrl(titulo: string) {
   const termo = titulo
@@ -117,8 +122,8 @@ export function mercadoLivreSearchUrl(titulo: string) {
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
-  // Filtro _Tienda_ = só anúncios da loja oficial DeLaTrip (nunca outros vendedores).
-  return `https://lista.mercadolivre.com.br/${termo}_Tienda_${SITE.mercadoLivreLoja}_NoIndex_True`;
+  const busca = titulo.replace(/\s+/g, " ").trim();
+  return `${ML_PREFIX}${SITE.mercadoLivreLoja}/${termo}_NoIndex_True?sb=storefront_url#D[A:${encodeURIComponent(busca)}]`;
 }
 
 
