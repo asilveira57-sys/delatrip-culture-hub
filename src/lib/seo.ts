@@ -1,5 +1,5 @@
 /** Base pública do site — usada em canonical, og:url, JSON-LD e sitemap. */
-export const SITE_URL = "https://delatrip-culture-hub.lovable.app";
+export const SITE_URL = "https://portal.delatrip.com.br";
 
 export function absoluteUrl(path: string) {
   return `${SITE_URL}${path.startsWith("/") ? path : `/${path}`}`.replace(/\/$/, "") || SITE_URL;
