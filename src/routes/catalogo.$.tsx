@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 
 
@@ -19,6 +19,10 @@ import {
 import { mergeList, useOverlays } from "@/lib/overlay";
 
 export const Route = createFileRoute("/catalogo/$")({
+  loader: ({ params }) => {
+    if (!getCategoryByPath(params._splat ?? "")) throw notFound();
+    return null;
+  },
   head: ({ params }) => {
     const categoria = getCategoryByPath(params._splat ?? "");
     const titulo = categoria

@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 
 import { absoluteUrl, breadcrumbLd, canonical, jsonLd } from "@/lib/seo";
 
@@ -26,6 +26,7 @@ export const Route = createFileRoute("/blog/$slug")({
       carregarFaq({ data: { tipo: "post", alvo: params.slug } }),
       carregarRelacionados({ data: { slug: params.slug } }),
     ]);
+    if (!post) throw notFound();
     return { post, faq, relacionados };
   },
   head: ({ params, loaderData }) => {

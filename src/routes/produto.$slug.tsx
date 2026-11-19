@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 
 import { absoluteUrl, breadcrumbLd, canonical, jsonLd } from "@/lib/seo";
 import { ExternalLink, ShoppingBag } from "lucide-react";
@@ -36,6 +36,8 @@ import {
 
 export const Route = createFileRoute("/produto/$slug")({
   loader: async ({ params }) => {
+    // Slug inexistente responde 404 de verdade (evita "soft 404" no Search Console).
+    if (!getProduct(params.slug)) throw notFound();
     const [detalhe, faq, seo] = await Promise.all([
       getProductDetail(params.slug),
       carregarFaq({ data: { tipo: "produto", alvo: params.slug } }),
@@ -75,6 +77,21 @@ export const Route = createFileRoute("/produto/$slug")({
       detalhe?.imagens.find((u: string) => u.startsWith("https://")) ??
       produto?.imagem ??
       undefined;
+
+    const precoOferta = produto ? (produto.precoPromocional ?? produto.preco) : null;
+    const ofertaLd =
+      produto && SHOW_PRICES && precoOferta
+        ? {
+            "@type": "Offer",
+            url: produto.urlLoja ?? absoluteUrl(`/produto/${produto.slug}`),
+            priceCurrency: "BRL",
+            price: String(precoOferta),
+            availability: produto.disponivel
+              ? "https://schema.org/InStock"
+              : "https://schema.org/OutOfStock",
+            seller: { "@type": "Organization", name: SITE.nome },
+          }
+        : null;
 
     return {
       meta: [
@@ -124,21 +141,8 @@ export const Route = createFileRoute("/produto/$slug")({
                 ? { brand: { "@type": "Brand", name: produto.marca } }
                 : {}),
               ...(categoria ? { category: categoria.nome } : {}),
-              offers: {
-                "@type": "Offer",
-                url: produto.urlLoja ?? absoluteUrl(`/produto/${produto.slug}`),
-                priceCurrency: "BRL",
-                availability: produto.disponivel
-                  ? "https://schema.org/InStock"
-                  : "https://schema.org/OutOfStock",
-                ...(SHOW_PRICES && (produto.precoPromocional ?? produto.preco)
-                  ? {
-                      price: String(produto.precoPromocional ?? produto.preco),
-                    }
-                  : {}),
-                seller: { "@type": "Organization", name: SITE.nome },
-
-              },
+              // Offer só entra com preço visível (o Google acusa erro sem "price").
+              ...(ofertaLd ? { offers: ofertaLd } : {}),
               url: absoluteUrl(`/produto/${produto.slug}`),
 
             }),

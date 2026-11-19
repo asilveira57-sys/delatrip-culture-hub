@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { createFileRoute, Link, Navigate } from "@tanstack/react-router";
+import { createFileRoute, Link, Navigate, notFound, redirect } from "@tanstack/react-router";
 import { Search } from "lucide-react";
 
 import { EmptyState } from "@/components/EmptyState";
@@ -17,6 +17,7 @@ import { faqLd } from "@/lib/faq-core";
 import { carregarFaq } from "@/lib/faq.functions";
 import { getBrand, sortProducts, type Brand, type SortKey } from "@/lib/catalog";
 import {
+  fetchMarcaOverlays,
   marcaEfetiva,
   produtosDaMarca,
   slugCanonico,
@@ -33,6 +34,13 @@ export const Route = createFileRoute("/$brandSlug")({
   gcTime: 0,
   shouldReload: true,
   loader: async ({ params }) => {
+    // Marca mesclada em outra → 301 no servidor; slug inexistente → 404 real.
+    const mapa = await fetchMarcaOverlays();
+    const canonico = slugCanonico(params.brandSlug, mapa);
+    if (canonico !== params.brandSlug && marcaEfetiva(canonico, mapa)) {
+      throw redirect({ to: "/$brandSlug", params: { brandSlug: canonico }, statusCode: 301 });
+    }
+    if (!marcaEfetiva(params.brandSlug, mapa)) throw notFound();
     const [pagina, faq] = await Promise.all([
       carregarPagina({ data: { caminho: caminhoMarca(params.brandSlug) } }),
       carregarFaq({ data: { tipo: "marca", alvo: params.brandSlug } }),
