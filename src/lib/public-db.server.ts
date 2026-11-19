@@ -56,6 +56,52 @@ export async function slugsPostsPublicados(): Promise<Set<string>> {
   }
 }
 
+/** Posts publicados com a data da última edição (para o <lastmod> do sitemap). */
+export async function postsPublicadosComData(): Promise<Map<string, string>> {
+  const supabase = clientePublico();
+  if (!supabase) return new Map();
+  try {
+    const { data, error } = await supabase
+      .from("post")
+      .select("slug, updated_at, publicado_em")
+      .eq("publicado", true)
+      .lte("publicado_em", new Date().toISOString())
+      .limit(5000);
+    if (error || !data) return new Map();
+    return new Map(
+      data.map((p) => [
+        p.slug as string,
+        String(p.updated_at ?? p.publicado_em ?? "").slice(0, 10),
+      ]),
+    );
+  } catch {
+    return new Map();
+  }
+}
+
+/** Títulos e resumos dos posts publicados (para o /llms.txt). */
+export async function postsPublicadosResumo(): Promise<{ slug: string; titulo: string; resumo: string }[]> {
+  const supabase = clientePublico();
+  if (!supabase) return [];
+  try {
+    const { data, error } = await supabase
+      .from("post")
+      .select("slug, titulo, resumo, publicado_em")
+      .eq("publicado", true)
+      .lte("publicado_em", new Date().toISOString())
+      .order("publicado_em", { ascending: false })
+      .limit(500);
+    if (error || !data) return [];
+    return data.map((p) => ({
+      slug: p.slug as string,
+      titulo: String(p.titulo ?? p.slug),
+      resumo: String(p.resumo ?? ""),
+    }));
+  } catch {
+    return [];
+  }
+}
+
 /** Uma leitura só, tolerante a falhas: sem banco, o site segue com o JSON. */
 export async function lerConfigServidor(): Promise<ConfigServidor> {
   const supabase = clientePublico();

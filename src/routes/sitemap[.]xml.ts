@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 
 import { SITE_URL } from "@/lib/seo";
-import { lerConfigServidor, slugsPostsPublicados } from "@/lib/public-db.server";
+import { lerConfigServidor, postsPublicadosComData } from "@/lib/public-db.server";
 import { brands, categories, categoryPath, posts, products } from "@/lib/catalog";
 
 const ROTAS_FIXAS: [string, number][] = [
@@ -32,7 +32,7 @@ export const Route = createFileRoute("/sitemap.xml")({
     handlers: {
       GET: async () => {
         const [{ modoConstrucao, rotasNoindex, produtosOcultos, produtosIndexaveis }, slugsBanco] =
-          await Promise.all([lerConfigServidor(), slugsPostsPublicados()]);
+          await Promise.all([lerConfigServidor(), postsPublicadosComData()]);
 
         if (modoConstrucao) {
           return new Response(
@@ -42,30 +42,32 @@ export const Route = createFileRoute("/sitemap.xml")({
         }
 
         // Posts do banco + posts legados do JSON, sem duplicar slugs.
-        const slugsPosts = new Set<string>([
-          ...slugsBanco,
-          ...posts.map((p) => p.slug),
-        ]);
+        // lastmod: data real da última edição (banco) ou da publicação (JSON).
+        const datasPosts = new Map<string, string>();
+        for (const p of posts) if (p.data) datasPosts.set(p.slug, p.data.slice(0, 10));
+        for (const [slug, data] of slugsBanco) if (data) datasPosts.set(slug, data);
+        const slugsPosts = new Set<string>([...slugsBanco.keys(), ...posts.map((p) => p.slug)]);
 
-        const urls: [string, number][] = [
+        // Rotas sem data própria não recebem lastmod (data falsa faz o Google ignorar o campo).
+        type Entrada = [string, number, (string | undefined)?];
+        const urls: Entrada[] = [
           ...ROTAS_FIXAS.filter(([u]) => !rotasNoindex.has(u)),
-          ...categories.map<[string, number]>((c) => [
-            `/catalogo/${categoryPath(c)}`,
-            0.8,
-          ]),
-          ...brands.map<[string, number]>((b) => [`/${b.slug}`, 0.6]),
+          ...categories.map<Entrada>((c) => [`/catalogo/${categoryPath(c)}`, 0.8]),
+          ...brands.map<Entrada>((b) => [`/${b.slug}`, 0.6]),
           ...products
             .filter((p) => !produtosOcultos.has(p.slug) && produtosIndexaveis.has(p.slug))
-            .map<[string, number]>((p) => [`/produto/${p.slug}`, 0.6]),
+            .map<Entrada>((p) => [`/produto/${p.slug}`, 0.6]),
           ...[...slugsPosts]
             .filter((s) => !rotasNoindex.has(`/blog/${s}`))
-            .map<[string, number]>((s) => [`/blog/${s}`, 0.5]),
+            .map<Entrada>((s) => [`/blog/${s}`, 0.5, datasPosts.get(s)]),
         ];
 
         const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls
           .map(
-            ([u, p]) =>
-              `  <url>\n    <loc>${SITE_URL}${u === "/" ? "" : u}</loc>\n    <priority>${p.toFixed(1)}</priority>\n  </url>`,
+            ([u, p, lastmod]) =>
+              `  <url>\n    <loc>${SITE_URL}${u === "/" ? "" : u}</loc>\n${
+                lastmod ? `    <lastmod>${lastmod}</lastmod>\n` : ""
+              }    <priority>${p.toFixed(1)}</priority>\n  </url>`,
           )
           .join("\n")}\n</urlset>\n`;
 

@@ -19,10 +19,32 @@ export const Route = createFileRoute("/robots.txt")({
         }
         const sitemap = `Sitemap: ${origem}/sitemap.xml\n`;
 
+        // Buscadores e robôs de IA liberados de forma explícita (o grupo "*" já
+        // os cobriria, mas um grupo nomeado substitui o "*" inteiro — por isso
+        // cada grupo repete o Disallow do admin).
+        const robos = [
+          "Googlebot",
+          "Bingbot",
+          "Google-Extended",
+          "GPTBot",
+          "OAI-SearchBot",
+          "ChatGPT-User",
+          "ClaudeBot",
+          "Claude-SearchBot",
+          "Claude-User",
+          "PerplexityBot",
+          "Perplexity-User",
+          "Applebot",
+          "Applebot-Extended",
+          "Twitterbot",
+          "facebookexternalhit",
+          "*",
+        ];
         const corpo = modoConstrucao
           ? `User-agent: *\nDisallow: /\n\n${sitemap}`
-          : `User-agent: Googlebot\nAllow: /\n\nUser-agent: Bingbot\nAllow: /\n\nUser-agent: Twitterbot\nAllow: /\n\nUser-agent: facebookexternalhit\nAllow: /\n\nUser-agent: *\nAllow: /\nDisallow: /admin\n\n${sitemap}`;
-
+          : `${robos
+              .map((ua) => `User-agent: ${ua}\nAllow: /\nDisallow: /admin\n`)
+              .join("\n")}\n${sitemap}`;
 
         return new Response(corpo, {
           headers: {

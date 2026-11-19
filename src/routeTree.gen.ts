@@ -17,6 +17,7 @@ import { Route as CalculadoraBovedaRouteImport } from './routes/calculadora-bove
 import { Route as ContatoRouteImport } from './routes/contato'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as LgpdRouteImport } from './routes/lgpd'
+import { Route as LlmsDottxtRouteImport } from './routes/llms[.]txt'
 import { Route as MaioresDe18RouteImport } from './routes/maiores-de-18'
 import { Route as PoliticaDeCookiesRouteImport } from './routes/politica-de-cookies'
 import { Route as PoliticaDePrivacidadeRouteImport } from './routes/politica-de-privacidade'
@@ -98,6 +99,11 @@ const FaqRoute = FaqRouteImport.update({
 const LgpdRoute = LgpdRouteImport.update({
   id: '/lgpd',
   path: '/lgpd',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LlmsDottxtRoute = LlmsDottxtRouteImport.update({
+  id: '/llms.txt',
+  path: '/llms.txt',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MaioresDe18Route = MaioresDe18RouteImport.update({
@@ -323,6 +329,7 @@ export interface FileRoutesByFullPath {
   '/contato': typeof ContatoRoute
   '/faq': typeof FaqRoute
   '/lgpd': typeof LgpdRoute
+  '/llms.txt': typeof LlmsDottxtRoute
   '/maiores-de-18': typeof MaioresDe18Route
   '/politica-de-cookies': typeof PoliticaDeCookiesRoute
   '/politica-de-privacidade': typeof PoliticaDePrivacidadeRoute
@@ -375,6 +382,7 @@ export interface FileRoutesByTo {
   '/contato': typeof ContatoRoute
   '/faq': typeof FaqRoute
   '/lgpd': typeof LgpdRoute
+  '/llms.txt': typeof LlmsDottxtRoute
   '/maiores-de-18': typeof MaioresDe18Route
   '/politica-de-cookies': typeof PoliticaDeCookiesRoute
   '/politica-de-privacidade': typeof PoliticaDePrivacidadeRoute
@@ -427,6 +435,7 @@ export interface FileRoutesById {
   '/contato': typeof ContatoRoute
   '/faq': typeof FaqRoute
   '/lgpd': typeof LgpdRoute
+  '/llms.txt': typeof LlmsDottxtRoute
   '/maiores-de-18': typeof MaioresDe18Route
   '/politica-de-cookies': typeof PoliticaDeCookiesRoute
   '/politica-de-privacidade': typeof PoliticaDePrivacidadeRoute
@@ -481,6 +490,7 @@ export interface FileRouteTypes {
     | '/contato'
     | '/faq'
     | '/lgpd'
+    | '/llms.txt'
     | '/maiores-de-18'
     | '/politica-de-cookies'
     | '/politica-de-privacidade'
@@ -533,6 +543,7 @@ export interface FileRouteTypes {
     | '/contato'
     | '/faq'
     | '/lgpd'
+    | '/llms.txt'
     | '/maiores-de-18'
     | '/politica-de-cookies'
     | '/politica-de-privacidade'
@@ -584,6 +595,7 @@ export interface FileRouteTypes {
     | '/contato'
     | '/faq'
     | '/lgpd'
+    | '/llms.txt'
     | '/maiores-de-18'
     | '/politica-de-cookies'
     | '/politica-de-privacidade'
@@ -637,6 +649,7 @@ export interface RootRouteChildren {
   ContatoRoute: typeof ContatoRoute
   FaqRoute: typeof FaqRoute
   LgpdRoute: typeof LgpdRoute
+  LlmsDottxtRoute: typeof LlmsDottxtRoute
   MaioresDe18Route: typeof MaioresDe18Route
   PoliticaDeCookiesRoute: typeof PoliticaDeCookiesRoute
   PoliticaDePrivacidadeRoute: typeof PoliticaDePrivacidadeRoute
@@ -718,6 +731,13 @@ declare module '@tanstack/react-router' {
       path: '/lgpd'
       fullPath: '/lgpd'
       preLoaderRoute: typeof LgpdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/llms.txt': {
+      id: '/llms.txt'
+      path: '/llms.txt'
+      fullPath: '/llms.txt'
+      preLoaderRoute: typeof LlmsDottxtRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/maiores-de-18': {
@@ -1074,6 +1094,7 @@ const rootRouteChildren: RootRouteChildren = {
   ContatoRoute: ContatoRoute,
   FaqRoute: FaqRoute,
   LgpdRoute: LgpdRoute,
+  LlmsDottxtRoute: LlmsDottxtRoute,
   MaioresDe18Route: MaioresDe18Route,
   PoliticaDeCookiesRoute: PoliticaDeCookiesRoute,
   PoliticaDePrivacidadeRoute: PoliticaDePrivacidadeRoute,

@@ -1,5 +1,6 @@
 import { imageForKey, posts as postsJson } from "@/lib/editorial";
 import { sanitizarHtml } from "@/lib/sanitize";
+import { SITE_URL } from "@/lib/seo";
 
 export const CATEGORIAS_POST = [
   "Cultura",
@@ -20,6 +21,8 @@ export type PostPublico = {
   categoria: string;
   autor: string | null;
   data: string;
+  /** Última edição (updated_at do banco), usada em dateModified e no sitemap. */
+  atualizado?: string | null;
   seoTitulo: string | null;
   seoDescricao: string | null;
   seoKeywords: string | null;
@@ -51,6 +54,7 @@ type LinhaPost = {
   autor: string | null;
   publicado_em: string | null;
   created_at?: string;
+  updated_at?: string | null;
   seo_titulo?: string | null;
   seo_descricao?: string | null;
   seo_keywords?: string | null;
@@ -72,6 +76,7 @@ export function mapearPost(linha: LinhaPost): PostPublico {
     categoria: linha.categoria ?? "Cultura",
     autor: linha.autor,
     data: (linha.publicado_em ?? linha.created_at ?? "").slice(0, 10),
+    atualizado: linha.updated_at ?? null,
     seoTitulo: linha.seo_titulo ?? null,
     seoDescricao: linha.seo_descricao ?? null,
     seoKeywords: linha.seo_keywords ?? null,
@@ -107,7 +112,7 @@ export function postsFallback(): PostPublico[] {
 }
 
 export const CAMPOS_POST =
-  "slug, titulo, resumo, conteudo_html, capa_url, capa_alt, categoria, autor, publicado_em, created_at, seo_titulo, seo_descricao, seo_keywords, og_titulo, og_descricao, og_imagem_url, og_imagem_alt, twitter_card";
+  "slug, titulo, resumo, conteudo_html, capa_url, capa_alt, categoria, autor, publicado_em, created_at, updated_at, seo_titulo, seo_descricao, seo_keywords, og_titulo, og_descricao, og_imagem_url, og_imagem_alt, twitter_card";
 
 /** Resolve a capa: "asset:chave" usa as imagens locais; o resto é URL direta. */
 export function resolverCapa(capaUrl: string | null | undefined, chaveFallback = "sedas") {
@@ -139,12 +144,21 @@ export function artigoLd(
     headline: (post.seoTitulo ?? post.titulo).slice(0, 110),
     description: post.seoDescricao ?? post.resumo,
     ...(opcoes.imagem ? { image: [opcoes.imagem] } : {}),
-    ...(post.data ? { datePublished: post.data, dateModified: post.data } : {}),
+    ...(post.data
+      ? {
+          datePublished: post.data,
+          // Só usa a edição como dateModified se for posterior à publicação.
+          dateModified:
+            post.atualizado && post.atualizado.slice(0, 10) > post.data
+              ? post.atualizado
+              : post.data,
+        }
+      : {}),
     ...(keywords.length ? { keywords } : {}),
     articleSection: post.categoria,
     inLanguage: "pt-BR",
     author: { "@type": "Organization", name: post.autor ?? "DeLaTrip" },
-    publisher: { "@type": "Organization", name: "DeLaTrip" },
+    publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organizacao`, name: "DeLaTrip", url: SITE_URL },
     mainEntityOfPage: { "@type": "WebPage", "@id": opcoes.url },
     isAccessibleForFree: true,
   };
