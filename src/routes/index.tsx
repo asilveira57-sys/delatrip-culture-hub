@@ -17,13 +17,14 @@ import { PostCard } from "@/components/PostCard";
 import { ProductCard } from "@/components/ProductCard";
 import { SectionHeading } from "@/components/SectionHeading";
 import { Button } from "@/components/ui/button";
-import { SITE } from "@/config/site";
+import { redesPreenchidas, SITE } from "@/config/site";
 import { listarPostsPublicos } from "@/lib/blog.functions";
 import { carregarPagina } from "@/lib/paginas.functions";
 import { lista, texto as campoTexto } from "@/lib/paginas-core";
 import { destaques, rootCategories } from "@/lib/catalog";
 import { marcasEfetivas, useMarcaOverlays } from "@/lib/marcas";
 import heroImg from "@/assets/hero.jpg";
+import logoImg from "@/assets/delatrip-mark.png";
 import { mergeList, useOverlays } from "@/lib/overlay";
 
 export const Route = createFileRoute("/")({
@@ -41,19 +42,32 @@ export const Route = createFileRoute("/")({
       jsonLd({
         "@context": "https://schema.org",
         "@type": "Organization",
+        "@id": `${SITE_URL}/#organizacao`,
         name: SITE.nome,
+        legalName: SITE.razaoSocial,
+        taxID: SITE.cnpj,
         description: SITE.descricao,
         url: SITE_URL,
+        logo: absoluteUrl(logoImg),
         email: SITE.email,
-        telephone: SITE.telefone,
+        telephone: SITE.telefoneLink,
+        contactPoint: {
+          "@type": "ContactPoint",
+          contactType: "customer service",
+          telephone: SITE.telefoneLink,
+          email: SITE.email,
+          areaServed: "BR",
+          availableLanguage: "pt-BR",
+        },
         address: { "@type": "PostalAddress", addressLocality: "Rio de Janeiro", addressRegion: "RJ", addressCountry: "BR" },
-        sameAs: [SITE.lojaOficial, SITE.redes.instagram, SITE.redes.facebook, SITE.redes.youtube],
+        sameAs: [SITE.lojaOficial, SITE.mercadoLivre, ...redesPreenchidas()],
       }),
       jsonLd({
         "@context": "https://schema.org",
         "@type": "WebSite",
         name: SITE.nome,
         url: SITE_URL,
+        publisher: { "@id": `${SITE_URL}/#organizacao` },
         inLanguage: "pt-BR",
         potentialAction: {
           "@type": "SearchAction",

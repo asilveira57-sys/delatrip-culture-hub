@@ -15,12 +15,25 @@ export const SITE = {
   cnpj: "23.131.813/0001-16",
   razaoSocial: "JP Comercio Exterior e Representação Eireli-ME",
   horarioAtendimento: "Atendimento de segunda a sexta, das 9h às 18h",
+  // Preencha com os perfis reais (ex.: "https://www.instagram.com/delatrip").
+  // Enquanto estiverem só com o domínio, ficam fora do schema (sameAs).
   redes: {
     instagram: "https://www.instagram.com/",
     facebook: "https://www.facebook.com/",
     youtube: "https://www.youtube.com/",
   },
 } as const;
+
+/** Perfis sociais preenchidos de verdade (descarta URLs só com o domínio). */
+export function redesPreenchidas(): string[] {
+  return Object.values(SITE.redes).filter((url) => {
+    try {
+      return new URL(url).pathname.replace(/\//g, "").length > 0;
+    } catch {
+      return false;
+    }
+  });
+}
 
 export const AVISO_SANITARIO =
   "Conteúdo destinado a maiores de 18 anos. Este site não realiza vendas online e não comercializa produtos derivados do tabaco: a RDC ANVISA nº 558/2021 proíbe a venda desses produtos pela internet. As informações sobre tabaco publicadas aqui têm caráter exclusivamente informativo. Fumar é prejudicial à saúde e pode causar doenças graves. Consulte a legislação vigente (Lei nº 9.294/1996 e RDC ANVISA nº 558/2021).";
