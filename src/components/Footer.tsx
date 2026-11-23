@@ -6,6 +6,8 @@ import { abrirPreferenciasCookies } from "@/lib/consentimento";
 import { categories } from "@/lib/catalog";
 import mark from "@/assets/delatrip-mark.png";
 
+import { SeloMLFacil } from "@/components/SeloMLFacil";
+
 export function Footer() {
   return (
     <footer className="surface-ink border-t border-ink-border">
@@ -107,6 +109,9 @@ export function Footer() {
         <p className="mt-8 text-xs text-ink-muted">
           © {new Date().getFullYear()} DeLaTrip. Todos os direitos reservados.
         </p>
+        <div className="mt-4">
+          <SeloMLFacil projeto="delatrip" origem="delatrip.com.br" />
+        </div>
       </div>
     </footer>
   );
