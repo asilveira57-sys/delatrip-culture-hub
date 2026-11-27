@@ -33,13 +33,42 @@ export type PostPublico = {
   twitterCard: string;
 };
 
-/** Converte o markdown simples dos posts legados em HTML. */
+function escaparHtml(texto: string) {
+  return texto.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+/** Negrito (**texto**) e links ([texto](/url)) dentro de uma linha. */
+function markdownEmLinha(texto: string) {
+  return escaparHtml(texto)
+    .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+    .replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (_, rotulo: string, href: string) => {
+      const externo = /^https?:\/\//.test(href);
+      return externo
+        ? `<a href="${href}" target="_blank" rel="noopener noreferrer">${rotulo}</a>`
+        : `<a href="${href}">${rotulo}</a>`;
+    });
+}
+
+/**
+ * Converte o markdown simples dos posts fixos (src/data/posts.json) em HTML.
+ * Blocos separados por linha em branco: "## " vira H2, "### " vira H3,
+ * linhas começando com "- " viram lista e o resto vira parágrafo.
+ * Aceita **negrito** e [links](/caminho) dentro do texto.
+ */
 export function markdownSimplesParaHtml(texto: string) {
   return texto
     .split("\n\n")
     .map((bloco) => bloco.trim())
     .filter(Boolean)
-    .map((bloco) => (bloco.startsWith("## ") ? `<h2>${bloco.slice(3)}</h2>` : `<p>${bloco}</p>`))
+    .map((bloco) => {
+      if (bloco.startsWith("### ")) return `<h3>${markdownEmLinha(bloco.slice(4))}</h3>`;
+      if (bloco.startsWith("## ")) return `<h2>${markdownEmLinha(bloco.slice(3))}</h2>`;
+      const linhas = bloco.split("\n").map((l) => l.trim());
+      if (linhas.every((l) => l.startsWith("- "))) {
+        return `<ul>${linhas.map((l) => `<li>${markdownEmLinha(l.slice(2))}</li>`).join("")}</ul>`;
+      }
+      return `<p>${markdownEmLinha(linhas.join(" "))}</p>`;
+    })
     .join("");
 }
 
@@ -98,13 +127,14 @@ export function postsFallback(): PostPublico[] {
     capaUrl: `asset:${p.imagem}`,
     capaAlt: p.titulo,
     categoria: p.categoria,
-    autor: "DeLaTrip",
+    autor: p.autor ?? "DeLaTrip",
     data: p.data,
+    atualizado: p.atualizado ?? null,
     seoTitulo: null,
-    seoDescricao: null,
+    seoDescricao: p.seoDescricao ?? null,
     seoKeywords: null,
     ogTitulo: null,
-    ogDescricao: null,
+    ogDescricao: p.seoDescricao ?? null,
     ogImagemUrl: null,
     ogImagemAlt: null,
     twitterCard: "summary_large_image",

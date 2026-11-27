@@ -15,7 +15,7 @@ import { carregarRelacionados } from "@/lib/relacionamentos.functions";
 import { FaqSecao } from "@/components/FaqSecao";
 import { faqLd } from "@/lib/faq-core";
 import { carregarFaq } from "@/lib/faq.functions";
-import { formatDate } from "@/lib/editorial";
+import { formatDate, posts } from "@/lib/editorial";
 import { dividirNoMarcador } from "@/lib/sanitize";
 
 
@@ -27,7 +27,11 @@ export const Route = createFileRoute("/blog/$slug")({
       carregarRelacionados({ data: { slug: params.slug } }),
     ]);
     if (!post) throw notFound();
-    return { post, faq, relacionados };
+    // Posts fixos do repositório podem trazer o FAQ no próprio JSON.
+    const faqFinal = faq.length
+      ? faq
+      : (posts.find((p) => p.slug === params.slug)?.faq ?? []);
+    return { post, faq: faqFinal, relacionados };
   },
   head: ({ params, loaderData }) => {
     const post = loaderData?.post ?? null;

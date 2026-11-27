@@ -44,7 +44,10 @@ export const Route = createFileRoute("/sitemap.xml")({
         // Posts do banco + posts legados do JSON, sem duplicar slugs.
         // lastmod: data real da última edição (banco) ou da publicação (JSON).
         const datasPosts = new Map<string, string>();
-        for (const p of posts) if (p.data) datasPosts.set(p.slug, p.data.slice(0, 10));
+        for (const p of posts) {
+          const data = (p as { atualizado?: string }).atualizado ?? p.data;
+          if (data) datasPosts.set(p.slug, data.slice(0, 10));
+        }
         for (const [slug, data] of slugsBanco) if (data) datasPosts.set(slug, data);
         const slugsPosts = new Set<string>([...slugsBanco.keys(), ...posts.map((p) => p.slug)]);
 

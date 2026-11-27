@@ -18,9 +18,16 @@ export type Post = {
   data: string;
   categoria: string;
   imagem: string;
+  autor?: string;
+  /** Data da última revisão (YYYY-MM-DD), vira dateModified e lastmod. */
+  atualizado?: string;
+  /** Meta description própria (até ~155 caracteres). */
+  seoDescricao?: string;
+  /** FAQ do post; usado quando não há FAQ cadastrado no admin. */
+  faq?: { pergunta: string; resposta: string }[];
 };
 
-export const posts = [...(postsData as Post[])].sort((a, b) =>
+export const posts = [...(postsData as unknown as Post[])].sort((a, b) =>
   b.data.localeCompare(a.data),
 );
 
