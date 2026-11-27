@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { absoluteUrl, breadcrumbLd, canonical, jsonLd } from "@/lib/seo";
 
 import { EmptyState } from "@/components/EmptyState";
+import { GuiaCategoriaSecao } from "@/components/GuiaCategoriaSecao";
 import { PageHeader } from "@/components/PageHeader";
 import { ProductCard } from "@/components/ProductCard";
 import { Button } from "@/components/ui/button";
@@ -17,6 +18,8 @@ import {
   productsByCategory,
 } from "@/lib/catalog";
 import { mergeList, useOverlays } from "@/lib/overlay";
+import { guiaDaCategoria } from "@/config/category-guides";
+import { faqLd } from "@/lib/faq-core";
 
 export const Route = createFileRoute("/catalogo/$")({
   loader: ({ params }) => {
@@ -25,12 +28,17 @@ export const Route = createFileRoute("/catalogo/$")({
   },
   head: ({ params }) => {
     const categoria = getCategoryByPath(params._splat ?? "");
-    const titulo = categoria
-      ? `${categoria.nome} — Catálogo | DeLaTrip`
-      : "Categoria não encontrada — DeLaTrip";
-    const descricao = categoria
-      ? categoryMeta(categoria).descricao
-      : "Categoria indisponível no catálogo DeLaTrip.";
+    const guia = categoria && !categoria.paiId ? guiaDaCategoria(categoria.slug) : undefined;
+    const titulo = guia
+      ? guia.tituloSeo
+      : categoria
+        ? `${categoria.nome} — Catálogo | DeLaTrip`
+        : "Categoria não encontrada — DeLaTrip";
+    const descricao = guia
+      ? guia.metaDescricao
+      : categoria
+        ? categoryMeta(categoria).descricao
+        : "Categoria indisponível no catálogo DeLaTrip.";
     return {
       meta: [
         { title: titulo },
@@ -52,6 +60,7 @@ export const Route = createFileRoute("/catalogo/$")({
                 })),
               ]),
             ),
+            ...(guia ? [jsonLd(faqLd(guia.faq))] : []),
           ]
         : [],
     };
@@ -169,6 +178,9 @@ function CategoriaPage() {
           </>
         )}
 
+        {!categoria.paiId && guiaDaCategoria(categoria.slug) ? (
+          <GuiaCategoriaSecao guia={guiaDaCategoria(categoria.slug)!} />
+        ) : null}
       </div>
     </>
   );
